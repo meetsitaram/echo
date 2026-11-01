@@ -13,3 +13,6 @@ reports/motion/
 # generated: the web viewer's model and motion, and Fusion's raw STL export (make_robot_files.py reads it)
 reports/web/
 urdf/meshes/fusion/
+
+# Claude Code: per-user local settings (the skill in .claude/skills/ is shared)
+.claude/settings.local.json

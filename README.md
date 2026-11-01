@@ -52,8 +52,21 @@ The joint table, ranges, masses and how each joint was designed are in [docs/DES
    robot can stand and squat.
 6. **Move it.** A human motion capture is retargeted to the joints, replayed to check for collisions, and rendered.
 
-To build your own humanoid this way, follow the [skill doc](skills/humanoid-from-spec/SKILL.md) and keep the
-[lessons learned](LESSONS.md) beside it.
+## Start here
+
+echo is designed and iterated by an AI agent that follows one skill,
+[`.claude/skills/humanoid-from-spec/SKILL.md`](.claude/skills/humanoid-from-spec/SKILL.md), with you reviewing
+each round. The skill covers finding reference images on the web, measuring them, editing the spec, checking,
+comparing, building the CAD, simulating, motion and publishing. The scripts only do the steps; the agent judges the
+results with you.
+
+1. Clone the repo and open it in Claude Code; the skill loads automatically. Other agents: start from `AGENTS.md`.
+2. Ask for what you want, for example:
+   - "Make echo's hips match Figure 03's front view more closely."
+   - "Start a new humanoid modelled on the robot in this video: <link>."
+3. Review the before/after pictures the agent shows you each round, and say what to change.
+
+The [lessons learned](LESSONS.md) list every trap we hit and how it was fixed. The agent reads them first.
 
 ## Repository
 
@@ -63,27 +76,7 @@ To build your own humanoid this way, follow the [skill doc](skills/humanoid-from
 - `urdf/`: URDF and MuJoCo models with meshes
 - `reports/`: check results, masses, comparisons and renders
 - `docs/`: design details and media
-- `skills/`: the method, as a guide and a Claude Code skill
-
-## Quick start
-
-```bash
-pip install numpy scipy trimesh manifold3d mujoco pillow imageio matplotlib
-```
-
-```bash
-python -I spec/robot.py
-```
-
-```bash
-python -I tools/checks.py
-```
-
-```bash
-python tools/sim_stand.py
-```
-
-The rest of the commands are in [docs/DESIGN.md](docs/DESIGN.md#run-it).
+- `.claude/skills/`: the method, as a guide and a Claude Code skill
 
 ## Licence
 

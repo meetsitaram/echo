@@ -1,7 +1,9 @@
 # echo (a Figure 03 replica): notes for Claude
 
-Read `LESSONS.md` first, then CDX-3R's `cad/fusion/LESSONS.md` and `docs/PIPELINE-PLAYBOOK.md`
-(C:\Users\PC\projects\cdx-3r).
+For any design work on echo, or on a new humanoid, use the `humanoid-from-spec` skill
+(`.claude/skills/humanoid-from-spec/SKILL.md`): it is the method, step by step, and how to iterate with the user.
+Read `LESSONS.md` first. On the author's machine, CDX-3R's `cad/fusion/LESSONS.md` and `docs/PIPELINE-PLAYBOOK.md`
+(C:\Users\PC\projects\cdx-3r) hold the earlier lessons this project builds on.
 
 - **Frame and units:** metres; X forward, Y left, Z up, floor z = 0; zero pose standing, arms down, palms in. Fusion
   world = spec world (Fusion is set Z up); the Fusion API is in cm, converted only in `cad/fusion/figlib.py`.

@@ -1,6 +1,6 @@
 ---
 name: humanoid-from-spec
-description: Design and build a humanoid robot, or a look-alike of a reference robot, from one Python spec, the way the echo Figure 03 replica was built. Proportions come from reference photos and actuators are ones you can buy. The covers clear every joint, the offline physical checks are proven on broken designs, and the Fusion 360 model is built by script through MCP. Ends with a URDF/MJCF with bottom-up masses, a MuJoCo stand test, a retargeted motion-capture walk and a public repo with a README video. Use it whenever someone wants to design, model, replicate, re-proportion or iterate a humanoid or legged robot's mechanical design. It also covers CAD or a URDF/MJCF for a robot they are designing, matching a robot's look from photos or video frames, and how echo was built, even when they don't mention Fusion, a spec or this repo.
+description: Design and build a humanoid robot, or a look-alike of a reference robot, from one Python spec, the way the echo Figure 03 replica was built. Proportions come from reference photos and actuators are ones you can buy. The covers clear every joint, the offline physical checks are proven on broken designs, and the Fusion 360 model is built by script through MCP. Ends with a URDF/MJCF with bottom-up masses, a MuJoCo stand test, a retargeted motion-capture walk and a public repo with a README video. Use it whenever someone wants to design, model, replicate, re-proportion or iterate a humanoid or legged robot's mechanical design. It also covers CAD or a URDF/MJCF for a robot they are designing, matching a robot's look from photos or video frames found on the web, and how echo was built, even when they don't mention Fusion, a spec or this repo.
 ---
 
 # Build a humanoid from one spec
@@ -9,6 +9,22 @@ This is the method behind echo (github.com/meetsitaram/echo). echo is a 1.727 m,
 specs and look, with an Asimov 1-style internal layout and off-the-shelf RobStride actuators. Start from that repo:
 its tools read `spec/robot.json` and work for any robot described the same way. "Make it yours" below lists what is
 echo-specific.
+
+## How to use this skill
+
+You (the agent) drive the work; the scripts only build, check and render. They cannot judge whether a shape looks
+right or whether a trade-off is acceptable. You and the user do. So:
+
+1. **Get oriented.** Read `LESSONS.md`, the spec (`spec/robot.py`), the last check report (`reports/checks.md`) and
+   the comparison (`reports/compare/compare.md`). For a new robot, start at step 1 below.
+2. **Agree the goal with the user.** Find out the target robot, what must match (specs, look, both), what may
+   differ (payload, ranges), and what to change this round.
+3. **Work in rounds** (see "Each round"): one change, the checks, before/after pictures beside the reference, then
+   the user's review. Fusion, exports and publishing come after the user approves the look.
+4. **Write down what you learn.** Every issue and its fix goes into `LESSONS.md`; every source into your sources
+   list.
+
+Stop and show the user pictures whenever the look is at stake; don't push to a public repo without their go-ahead.
 
 ## Five rules, and why
 
@@ -40,9 +56,18 @@ echo-specific.
 
 ### 1. Pin the target
 
-Collect the published specs (height, mass, payload, battery, DOF) and the best reference pictures you can get: pause
-videos on exact times and use the largest frames. Write the targets to `spec/targets.json`: landmark heights (chin,
-shoulder top, elbow, wrist, fingertip, hip line, knee) and widths, each with its source and tolerance.
+Collect the published specs (height, mass, payload, battery, DOF) and the best reference pictures you can get from
+the web.
+- Open the maker's product page and reveal video in a browser you control.
+- Seek the page's video player to exact times with JavaScript, enlarge it to fill the window and screenshot it. A
+  canvas export fails on a cross-origin video.
+- Keep the frames local, never in the repo: they are the maker's copyright.
+
+`references/reference-images.md` has the code, how to choose frames, and how frames become numbers and loft
+sections.
+
+Write the targets to `spec/targets.json`: landmark heights (chin, shoulder top, elbow, wrist, fingertip, hip line,
+knee) and widths, each with its source frame, time code and tolerance.
 
 Measure heights in level views only; a raised camera lifts every top surface. For a 3/4 frame, fit the camera
 angle first: render the model at several angles and keep the one whose silhouette widths match (echo's 3/4 frame
@@ -181,6 +206,9 @@ The tools are generic, but some parts are echo's. Change these for a different r
 
 ## Reference files
 
+- `references/reference-images.md`: getting reference images from the web (video frames at exact times, stills),
+  choosing frames that measure well, and turning them into targets, anchors and loft sections. Read before the
+  first measurement.
 - `references/spec-patterns.md`: how to write links, joints, covers, cuts and materials. Read before writing or
   changing the spec.
 - `references/joint-covers.md`: the joint and cover patterns. Read when a joint collides, a cover shows a gap or

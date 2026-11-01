@@ -2,7 +2,7 @@
 
 The full design behind the [README](../README.md): how echo matches Figure 03, what is inside, how every joint gets
 room under rigid covers, the walking motion, the checks, the commands and the files. For the method in general, see
-[the skill doc](../skills/humanoid-from-spec/SKILL.md); for what went wrong and how it was fixed, see
+[the skill doc](../.claude/skills/humanoid-from-spec/SKILL.md); for what went wrong and how it was fixed, see
 [LESSONS.md](../LESSONS.md).
 
 ## How it matches Figure 03
@@ -238,7 +238,7 @@ checks, rebuild, compare.
 | `cad/echo.step` | the CAD model exported from Fusion: all 30 links at the zero pose, named as in the spec (STEP AP214) |
 | `urdf/echo.urdf`, `urdf/echo.xml` | ROS / Isaac and MuJoCo models (meshes from Fusion) |
 | `LESSONS.md` | what went wrong here and the rule that now prevents it |
-| `skills/humanoid-from-spec/` | the method as a skill: how to build your own humanoid this way, step by step, with every reference we used |
+| `.claude/skills/humanoid-from-spec/` | the method as a skill (Claude Code finds it automatically): how to build your own humanoid this way, from reference images on the web to a published robot, with every reference we used |
 | `LICENSE` | Apache License 2.0, for everything in this repository |
 | `THIRD_PARTY_NOTICES.md` | notices for adapted code (GMR, MIT), what was consulted but not copied, trademarks |
 
