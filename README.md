@@ -253,9 +253,14 @@ Claude to build or iterate a humanoid. Keep `LESSONS.md` open beside it: every t
 | `urdf/echo.urdf`, `urdf/echo.xml` | ROS / Isaac and MuJoCo models (meshes from Fusion) |
 | `LESSONS.md` | what went wrong here and the rule that now prevents it |
 | `skills/humanoid-from-spec/` | the method as a skill: how to build your own humanoid this way, step by step, with every reference we used |
+| `LICENSE` | Apache License 2.0, for everything in this repository |
 | `THIRD_PARTY_NOTICES.md` | notices for adapted code (GMR, MIT), what was consulted but not copied, trademarks |
 
 ## Credits and licences
+
+echo is licensed under the Apache License 2.0 (`LICENSE`): the code, the spec, the CAD (`cad/echo.f3d`,
+`cad/echo.step`), the robot models (URDF, MJCF, meshes), the documents and the media. Anyone may use, modify and build
+on it, commercially too. Keep the licence and the notices, and say what you changed. Copyright 2026 meetsitaram.
 
 echo's design follows Asimov 1's internal layout (github.com/menloresearch/asimov-1) and was compared with Unitree's
 and AgiBot's published URDFs. None of their files are included, so their licences (CERN-OHL-S-2.0 and GPL-2.0,

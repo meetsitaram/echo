@@ -1,7 +1,8 @@
 # Third-party notices
 
-echo's files were written for this project. The one exception is the motion retargeting, part of which is adapted
-from GMR. GMR's licence asks that its notice travel with every copy, so it is below.
+echo is licensed under the Apache License 2.0 (`LICENSE`). Its files were written for this project. The one exception
+is the motion retargeting, part of which is adapted from GMR. GMR's licence asks that its notice travel with every
+copy, so it is below; those parts stay under GMR's MIT terms as well.
 
 ## Adapted into echo: GMR, General Motion Retargeting (MIT licence)
 

@@ -65,6 +65,7 @@ keep a list like this from day one. It is how you credit people correctly and av
 4. Libraries are dependencies, not redistributed: no notices are needed. Vendoring one would bring its licence
    file along.
 
-echo's own licence is the author's choice. Without a LICENSE file, others can read the repo but have no right to
-reuse it. For a project meant to be built on, pick one: for example Apache-2.0 or MIT for the code, CERN-OHL-P-2.0
-(permissive) or CERN-OHL-S-2.0 (reciprocal) for the design files, and CC-BY-4.0 for documents and media.
+echo itself is licensed under the Apache License 2.0 (`LICENSE`), chosen so anyone can use it. That covers the code,
+the spec, the CAD, the robot models, the documents and the media, and Apache-2.0 also grants a patent licence from
+contributors. If you build on echo, keep `LICENSE` and `THIRD_PARTY_NOTICES.md` and say what you changed. For your
+own robot, pick a licence early: without one, others can read your repo but have no right to reuse it.

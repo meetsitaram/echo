@@ -77,7 +77,8 @@ owns.
 - Reading a design is not copying it. echo follows Asimov 1's layout and read its URDF, but contains none of its
   files, so its CERN-OHL-S and GPL licences place no conditions on echo. Copying their CAD or code would.
 - Adapted code keeps its notice: `THIRD_PARTY_NOTICES.md` carries GMR's MIT notice.
-- Choose the project's own licence. Without one, others may read but not reuse.
+- Choose the project's own licence early. Without one, others may read but not reuse. echo is Apache-2.0, so
+  anyone can use it, commercially too, provided they keep the licence and notices.
 
 ## The README
 
