@@ -1,0 +1,8470 @@
+{
+ "frame": "metres; X forward, Y left, Z up; floor z=0; zero pose standing, arms down, palms in",
+ "actuators": {
+  "_about": "Off-the-shelf actuators we can buy (RobStride QDD modules). Sizes and torques from retailer listings (roboticscenter.ai, pakronics, openelab), not an official datasheet: confirm against the vendor's STEP and datasheet before ordering. 'r' is half the square flange size, 'h' the length along the output axis. 'ratio' > 1 means an extra linkage reduction after the module (torque x ratio, speed / ratio). Joint dynamics (tools/make_robot_files.py; 2026-10-31 ESTIMATES, not vendor data): 'gear' the module's reduction, 'rotor_kgm2' the motor rotor's inertia, scaled from the frame size against Unitree's 7520 motor (5e-5 kg m2, from G1's armature 0.0102 at 14.3:1); reflected at the output as armature = rotor x gear^2; 'damping_nms' viscous and 'friction_nm' Coulomb friction at the output, typical of QDD modules (friction about 2-3 % of peak torque).",
+  "RS00": {
+   "r": 0.0285,
+   "h": 0.051,
+   "mass": 0.31,
+   "rated_nm": 5.0,
+   "peak_nm": 14.0,
+   "noload_rads": 32.0,
+   "gear": 10.0,
+   "rotor_kgm2": 1e-05,
+   "damping_nms": 0.02,
+   "friction_nm": 0.3
+  },
+  "RS02": {
+   "r": 0.03925,
+   "h": 0.0455,
+   "mass": 0.405,
+   "rated_nm": 6.0,
+   "peak_nm": 17.0,
+   "noload_rads": 41.0,
+   "gear": 7.75,
+   "rotor_kgm2": 3e-05,
+   "damping_nms": 0.03,
+   "friction_nm": 0.4
+  },
+  "RS03": {
+   "r": 0.053,
+   "h": 0.056,
+   "mass": 0.88,
+   "rated_nm": 20.0,
+   "peak_nm": 60.0,
+   "noload_rads": 20.0,
+   "gear": 9.0,
+   "rotor_kgm2": 0.0001,
+   "damping_nms": 0.12,
+   "friction_nm": 1.0
+  },
+  "RS06": {
+   "r": 0.044,
+   "h": 0.049,
+   "mass": 0.621,
+   "rated_nm": 11.0,
+   "peak_nm": 36.0,
+   "noload_rads": 50.0,
+   "gear": 9.0,
+   "rotor_kgm2": 5e-05,
+   "damping_nms": 0.08,
+   "friction_nm": 0.7
+  },
+  "RS04": {
+   "r": 0.06,
+   "h": 0.056,
+   "mass": 1.42,
+   "rated_nm": 40.0,
+   "peak_nm": 120.0,
+   "noload_rads": 21.0,
+   "gear": 9.0,
+   "rotor_kgm2": 0.0002,
+   "damping_nms": 0.2,
+   "friction_nm": 1.5
+  }
+ },
+ "materials": {
+  "knit_pa12": {
+   "density": 1110,
+   "note": "PA12 (MJF) cover under a knit sleeve: 1010 kg/m3 plus 0.3 kg/m2 of knit over a 3 mm wall"
+  },
+  "pa12": {
+   "density": 1010,
+   "note": "PA12: black covers, pads, marks"
+  },
+  "pc": {
+   "density": 1200,
+   "layer": 0.002,
+   "note": "polycarbonate: the glossy black covers; the visor is a 2 mm layer"
+  },
+  "tpu": {
+   "density": 1200,
+   "note": "TPU: outsole and shoe upper"
+  },
+  "eva": {
+   "density": 250,
+   "layer": 0.0,
+   "note": "EVA foam midsole (solid)"
+  },
+  "al7075": {
+   "density": 2810,
+   "note": "7075-T6 frames, brackets, flanges, cranks and rods, with a fill factor"
+  },
+  "cells": {
+   "density": 2500,
+   "note": "battery pack: explicit mass"
+  },
+  "electronics": {
+   "density": 1500,
+   "note": "compute, power board, cameras: explicit masses"
+  },
+  "hand": {
+   "density": 1500,
+   "note": "the hand's motors, tendons and palm: explicit mass"
+  }
+ },
+ "links": {
+  "pelvis": {
+   "name": "pelvis",
+   "budget": 6.5,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "pelvis",
+     "sections": [
+      {
+       "z": 0.92,
+       "cx": 0.005,
+       "cy": 0,
+       "a": 0.065,
+       "b": 0.058,
+       "n": 3.0
+      },
+      {
+       "z": 0.9600000000000001,
+       "cx": 0.005,
+       "cy": 0,
+       "a": 0.075,
+       "b": 0.085,
+       "n": 3.2
+      },
+      {
+       "z": 1.018,
+       "cx": 0.005,
+       "cy": 0,
+       "a": 0.072,
+       "b": 0.08,
+       "n": 3.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "shell",
+     "open": [],
+     "material": "pc"
+    },
+    {
+     "kind": "rbox",
+     "name": "pelvis frame",
+     "c": [
+      0,
+      0,
+      0.9600000000000001
+     ],
+     "size": [
+      0.07,
+      0.15,
+      0.07
+     ],
+     "fillet": 0.008,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "add_mass": 0.35,
+     "add_what": "electronics",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "pelvis waist opening",
+     "c": [
+      0,
+      0,
+      1.019
+     ],
+     "axis": "z",
+     "r": 0.072,
+     "h": 0.042,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "pelvis"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "L pelvis hip opening",
+     "c": [
+      0,
+      0.085,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.063,
+     "h": 0.05,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "pelvis"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R pelvis hip opening",
+     "c": [
+      0,
+      -0.085,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.063,
+     "h": 0.05,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "pelvis"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "waist_yaw actuator (buy) RS04",
+     "c": [
+      0,
+      0,
+      0.99
+     ],
+     "axis": "z",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_hip_pitch actuator (buy) RS04",
+     "c": [
+      0,
+      0.098,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_hip_pitch actuator (buy) RS04",
+     "c": [
+      0,
+      -0.098,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": "hip pitch actuators, waist yaw actuator, PDB"
+  },
+  "torso": {
+   "name": "torso",
+   "budget": 19.96,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "waist hub",
+     "c": [
+      0.0,
+      0.0,
+      1.04
+     ],
+     "size": [
+      0.1,
+      0.1,
+      0.040000000000000036
+     ],
+     "fillet": 0.008,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "waist column",
+     "sections": [
+      {
+       "z": 0.997,
+       "cx": 0,
+       "cy": 0,
+       "a": 0.068,
+       "b": 0.068,
+       "n": 2.0
+      },
+      {
+       "z": 1.055,
+       "cx": 0,
+       "cy": 0,
+       "a": 0.068,
+       "b": 0.068,
+       "n": 2.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "shell",
+     "open": [
+      "bottom"
+     ],
+     "material": "pc"
+    },
+    {
+     "kind": "loft",
+     "name": "torso rim",
+     "sections": [
+      {
+       "z": 1.05,
+       "cx": 0,
+       "cy": 0,
+       "a": 0.08,
+       "b": 0.094,
+       "n": 2.6
+      },
+      {
+       "z": 1.07,
+       "cx": 0,
+       "cy": 0,
+       "a": 0.095,
+       "b": 0.116,
+       "n": 2.9
+      },
+      {
+       "z": 1.0899999999999999,
+       "cx": 0,
+       "cy": 0,
+       "a": 0.1005,
+       "b": 0.1245,
+       "n": 3.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "shell",
+     "open": [
+      "top"
+     ],
+     "material": "pc"
+    },
+    {
+     "kind": "loft",
+     "name": "torso",
+     "sections": [
+      {
+       "z": 1.085,
+       "cx": 0.0,
+       "cy": 0,
+       "a": 0.1,
+       "b": 0.124,
+       "n": 3.0
+      },
+      {
+       "z": 1.13,
+       "cx": -0.002,
+       "cy": 0,
+       "a": 0.104,
+       "b": 0.13,
+       "n": 3.1
+      },
+      {
+       "z": 1.185,
+       "cx": -0.004,
+       "cy": 0,
+       "a": 0.111,
+       "b": 0.137,
+       "n": 3.3
+      },
+      {
+       "z": 1.27,
+       "cx": 0.0,
+       "cy": 0,
+       "a": 0.115,
+       "b": 0.14,
+       "n": 3.4
+      },
+      {
+       "z": 1.355,
+       "cx": -0.004,
+       "cy": 0,
+       "a": 0.112,
+       "b": 0.148,
+       "n": 3.4
+      },
+      {
+       "z": 1.42,
+       "cx": -0.01,
+       "cy": 0,
+       "a": 0.1,
+       "b": 0.15,
+       "n": 3.4
+      },
+      {
+       "z": 1.442,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.094,
+       "b": 0.15,
+       "n": 3.2
+      },
+      {
+       "z": 1.4649999999999999,
+       "cx": -0.016,
+       "cy": 0,
+       "a": 0.082,
+       "b": 0.14,
+       "n": 3.0
+      },
+      {
+       "z": 1.4829999999999999,
+       "cx": -0.018,
+       "cy": 0,
+       "a": 0.068,
+       "b": 0.106,
+       "n": 2.6
+      },
+      {
+       "z": 1.4929999999999999,
+       "cx": -0.02,
+       "cy": 0,
+       "a": 0.057,
+       "b": 0.074,
+       "n": 2.3
+      },
+      {
+       "z": 1.498,
+       "cx": -0.021,
+       "cy": 0,
+       "a": 0.051,
+       "b": 0.056,
+       "n": 2.1
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "battery",
+     "c": [
+      -0.03,
+      0.0,
+      1.2599999999999998
+     ],
+     "size": [
+      0.15,
+      0.17,
+      0.13000000000000012
+     ],
+     "fillet": 0.01,
+     "color": "#2E3B4E",
+     "role": "struct",
+     "exposed": false,
+     "mass": 13.1,
+     "material": "cells"
+    },
+    {
+     "kind": "rbox",
+     "name": "spine",
+     "c": [
+      0.0,
+      0.0,
+      1.1275
+     ],
+     "size": [
+      0.06,
+      0.06,
+      0.15500000000000003
+     ],
+     "fillet": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "shoulder beam",
+     "c": [
+      -0.02,
+      0,
+      1.345
+     ],
+     "size": [
+      0.05,
+      0.2,
+      0.05
+     ],
+     "fillet": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "neck post",
+     "c": [
+      -0.012,
+      0.0,
+      1.37775
+     ],
+     "size": [
+      0.04,
+      0.04,
+      0.045500000000000096
+     ],
+     "fillet": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "compute",
+     "c": [
+      0.034,
+      0,
+      1.355
+     ],
+     "size": [
+      0.06,
+      0.14,
+      0.05
+     ],
+     "fillet": 0.004,
+     "color": "#2A2C30",
+     "role": "struct",
+     "exposed": false,
+     "mass": 1.6,
+     "material": "electronics"
+    },
+    {
+     "kind": "rbox",
+     "name": "chest light",
+     "c": [
+      0.10136968927453971,
+      0,
+      1.38
+     ],
+     "size": [
+      0.004,
+      0.04,
+      0.006
+     ],
+     "fillet": 0.0015,
+     "color": "#7C6FE6",
+     "role": "decal",
+     "exposed": false,
+     "material": "pa12"
+    },
+    {
+     "kind": "prism",
+     "name": "chest mark",
+     "x0": 0.10703463443111644,
+     "t": 0.004,
+     "pts": [
+      [
+       -0.017,
+       1.3448146666666667
+      ],
+      [
+       0.017,
+       1.3448146666666667
+      ],
+      [
+       0.0,
+       1.3153706666666667
+      ]
+     ],
+     "color": "#34373B",
+     "role": "decal",
+     "material": "pa12"
+    },
+    {
+     "kind": "revolve",
+     "name": "torso neck opening",
+     "axis": "z",
+     "c": [
+      -0.012,
+      0,
+      0
+     ],
+     "profile": [
+      [
+       1.4725,
+       0.0
+      ],
+      [
+       1.4727,
+       0.0386
+      ],
+      [
+       1.475,
+       0.0401
+      ],
+      [
+       1.48,
+       0.0425
+      ],
+      [
+       1.485,
+       0.0449
+      ],
+      [
+       1.49,
+       0.0472
+      ],
+      [
+       1.495,
+       0.0503
+      ],
+      [
+       1.5,
+       0.0539
+      ],
+      [
+       1.505,
+       0.0576
+      ],
+      [
+       1.5052,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "torso"
+     ]
+    },
+    {
+     "kind": "revolve",
+     "name": "L torso shoulder opening",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      1.39
+     ],
+     "profile": [
+      [
+       0.118,
+       0.0
+      ],
+      [
+       0.1182,
+       0.0615
+      ],
+      [
+       0.165,
+       0.0615
+      ],
+      [
+       0.1652,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "torso"
+     ]
+    },
+    {
+     "kind": "revolve",
+     "name": "R torso shoulder opening",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      1.39
+     ],
+     "profile": [
+      [
+       -0.1652,
+       0.0
+      ],
+      [
+       -0.165,
+       0.0615
+      ],
+      [
+       -0.1182,
+       0.0615
+      ],
+      [
+       -0.118,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "torso"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "waist_yaw flange",
+     "c": [
+      0,
+      0,
+      1.02
+     ],
+     "axis": "z",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "neck_yaw actuator (buy) RS00",
+     "c": [
+      -0.012,
+      0,
+      1.4205
+     ],
+     "axis": "z",
+     "r": 0.0285,
+     "h": 0.051,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_shoulder_pitch actuator (buy) RS04",
+     "c": [
+      0,
+      0.115,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_shoulder_pitch actuator (buy) RS04",
+     "c": [
+      0,
+      -0.115,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": "battery 13.1 kg (2.3 kWh, as Figure 03), compute, shoulder pitch and neck yaw actuators"
+  },
+  "neck_yaw_link": {
+   "name": "neck_yaw_link",
+   "budget": 0.45,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "neck pitch post",
+     "c": [
+      -0.012,
+      0.0,
+      1.46
+     ],
+     "size": [
+      0.02,
+      0.02,
+      0.019999999999999796
+     ],
+     "fillet": 0.003,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "neck_yaw flange",
+     "c": [
+      -0.012,
+      0,
+      1.4480000000000002
+     ],
+     "axis": "z",
+     "r": 0.0171,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "neck_pitch actuator (buy) RS00",
+     "c": [
+      -0.012,
+      0,
+      1.496
+     ],
+     "axis": "y",
+     "r": 0.0285,
+     "h": 0.051,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "head": {
+   "name": "head",
+   "budget": 1.95,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "head",
+     "sections": [
+      {
+       "z": 1.522,
+       "cx": 0.042499999999999996,
+       "cy": 0,
+       "a": 0.017499999999999998,
+       "b": 0.016,
+       "n": 2.1
+      },
+      {
+       "z": 1.535,
+       "cx": 0.037,
+       "cy": 0,
+       "a": 0.037,
+       "b": 0.032,
+       "n": 2.1
+      },
+      {
+       "z": 1.55,
+       "cx": 0.026500000000000003,
+       "cy": 0,
+       "a": 0.0565,
+       "b": 0.046,
+       "n": 2.1
+      },
+      {
+       "z": 1.57,
+       "cx": 0.015999999999999997,
+       "cy": 0,
+       "a": 0.074,
+       "b": 0.058,
+       "n": 2.1
+      },
+      {
+       "z": 1.6,
+       "cx": 0.008,
+       "cy": 0,
+       "a": 0.088,
+       "b": 0.067,
+       "n": 2.1
+      },
+      {
+       "z": 1.635,
+       "cx": 0.0050000000000000044,
+       "cy": 0,
+       "a": 0.095,
+       "b": 0.07,
+       "n": 2.1
+      },
+      {
+       "z": 1.665,
+       "cx": 0.0040000000000000036,
+       "cy": 0,
+       "a": 0.094,
+       "b": 0.069,
+       "n": 2.1
+      },
+      {
+       "z": 1.69,
+       "cx": 0.0024999999999999953,
+       "cy": 0,
+       "a": 0.08549999999999999,
+       "b": 0.062,
+       "n": 2.1
+      },
+      {
+       "z": 1.7080000000000002,
+       "cx": 0.0,
+       "cy": 0,
+       "a": 0.07,
+       "b": 0.05,
+       "n": 2.1
+      },
+      {
+       "z": 1.7200000000000002,
+       "cx": -0.0020000000000000018,
+       "cy": 0,
+       "a": 0.048,
+       "b": 0.034,
+       "n": 2.1
+      },
+      {
+       "z": 1.7265000000000001,
+       "cx": -0.002,
+       "cy": 0,
+       "a": 0.019999999999999997,
+       "b": 0.014,
+       "n": 2.1
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "visor",
+     "sections": [
+      {
+       "z": 1.522,
+       "cx": 0.042499999999999996,
+       "cy": 0,
+       "a": 0.019,
+       "b": 0.0175,
+       "n": 2.1
+      },
+      {
+       "z": 1.535,
+       "cx": 0.037,
+       "cy": 0,
+       "a": 0.0385,
+       "b": 0.0335,
+       "n": 2.1
+      },
+      {
+       "z": 1.55,
+       "cx": 0.026500000000000003,
+       "cy": 0,
+       "a": 0.058,
+       "b": 0.0475,
+       "n": 2.1
+      },
+      {
+       "z": 1.57,
+       "cx": 0.015999999999999997,
+       "cy": 0,
+       "a": 0.0755,
+       "b": 0.059500000000000004,
+       "n": 2.1
+      },
+      {
+       "z": 1.6,
+       "cx": 0.008,
+       "cy": 0,
+       "a": 0.0895,
+       "b": 0.0685,
+       "n": 2.1
+      },
+      {
+       "z": 1.635,
+       "cx": 0.0050000000000000044,
+       "cy": 0,
+       "a": 0.0965,
+       "b": 0.07150000000000001,
+       "n": 2.1
+      },
+      {
+       "z": 1.665,
+       "cx": 0.0040000000000000036,
+       "cy": 0,
+       "a": 0.0955,
+       "b": 0.07050000000000001,
+       "n": 2.1
+      },
+      {
+       "z": 1.69,
+       "cx": 0.0024999999999999953,
+       "cy": 0,
+       "a": 0.087,
+       "b": 0.0635,
+       "n": 2.1
+      },
+      {
+       "z": 1.7080000000000002,
+       "cx": 0.0,
+       "cy": 0,
+       "a": 0.07150000000000001,
+       "b": 0.051500000000000004,
+       "n": 2.1
+      },
+      {
+       "z": 1.7200000000000002,
+       "cx": -0.0020000000000000018,
+       "cy": 0,
+       "a": 0.0495,
+       "b": 0.035500000000000004,
+       "n": 2.1
+      },
+      {
+       "z": 1.7265000000000001,
+       "cx": -0.002,
+       "cy": 0,
+       "a": 0.0215,
+       "b": 0.0155,
+       "n": 2.1
+      }
+     ],
+     "color": "#08090B",
+     "role": "decal",
+     "open": [],
+     "clip": {
+      "p": [
+       0.0,
+       0,
+       1.53
+      ],
+      "n": [
+       0.915,
+       0,
+       0.404
+      ]
+     },
+     "material": "pc"
+    },
+    {
+     "kind": "cyl",
+     "name": "brow camera ring",
+     "c": [
+      0.0971169279854234,
+      0.0,
+      1.6647154516326848
+     ],
+     "axis": [
+      0.9929466727402542,
+      0.0,
+      0.11856181971468993
+     ],
+     "r": 0.0085,
+     "h": 0.006,
+     "color": "#2A2C30",
+     "role": "decal",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "brow camera lens",
+     "c": [
+      0.09801057999088962,
+      0.0,
+      1.664822157270428
+     ],
+     "axis": [
+      0.9929466727402542,
+      0.0,
+      0.11856181971468993
+     ],
+     "r": 0.00425,
+     "h": 0.006,
+     "color": "#0A1420",
+     "role": "decal",
+     "material": "pc"
+    },
+    {
+     "kind": "cyl",
+     "name": "chin camera ring",
+     "c": [
+      0.08095017735701418,
+      0.0,
+      1.5480365587985234
+     ],
+     "axis": [
+      0.9019217385289988,
+      0.0,
+      -0.43189949938478556
+     ],
+     "r": 0.0075,
+     "h": 0.006,
+     "color": "#2A2C30",
+     "role": "decal",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "chin camera lens",
+     "c": [
+      0.08176190692169027,
+      0.0,
+      1.547647849249077
+     ],
+     "axis": [
+      0.9019217385289988,
+      0.0,
+      -0.43189949938478556
+     ],
+     "r": 0.00375,
+     "h": 0.006,
+     "color": "#0A1420",
+     "role": "decal",
+     "material": "pc"
+    },
+    {
+     "kind": "prism",
+     "name": "face mark",
+     "x0": 0.09490694768148675,
+     "t": 0.004,
+     "pts": [
+      [
+       -0.015,
+       1.6136599999999999
+      ],
+      [
+       0.015,
+       1.6136599999999999
+      ],
+      [
+       0.0,
+       1.58768
+      ]
+     ],
+     "color": "#F4F6F8",
+     "role": "decal",
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "neck",
+     "sections": [
+      {
+       "z": 1.4725,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.03481019965469891,
+       "b": 0.03481019965469891,
+       "n": 2.0
+      },
+      {
+       "z": 1.478,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.03794733192202056,
+       "b": 0.03794733192202056,
+       "n": 2.0
+      },
+      {
+       "z": 1.484,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.04024922359499622,
+       "b": 0.04024922359499622,
+       "n": 2.0
+      },
+      {
+       "z": 1.49,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.041569219381653054,
+       "b": 0.041569219381653054,
+       "n": 2.0
+      },
+      {
+       "z": 1.496,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.042,
+       "b": 0.042,
+       "n": 2.0
+      },
+      {
+       "z": 1.511,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.042,
+       "b": 0.042,
+       "n": 2.0
+      },
+      {
+       "z": 1.53,
+       "cx": -0.012,
+       "cy": 0,
+       "a": 0.045,
+       "b": 0.047,
+       "n": 2.0
+      },
+      {
+       "z": 1.575,
+       "cx": -0.01,
+       "cy": 0,
+       "a": 0.05,
+       "b": 0.048,
+       "n": 2.0
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "head electronics",
+     "c": [
+      0.035,
+      0,
+      1.612
+     ],
+     "size": [
+      0.07,
+      0.08,
+      0.07
+     ],
+     "fillet": 0.006,
+     "color": "#2A2C30",
+     "role": "struct",
+     "exposed": false,
+     "mass": 0.3,
+     "material": "electronics"
+    },
+    {
+     "kind": "rbox",
+     "name": "head frame",
+     "c": [
+      -0.012,
+      0.033,
+      1.546
+     ],
+     "size": [
+      0.03,
+      0.006,
+      0.11
+     ],
+     "fillet": 0.002,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "neck_pitch flange",
+     "c": [
+      -0.012,
+      0.027499999999999997,
+      1.496
+     ],
+     "axis": "y",
+     "r": 0.0171,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    }
+   ],
+   "note": "cameras, mics"
+  },
+  "L_shoulder_pitch_link": {
+   "name": "L_shoulder_pitch_link",
+   "budget": 0.99,
+   "geoms": [
+    {
+     "kind": "revolve",
+     "name": "L shoulder cap",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      1.39
+     ],
+     "profile": [
+      [
+       0.15,
+       0.0
+      ],
+      [
+       0.1502,
+       0.054
+      ],
+      [
+       0.156,
+       0.0565
+      ],
+      [
+       0.172,
+       0.0575
+      ],
+      [
+       0.205,
+       0.0575
+      ],
+      [
+       0.215,
+       0.05662375826453062
+      ],
+      [
+       0.22499999999999998,
+       0.053909646632119564
+      ],
+      [
+       0.235,
+       0.04905354217587146
+      ],
+      [
+       0.245,
+       0.041306779104645766
+      ],
+      [
+       0.252,
+       0.03312476415010377
+      ],
+      [
+       0.257,
+       0.02454078238361606
+      ],
+      [
+       0.2605,
+       0.015033296378372911
+      ],
+      [
+       0.2625,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "L shoulder bracket",
+     "c": [
+      0,
+      0.155,
+      1.39
+     ],
+     "size": [
+      0.036,
+      0.018,
+      0.036
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L shoulder cap hole",
+     "c": [
+      -0.0575,
+      0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.016,
+     "h": 0.014,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L shoulder cap"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "L_shoulder_pitch flange",
+     "c": [
+      0,
+      0.14500000000000002,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_shoulder_roll actuator (buy) RS06",
+     "c": [
+      0,
+      0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_shoulder_pitch_link": {
+   "name": "R_shoulder_pitch_link",
+   "budget": 0.99,
+   "geoms": [
+    {
+     "kind": "revolve",
+     "name": "R shoulder cap",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      1.39
+     ],
+     "profile": [
+      [
+       -0.2625,
+       0.0
+      ],
+      [
+       -0.2605,
+       0.015033296378372911
+      ],
+      [
+       -0.257,
+       0.02454078238361606
+      ],
+      [
+       -0.252,
+       0.03312476415010377
+      ],
+      [
+       -0.245,
+       0.041306779104645766
+      ],
+      [
+       -0.235,
+       0.04905354217587146
+      ],
+      [
+       -0.22499999999999998,
+       0.053909646632119564
+      ],
+      [
+       -0.215,
+       0.05662375826453062
+      ],
+      [
+       -0.205,
+       0.0575
+      ],
+      [
+       -0.172,
+       0.0575
+      ],
+      [
+       -0.156,
+       0.0565
+      ],
+      [
+       -0.1502,
+       0.054
+      ],
+      [
+       -0.15,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "R shoulder bracket",
+     "c": [
+      0,
+      -0.155,
+      1.39
+     ],
+     "size": [
+      0.036,
+      0.018,
+      0.036
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R shoulder cap hole",
+     "c": [
+      -0.0575,
+      -0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.016,
+     "h": 0.014,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R shoulder cap"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R_shoulder_pitch flange",
+     "c": [
+      0,
+      -0.14500000000000002,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_shoulder_roll actuator (buy) RS06",
+     "c": [
+      0,
+      -0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_shoulder_roll_link": {
+   "name": "L_shoulder_roll_link",
+   "budget": 1.0,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L upper arm",
+     "sections": [
+      {
+       "z": 1.2759999999999998,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.053,
+       "b": 0.044,
+       "n": 2.2
+      },
+      {
+       "z": 1.315,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.055,
+       "b": 0.045,
+       "n": 2.2
+      },
+      {
+       "z": 1.355,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.0545,
+       "b": 0.047,
+       "n": 2.2
+      },
+      {
+       "z": 1.382,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.0505,
+       "b": 0.052,
+       "n": 2.3
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "ellipsoid",
+     "name": "L upper arm socket",
+     "c": [
+      0,
+      0.205,
+      1.39
+     ],
+     "r": [
+      0.0615,
+      0.0615,
+      0.0615
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "L upper arm"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "L upper arm socket in",
+     "c": [
+      0,
+      0.17,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.0615,
+     "h": 0.07,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L upper arm"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "L shoulder roll axle",
+     "c": [
+      -0.0465,
+      0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.011,
+     "h": 0.036,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L shoulder roll lug",
+     "c": [
+      -0.064,
+      0.205,
+      1.3704999999999998
+     ],
+     "size": [
+      0.006,
+      0.02,
+      0.065
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L shoulder roll step",
+     "c": [
+      -0.0555,
+      0.205,
+      1.3419999999999999
+     ],
+     "size": [
+      0.023,
+      0.02,
+      0.008
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L shoulder roll foot",
+     "c": [
+      -0.0435,
+      0.205,
+      1.3199999999999998
+     ],
+     "size": [
+      0.013,
+      0.02,
+      0.04
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_shoulder_roll flange",
+     "c": [
+      -0.0265,
+      0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.026399999999999996,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_shoulder_yaw actuator (buy) RS02",
+     "c": [
+      0,
+      0.205,
+      1.2999999999999998
+     ],
+     "axis": "z",
+     "r": 0.03925,
+     "h": 0.0455,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_shoulder_roll_link": {
+   "name": "R_shoulder_roll_link",
+   "budget": 1.0,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R upper arm",
+     "sections": [
+      {
+       "z": 1.2759999999999998,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.053,
+       "b": 0.044,
+       "n": 2.2
+      },
+      {
+       "z": 1.315,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.055,
+       "b": 0.045,
+       "n": 2.2
+      },
+      {
+       "z": 1.355,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.0545,
+       "b": 0.047,
+       "n": 2.2
+      },
+      {
+       "z": 1.382,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.0505,
+       "b": 0.052,
+       "n": 2.3
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "ellipsoid",
+     "name": "R upper arm socket",
+     "c": [
+      0,
+      -0.205,
+      1.39
+     ],
+     "r": [
+      0.0615,
+      0.0615,
+      0.0615
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "R upper arm"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R upper arm socket in",
+     "c": [
+      0,
+      -0.17,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.0615,
+     "h": 0.07,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R upper arm"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R shoulder roll axle",
+     "c": [
+      -0.0465,
+      -0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.011,
+     "h": 0.036,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R shoulder roll lug",
+     "c": [
+      -0.064,
+      -0.205,
+      1.3704999999999998
+     ],
+     "size": [
+      0.006,
+      0.02,
+      0.065
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R shoulder roll step",
+     "c": [
+      -0.0555,
+      -0.205,
+      1.3419999999999999
+     ],
+     "size": [
+      0.023,
+      0.02,
+      0.008
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R shoulder roll foot",
+     "c": [
+      -0.0435,
+      -0.205,
+      1.3199999999999998
+     ],
+     "size": [
+      0.013,
+      0.02,
+      0.04
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_shoulder_roll flange",
+     "c": [
+      -0.0265,
+      -0.205,
+      1.39
+     ],
+     "axis": "x",
+     "r": 0.026399999999999996,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_shoulder_yaw actuator (buy) RS02",
+     "c": [
+      0,
+      -0.205,
+      1.2999999999999998
+     ],
+     "axis": "z",
+     "r": 0.03925,
+     "h": 0.0455,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_shoulder_yaw_link": {
+   "name": "L_shoulder_yaw_link",
+   "budget": 1.05,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L upper arm lower",
+     "sections": [
+      {
+       "z": 1.216,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.05,
+       "b": 0.042,
+       "n": 2.2
+      },
+      {
+       "z": 1.24,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.053,
+       "b": 0.043,
+       "n": 2.2
+      },
+      {
+       "z": 1.27,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.053,
+       "b": 0.044,
+       "n": 2.2
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "L upper arm frame",
+     "c": [
+      0.0,
+      0.205,
+      1.2349999999999999
+     ],
+     "size": [
+      0.03,
+      0.03,
+      0.07999999999999985
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_shoulder_yaw flange",
+     "c": [
+      0,
+      0.205,
+      1.2752499999999998
+     ],
+     "axis": "z",
+     "r": 0.023549999999999998,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_elbow actuator (buy) RS06",
+     "c": [
+      0,
+      0.205,
+      1.155
+     ],
+     "axis": "y",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_shoulder_yaw_link": {
+   "name": "R_shoulder_yaw_link",
+   "budget": 1.05,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R upper arm lower",
+     "sections": [
+      {
+       "z": 1.216,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.05,
+       "b": 0.042,
+       "n": 2.2
+      },
+      {
+       "z": 1.24,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.053,
+       "b": 0.043,
+       "n": 2.2
+      },
+      {
+       "z": 1.27,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.053,
+       "b": 0.044,
+       "n": 2.2
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "R upper arm frame",
+     "c": [
+      0.0,
+      -0.205,
+      1.2349999999999999
+     ],
+     "size": [
+      0.03,
+      0.03,
+      0.07999999999999985
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_shoulder_yaw flange",
+     "c": [
+      0,
+      -0.205,
+      1.2752499999999998
+     ],
+     "axis": "z",
+     "r": 0.023549999999999998,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_elbow actuator (buy) RS06",
+     "c": [
+      0,
+      -0.205,
+      1.155
+     ],
+     "axis": "y",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_elbow_link": {
+   "name": "L_elbow_link",
+   "budget": 0.85,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L forearm",
+     "sections": [
+      {
+       "z": 1.036,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.045,
+       "b": 0.0425,
+       "n": 2.2
+      },
+      {
+       "z": 1.085,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.048,
+       "b": 0.043,
+       "n": 2.2
+      },
+      {
+       "z": 1.125,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.048,
+       "b": 0.043,
+       "n": 2.2
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "L forearm frame",
+     "c": [
+      0,
+      0.174,
+      1.12
+     ],
+     "size": [
+      0.04,
+      0.008,
+      0.1
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_elbow flange",
+     "c": [
+      0,
+      0.1785,
+      1.155
+     ],
+     "axis": "y",
+     "r": 0.026399999999999996,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_wrist_yaw actuator (buy) RS02",
+     "c": [
+      0,
+      0.205,
+      1.06
+     ],
+     "axis": "z",
+     "r": 0.03925,
+     "h": 0.0455,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_elbow_link": {
+   "name": "R_elbow_link",
+   "budget": 0.85,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R forearm",
+     "sections": [
+      {
+       "z": 1.036,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.045,
+       "b": 0.0425,
+       "n": 2.2
+      },
+      {
+       "z": 1.085,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.048,
+       "b": 0.043,
+       "n": 2.2
+      },
+      {
+       "z": 1.125,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.048,
+       "b": 0.043,
+       "n": 2.2
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "R forearm frame",
+     "c": [
+      0,
+      -0.174,
+      1.12
+     ],
+     "size": [
+      0.04,
+      0.008,
+      0.1
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_elbow flange",
+     "c": [
+      0,
+      -0.1785,
+      1.155
+     ],
+     "axis": "y",
+     "r": 0.026399999999999996,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_wrist_yaw actuator (buy) RS02",
+     "c": [
+      0,
+      -0.205,
+      1.06
+     ],
+     "axis": "z",
+     "r": 0.03925,
+     "h": 0.0455,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_wrist_yaw_link": {
+   "name": "L_wrist_yaw_link",
+   "budget": 0.6,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L forearm lower",
+     "sections": [
+      {
+       "z": 0.98,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.034,
+       "b": 0.032,
+       "n": 2.2
+      },
+      {
+       "z": 1.0,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.037,
+       "b": 0.034,
+       "n": 2.2
+      },
+      {
+       "z": 1.03,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.044,
+       "b": 0.041,
+       "n": 2.2
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "L forearm lower frame",
+     "c": [
+      0.0,
+      0.205,
+      1.00925
+     ],
+     "size": [
+      0.03,
+      0.03,
+      0.05449999999999999
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "L wrist cuff",
+     "sections": [
+      {
+       "z": 0.957,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.043,
+       "b": 0.043,
+       "n": 2.0
+      },
+      {
+       "z": 0.995,
+       "cx": 0,
+       "cy": 0.205,
+       "a": 0.043,
+       "b": 0.043,
+       "n": 2.0
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [
+      "bottom"
+     ],
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_wrist_yaw flange",
+     "c": [
+      0,
+      0.205,
+      1.03525
+     ],
+     "axis": "z",
+     "r": 0.023549999999999998,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_wrist_pitch actuator (buy) RS00",
+     "c": [
+      0,
+      0.205,
+      0.955
+     ],
+     "axis": "x",
+     "r": 0.0285,
+     "h": 0.051,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_wrist_yaw_link": {
+   "name": "R_wrist_yaw_link",
+   "budget": 0.6,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R forearm lower",
+     "sections": [
+      {
+       "z": 0.98,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.034,
+       "b": 0.032,
+       "n": 2.2
+      },
+      {
+       "z": 1.0,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.037,
+       "b": 0.034,
+       "n": 2.2
+      },
+      {
+       "z": 1.03,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.044,
+       "b": 0.041,
+       "n": 2.2
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "rbox",
+     "name": "R forearm lower frame",
+     "c": [
+      0.0,
+      -0.205,
+      1.00925
+     ],
+     "size": [
+      0.03,
+      0.03,
+      0.05449999999999999
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "R wrist cuff",
+     "sections": [
+      {
+       "z": 0.957,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.043,
+       "b": 0.043,
+       "n": 2.0
+      },
+      {
+       "z": 0.995,
+       "cx": 0,
+       "cy": -0.205,
+       "a": 0.043,
+       "b": 0.043,
+       "n": 2.0
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [
+      "bottom"
+     ],
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_wrist_yaw flange",
+     "c": [
+      0,
+      -0.205,
+      1.03525
+     ],
+     "axis": "z",
+     "r": 0.023549999999999998,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_wrist_pitch actuator (buy) RS00",
+     "c": [
+      0,
+      -0.205,
+      0.955
+     ],
+     "axis": "x",
+     "r": 0.0285,
+     "h": 0.051,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_wrist_pitch_link": {
+   "name": "L_wrist_pitch_link",
+   "budget": 0.45,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "L wrist cheek",
+     "c": [
+      0.0285,
+      0.205,
+      0.9275
+     ],
+     "size": [
+      0.006,
+      0.04,
+      0.055
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_wrist_pitch flange",
+     "c": [
+      0.027499999999999997,
+      0.205,
+      0.955
+     ],
+     "axis": "x",
+     "r": 0.0171,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_wrist_roll actuator (buy) RS00",
+     "c": [
+      0,
+      0.205,
+      0.895
+     ],
+     "axis": "y",
+     "r": 0.0285,
+     "h": 0.051,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_wrist_pitch_link": {
+   "name": "R_wrist_pitch_link",
+   "budget": 0.45,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "R wrist cheek",
+     "c": [
+      0.0285,
+      -0.205,
+      0.9275
+     ],
+     "size": [
+      0.006,
+      0.04,
+      0.055
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_wrist_pitch flange",
+     "c": [
+      0.027499999999999997,
+      -0.205,
+      0.955
+     ],
+     "axis": "x",
+     "r": 0.0171,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_wrist_roll actuator (buy) RS00",
+     "c": [
+      0,
+      -0.205,
+      0.895
+     ],
+     "axis": "y",
+     "r": 0.0285,
+     "h": 0.051,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_hand": {
+   "name": "L_hand",
+   "budget": 1.0,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "L palm",
+     "c": [
+      0,
+      0.19999999999999998,
+      0.8254999999999999
+     ],
+     "size": [
+      0.092,
+      0.06,
+      0.071
+     ],
+     "fillet": 0.018,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "exposed": false,
+     "mass": 0.85,
+     "material": "hand"
+    },
+    {
+     "kind": "rbox",
+     "name": "L hand bracket",
+     "c": [
+      0,
+      0.175,
+      0.87
+     ],
+     "size": [
+      0.02,
+      0.006,
+      0.042
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "L index",
+     "p0": [
+      0.033,
+      0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      0.033,
+      0.205,
+      0.74
+     ],
+     "r": 0.0105,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "L middle",
+     "p0": [
+      0.011,
+      0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      0.011,
+      0.205,
+      0.73
+     ],
+     "r": 0.0105,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "L ring",
+     "p0": [
+      -0.011,
+      0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      -0.011,
+      0.205,
+      0.735
+     ],
+     "r": 0.0105,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "L little",
+     "p0": [
+      -0.033,
+      0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      -0.033,
+      0.205,
+      0.75
+     ],
+     "r": 0.01,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "L thumb",
+     "p0": [
+      0.042,
+      0.19299999999999998,
+      0.855
+     ],
+     "p1": [
+      0.058,
+      0.173,
+      0.7979999999999999
+     ],
+     "r": 0.0115,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_wrist_roll flange",
+     "c": [
+      0,
+      0.1775,
+      0.895
+     ],
+     "axis": "y",
+     "r": 0.0171,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    }
+   ],
+   "note": "dexterous hand placeholder (about 1 kg)"
+  },
+  "R_hand": {
+   "name": "R_hand",
+   "budget": 1.0,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "R palm",
+     "c": [
+      0,
+      -0.19999999999999998,
+      0.8254999999999999
+     ],
+     "size": [
+      0.092,
+      0.06,
+      0.071
+     ],
+     "fillet": 0.018,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "exposed": false,
+     "mass": 0.85,
+     "material": "hand"
+    },
+    {
+     "kind": "rbox",
+     "name": "R hand bracket",
+     "c": [
+      0,
+      -0.175,
+      0.87
+     ],
+     "size": [
+      0.02,
+      0.006,
+      0.042
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "R index",
+     "p0": [
+      0.033,
+      -0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      0.033,
+      -0.205,
+      0.74
+     ],
+     "r": 0.0105,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "R middle",
+     "p0": [
+      0.011,
+      -0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      0.011,
+      -0.205,
+      0.73
+     ],
+     "r": 0.0105,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "R ring",
+     "p0": [
+      -0.011,
+      -0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      -0.011,
+      -0.205,
+      0.735
+     ],
+     "r": 0.0105,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "R little",
+     "p0": [
+      -0.033,
+      -0.205,
+      0.7949999999999999
+     ],
+     "p1": [
+      -0.033,
+      -0.205,
+      0.75
+     ],
+     "r": 0.01,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "capsule",
+     "name": "R thumb",
+     "p0": [
+      0.042,
+      -0.19299999999999998,
+      0.855
+     ],
+     "p1": [
+      0.058,
+      -0.173,
+      0.7979999999999999
+     ],
+     "r": 0.0115,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_wrist_roll flange",
+     "c": [
+      0,
+      -0.1775,
+      0.895
+     ],
+     "axis": "y",
+     "r": 0.0171,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    }
+   ],
+   "note": "dexterous hand placeholder (about 1 kg)"
+  },
+  "L_hip_pitch_link": {
+   "name": "L_hip_pitch_link",
+   "budget": 1.8,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L hip lobe",
+     "sections": [
+      {
+       "z": 0.8420000000000001,
+       "cx": -0.045,
+       "cy": 0.1025,
+       "a": 0.088,
+       "b": 0.048,
+       "n": 2.4
+      },
+      {
+       "z": 0.8600000000000001,
+       "cx": -0.04,
+       "cy": 0.1025,
+       "a": 0.097,
+       "b": 0.055,
+       "n": 2.6
+      },
+      {
+       "z": 0.895,
+       "cx": -0.033,
+       "cy": 0.1025,
+       "a": 0.103,
+       "b": 0.0575,
+       "n": 2.8
+      },
+      {
+       "z": 0.9650000000000001,
+       "cx": -0.033,
+       "cy": 0.1025,
+       "a": 0.103,
+       "b": 0.0575,
+       "n": 2.8
+      },
+      {
+       "z": 0.9950000000000001,
+       "cx": -0.03,
+       "cy": 0.1025,
+       "a": 0.088,
+       "b": 0.052,
+       "n": 2.6
+      },
+      {
+       "z": 1.01,
+       "cx": -0.025,
+       "cy": 0.1025,
+       "a": 0.055,
+       "b": 0.038,
+       "n": 2.4
+      }
+     ],
+     "color": "#08090B",
+     "role": "shell",
+     "open": [],
+     "clip": [
+      {
+       "p": [
+        0,
+        0.088,
+        0
+       ],
+       "n": [
+        0,
+        1,
+        0
+       ]
+      },
+      {
+       "p": [
+        0,
+        0,
+        0.8600000000000001
+       ],
+       "n": [
+        0,
+        0,
+        1
+       ]
+      },
+      {
+       "p": [
+        0,
+        0.12,
+        0.8600000000000001
+       ],
+       "n": [
+        0,
+        -0.04,
+        0.045
+       ]
+      }
+     ],
+     "material": "pc"
+    },
+    {
+     "kind": "cyl",
+     "name": "L hip lobe pitch opening",
+     "c": [
+      0,
+      0.1045,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.063,
+     "h": 0.053,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L hip lobe"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "L hip lobe roll opening",
+     "c": [
+      -0.1,
+      0.1,
+      0.93
+     ],
+     "axis": "x",
+     "r": 0.063,
+     "h": 0.062,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L hip lobe"
+     ]
+    },
+    {
+     "kind": "rbox",
+     "name": "L hip bracket",
+     "c": [
+      -0.0525,
+      0.138,
+      0.9740000000000001
+     ],
+     "size": [
+      0.115,
+      0.018,
+      0.028
+     ],
+     "fillet": 0.005,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_hip_pitch flange",
+     "c": [
+      0,
+      0.128,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_hip_roll actuator (buy) RS04",
+     "c": [
+      -0.1,
+      0.1,
+      0.93
+     ],
+     "axis": "x",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_hip_pitch_link": {
+   "name": "R_hip_pitch_link",
+   "budget": 1.8,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R hip lobe",
+     "sections": [
+      {
+       "z": 0.8420000000000001,
+       "cx": -0.045,
+       "cy": -0.1025,
+       "a": 0.088,
+       "b": 0.048,
+       "n": 2.4
+      },
+      {
+       "z": 0.8600000000000001,
+       "cx": -0.04,
+       "cy": -0.1025,
+       "a": 0.097,
+       "b": 0.055,
+       "n": 2.6
+      },
+      {
+       "z": 0.895,
+       "cx": -0.033,
+       "cy": -0.1025,
+       "a": 0.103,
+       "b": 0.0575,
+       "n": 2.8
+      },
+      {
+       "z": 0.9650000000000001,
+       "cx": -0.033,
+       "cy": -0.1025,
+       "a": 0.103,
+       "b": 0.0575,
+       "n": 2.8
+      },
+      {
+       "z": 0.9950000000000001,
+       "cx": -0.03,
+       "cy": -0.1025,
+       "a": 0.088,
+       "b": 0.052,
+       "n": 2.6
+      },
+      {
+       "z": 1.01,
+       "cx": -0.025,
+       "cy": -0.1025,
+       "a": 0.055,
+       "b": 0.038,
+       "n": 2.4
+      }
+     ],
+     "color": "#08090B",
+     "role": "shell",
+     "open": [],
+     "clip": [
+      {
+       "p": [
+        0,
+        -0.088,
+        0
+       ],
+       "n": [
+        0,
+        -1,
+        0
+       ]
+      },
+      {
+       "p": [
+        0,
+        0,
+        0.8600000000000001
+       ],
+       "n": [
+        0,
+        0,
+        1
+       ]
+      },
+      {
+       "p": [
+        0,
+        -0.12,
+        0.8600000000000001
+       ],
+       "n": [
+        0,
+        0.04,
+        0.045
+       ]
+      }
+     ],
+     "material": "pc"
+    },
+    {
+     "kind": "cyl",
+     "name": "R hip lobe pitch opening",
+     "c": [
+      0,
+      -0.1045,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.063,
+     "h": 0.053,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R hip lobe"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R hip lobe roll opening",
+     "c": [
+      -0.1,
+      -0.1,
+      0.93
+     ],
+     "axis": "x",
+     "r": 0.063,
+     "h": 0.062,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R hip lobe"
+     ]
+    },
+    {
+     "kind": "rbox",
+     "name": "R hip bracket",
+     "c": [
+      -0.0525,
+      -0.138,
+      0.9740000000000001
+     ],
+     "size": [
+      0.115,
+      0.018,
+      0.028
+     ],
+     "fillet": 0.005,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_hip_pitch flange",
+     "c": [
+      0,
+      -0.128,
+      0.93
+     ],
+     "axis": "y",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_hip_roll actuator (buy) RS04",
+     "c": [
+      -0.1,
+      -0.1,
+      0.93
+     ],
+     "axis": "x",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_hip_roll_link": {
+   "name": "L_hip_roll_link",
+   "budget": 1.3,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "L hip front plate",
+     "c": [
+      -0.0665,
+      0.1,
+      0.8775000000000001
+     ],
+     "size": [
+      0.007,
+      0.07,
+      0.065
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L hip bottom plate",
+     "c": [
+      -0.02,
+      0.1,
+      0.8500000000000001
+     ],
+     "size": [
+      0.1,
+      0.06,
+      0.012
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_hip_roll flange",
+     "c": [
+      -0.07,
+      0.1,
+      0.93
+     ],
+     "axis": "x",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_hip_yaw actuator (buy) RS03",
+     "c": [
+      0,
+      0.1,
+      0.8200000000000001
+     ],
+     "axis": "z",
+     "r": 0.053,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "R_hip_roll_link": {
+   "name": "R_hip_roll_link",
+   "budget": 1.3,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "R hip front plate",
+     "c": [
+      -0.0665,
+      -0.1,
+      0.8775000000000001
+     ],
+     "size": [
+      0.007,
+      0.07,
+      0.065
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R hip bottom plate",
+     "c": [
+      -0.02,
+      -0.1,
+      0.8500000000000001
+     ],
+     "size": [
+      0.1,
+      0.06,
+      0.012
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_hip_roll flange",
+     "c": [
+      -0.07,
+      -0.1,
+      0.93
+     ],
+     "axis": "x",
+     "r": 0.036,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_hip_yaw actuator (buy) RS03",
+     "c": [
+      0,
+      -0.1,
+      0.8200000000000001
+     ],
+     "axis": "z",
+     "r": 0.053,
+     "h": 0.056,
+     "color": "#1B1C1F",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": ""
+  },
+  "L_hip_yaw_link": {
+   "name": "L_hip_yaw_link",
+   "budget": 3.6,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L thigh",
+     "sections": [
+      {
+       "z": 0.5650000000000001,
+       "cx": 0.0,
+       "cy": 0.1,
+       "a": 0.066,
+       "b": 0.066,
+       "n": 2.3
+      },
+      {
+       "z": 0.635,
+       "cx": -0.003,
+       "cy": 0.1,
+       "a": 0.07,
+       "b": 0.068,
+       "n": 2.3
+      },
+      {
+       "z": 0.7250000000000001,
+       "cx": -0.008,
+       "cy": 0.1,
+       "a": 0.0775,
+       "b": 0.07,
+       "n": 2.4
+      },
+      {
+       "z": 0.78,
+       "cx": -0.024,
+       "cy": 0.1,
+       "a": 0.09,
+       "b": 0.07,
+       "n": 2.4
+      },
+      {
+       "z": 0.8350000000000001,
+       "cx": -0.036,
+       "cy": 0.1,
+       "a": 0.099,
+       "b": 0.07,
+       "n": 2.4
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -1.0,
+        0.0,
+        0.535
+       ],
+       "n": [
+        -0.0,
+        -0.0,
+        2.0
+       ]
+      },
+      {
+       "p": [
+        -0.03907311284892739,
+        0.0,
+        0.6270504853452441
+       ],
+       "n": [
+        0.09205048534524407,
+        -0.0,
+        0.03907311284892739
+       ]
+      }
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "L thigh knee socket",
+     "c": [
+      0,
+      0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.056,
+     "h": 0.075,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L thigh"
+     ]
+    },
+    {
+     "kind": "capsule",
+     "name": "L knee pushrod",
+     "p0": [
+      0.035,
+      0.1,
+      0.685
+     ],
+     "p1": [
+      0.035,
+      0.1,
+      0.597
+     ],
+     "r": 0.008,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L thigh frame",
+     "c": [
+      0.024,
+      0.1,
+      0.6875
+     ],
+     "size": [
+      0.024,
+      0.08,
+      0.20499999999999996
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L knee cheek in",
+     "c": [
+      0,
+      0.058,
+      0.55
+     ],
+     "size": [
+      0.04,
+      0.01,
+      0.09
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L knee cheek out",
+     "c": [
+      0,
+      0.14200000000000002,
+      0.55
+     ],
+     "size": [
+      0.04,
+      0.01,
+      0.09
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "L knee pad in",
+     "sections": [
+      {
+       "z": 0.47600000000000003,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.48100000000000004,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49000000000000005,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.505,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.525,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.05,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5650000000000001,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5850000000000001,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6000000000000001,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.609,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6140000000000001,
+       "cx": 0.0,
+       "cy": 0.038500000000000006,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [],
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "L knee pad in centre",
+     "sections": [
+      {
+       "z": 0.49325,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49700000000000005,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.50375,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.515,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.53,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.037500000000000006,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.56,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5750000000000001,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.58625,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5930000000000001,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.59675,
+       "cx": 0.0,
+       "cy": 0.037500000000000006,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "decal",
+     "open": [],
+     "material": "pc"
+    },
+    {
+     "kind": "loft",
+     "name": "L knee pad out",
+     "sections": [
+      {
+       "z": 0.47600000000000003,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.48100000000000004,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49000000000000005,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.505,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.525,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.05,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5650000000000001,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5850000000000001,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6000000000000001,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.609,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6140000000000001,
+       "cx": 0.0,
+       "cy": 0.1615,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [],
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "L knee pad out centre",
+     "sections": [
+      {
+       "z": 0.49325,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49700000000000005,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.50375,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.515,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.53,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.037500000000000006,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.56,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5750000000000001,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.58625,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5930000000000001,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.59675,
+       "cx": 0.0,
+       "cy": 0.1625,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "decal",
+     "open": [],
+     "material": "pc"
+    },
+    {
+     "kind": "rbox",
+     "name": "L knee pad mount in",
+     "c": [
+      0,
+      0.04900000000000001,
+      0.55
+     ],
+     "size": [
+      0.024,
+      0.01,
+      0.03
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L knee pad mount out",
+     "c": [
+      0,
+      0.151,
+      0.55
+     ],
+     "size": [
+      0.024,
+      0.01,
+      0.03
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_hip_yaw flange",
+     "c": [
+      0,
+      0.1,
+      0.79
+     ],
+     "axis": "z",
+     "r": 0.031799999999999995,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L_knee actuator (buy) RS04",
+     "c": [
+      0,
+      0.1,
+      0.72
+     ],
+     "axis": "y",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": "knee RS04 drives the shank through a 2:1 linkage"
+  },
+  "R_hip_yaw_link": {
+   "name": "R_hip_yaw_link",
+   "budget": 3.6,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R thigh",
+     "sections": [
+      {
+       "z": 0.5650000000000001,
+       "cx": 0.0,
+       "cy": -0.1,
+       "a": 0.066,
+       "b": 0.066,
+       "n": 2.3
+      },
+      {
+       "z": 0.635,
+       "cx": -0.003,
+       "cy": -0.1,
+       "a": 0.07,
+       "b": 0.068,
+       "n": 2.3
+      },
+      {
+       "z": 0.7250000000000001,
+       "cx": -0.008,
+       "cy": -0.1,
+       "a": 0.0775,
+       "b": 0.07,
+       "n": 2.4
+      },
+      {
+       "z": 0.78,
+       "cx": -0.024,
+       "cy": -0.1,
+       "a": 0.09,
+       "b": 0.07,
+       "n": 2.4
+      },
+      {
+       "z": 0.8350000000000001,
+       "cx": -0.036,
+       "cy": -0.1,
+       "a": 0.099,
+       "b": 0.07,
+       "n": 2.4
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -1.0,
+        -0.0,
+        0.535
+       ],
+       "n": [
+        -0.0,
+        0.0,
+        2.0
+       ]
+      },
+      {
+       "p": [
+        -0.03907311284892739,
+        -0.0,
+        0.6270504853452441
+       ],
+       "n": [
+        0.09205048534524407,
+        0.0,
+        0.03907311284892739
+       ]
+      }
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "R thigh knee socket",
+     "c": [
+      0,
+      -0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.056,
+     "h": 0.075,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R thigh"
+     ]
+    },
+    {
+     "kind": "capsule",
+     "name": "R knee pushrod",
+     "p0": [
+      0.035,
+      -0.1,
+      0.685
+     ],
+     "p1": [
+      0.035,
+      -0.1,
+      0.597
+     ],
+     "r": 0.008,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R thigh frame",
+     "c": [
+      0.024,
+      -0.1,
+      0.6875
+     ],
+     "size": [
+      0.024,
+      0.08,
+      0.20499999999999996
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R knee cheek in",
+     "c": [
+      0,
+      -0.058,
+      0.55
+     ],
+     "size": [
+      0.04,
+      0.01,
+      0.09
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R knee cheek out",
+     "c": [
+      0,
+      -0.14200000000000002,
+      0.55
+     ],
+     "size": [
+      0.04,
+      0.01,
+      0.09
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "R knee pad in",
+     "sections": [
+      {
+       "z": 0.47600000000000003,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.48100000000000004,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49000000000000005,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.505,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.525,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.05,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5650000000000001,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5850000000000001,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6000000000000001,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.609,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6140000000000001,
+       "cx": 0.0,
+       "cy": -0.038500000000000006,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [],
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "R knee pad in centre",
+     "sections": [
+      {
+       "z": 0.49325,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49700000000000005,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.50375,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.515,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.53,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.037500000000000006,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.56,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5750000000000001,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.58625,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5930000000000001,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.59675,
+       "cx": 0.0,
+       "cy": -0.037500000000000006,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "decal",
+     "open": [],
+     "material": "pc"
+    },
+    {
+     "kind": "loft",
+     "name": "R knee pad out",
+     "sections": [
+      {
+       "z": 0.47600000000000003,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.48100000000000004,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49000000000000005,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.505,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.525,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.05,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5650000000000001,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.04876143843796928,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5850000000000001,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.04344798404677283,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6000000000000001,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.03449279511972595,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.609,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.024078277312949512,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.6140000000000001,
+       "cx": 0.0,
+       "cy": -0.1615,
+       "a": 0.011278917443196737,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [],
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "R knee pad out centre",
+     "sections": [
+      {
+       "z": 0.49325,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.49700000000000005,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.50375,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.515,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.53,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.545,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.037500000000000006,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.56,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.03657107882847697,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5750000000000001,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.03258598803507962,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.58625,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.025869596339794465,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.5930000000000001,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.018058707984712135,
+       "b": 0.0075,
+       "n": 4.0
+      },
+      {
+       "z": 0.59675,
+       "cx": 0.0,
+       "cy": -0.1625,
+       "a": 0.008459188082397553,
+       "b": 0.0075,
+       "n": 4.0
+      }
+     ],
+     "color": "#08090B",
+     "role": "decal",
+     "open": [],
+     "material": "pc"
+    },
+    {
+     "kind": "rbox",
+     "name": "R knee pad mount in",
+     "c": [
+      0,
+      -0.04900000000000001,
+      0.55
+     ],
+     "size": [
+      0.024,
+      0.01,
+      0.03
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R knee pad mount out",
+     "c": [
+      0,
+      -0.151,
+      0.55
+     ],
+     "size": [
+      0.024,
+      0.01,
+      0.03
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_hip_yaw flange",
+     "c": [
+      0,
+      -0.1,
+      0.79
+     ],
+     "axis": "z",
+     "r": 0.031799999999999995,
+     "h": 0.006,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R_knee actuator (buy) RS04",
+     "c": [
+      0,
+      -0.1,
+      0.72
+     ],
+     "axis": "y",
+     "r": 0.06,
+     "h": 0.056,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    }
+   ],
+   "note": "knee RS04 drives the shank through a 2:1 linkage"
+  },
+  "L_knee_link": {
+   "name": "L_knee_link",
+   "budget": 2.08,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L shank",
+     "sections": [
+      {
+       "z": 0.13,
+       "cx": 0.0,
+       "cy": 0.1,
+       "a": 0.04,
+       "b": 0.042,
+       "n": 2.2
+      },
+      {
+       "z": 0.19996000000000003,
+       "cx": -0.006,
+       "cy": 0.1,
+       "a": 0.046,
+       "b": 0.044,
+       "n": 2.2
+      },
+      {
+       "z": 0.24880000000000002,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.05,
+       "b": 0.052,
+       "n": 2.4
+      },
+      {
+       "z": 0.29984,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.0525,
+       "b": 0.056,
+       "n": 2.5
+      },
+      {
+       "z": 0.3456,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.0525,
+       "b": 0.058,
+       "n": 2.5
+      },
+      {
+       "z": 0.394,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.0525,
+       "b": 0.06,
+       "n": 2.4
+      },
+      {
+       "z": 0.46,
+       "cx": -0.006,
+       "cy": 0.1,
+       "a": 0.058,
+       "b": 0.063,
+       "n": 2.3
+      },
+      {
+       "z": 0.5700000000000001,
+       "cx": 0.0,
+       "cy": 0.1,
+       "a": 0.064,
+       "b": 0.066,
+       "n": 2.3
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -0.04,
+        0.0,
+        0.201
+       ],
+       "n": [
+        0.05700000000000002,
+        -0.0,
+        0.08
+       ]
+      },
+      {
+       "p": [
+        -0.09945218953682733,
+        0.0,
+        0.5454528463267654
+       ],
+       "n": [
+        -0.020905692653530705,
+        0.0,
+        -0.19890437907365466
+       ]
+      },
+      {
+       "p": [
+        -0.04694715627858908,
+        0.0,
+        0.44670524071410733
+       ],
+       "n": [
+        0.0882947592858927,
+        0.0,
+        -0.04694715627858908
+       ]
+      }
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "L shank knee socket",
+     "c": [
+      0,
+      0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.056,
+     "h": 0.102,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L shank"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "L ankle collar",
+     "sections": [
+      {
+       "z": 0.11,
+       "cx": -0.004,
+       "cy": 0.1,
+       "a": 0.0395,
+       "b": 0.0465,
+       "n": 2.2
+      },
+      {
+       "z": 0.15,
+       "cx": -0.006,
+       "cy": 0.1,
+       "a": 0.0455,
+       "b": 0.047,
+       "n": 2.2
+      },
+      {
+       "z": 0.21,
+       "cx": -0.007,
+       "cy": 0.1,
+       "a": 0.052,
+       "b": 0.0505,
+       "n": 2.2
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -0.04,
+        0.0,
+        0.158
+       ],
+       "n": [
+        0.04000000000000001,
+        -0.0,
+        0.08
+       ]
+      },
+      {
+       "p": [
+        -0.04,
+        0.0,
+        0.203
+       ],
+       "n": [
+        -0.05700000000000002,
+        0.0,
+        -0.08
+       ]
+      }
+     ],
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "L ankle sock",
+     "sections": [
+      {
+       "z": 0.08,
+       "cx": -0.013,
+       "cy": 0.1,
+       "a": 0.048,
+       "b": 0.047,
+       "n": 2.2
+      },
+      {
+       "z": 0.105,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.0455,
+       "b": 0.046,
+       "n": 2.2
+      },
+      {
+       "z": 0.135,
+       "cx": -0.005,
+       "cy": 0.1,
+       "a": 0.041,
+       "b": 0.0445,
+       "n": 2.2
+      },
+      {
+       "z": 0.17,
+       "cx": -0.004,
+       "cy": 0.1,
+       "a": 0.0405,
+       "b": 0.0445,
+       "n": 2.2
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -0.1,
+        0.0,
+        0.121
+       ],
+       "n": [
+        0.03699999999999999,
+        -0.0,
+        0.16
+       ]
+      },
+      {
+       "p": [
+        -0.04,
+        0.0,
+        0.16
+       ],
+       "n": [
+        -0.04000000000000001,
+        0.0,
+        -0.08
+       ]
+      }
+     ],
+     "material": "tpu"
+    },
+    {
+     "kind": "revolve",
+     "name": "L shank pad recess in",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      0.535
+     ],
+     "profile": [
+      [
+       0.024800000000000003,
+       0.0
+      ],
+      [
+       0.02500000000000001,
+       0.086
+      ],
+      [
+       0.0488,
+       0.086
+      ],
+      [
+       0.04900000000000001,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "L shank"
+     ]
+    },
+    {
+     "kind": "revolve",
+     "name": "L shank pad recess out",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      0.535
+     ],
+     "profile": [
+      [
+       0.151,
+       0.0
+      ],
+      [
+       0.1512,
+       0.086
+      ],
+      [
+       0.175,
+       0.086
+      ],
+      [
+       0.17520000000000002,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "L shank"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "L knee drum",
+     "c": [
+      0,
+      0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.052,
+     "h": 0.07,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "L knee knuckle",
+     "c": [
+      0,
+      0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.03,
+     "h": 0.068,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L shank plate in",
+     "c": [
+      0.0,
+      0.07400000000000001,
+      0.3275
+     ],
+     "size": [
+      0.04,
+      0.004,
+      0.395
+     ],
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L shank plate out",
+     "c": [
+      0.0,
+      0.126,
+      0.3275
+     ],
+     "size": [
+      0.04,
+      0.004,
+      0.395
+     ],
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L ankle actuator A (buy) RS06",
+     "c": [
+      -0.01,
+      0.1,
+      0.394
+     ],
+     "axis": "y",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "L ankle actuator B (buy) RS06",
+     "c": [
+      -0.01,
+      0.1,
+      0.29984
+     ],
+     "axis": "y",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle crank out",
+     "c": [
+      -0.0175,
+      0.1315,
+      0.394
+     ],
+     "size": [
+      0.031,
+      0.006,
+      0.016
+     ],
+     "fillet": 0.003,
+     "color": "#3A3D42",
+     "role": "linkage",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "L ankle rod out",
+     "p0": [
+      -0.025,
+      0.13,
+      0.394
+     ],
+     "p1": [
+      -0.025,
+      0.13,
+      0.065
+     ],
+     "r": 0.005,
+     "color": "#9EA3A8",
+     "role": "linkage",
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle crank in",
+     "c": [
+      -0.0175,
+      0.0685,
+      0.29984
+     ],
+     "size": [
+      0.031,
+      0.006,
+      0.016
+     ],
+     "fillet": 0.003,
+     "color": "#3A3D42",
+     "role": "linkage",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "L ankle rod in",
+     "p0": [
+      -0.025,
+      0.07,
+      0.29984
+     ],
+     "p1": [
+      -0.025,
+      0.07,
+      0.065
+     ],
+     "r": 0.005,
+     "color": "#9EA3A8",
+     "role": "linkage",
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle fork cheek in",
+     "c": [
+      0,
+      0.067,
+      0.11000000000000001
+     ],
+     "size": [
+      0.032,
+      0.006,
+      0.07
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle fork cheek out",
+     "c": [
+      0,
+      0.133,
+      0.11000000000000001
+     ],
+     "size": [
+      0.032,
+      0.006,
+      0.07
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle fork bridge",
+     "c": [
+      0,
+      0.1,
+      0.14200000000000002
+     ],
+     "size": [
+      0.032,
+      0.072,
+      0.012
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    }
+   ],
+   "note": "two RS06 drive the ankle through cranks and rods (parallel ankle)"
+  },
+  "R_knee_link": {
+   "name": "R_knee_link",
+   "budget": 2.08,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R shank",
+     "sections": [
+      {
+       "z": 0.13,
+       "cx": 0.0,
+       "cy": -0.1,
+       "a": 0.04,
+       "b": 0.042,
+       "n": 2.2
+      },
+      {
+       "z": 0.19996000000000003,
+       "cx": -0.006,
+       "cy": -0.1,
+       "a": 0.046,
+       "b": 0.044,
+       "n": 2.2
+      },
+      {
+       "z": 0.24880000000000002,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.05,
+       "b": 0.052,
+       "n": 2.4
+      },
+      {
+       "z": 0.29984,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.0525,
+       "b": 0.056,
+       "n": 2.5
+      },
+      {
+       "z": 0.3456,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.0525,
+       "b": 0.058,
+       "n": 2.5
+      },
+      {
+       "z": 0.394,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.0525,
+       "b": 0.06,
+       "n": 2.4
+      },
+      {
+       "z": 0.46,
+       "cx": -0.006,
+       "cy": -0.1,
+       "a": 0.058,
+       "b": 0.063,
+       "n": 2.3
+      },
+      {
+       "z": 0.5700000000000001,
+       "cx": 0.0,
+       "cy": -0.1,
+       "a": 0.064,
+       "b": 0.066,
+       "n": 2.3
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -0.04,
+        -0.0,
+        0.201
+       ],
+       "n": [
+        0.05700000000000002,
+        0.0,
+        0.08
+       ]
+      },
+      {
+       "p": [
+        -0.09945218953682733,
+        -0.0,
+        0.5454528463267654
+       ],
+       "n": [
+        -0.020905692653530705,
+        -0.0,
+        -0.19890437907365466
+       ]
+      },
+      {
+       "p": [
+        -0.04694715627858908,
+        -0.0,
+        0.44670524071410733
+       ],
+       "n": [
+        0.0882947592858927,
+        -0.0,
+        -0.04694715627858908
+       ]
+      }
+     ],
+     "material": "knit_pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "R shank knee socket",
+     "c": [
+      0,
+      -0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.056,
+     "h": 0.102,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R shank"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "R ankle collar",
+     "sections": [
+      {
+       "z": 0.11,
+       "cx": -0.004,
+       "cy": -0.1,
+       "a": 0.0395,
+       "b": 0.0465,
+       "n": 2.2
+      },
+      {
+       "z": 0.15,
+       "cx": -0.006,
+       "cy": -0.1,
+       "a": 0.0455,
+       "b": 0.047,
+       "n": 2.2
+      },
+      {
+       "z": 0.21,
+       "cx": -0.007,
+       "cy": -0.1,
+       "a": 0.052,
+       "b": 0.0505,
+       "n": 2.2
+      }
+     ],
+     "color": "#1B1C1F",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -0.04,
+        -0.0,
+        0.158
+       ],
+       "n": [
+        0.04000000000000001,
+        0.0,
+        0.08
+       ]
+      },
+      {
+       "p": [
+        -0.04,
+        -0.0,
+        0.203
+       ],
+       "n": [
+        -0.05700000000000002,
+        -0.0,
+        -0.08
+       ]
+      }
+     ],
+     "material": "pa12"
+    },
+    {
+     "kind": "loft",
+     "name": "R ankle sock",
+     "sections": [
+      {
+       "z": 0.08,
+       "cx": -0.013,
+       "cy": -0.1,
+       "a": 0.048,
+       "b": 0.047,
+       "n": 2.2
+      },
+      {
+       "z": 0.105,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.0455,
+       "b": 0.046,
+       "n": 2.2
+      },
+      {
+       "z": 0.135,
+       "cx": -0.005,
+       "cy": -0.1,
+       "a": 0.041,
+       "b": 0.0445,
+       "n": 2.2
+      },
+      {
+       "z": 0.17,
+       "cx": -0.004,
+       "cy": -0.1,
+       "a": 0.0405,
+       "b": 0.0445,
+       "n": 2.2
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "shell",
+     "open": [
+      "top",
+      "bottom"
+     ],
+     "clip": [
+      {
+       "p": [
+        -0.1,
+        -0.0,
+        0.121
+       ],
+       "n": [
+        0.03699999999999999,
+        0.0,
+        0.16
+       ]
+      },
+      {
+       "p": [
+        -0.04,
+        -0.0,
+        0.16
+       ],
+       "n": [
+        -0.04000000000000001,
+        -0.0,
+        -0.08
+       ]
+      }
+     ],
+     "material": "tpu"
+    },
+    {
+     "kind": "revolve",
+     "name": "R shank pad recess in",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      0.535
+     ],
+     "profile": [
+      [
+       -0.04900000000000001,
+       0.0
+      ],
+      [
+       -0.0488,
+       0.086
+      ],
+      [
+       -0.02500000000000001,
+       0.086
+      ],
+      [
+       -0.024800000000000003,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "R shank"
+     ]
+    },
+    {
+     "kind": "revolve",
+     "name": "R shank pad recess out",
+     "axis": "y",
+     "c": [
+      0,
+      0,
+      0.535
+     ],
+     "profile": [
+      [
+       -0.17520000000000002,
+       0.0
+      ],
+      [
+       -0.175,
+       0.086
+      ],
+      [
+       -0.1512,
+       0.086
+      ],
+      [
+       -0.151,
+       0.0
+      ]
+     ],
+     "color": "#BCC0C4",
+     "role": "cut",
+     "targets": [
+      "R shank"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R knee drum",
+     "c": [
+      0,
+      -0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.052,
+     "h": 0.07,
+     "color": "#1B1C1F",
+     "role": "shell",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "R knee knuckle",
+     "c": [
+      0,
+      -0.1,
+      0.535
+     ],
+     "axis": "y",
+     "r": 0.03,
+     "h": 0.068,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R shank plate in",
+     "c": [
+      0.0,
+      -0.07400000000000001,
+      0.3275
+     ],
+     "size": [
+      0.04,
+      0.004,
+      0.395
+     ],
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R shank plate out",
+     "c": [
+      0.0,
+      -0.126,
+      0.3275
+     ],
+     "size": [
+      0.04,
+      0.004,
+      0.395
+     ],
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R ankle actuator A (buy) RS06",
+     "c": [
+      -0.01,
+      -0.1,
+      0.394
+     ],
+     "axis": "y",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "R ankle actuator B (buy) RS06",
+     "c": [
+      -0.01,
+      -0.1,
+      0.29984
+     ],
+     "axis": "y",
+     "r": 0.044,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle crank out",
+     "c": [
+      -0.0175,
+      -0.1315,
+      0.394
+     ],
+     "size": [
+      0.031,
+      0.006,
+      0.016
+     ],
+     "fillet": 0.003,
+     "color": "#3A3D42",
+     "role": "linkage",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "R ankle rod out",
+     "p0": [
+      -0.025,
+      -0.13,
+      0.394
+     ],
+     "p1": [
+      -0.025,
+      -0.13,
+      0.065
+     ],
+     "r": 0.005,
+     "color": "#9EA3A8",
+     "role": "linkage",
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle crank in",
+     "c": [
+      -0.0175,
+      -0.0685,
+      0.29984
+     ],
+     "size": [
+      0.031,
+      0.006,
+      0.016
+     ],
+     "fillet": 0.003,
+     "color": "#3A3D42",
+     "role": "linkage",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "R ankle rod in",
+     "p0": [
+      -0.025,
+      -0.07,
+      0.29984
+     ],
+     "p1": [
+      -0.025,
+      -0.07,
+      0.065
+     ],
+     "r": 0.005,
+     "color": "#9EA3A8",
+     "role": "linkage",
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle fork cheek in",
+     "c": [
+      0,
+      -0.067,
+      0.11000000000000001
+     ],
+     "size": [
+      0.032,
+      0.006,
+      0.07
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle fork cheek out",
+     "c": [
+      0,
+      -0.133,
+      0.11000000000000001
+     ],
+     "size": [
+      0.032,
+      0.006,
+      0.07
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle fork bridge",
+     "c": [
+      0,
+      -0.1,
+      0.14200000000000002
+     ],
+     "size": [
+      0.032,
+      0.072,
+      0.012
+     ],
+     "fillet": 0.003,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    }
+   ],
+   "note": "two RS06 drive the ankle through cranks and rods (parallel ankle)"
+  },
+  "L_ankle_pitch_link": {
+   "name": "L_ankle_pitch_link",
+   "budget": 0.25,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "L ankle cross",
+     "c": [
+      0,
+      0.1,
+      0.085
+     ],
+     "size": [
+      0.028,
+      0.058,
+      0.026
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    }
+   ],
+   "note": ""
+  },
+  "R_ankle_pitch_link": {
+   "name": "R_ankle_pitch_link",
+   "budget": 0.25,
+   "geoms": [
+    {
+     "kind": "rbox",
+     "name": "R ankle cross",
+     "c": [
+      0,
+      -0.1,
+      0.085
+     ],
+     "size": [
+      0.028,
+      0.058,
+      0.026
+     ],
+     "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    }
+   ],
+   "note": ""
+  },
+  "L_foot": {
+   "name": "L_foot",
+   "budget": 1.1,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "L sole",
+     "sections": [
+      {
+       "z": 0.0,
+       "cx": 0.04,
+       "cy": 0.1,
+       "a": 0.12,
+       "b": 0.05,
+       "n": 2.6
+      },
+      {
+       "z": 0.005,
+       "cx": 0.0475,
+       "cy": 0.1,
+       "a": 0.1325,
+       "b": 0.0545,
+       "n": 2.65
+      },
+      {
+       "z": 0.012,
+       "cx": 0.0545,
+       "cy": 0.1,
+       "a": 0.1415,
+       "b": 0.057,
+       "n": 2.7
+      },
+      {
+       "z": 0.02,
+       "cx": 0.0565,
+       "cy": 0.1,
+       "a": 0.144,
+       "b": 0.0575,
+       "n": 2.75
+      },
+      {
+       "z": 0.03,
+       "cx": 0.058,
+       "cy": 0.1,
+       "a": 0.1435,
+       "b": 0.0575,
+       "n": 2.8
+      }
+     ],
+     "color": "#2B2B2E",
+     "role": "shell",
+     "open": [],
+     "contact": {
+      "c": [
+       0.04,
+       0.1,
+       0.015
+      ],
+      "size": [
+       0.24,
+       0.1,
+       0.03
+      ]
+     },
+     "material": "tpu"
+    },
+    {
+     "kind": "rbox",
+     "name": "L foot plate",
+     "c": [
+      0.055,
+      0.1,
+      0.017
+     ],
+     "size": [
+      0.21,
+      0.07,
+      0.016
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "add_mass": 0.3,
+     "add_what": "electronics",
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe",
+     "sections": [
+      {
+       "z": 0.022,
+       "cx": 0.056,
+       "cy": 0.1,
+       "a": 0.14,
+       "b": 0.055,
+       "n": 2.45
+      },
+      {
+       "z": 0.036,
+       "cx": 0.0525,
+       "cy": 0.1,
+       "a": 0.1395,
+       "b": 0.056,
+       "n": 2.4
+      },
+      {
+       "z": 0.048,
+       "cx": 0.046,
+       "cy": 0.1,
+       "a": 0.133,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.058,
+       "cx": 0.0345,
+       "cy": 0.1,
+       "a": 0.1215,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.067,
+       "cx": 0.0195,
+       "cy": 0.1,
+       "a": 0.1065,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.075,
+       "cx": 0.003,
+       "cy": 0.1,
+       "a": 0.09,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.081,
+       "cx": -0.0115,
+       "cy": 0.1,
+       "a": 0.0755,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.1,
+       "cx": -0.0145,
+       "cy": 0.1,
+       "a": 0.0705,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.145,
+       "cx": -0.017,
+       "cy": 0.1,
+       "a": 0.064,
+       "b": 0.0555,
+       "n": 2.3
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "shell",
+     "open": [
+      "top"
+     ],
+     "clip": [
+      {
+       "p": [
+        0.058,
+        0.0,
+        0.0
+       ],
+       "n": [
+        1.0,
+        0.0,
+        0.0
+       ]
+      }
+     ],
+     "material": "tpu"
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe heel",
+     "sections": [
+      {
+       "z": 0.022,
+       "cx": 0.056,
+       "cy": 0.1,
+       "a": 0.14,
+       "b": 0.055,
+       "n": 2.45
+      },
+      {
+       "z": 0.036,
+       "cx": 0.0525,
+       "cy": 0.1,
+       "a": 0.1395,
+       "b": 0.056,
+       "n": 2.4
+      },
+      {
+       "z": 0.048,
+       "cx": 0.046,
+       "cy": 0.1,
+       "a": 0.133,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.058,
+       "cx": 0.0345,
+       "cy": 0.1,
+       "a": 0.1215,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.067,
+       "cx": 0.0195,
+       "cy": 0.1,
+       "a": 0.1065,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.075,
+       "cx": 0.003,
+       "cy": 0.1,
+       "a": 0.09,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.081,
+       "cx": -0.0115,
+       "cy": 0.1,
+       "a": 0.0755,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.1,
+       "cx": -0.0145,
+       "cy": 0.1,
+       "a": 0.0705,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.145,
+       "cx": -0.017,
+       "cy": 0.1,
+       "a": 0.064,
+       "b": 0.0555,
+       "n": 2.3
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "shell",
+     "open": [
+      "top"
+     ],
+     "clip": [
+      {
+       "p": [
+        0.062,
+        0.0,
+        0.0
+       ],
+       "n": [
+        -1.0,
+        0.0,
+        0.0
+       ]
+      },
+      {
+       "p": [
+        -0.1,
+        0.0,
+        0.125
+       ],
+       "n": [
+        -0.037000000000000005,
+        0.0,
+        -0.16
+       ],
+       "r": 0.008
+      }
+     ],
+     "material": "tpu"
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe midsole",
+     "sections": [
+      {
+       "z": 0.022,
+       "cx": 0.056,
+       "cy": 0.1,
+       "a": 0.14120000000000002,
+       "b": 0.0562,
+       "n": 2.45
+      },
+      {
+       "z": 0.036,
+       "cx": 0.0525,
+       "cy": 0.1,
+       "a": 0.14070000000000002,
+       "b": 0.0572,
+       "n": 2.4
+      },
+      {
+       "z": 0.048,
+       "cx": 0.046,
+       "cy": 0.1,
+       "a": 0.1342,
+       "b": 0.0572,
+       "n": 2.35
+      },
+      {
+       "z": 0.058,
+       "cx": 0.0345,
+       "cy": 0.1,
+       "a": 0.1227,
+       "b": 0.0572,
+       "n": 2.3
+      },
+      {
+       "z": 0.067,
+       "cx": 0.0195,
+       "cy": 0.1,
+       "a": 0.1077,
+       "b": 0.0572,
+       "n": 2.3
+      },
+      {
+       "z": 0.075,
+       "cx": 0.003,
+       "cy": 0.1,
+       "a": 0.0912,
+       "b": 0.0572,
+       "n": 2.35
+      },
+      {
+       "z": 0.081,
+       "cx": -0.0115,
+       "cy": 0.1,
+       "a": 0.0767,
+       "b": 0.0572,
+       "n": 2.35
+      },
+      {
+       "z": 0.1,
+       "cx": -0.0145,
+       "cy": 0.1,
+       "a": 0.0717,
+       "b": 0.0572,
+       "n": 2.3
+      }
+     ],
+     "color": "#2B2B2E",
+     "role": "decal",
+     "open": [],
+     "clip": {
+      "p": [
+       -0.09,
+       0.0,
+       0.082
+      ],
+      "n": [
+       -0.034,
+       0.0,
+       -0.21
+      ]
+     },
+     "material": "eva"
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe window out",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": 0.1615,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": 0.1615,
+       "a": 0.011,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": 0.1615,
+       "a": 0.0239,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": 0.1615,
+       "a": 0.0399,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": 0.1615,
+       "a": 0.0551,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": 0.1615,
+       "a": 0.0576,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": 0.1615,
+       "a": 0.0514,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": 0.1615,
+       "a": 0.036,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": 0.1615,
+       "a": 0.0197,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": 0.1615,
+       "a": 0.0087,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": 0.1615,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "L shoe",
+      "L shoe heel"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe window in",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": 0.038500000000000006,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": 0.038500000000000006,
+       "a": 0.011,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": 0.038500000000000006,
+       "a": 0.0239,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": 0.038500000000000006,
+       "a": 0.0399,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": 0.038500000000000006,
+       "a": 0.0551,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": 0.038500000000000006,
+       "a": 0.0576,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": 0.038500000000000006,
+       "a": 0.0514,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": 0.038500000000000006,
+       "a": 0.036,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": 0.038500000000000006,
+       "a": 0.0197,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": 0.038500000000000006,
+       "a": 0.0087,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": 0.038500000000000006,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "L shoe",
+      "L shoe heel"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe window out rim",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": 0.1605,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": 0.1605,
+       "a": 0.0115,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": 0.1605,
+       "a": 0.0244,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": 0.1605,
+       "a": 0.0404,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": 0.1605,
+       "a": 0.055600000000000004,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": 0.1605,
+       "a": 0.0581,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": 0.1605,
+       "a": 0.0519,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": 0.1605,
+       "a": 0.0365,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": 0.1605,
+       "a": 0.0202,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": 0.1605,
+       "a": 0.0092,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": 0.1605,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "L shoe midsole"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "L shoe window in rim",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": 0.03950000000000001,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": 0.03950000000000001,
+       "a": 0.0115,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": 0.03950000000000001,
+       "a": 0.0244,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": 0.03950000000000001,
+       "a": 0.0404,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": 0.03950000000000001,
+       "a": 0.055600000000000004,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": 0.03950000000000001,
+       "a": 0.0581,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": 0.03950000000000001,
+       "a": 0.0519,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": 0.03950000000000001,
+       "a": 0.0365,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": 0.03950000000000001,
+       "a": 0.0202,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": 0.03950000000000001,
+       "a": 0.0092,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": 0.03950000000000001,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "L shoe midsole"
+     ]
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle clevis front",
+     "c": [
+      0.02,
+      0.1,
+      0.06
+     ],
+     "size": [
+      0.006,
+      0.04,
+      0.08
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle clevis back",
+     "c": [
+      -0.02,
+      0.1,
+      0.06
+     ],
+     "size": [
+      0.006,
+      0.04,
+      0.08
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle rod mount out",
+     "c": [
+      -0.025,
+      0.13,
+      0.0435
+     ],
+     "size": [
+      0.014,
+      0.008,
+      0.043000000000000003
+     ],
+     "fillet": 0.003,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle rod mount in",
+     "c": [
+      -0.025,
+      0.07,
+      0.0435
+     ],
+     "size": [
+      0.014,
+      0.008,
+      0.043000000000000003
+     ],
+     "fillet": 0.003,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    }
+   ],
+   "note": ""
+  },
+  "R_foot": {
+   "name": "R_foot",
+   "budget": 1.1,
+   "geoms": [
+    {
+     "kind": "loft",
+     "name": "R sole",
+     "sections": [
+      {
+       "z": 0.0,
+       "cx": 0.04,
+       "cy": -0.1,
+       "a": 0.12,
+       "b": 0.05,
+       "n": 2.6
+      },
+      {
+       "z": 0.005,
+       "cx": 0.0475,
+       "cy": -0.1,
+       "a": 0.1325,
+       "b": 0.0545,
+       "n": 2.65
+      },
+      {
+       "z": 0.012,
+       "cx": 0.0545,
+       "cy": -0.1,
+       "a": 0.1415,
+       "b": 0.057,
+       "n": 2.7
+      },
+      {
+       "z": 0.02,
+       "cx": 0.0565,
+       "cy": -0.1,
+       "a": 0.144,
+       "b": 0.0575,
+       "n": 2.75
+      },
+      {
+       "z": 0.03,
+       "cx": 0.058,
+       "cy": -0.1,
+       "a": 0.1435,
+       "b": 0.0575,
+       "n": 2.8
+      }
+     ],
+     "color": "#2B2B2E",
+     "role": "shell",
+     "open": [],
+     "contact": {
+      "c": [
+       0.04,
+       -0.1,
+       0.015
+      ],
+      "size": [
+       0.24,
+       0.1,
+       0.03
+      ]
+     },
+     "material": "tpu"
+    },
+    {
+     "kind": "rbox",
+     "name": "R foot plate",
+     "c": [
+      0.055,
+      -0.1,
+      0.017
+     ],
+     "size": [
+      0.21,
+      0.07,
+      0.016
+     ],
+     "fillet": 0.004,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "add_mass": 0.3,
+     "add_what": "electronics",
+     "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe",
+     "sections": [
+      {
+       "z": 0.022,
+       "cx": 0.056,
+       "cy": -0.1,
+       "a": 0.14,
+       "b": 0.055,
+       "n": 2.45
+      },
+      {
+       "z": 0.036,
+       "cx": 0.0525,
+       "cy": -0.1,
+       "a": 0.1395,
+       "b": 0.056,
+       "n": 2.4
+      },
+      {
+       "z": 0.048,
+       "cx": 0.046,
+       "cy": -0.1,
+       "a": 0.133,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.058,
+       "cx": 0.0345,
+       "cy": -0.1,
+       "a": 0.1215,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.067,
+       "cx": 0.0195,
+       "cy": -0.1,
+       "a": 0.1065,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.075,
+       "cx": 0.003,
+       "cy": -0.1,
+       "a": 0.09,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.081,
+       "cx": -0.0115,
+       "cy": -0.1,
+       "a": 0.0755,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.1,
+       "cx": -0.0145,
+       "cy": -0.1,
+       "a": 0.0705,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.145,
+       "cx": -0.017,
+       "cy": -0.1,
+       "a": 0.064,
+       "b": 0.0555,
+       "n": 2.3
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "shell",
+     "open": [
+      "top"
+     ],
+     "clip": [
+      {
+       "p": [
+        0.058,
+        -0.0,
+        0.0
+       ],
+       "n": [
+        1.0,
+        -0.0,
+        0.0
+       ]
+      }
+     ],
+     "material": "tpu"
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe heel",
+     "sections": [
+      {
+       "z": 0.022,
+       "cx": 0.056,
+       "cy": -0.1,
+       "a": 0.14,
+       "b": 0.055,
+       "n": 2.45
+      },
+      {
+       "z": 0.036,
+       "cx": 0.0525,
+       "cy": -0.1,
+       "a": 0.1395,
+       "b": 0.056,
+       "n": 2.4
+      },
+      {
+       "z": 0.048,
+       "cx": 0.046,
+       "cy": -0.1,
+       "a": 0.133,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.058,
+       "cx": 0.0345,
+       "cy": -0.1,
+       "a": 0.1215,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.067,
+       "cx": 0.0195,
+       "cy": -0.1,
+       "a": 0.1065,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.075,
+       "cx": 0.003,
+       "cy": -0.1,
+       "a": 0.09,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.081,
+       "cx": -0.0115,
+       "cy": -0.1,
+       "a": 0.0755,
+       "b": 0.056,
+       "n": 2.35
+      },
+      {
+       "z": 0.1,
+       "cx": -0.0145,
+       "cy": -0.1,
+       "a": 0.0705,
+       "b": 0.056,
+       "n": 2.3
+      },
+      {
+       "z": 0.145,
+       "cx": -0.017,
+       "cy": -0.1,
+       "a": 0.064,
+       "b": 0.0555,
+       "n": 2.3
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "shell",
+     "open": [
+      "top"
+     ],
+     "clip": [
+      {
+       "p": [
+        0.062,
+        -0.0,
+        0.0
+       ],
+       "n": [
+        -1.0,
+        -0.0,
+        0.0
+       ]
+      },
+      {
+       "p": [
+        -0.1,
+        -0.0,
+        0.125
+       ],
+       "n": [
+        -0.037000000000000005,
+        -0.0,
+        -0.16
+       ],
+       "r": 0.008
+      }
+     ],
+     "material": "tpu"
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe midsole",
+     "sections": [
+      {
+       "z": 0.022,
+       "cx": 0.056,
+       "cy": -0.1,
+       "a": 0.14120000000000002,
+       "b": 0.0562,
+       "n": 2.45
+      },
+      {
+       "z": 0.036,
+       "cx": 0.0525,
+       "cy": -0.1,
+       "a": 0.14070000000000002,
+       "b": 0.0572,
+       "n": 2.4
+      },
+      {
+       "z": 0.048,
+       "cx": 0.046,
+       "cy": -0.1,
+       "a": 0.1342,
+       "b": 0.0572,
+       "n": 2.35
+      },
+      {
+       "z": 0.058,
+       "cx": 0.0345,
+       "cy": -0.1,
+       "a": 0.1227,
+       "b": 0.0572,
+       "n": 2.3
+      },
+      {
+       "z": 0.067,
+       "cx": 0.0195,
+       "cy": -0.1,
+       "a": 0.1077,
+       "b": 0.0572,
+       "n": 2.3
+      },
+      {
+       "z": 0.075,
+       "cx": 0.003,
+       "cy": -0.1,
+       "a": 0.0912,
+       "b": 0.0572,
+       "n": 2.35
+      },
+      {
+       "z": 0.081,
+       "cx": -0.0115,
+       "cy": -0.1,
+       "a": 0.0767,
+       "b": 0.0572,
+       "n": 2.35
+      },
+      {
+       "z": 0.1,
+       "cx": -0.0145,
+       "cy": -0.1,
+       "a": 0.0717,
+       "b": 0.0572,
+       "n": 2.3
+      }
+     ],
+     "color": "#2B2B2E",
+     "role": "decal",
+     "open": [],
+     "clip": {
+      "p": [
+       -0.09,
+       -0.0,
+       0.082
+      ],
+      "n": [
+       -0.034,
+       -0.0,
+       -0.21
+      ]
+     },
+     "material": "eva"
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe window out",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": -0.1615,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": -0.1615,
+       "a": 0.011,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": -0.1615,
+       "a": 0.0239,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": -0.1615,
+       "a": 0.0399,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": -0.1615,
+       "a": 0.0551,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": -0.1615,
+       "a": 0.0576,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": -0.1615,
+       "a": 0.0514,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": -0.1615,
+       "a": 0.036,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": -0.1615,
+       "a": 0.0197,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": -0.1615,
+       "a": 0.0087,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": -0.1615,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "R shoe",
+      "R shoe heel"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe window in",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": -0.038500000000000006,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": -0.038500000000000006,
+       "a": 0.011,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": -0.038500000000000006,
+       "a": 0.0239,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": -0.038500000000000006,
+       "a": 0.0399,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": -0.038500000000000006,
+       "a": 0.0551,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": -0.038500000000000006,
+       "a": 0.0576,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": -0.038500000000000006,
+       "a": 0.0514,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": -0.038500000000000006,
+       "a": 0.036,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": -0.038500000000000006,
+       "a": 0.0197,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": -0.038500000000000006,
+       "a": 0.0087,
+       "b": 0.0195,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": -0.038500000000000006,
+       "a": 0.0038,
+       "b": 0.0195,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "R shoe",
+      "R shoe heel"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe window out rim",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": -0.1605,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": -0.1605,
+       "a": 0.0115,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": -0.1605,
+       "a": 0.0244,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": -0.1605,
+       "a": 0.0404,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": -0.1605,
+       "a": 0.055600000000000004,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": -0.1605,
+       "a": 0.0581,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": -0.1605,
+       "a": 0.0519,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": -0.1605,
+       "a": 0.0365,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": -0.1605,
+       "a": 0.0202,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": -0.1605,
+       "a": 0.0092,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": -0.1605,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "R shoe midsole"
+     ]
+    },
+    {
+     "kind": "loft",
+     "name": "R shoe window in rim",
+     "sections": [
+      {
+       "z": 0.0305,
+       "cx": 0.0643,
+       "cy": -0.03950000000000001,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.032,
+       "cx": 0.06,
+       "cy": -0.03950000000000001,
+       "a": 0.0115,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.035,
+       "cx": 0.0498,
+       "cy": -0.03950000000000001,
+       "a": 0.0244,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.039,
+       "cx": 0.035,
+       "cy": -0.03950000000000001,
+       "a": 0.0404,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.043,
+       "cx": 0.0194,
+       "cy": -0.03950000000000001,
+       "a": 0.055600000000000004,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.047,
+       "cx": 0.0146,
+       "cy": -0.03950000000000001,
+       "a": 0.0581,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.051,
+       "cx": 0.0066,
+       "cy": -0.03950000000000001,
+       "a": 0.0519,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.055,
+       "cx": -0.0088,
+       "cy": -0.03950000000000001,
+       "a": 0.0365,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.059,
+       "cx": -0.0233,
+       "cy": -0.03950000000000001,
+       "a": 0.0202,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0615,
+       "cx": -0.0315,
+       "cy": -0.03950000000000001,
+       "a": 0.0092,
+       "b": 0.0205,
+       "n": 6.0
+      },
+      {
+       "z": 0.0625,
+       "cx": -0.0343,
+       "cy": -0.03950000000000001,
+       "a": 0.0043,
+       "b": 0.0205,
+       "n": 6.0
+      }
+     ],
+     "color": "#EDEDED",
+     "role": "cut",
+     "open": [],
+     "targets": [
+      "R shoe midsole"
+     ]
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle clevis front",
+     "c": [
+      0.02,
+      -0.1,
+      0.06
+     ],
+     "size": [
+      0.006,
+      0.04,
+      0.08
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle clevis back",
+     "c": [
+      -0.02,
+      -0.1,
+      0.06
+     ],
+     "size": [
+      0.006,
+      0.04,
+      0.08
+     ],
+     "fillet": 0.002,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle rod mount out",
+     "c": [
+      -0.025,
+      -0.13,
+      0.0435
+     ],
+     "size": [
+      0.014,
+      0.008,
+      0.043000000000000003
+     ],
+     "fillet": 0.003,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle rod mount in",
+     "c": [
+      -0.025,
+      -0.07,
+      0.0435
+     ],
+     "size": [
+      0.014,
+      0.008,
+      0.043000000000000003
+     ],
+     "fillet": 0.003,
+     "color": "#9EA3A8",
+     "role": "struct",
+     "exposed": false,
+     "material": "al7075"
+    }
+   ],
+   "note": ""
+  }
+ },
+ "joints": [
+  {
+   "name": "waist_yaw",
+   "parent": "pelvis",
+   "child": "torso",
+   "origin": [
+    0,
+    0,
+    0.99
+   ],
+   "axis": "z",
+   "lower": -2.6,
+   "upper": 2.6,
+   "act": "RS04",
+   "act_c": [
+    0,
+    0,
+    0.99
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "neck_yaw",
+   "parent": "torso",
+   "child": "neck_yaw_link",
+   "origin": [
+    -0.012,
+    0,
+    1.4205
+   ],
+   "axis": "z",
+   "lower": -1.4,
+   "upper": 1.4,
+   "act": "RS00",
+   "act_c": [
+    -0.012,
+    0,
+    1.4205
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": false,
+   "capacity": {
+    "model": "RS00",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "neck_pitch",
+   "parent": "neck_yaw_link",
+   "child": "head",
+   "origin": [
+    -0.012,
+    0,
+    1.496
+   ],
+   "axis": "y",
+   "lower": -0.4,
+   "upper": 0.45,
+   "act": "RS00",
+   "act_c": [
+    -0.012,
+    0,
+    1.496
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": false,
+   "capacity": {
+    "model": "RS00",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_shoulder_pitch",
+   "parent": "torso",
+   "child": "L_shoulder_pitch_link",
+   "origin": [
+    0,
+    0.115,
+    1.39
+   ],
+   "axis": "y",
+   "lower": -3.0,
+   "upper": 1.0,
+   "act": "RS04",
+   "act_c": [
+    0,
+    0.115,
+    1.39
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_shoulder_pitch",
+   "parent": "torso",
+   "child": "R_shoulder_pitch_link",
+   "origin": [
+    0,
+    -0.115,
+    1.39
+   ],
+   "axis": "y",
+   "lower": -3.0,
+   "upper": 1.0,
+   "act": "RS04",
+   "act_c": [
+    0,
+    -0.115,
+    1.39
+   ],
+   "out": -1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_shoulder_roll",
+   "parent": "L_shoulder_pitch_link",
+   "child": "L_shoulder_roll_link",
+   "origin": [
+    0,
+    0.205,
+    1.39
+   ],
+   "axis": "x",
+   "lower": -0.05,
+   "upper": 2.6,
+   "act": "RS06",
+   "act_c": [
+    0,
+    0.205,
+    1.39
+   ],
+   "out": -1,
+   "exposed": false,
+   "remote": false,
+   "capacity": {
+    "model": "RS06",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_shoulder_roll",
+   "parent": "R_shoulder_pitch_link",
+   "child": "R_shoulder_roll_link",
+   "origin": [
+    0,
+    -0.205,
+    1.39
+   ],
+   "axis": "x",
+   "lower": -2.6,
+   "upper": 0.05,
+   "act": "RS06",
+   "act_c": [
+    0,
+    -0.205,
+    1.39
+   ],
+   "out": -1,
+   "exposed": false,
+   "remote": false,
+   "capacity": {
+    "model": "RS06",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_shoulder_yaw",
+   "parent": "L_shoulder_roll_link",
+   "child": "L_shoulder_yaw_link",
+   "origin": [
+    0,
+    0.205,
+    1.27
+   ],
+   "axis": "z",
+   "lower": -2.6,
+   "upper": 2.6,
+   "act": "RS02",
+   "act_c": [
+    0,
+    0.205,
+    1.2999999999999998
+   ],
+   "out": -1,
+   "exposed": "flange",
+   "remote": false,
+   "capacity": {
+    "model": "RS02",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_shoulder_yaw",
+   "parent": "R_shoulder_roll_link",
+   "child": "R_shoulder_yaw_link",
+   "origin": [
+    0,
+    -0.205,
+    1.27
+   ],
+   "axis": "z",
+   "lower": -2.6,
+   "upper": 2.6,
+   "act": "RS02",
+   "act_c": [
+    0,
+    -0.205,
+    1.2999999999999998
+   ],
+   "out": -1,
+   "exposed": "flange",
+   "remote": false,
+   "capacity": {
+    "model": "RS02",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_elbow",
+   "parent": "L_shoulder_yaw_link",
+   "child": "L_elbow_link",
+   "origin": [
+    0,
+    0.205,
+    1.155
+   ],
+   "axis": "y",
+   "lower": -1.9,
+   "upper": 0.0,
+   "act": "RS06",
+   "act_c": [
+    0,
+    0.205,
+    1.155
+   ],
+   "out": -1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS06",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_elbow",
+   "parent": "R_shoulder_yaw_link",
+   "child": "R_elbow_link",
+   "origin": [
+    0,
+    -0.205,
+    1.155
+   ],
+   "axis": "y",
+   "lower": -1.9,
+   "upper": 0.0,
+   "act": "RS06",
+   "act_c": [
+    0,
+    -0.205,
+    1.155
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS06",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_wrist_yaw",
+   "parent": "L_elbow_link",
+   "child": "L_wrist_yaw_link",
+   "origin": [
+    0,
+    0.205,
+    1.03
+   ],
+   "axis": "z",
+   "lower": -2.6,
+   "upper": 2.6,
+   "act": "RS02",
+   "act_c": [
+    0,
+    0.205,
+    1.06
+   ],
+   "out": -1,
+   "exposed": "flange",
+   "remote": false,
+   "capacity": {
+    "model": "RS02",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_wrist_yaw",
+   "parent": "R_elbow_link",
+   "child": "R_wrist_yaw_link",
+   "origin": [
+    0,
+    -0.205,
+    1.03
+   ],
+   "axis": "z",
+   "lower": -2.6,
+   "upper": 2.6,
+   "act": "RS02",
+   "act_c": [
+    0,
+    -0.205,
+    1.06
+   ],
+   "out": -1,
+   "exposed": "flange",
+   "remote": false,
+   "capacity": {
+    "model": "RS02",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_wrist_pitch",
+   "parent": "L_wrist_yaw_link",
+   "child": "L_wrist_pitch_link",
+   "origin": [
+    0,
+    0.205,
+    0.955
+   ],
+   "axis": "x",
+   "lower": -0.9,
+   "upper": 0.9,
+   "act": "RS00",
+   "act_c": [
+    0,
+    0.205,
+    0.955
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS00",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_wrist_pitch",
+   "parent": "R_wrist_yaw_link",
+   "child": "R_wrist_pitch_link",
+   "origin": [
+    0,
+    -0.205,
+    0.955
+   ],
+   "axis": "x",
+   "lower": -0.9,
+   "upper": 0.9,
+   "act": "RS00",
+   "act_c": [
+    0,
+    -0.205,
+    0.955
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS00",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_wrist_roll",
+   "parent": "L_wrist_pitch_link",
+   "child": "L_hand",
+   "origin": [
+    0,
+    0.205,
+    0.895
+   ],
+   "axis": "y",
+   "lower": -0.6,
+   "upper": 0.6,
+   "act": "RS00",
+   "act_c": [
+    0,
+    0.205,
+    0.895
+   ],
+   "out": -1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS00",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_wrist_roll",
+   "parent": "R_wrist_pitch_link",
+   "child": "R_hand",
+   "origin": [
+    0,
+    -0.205,
+    0.895
+   ],
+   "axis": "y",
+   "lower": -0.6,
+   "upper": 0.6,
+   "act": "RS00",
+   "act_c": [
+    0,
+    -0.205,
+    0.895
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS00",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_hip_pitch",
+   "parent": "pelvis",
+   "child": "L_hip_pitch_link",
+   "origin": [
+    0,
+    0.1,
+    0.93
+   ],
+   "axis": "y",
+   "lower": -1.65,
+   "upper": 0.24,
+   "act": "RS04",
+   "act_c": [
+    0,
+    0.098,
+    0.93
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_hip_pitch",
+   "parent": "pelvis",
+   "child": "R_hip_pitch_link",
+   "origin": [
+    0,
+    -0.1,
+    0.93
+   ],
+   "axis": "y",
+   "lower": -1.65,
+   "upper": 0.24,
+   "act": "RS04",
+   "act_c": [
+    0,
+    -0.098,
+    0.93
+   ],
+   "out": -1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_hip_roll",
+   "parent": "L_hip_pitch_link",
+   "child": "L_hip_roll_link",
+   "origin": [
+    0,
+    0.1,
+    0.93
+   ],
+   "axis": "x",
+   "lower": -0.35,
+   "upper": 0.6,
+   "act": "RS04",
+   "act_c": [
+    -0.1,
+    0.1,
+    0.93
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_hip_roll",
+   "parent": "R_hip_pitch_link",
+   "child": "R_hip_roll_link",
+   "origin": [
+    0,
+    -0.1,
+    0.93
+   ],
+   "axis": "x",
+   "lower": -0.6,
+   "upper": 0.35,
+   "act": "RS04",
+   "act_c": [
+    -0.1,
+    -0.1,
+    0.93
+   ],
+   "out": 1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_hip_yaw",
+   "parent": "L_hip_roll_link",
+   "child": "L_hip_yaw_link",
+   "origin": [
+    0,
+    0.1,
+    0.8200000000000001
+   ],
+   "axis": "z",
+   "lower": -1.2,
+   "upper": 1.2,
+   "act": "RS03",
+   "act_c": [
+    0,
+    0.1,
+    0.8200000000000001
+   ],
+   "out": -1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS03",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_hip_yaw",
+   "parent": "R_hip_roll_link",
+   "child": "R_hip_yaw_link",
+   "origin": [
+    0,
+    -0.1,
+    0.8200000000000001
+   ],
+   "axis": "z",
+   "lower": -1.2,
+   "upper": 1.2,
+   "act": "RS03",
+   "act_c": [
+    0,
+    -0.1,
+    0.8200000000000001
+   ],
+   "out": -1,
+   "exposed": true,
+   "remote": false,
+   "capacity": {
+    "model": "RS03",
+    "count": 1,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_knee",
+   "parent": "L_hip_yaw_link",
+   "child": "L_knee_link",
+   "origin": [
+    0,
+    0.1,
+    0.535
+   ],
+   "axis": "y",
+   "lower": 0.0,
+   "upper": 2.15,
+   "act": "RS04",
+   "act_c": [
+    0,
+    0.1,
+    0.72
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": true,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 2.0
+   }
+  },
+  {
+   "name": "R_knee",
+   "parent": "R_hip_yaw_link",
+   "child": "R_knee_link",
+   "origin": [
+    0,
+    -0.1,
+    0.535
+   ],
+   "axis": "y",
+   "lower": 0.0,
+   "upper": 2.15,
+   "act": "RS04",
+   "act_c": [
+    0,
+    -0.1,
+    0.72
+   ],
+   "out": -1,
+   "exposed": false,
+   "remote": true,
+   "capacity": {
+    "model": "RS04",
+    "count": 1,
+    "ratio": 2.0
+   }
+  },
+  {
+   "name": "L_ankle_pitch",
+   "parent": "L_knee_link",
+   "child": "L_ankle_pitch_link",
+   "origin": [
+    0,
+    0.1,
+    0.085
+   ],
+   "axis": "y",
+   "lower": -0.8,
+   "upper": 0.55,
+   "act": null,
+   "act_c": [
+    0,
+    0.1,
+    0.085
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": true,
+   "capacity": {
+    "model": "RS06",
+    "count": 2,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "R_ankle_pitch",
+   "parent": "R_knee_link",
+   "child": "R_ankle_pitch_link",
+   "origin": [
+    0,
+    -0.1,
+    0.085
+   ],
+   "axis": "y",
+   "lower": -0.8,
+   "upper": 0.55,
+   "act": null,
+   "act_c": [
+    0,
+    -0.1,
+    0.085
+   ],
+   "out": -1,
+   "exposed": false,
+   "remote": true,
+   "capacity": {
+    "model": "RS06",
+    "count": 2,
+    "ratio": 1.0
+   }
+  },
+  {
+   "name": "L_ankle_roll",
+   "parent": "L_ankle_pitch_link",
+   "child": "L_foot",
+   "origin": [
+    0,
+    0.1,
+    0.085
+   ],
+   "axis": "x",
+   "lower": -0.3,
+   "upper": 0.3,
+   "act": null,
+   "act_c": [
+    0,
+    0.1,
+    0.085
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": true,
+   "capacity": {
+    "model": "RS06",
+    "count": 2,
+    "ratio": 0.6
+   }
+  },
+  {
+   "name": "R_ankle_roll",
+   "parent": "R_ankle_pitch_link",
+   "child": "R_foot",
+   "origin": [
+    0,
+    -0.1,
+    0.085
+   ],
+   "axis": "x",
+   "lower": -0.3,
+   "upper": 0.3,
+   "act": null,
+   "act_c": [
+    0,
+    -0.1,
+    0.085
+   ],
+   "out": 1,
+   "exposed": false,
+   "remote": true,
+   "capacity": {
+    "model": "RS06",
+    "count": 2,
+    "ratio": 0.6
+   }
+  }
+ ],
+ "root": "pelvis"
+}

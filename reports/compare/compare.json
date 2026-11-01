@@ -1,0 +1,170 @@
+[
+ {
+  "view": "side",
+  "item": "head top",
+  "figure": 1.7016029411764708,
+  "replica": 1.7238427787934187
+ },
+ {
+  "view": "side",
+  "item": "chin",
+  "figure": 1.5206488970588237,
+  "replica": 1.4807367458866547
+ },
+ {
+  "view": "side",
+  "item": "head height",
+  "figure": 0.18412867647058825,
+  "replica": 0.24626325411334551
+ },
+ {
+  "view": "side",
+  "item": "head width (view)",
+  "figure": 0.18095404411764707,
+  "replica": 0.19574771480804387
+ },
+ {
+  "view": "side",
+  "item": "black hips top",
+  "figure": 1.0920735294117647,
+  "replica": 1.3070895795246802
+ },
+ {
+  "view": "side",
+  "item": "black hips bottom",
+  "figure": 0.7238161764705883,
+  "replica": 0.6409159049360147
+ },
+ {
+  "view": "side",
+  "item": "elbow",
+  "figure": 1.1598174232736576,
+  "replica": 1.2707815356489947
+ },
+ {
+  "view": "side",
+  "item": "fingertips",
+  "figure": 0.6952444852941178,
+  "replica": 0.6409159049360147
+ },
+ {
+  "view": "side",
+  "item": "hand top",
+  "figure": 1.0920735294117647,
+  "replica": 1.3070895795246802
+ },
+ {
+  "view": "side",
+  "item": "kneecap",
+  "figure": 0.5615053625609335,
+  "replica": 0.5274298867637357
+ },
+ {
+  "view": "side",
+  "item": "width at chest (1.30)",
+  "figure": 0.23492279411764708,
+  "replica": 0.23047714808043876
+ },
+ {
+  "view": "side",
+  "item": "width at waist (1.05)",
+  "figure": 0.20317647058823532,
+  "replica": 0.214691042047532
+ },
+ {
+  "view": "side",
+  "item": "width at hips (0.90)",
+  "figure": 0.29206617647058825,
+  "replica": 0.2273199268738574
+ },
+ {
+  "view": "side",
+  "item": "width at thigh (0.70)",
+  "figure": 0.27936764705882355,
+  "replica": 0.14523217550274223
+ },
+ {
+  "view": "side",
+  "item": "width at calf (0.30)",
+  "figure": 0.22222426470588236,
+  "replica": 0.1199744058500914
+ },
+ {
+  "view": "34",
+  "item": "head top",
+  "figure": 1.7043189493433397,
+  "replica": 1.7238713768115943
+ },
+ {
+  "view": "34",
+  "item": "chin",
+  "figure": 1.5261106941838651,
+  "replica": 1.4767101449275364
+ },
+ {
+  "view": "34",
+  "item": "head height",
+  "figure": 0.18144840525328332,
+  "replica": 0.2502898550724638
+ },
+ {
+  "view": "34",
+  "item": "head width (view)",
+  "figure": 0.16524765478424017,
+  "replica": 0.16894565217391308
+ },
+ {
+  "view": "34",
+  "item": "black hips top",
+  "figure": 1.085450281425891,
+  "replica": 1.154461956521739
+ },
+ {
+  "view": "34",
+  "item": "black hips bottom",
+  "figure": 0.70959287054409,
+  "replica": 0.28157608695652175
+ },
+ {
+  "view": "34",
+  "item": "elbow",
+  "figure": 1.2313727386814217,
+  "replica": 1.2166342200373166
+ },
+ {
+  "view": "34",
+  "item": "kneecap",
+  "figure": 0.5552276503454393,
+  "replica": 0.5301992922931059
+ },
+ {
+  "view": "34",
+  "item": "width at chest (1.30)",
+  "figure": 0.28189305816135085,
+  "replica": 0.4161068840579711
+ },
+ {
+  "view": "34",
+  "item": "width at waist (1.05)",
+  "figure": 0.2916135084427768,
+  "replica": 0.3942065217391305
+ },
+ {
+  "view": "34",
+  "item": "width at hips (0.90)",
+  "figure": 0.2916135084427768,
+  "replica": 0.3973351449275363
+ },
+ {
+  "view": "34",
+  "item": "width at thigh (0.70)",
+  "figure": 0.24949155722326455,
+  "replica": 0.3723061594202899
+ },
+ {
+  "view": "34",
+  "item": "width at calf (0.30)",
+  "figure": 0.2624521575984991,
+  "replica": 0.26280434782608697
+ }
+]

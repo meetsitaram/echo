@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+
+# Figure 03 reference frames (from figure.ai's reveal video) and the side-by-side panels made with them:
+# kept locally for tools/compare.py, not ours to publish
+reports/compare/figure_*
+reports/compare/compare_*.png
+reports/compare/detail_*.png
+
+# PICO captures and their retargeted takes (they hold the operator's skeleton), and the movies that show it
+reports/motion/
+
+# generated: the web viewer's model and motion, and Fusion's raw STL export (make_robot_files.py reads it)
+reports/web/
+urdf/meshes/fusion/

@@ -1,0 +1,1466 @@
+[
+ {
+  "group": "targets",
+  "item": "height",
+  "status": "PASS",
+  "detail": "1.727 m (Figure 03: 1.727 m, +/- 0.010)"
+ },
+ {
+  "group": "targets",
+  "item": "chin_z",
+  "status": "PASS",
+  "detail": "1.522 (photo 1.522 +/- 0.02)"
+ },
+ {
+  "group": "targets",
+  "item": "shoulder_top_z",
+  "status": "PASS",
+  "detail": "1.447 (photo 1.445 +/- 0.025)"
+ },
+ {
+  "group": "targets",
+  "item": "elbow_z",
+  "status": "PASS",
+  "detail": "1.155 (photo 1.156 +/- 0.025)"
+ },
+ {
+  "group": "targets",
+  "item": "wrist_z",
+  "status": "PASS",
+  "detail": "0.955 (photo 0.955 +/- 0.03)"
+ },
+ {
+  "group": "targets",
+  "item": "fingertip_z",
+  "status": "PASS",
+  "detail": "0.720 (photo 0.71 +/- 0.03)"
+ },
+ {
+  "group": "targets",
+  "item": "knee_z",
+  "status": "PASS",
+  "detail": "0.535 (photo 0.54 +/- 0.03)"
+ },
+ {
+  "group": "targets",
+  "item": "pelvis_band_top_z",
+  "status": "PASS",
+  "detail": "1.085 (photo 1.085 +/- 0.02)"
+ },
+ {
+  "group": "targets",
+  "item": "hips_black_bottom_z",
+  "status": "PASS",
+  "detail": "0.860 (photo 0.86 +/- 0.03)"
+ },
+ {
+  "group": "targets",
+  "item": "head_height_m",
+  "status": "PASS",
+  "detail": "0.205 (photo 0.205 +/- 0.015)"
+ },
+ {
+  "group": "targets",
+  "item": "head_depth_m",
+  "status": "PASS",
+  "detail": "0.190 (photo 0.183 +/- 0.015)"
+ },
+ {
+  "group": "targets",
+  "item": "head_width_m",
+  "status": "PASS",
+  "detail": "0.140 (photo 0.138 +/- 0.012)"
+ },
+ {
+  "group": "targets",
+  "item": "chest_depth_m",
+  "status": "PASS",
+  "detail": "0.231 (photo 0.235 +/- 0.025)"
+ },
+ {
+  "group": "targets",
+  "item": "bideltoid_width_m",
+  "status": "PASS",
+  "detail": "0.525 (photo 0.51 +/- 0.04)"
+ },
+ {
+  "group": "targets",
+  "item": "foot_length_m",
+  "status": "PASS",
+  "detail": "0.289 (photo 0.28 +/- 0.02)"
+ },
+ {
+  "group": "mass",
+  "item": "total",
+  "status": "PASS",
+  "detail": "56.45 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+ },
+ {
+  "group": "axis",
+  "item": "waist_yaw",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "neck_yaw",
+  "status": "PASS",
+  "detail": "RS00 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "neck_pitch",
+  "status": "PASS",
+  "detail": "RS00 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_shoulder_pitch",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_shoulder_pitch",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_shoulder_roll",
+  "status": "PASS",
+  "detail": "RS06 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_shoulder_roll",
+  "status": "PASS",
+  "detail": "RS06 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_shoulder_yaw",
+  "status": "PASS",
+  "detail": "RS02 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_shoulder_yaw",
+  "status": "PASS",
+  "detail": "RS02 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_elbow",
+  "status": "PASS",
+  "detail": "RS06 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_elbow",
+  "status": "PASS",
+  "detail": "RS06 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_wrist_yaw",
+  "status": "PASS",
+  "detail": "RS02 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_wrist_yaw",
+  "status": "PASS",
+  "detail": "RS02 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_wrist_pitch",
+  "status": "PASS",
+  "detail": "RS00 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_wrist_pitch",
+  "status": "PASS",
+  "detail": "RS00 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_wrist_roll",
+  "status": "PASS",
+  "detail": "RS00 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_wrist_roll",
+  "status": "PASS",
+  "detail": "RS00 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_hip_pitch",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_hip_pitch",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_hip_roll",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_hip_roll",
+  "status": "PASS",
+  "detail": "RS04 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "L_hip_yaw",
+  "status": "PASS",
+  "detail": "RS03 0.0 mm off the axis"
+ },
+ {
+  "group": "axis",
+  "item": "R_hip_yaw",
+  "status": "PASS",
+  "detail": "RS03 0.0 mm off the axis"
+ },
+ {
+  "group": "static",
+  "item": "zero pose",
+  "status": "PASS",
+  "detail": "0 overlaps"
+ },
+ {
+  "group": "covers",
+  "item": "motors clear of the covers",
+  "status": "PASS",
+  "detail": "0 cover / motor crossings"
+ },
+ {
+  "group": "connect",
+  "item": "pelvis structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "pelvis covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "torso structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "torso covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "neck_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "neck_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "head structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "head covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_roll_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_roll_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_roll_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_roll_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_elbow_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_elbow_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_elbow_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_elbow_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hand structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hand covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hand structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hand covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_roll_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_roll_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_roll_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_roll_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_yaw_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_yaw_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_knee_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_knee_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_knee_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_knee_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_ankle_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_ankle_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_ankle_pitch_link structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_ankle_pitch_link covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_foot structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_foot covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_foot structure",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_foot covers mounted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "waist_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "neck_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "neck_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_shoulder_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_shoulder_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_elbow axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_elbow axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_wrist_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_wrist_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_hip_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_hip_yaw axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_knee axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_knee axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_ankle_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_ankle_pitch axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "L_ankle_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "connect",
+  "item": "R_ankle_roll axis",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "group": "skin",
+  "item": "waist_yaw actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "waist hub",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "battery",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "spine",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "shoulder beam",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "neck post",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "compute",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "waist_yaw flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "neck_yaw actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "neck pitch post",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "neck_yaw flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "neck_pitch actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "head electronics",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "head frame",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "neck_pitch flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L_shoulder_roll actuator (buy) RS06",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R_shoulder_roll actuator (buy) RS06",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L shoulder roll foot",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L_shoulder_roll flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L_shoulder_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R shoulder roll foot",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R_shoulder_roll flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R_shoulder_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L_wrist_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R_wrist_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L_knee actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R_knee actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L knee knuckle",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L ankle actuator A (buy) RS06",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L ankle actuator B (buy) RS06",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R knee knuckle",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R ankle actuator A (buy) RS06",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R ankle actuator B (buy) RS06",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L foot plate",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L ankle rod mount out",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L ankle rod mount in",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R foot plate",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R ankle rod mount out",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R ankle rod mount in",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "sweep",
+  "item": "waist_yaw",
+  "status": "WARN",
+  "detail": "[-2.60, +2.60] rad clear; lower: R_hand / R_hip_yaw_link: R palm / R thigh at -0.11 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "neck_yaw",
+  "status": "PASS",
+  "detail": "[-1.40, +1.40] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "neck_pitch",
+  "status": "PASS",
+  "detail": "[-0.40, +0.45] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_shoulder_pitch",
+  "status": "WARN",
+  "detail": "[-3.00, +1.00] rad clear; upper: L_hand / L_hip_yaw_link: L thumb / L thigh at +0.08 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_shoulder_roll",
+  "status": "WARN",
+  "detail": "[-0.05, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.00 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_shoulder_yaw",
+  "status": "WARN",
+  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L thumb / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_elbow",
+  "status": "PASS",
+  "detail": "[-1.90, +0.00] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_wrist_yaw",
+  "status": "WARN",
+  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L thumb / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_wrist_pitch",
+  "status": "WARN",
+  "detail": "[-0.90, +0.90] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_wrist_roll",
+  "status": "WARN",
+  "detail": "[-0.60, +0.60] rad clear; upper: L_hand / L_hip_yaw_link: L thumb / L thigh at +0.37 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_hip_pitch",
+  "status": "WARN",
+  "detail": "[-1.65, +0.24] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L thumb at -0.34 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_hip_roll",
+  "status": "WARN",
+  "detail": "[-0.35, +0.60] rad clear; lower: L_foot / R_foot: L sole / R shoe midsole at -0.10 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_hip_yaw",
+  "status": "WARN",
+  "detail": "[-1.20, +1.20] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L palm at -0.05 rad (pose-dependent)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_knee",
+  "status": "PASS",
+  "detail": "[+0.00, +2.15] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_ankle_pitch",
+  "status": "PASS",
+  "detail": "[-0.80, +0.55] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_ankle_roll",
+  "status": "PASS",
+  "detail": "[-0.30, +0.30] rad clear"
+ },
+ {
+  "group": "poses",
+  "item": "stand: balance",
+  "status": "PASS",
+  "detail": "CoM 12.0 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "stand: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "stand: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "walk crouch: balance",
+  "status": "PASS",
+  "detail": "CoM 11.9 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "walk crouch: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "walk crouch: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "carry 3 kg at the chest: balance",
+  "status": "PASS",
+  "detail": "CoM 11.8 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "carry 3 kg at the chest: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "carry 3 kg at the chest: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "carry 10 kg at the chest: balance",
+  "status": "PASS",
+  "detail": "CoM 11.9 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "carry 10 kg at the chest: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "carry 10 kg at the chest: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "deep squat: balance",
+  "status": "PASS",
+  "detail": "CoM 11.9 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "deep squat: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "deep squat: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "arms straight out, 5 kg: balance",
+  "status": "PASS",
+  "detail": "CoM 11.9 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "arms straight out, 5 kg: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "arms straight out, 5 kg: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "arms out to the sides: balance",
+  "status": "PASS",
+  "detail": "CoM 11.9 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "arms out to the sides: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "arms out to the sides: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "lift 10 kg from a low table: balance",
+  "status": "PASS",
+  "detail": "CoM 12.0 cm inside the feet"
+ },
+ {
+  "group": "poses",
+  "item": "lift 10 kg from a low table: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "lift 10 kg from a low table: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "single-leg stance (walking): balance",
+  "status": "PASS",
+  "detail": "CoM 4.9 cm inside the stance foot"
+ },
+ {
+  "group": "poses",
+  "item": "single-leg stance (walking): within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "single-leg stance (walking): collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "poses",
+  "item": "step up a stair: balance",
+  "status": "PASS",
+  "detail": "CoM 4.8 cm inside the stance foot"
+ },
+ {
+  "group": "poses",
+  "item": "step up a stair: within limits",
+  "status": "PASS",
+  "detail": "yes"
+ },
+ {
+  "group": "poses",
+  "item": "step up a stair: collisions",
+  "status": "PASS",
+  "detail": "none"
+ },
+ {
+  "group": "torque",
+  "item": "R_elbow",
+  "status": "PASS",
+  "detail": "10.1 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 92 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_elbow",
+  "status": "PASS",
+  "detail": "10.1 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 92 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_hip_yaw",
+  "status": "PASS",
+  "detail": "36.3 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 91 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_knee",
+  "status": "PASS",
+  "detail": "131.9 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 82 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_hip_roll",
+  "status": "PASS",
+  "detail": "57.3 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 72 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_shoulder_roll",
+  "status": "PASS",
+  "detail": "13.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 55 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_shoulder_roll",
+  "status": "PASS",
+  "detail": "13.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 55 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_ankle_pitch",
+  "status": "PASS",
+  "detail": "10.8 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 49 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_ankle_pitch",
+  "status": "PASS",
+  "detail": "10.8 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 49 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_wrist_roll",
+  "status": "PASS",
+  "detail": "4.0 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 42 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_wrist_roll",
+  "status": "PASS",
+  "detail": "4.0 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 42 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_knee",
+  "status": "PASS",
+  "detail": "67.3 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 42 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_shoulder_pitch",
+  "status": "PASS",
+  "detail": "30.4 N m x 1.5 in 'carry 10 kg at the chest' vs peak 120 N m (1 x RS04): 38 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_shoulder_pitch",
+  "status": "PASS",
+  "detail": "30.4 N m x 1.5 in 'carry 10 kg at the chest' vs peak 120 N m (1 x RS04): 38 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_hip_pitch",
+  "status": "PASS",
+  "detail": "28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_hip_pitch",
+  "status": "PASS",
+  "detail": "28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_wrist_pitch",
+  "status": "PASS",
+  "detail": "1.4 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 15 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_wrist_pitch",
+  "status": "PASS",
+  "detail": "1.4 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 15 % used"
+ },
+ {
+  "group": "torque",
+  "item": "neck_pitch",
+  "status": "PASS",
+  "detail": "0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_ankle_roll",
+  "status": "PASS",
+  "detail": "1.1 N m x 1.5 in 'step up a stair' vs peak 43 N m (2 x RS06 x 0.6): 4 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_hip_roll",
+  "status": "PASS",
+  "detail": "2.2 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_wrist_yaw",
+  "status": "PASS",
+  "detail": "0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_wrist_yaw",
+  "status": "PASS",
+  "detail": "0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_shoulder_yaw",
+  "status": "PASS",
+  "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_shoulder_yaw",
+  "status": "PASS",
+  "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_hip_yaw",
+  "status": "PASS",
+  "detail": "0.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_ankle_roll",
+  "status": "PASS",
+  "detail": "0.1 N m in 'walk crouch' vs rated 13 N m (2 x RS06 x 0.6): 1 % used"
+ },
+ {
+  "group": "torque",
+  "item": "waist_yaw",
+  "status": "PASS",
+  "detail": "0.2 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used"
+ },
+ {
+  "group": "torque",
+  "item": "neck_yaw",
+  "status": "PASS",
+  "detail": "0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used"
+ }
+]

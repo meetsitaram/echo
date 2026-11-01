@@ -1,0 +1,110 @@
+[
+ {
+  "group": "sweep",
+  "item": "waist_yaw",
+  "status": "FAIL",
+  "detail": "lower -2.00 blocked at -0.42 rad by R_wrist_yaw_link / pelvis (2 cm3); upper +2.00 blocked at +0.42 rad by L_wrist_yaw_link / pelvis (2 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "waist_roll",
+  "status": "FAIL",
+  "detail": "lower -0.35 blocked at -0.07 rad by torso / pelvis (0 cm3); upper +0.35 blocked at +0.07 rad by torso / pelvis (0 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "waist_pitch",
+  "status": "FAIL",
+  "detail": "lower -0.35 blocked at -0.09 rad by torso / pelvis (1 cm3); upper +0.90 blocked at +0.15 rad by torso / waist_yaw_link (1 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "neck_yaw",
+  "status": "PASS",
+  "detail": "[-1.40, +1.40] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "neck_pitch",
+  "status": "PASS",
+  "detail": "[-0.45, +0.60] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_shoulder_pitch",
+  "status": "PASS",
+  "detail": "[-3.00, +1.00] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_shoulder_roll",
+  "status": "FAIL",
+  "detail": "lower -0.12 blocked at -0.04 rad by L_wrist_yaw_link / pelvis (2 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_shoulder_yaw",
+  "status": "PASS",
+  "detail": "[-2.60, +2.60] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_elbow",
+  "status": "FAIL",
+  "detail": "lower -2.50 blocked at -2.40 rad by L_elbow_link / L_shoulder_roll_link (1 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_wrist_yaw",
+  "status": "PASS",
+  "detail": "[-2.60, +2.60] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_wrist_pitch",
+  "status": "FAIL",
+  "detail": "lower -1.00 blocked at -0.46 rad by L_hand / pelvis (1 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_wrist_roll",
+  "status": "PASS",
+  "detail": "[-0.60, +0.60] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_hip_pitch",
+  "status": "FAIL",
+  "detail": "collides at 0: L_hip_roll_link / pelvis; lower -2.40 blocked at -0.40 rad by L_hip_roll_link / pelvis (1 cm3); upper +0.90 blocked at +0.04 rad by L_hip_roll_link / pelvis (1 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_hip_roll",
+  "status": "FAIL",
+  "detail": "collides at 0: L_hip_roll_link / pelvis; lower -0.35 blocked at -0.01 rad by L_hip_roll_link / pelvis (1 cm3); upper +1.40 blocked at +0.06 rad by L_hip_roll_link / pelvis (1 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_hip_yaw",
+  "status": "FAIL",
+  "detail": "lower -1.20 blocked at -0.55 rad by L_foot / R_foot (1 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_knee",
+  "status": "PASS",
+  "detail": "[+0.00, +2.40] rad clear"
+ },
+ {
+  "group": "sweep",
+  "item": "L_ankle_pitch",
+  "status": "FAIL",
+  "detail": "lower -0.90 blocked at -0.67 rad by L_foot / L_knee_link (0 cm3); upper +0.55 blocked at +0.53 rad by L_foot / L_knee_link (0 cm3)"
+ },
+ {
+  "group": "sweep",
+  "item": "L_ankle_roll",
+  "status": "FAIL",
+  "detail": "lower -0.30 blocked at -0.21 rad by L_foot / L_knee_link (0 cm3); upper +0.30 blocked at +0.21 rad by L_foot / L_knee_link (0 cm3)"
+ }
+]

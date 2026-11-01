@@ -1,0 +1,17 @@
+  t  0.0 s  squat 0.00  pelvis z 0.891 m  tilt  0.0 deg
+  t  0.5 s  squat 0.00  pelvis z 0.889 m  tilt  0.7 deg
+  t  1.0 s  squat 0.00  pelvis z 0.889 m  tilt  0.9 deg
+  t  1.5 s  squat 0.00  pelvis z 0.889 m  tilt  0.8 deg
+  t  2.0 s  squat 0.00  pelvis z 0.889 m  tilt  0.8 deg
+  t  2.5 s  squat 0.00  pelvis z 0.889 m  tilt  0.8 deg
+  t  3.0 s  squat 0.00  pelvis z 0.889 m  tilt  0.8 deg
+  t  3.5 s  squat 0.25  pelvis z 0.869 m  tilt  1.0 deg
+  t  4.0 s  squat 0.50  pelvis z 0.824 m  tilt  0.9 deg
+  t  4.5 s  squat 0.75  pelvis z 0.757 m  tilt  0.8 deg
+  t  5.0 s  squat 1.00  pelvis z 0.672 m  tilt  0.8 deg
+  t  5.5 s  squat 1.00  pelvis z 0.641 m  tilt  0.6 deg
+  t  6.0 s  squat 0.75  pelvis z 0.703 m  tilt  0.6 deg
+  t  6.5 s  squat 0.50  pelvis z 0.781 m  tilt  0.7 deg
+  t  7.0 s  squat 0.25  pelvis z 0.841 m  tilt  0.8 deg
+  t  7.5 s  squat 0.00  pelvis z 0.881 m  tilt  0.8 deg
+tilt max 1.0 deg (PASS), back to standing height within 0.0 cm (PASS), longest torque saturation 0.00 s on waist_yaw (PASS)

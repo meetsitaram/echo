@@ -1,0 +1,13 @@
+{
+  "_about": "Off-the-shelf actuators we can buy (RobStride QDD modules). Sizes and torques from retailer listings (roboticscenter.ai, pakronics, openelab), not an official datasheet: confirm against the vendor's STEP and datasheet before ordering. 'r' is half the square flange size, 'h' the length along the output axis. 'ratio' > 1 means an extra linkage reduction after the module (torque x ratio, speed / ratio). Joint dynamics (tools/make_robot_files.py; 2026-10-31 ESTIMATES, not vendor data): 'gear' the module's reduction, 'rotor_kgm2' the motor rotor's inertia, scaled from the frame size against Unitree's 7520 motor (5e-5 kg m2, from G1's armature 0.0102 at 14.3:1); reflected at the output as armature = rotor x gear^2; 'damping_nms' viscous and 'friction_nm' Coulomb friction at the output, typical of QDD modules (friction about 2-3 % of peak torque).",
+  "RS00": {"r": 0.0285, "h": 0.051, "mass": 0.31, "rated_nm": 5.0, "peak_nm": 14.0, "noload_rads": 32.0,
+           "gear": 10.0, "rotor_kgm2": 1.0e-5, "damping_nms": 0.02, "friction_nm": 0.3},
+  "RS02": {"r": 0.03925, "h": 0.0455, "mass": 0.405, "rated_nm": 6.0, "peak_nm": 17.0, "noload_rads": 41.0,
+           "gear": 7.75, "rotor_kgm2": 3.0e-5, "damping_nms": 0.03, "friction_nm": 0.4},
+  "RS03": {"r": 0.053, "h": 0.056, "mass": 0.88, "rated_nm": 20.0, "peak_nm": 60.0, "noload_rads": 20.0,
+           "gear": 9.0, "rotor_kgm2": 1.0e-4, "damping_nms": 0.12, "friction_nm": 1.0},
+  "RS06": {"r": 0.044, "h": 0.049, "mass": 0.621, "rated_nm": 11.0, "peak_nm": 36.0, "noload_rads": 50.0,
+           "gear": 9.0, "rotor_kgm2": 5.0e-5, "damping_nms": 0.08, "friction_nm": 0.7},
+  "RS04": {"r": 0.060, "h": 0.056, "mass": 1.42, "rated_nm": 40.0, "peak_nm": 120.0, "noload_rads": 21.0,
+           "gear": 9.0, "rotor_kgm2": 2.0e-4, "damping_nms": 0.2, "friction_nm": 1.5}
+}
