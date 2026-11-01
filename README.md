@@ -17,7 +17,7 @@ take; [MP4](docs/media/guna_walk.mp4)).
 | | Figure 03 | guna | how it was checked |
 |---|---|---|---|
 | height | 1.727 m (5'8") | 1.727 m | spec geometry |
-| mass | 61 kg | 57.1 kg | bottom-up: every part from its material (below); the 3.9 kg gap is parts not modelled yet (Figure's tactile hands and palm cameras, cooling, more cabling) |
+| mass | 61 kg | 57.3 kg | bottom-up: every part from its material (below); the 3.7 kg gap is parts not modelled yet (Figure's tactile hands and palm cameras, cooling, more cabling) |
 | battery | 2.3 kWh, 5 h | 2.3 kWh, 13.1 kg | 175 Wh/kg for a cell pack with BMS and case |
 | payload | 20 kg | 10 kg short carry, 3 kg continuous (our choice: smaller RS06 elbows, so the arms look like Figure's) | static torque check |
 | look | grey knit hood with a glossy black visor leaning forward, grey knit body flowing from the neck into the shoulders and tapering to the waist, oval arms with black elbow discs, black waist column and rounded hip lobes running on into full upper thighs, oval black knee pads with a glossy centre, black wrist cuffs and hands, white sneakers: black outsole with toe spring, a black stripe rising to the heel over a white window, an angled black collar | the same, with inverted triangles where Figure has its logo (we do not use Figure's trademark) | side by side with frames of Figure's reveal video (`tools/compare.py`; the frames are not in this repository) |
@@ -78,7 +78,7 @@ Each link's mass, centre of mass and inertia come from its parts (`tools/mass_mo
 | actuators | 23.0 | 40 % |
 | battery | 13.1 | 23 % |
 | 7075 frames (with the allowance) | 9.0 | 16 % |
-| covers | 7.5 | 13 % |
+| covers | 7.7 | 13 % |
 | electronics | 2.9 | 5 % |
 | hands | 1.7 | 3 % |
 
@@ -116,13 +116,16 @@ about its axis or stop short of it, and the mechanism shows black, as on Figure:
   thigh and shank covers come down and up to the axis in concave sockets 4 mm clear, with a 6 deg seam in front
   and an open notch behind where the calf folds up to 123 deg. The domed oval knee pads ride on the thigh outside
   both covers, 1.5 cm proud, on mounts that turn in a small round hole on the axis.
-- **Hip lobes:** each black lobe rides on the hip roll link, so only the hip yaw turns the thigh under it: the
-  thigh's flat top meets the lobe's flat underside in a 3 mm seam (0.857 m, Figure's black-hip line), with the roll
-  parts and the yaw actuator inside. Before, the lobe rode on the pitch link and the thigh, which rolls and yaws
+- **Hip lobes:** each black lobe rides on the hip roll link, so only the hip yaw turns the thigh under it. The
+  thigh's top is a dome round the yaw axis (inside a 0.28 m sphere) and the lobe's underside follows it 3 mm out,
+  so the thigh turns in place under it and no straight line runs along the seam. A flat seam showed the background
+  through both hips in the level side view. The seam is at 0.854 m on the yaw axis (Figure's black-hip line),
+  9 mm lower at the sides and 3.6 cm lower at the back, as Figure's thigh top falls toward the back. The roll parts
+  and the yaw actuator are inside. Before, the lobe rode on the pitch link, and the thigh, which rolls and yaws
   against it, hung 2.5 cm below on a plate and the yaw actuator's rim. The lobe now rolls against the pelvis
   instead: flat inside, hollow round what turns in it (the pitch actuator, its flange and the bracket to the roll
   actuator, swept through the roll range) and bevelled at the front of its inner top, where the outward roll tips
-  it toward the pelvis block. The roll motor's rim shows in a slot on its side.
+  it toward the pelvis block. A cap round the roll motor closes the lobe's back.
 - **Wrist:** a wrist cuff above the pitch axis.
 
 Ranges trimmed where the covers decide them: elbow 109 deg, knee 123 deg (the deep squat uses 115), hip roll 34 deg
@@ -248,16 +251,14 @@ checks, rebuild, compare.
   is a pelvis block between two lobes, its arch between the legs higher than the lobes' undersides. The joint
   order stays pitch, roll, yaw (Asimov 1, Unitree G1 and H2): yaw first (Unitree H1) would put a motor above each
   hip, where our torso's hem turns.
-- Walk: the recorded walk brushes the two thighs together at 35.6 s (2 frames, 1 cm3; 1 frame before the hip
-  change). Playback is kinematic; a controller would keep them apart.
 - Walking in physics: the PICO takes play kinematically. Walking them in MuJoCo needs a balance controller, such as a
   motion-tracking policy, on the realistic masses and joint dynamics.
 - Mass: confirm the rotor inertias, gearing and friction with RobStride's datasheets. Decide whether to close the
-  4.5 kg gap to Figure's 61 kg, and with what: a larger battery, heavier hands, or the real frames once they are
+  3.7 kg gap to Figure's 61 kg, and with what: a larger battery, heavier hands, or the real frames once they are
   designed.
 - Hands: a real dexterous hand model (Figure 03 has 16-DOF hands).
 - Internals: replace the actuator cylinders with RobStride STEP models; real brackets in place of the blocks; FEA on
   the hip and knee brackets (CDX-3R stress workflow).
 - Fusion: a full build is now about 1,800 timeline features, and rebuilding one link with cut prisms in it took
-  several minutes (the hip lobes; the document is at 1,930). Its viewport has not been saving images, so the
-  renders here are offline renders of the same shapes.
+  several minutes (the hip lobes; the document is at 1,990). Its viewport has not been saving
+  images, so the renders here are offline renders of the same shapes.

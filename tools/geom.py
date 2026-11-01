@@ -102,8 +102,9 @@ def clips(g):
 
 
 def clipped(g, mesh):
-    """Keep the part of mesh in front of all of g's clip planes."""
-    if not clips(g):
+    """Keep the part of mesh in front of all of g's clip planes, and inside its 'keep' sphere ({'c', 'r'}: a domed
+    top, round about a vertical line through c, so a joint turning about that line never sweeps it)."""
+    if not clips(g) and not g.get('keep'):
         return mesh
     import manifold3d as mf
     m = mf.Manifold(mf.Mesh(vert_properties=np.asarray(mesh.vertices, np.float32),
@@ -112,6 +113,8 @@ def clipped(g, mesh):
         n = np.asarray(c['n'], float)
         n /= np.linalg.norm(n)
         m = m.trim_by_plane(n.tolist(), float(n @ np.asarray(c['p'], float)))
+    if g.get('keep'):
+        m = m ^ mf.Manifold.sphere(g['keep']['r'], 512).translate(list(map(float, g['keep']['c'])))
     out = m.to_mesh()
     return trimesh.Trimesh(out.vert_properties[:, :3], out.tri_verts)
 
@@ -222,6 +225,8 @@ def inner_closed(g, t):
     for c in clips(g):
         n = np.asarray(c['n'], float)
         c['p'] = list(np.asarray(c['p'], float) + t * n / np.linalg.norm(n))
+    if g.get('keep'):
+        g['keep']['r'] -= t
     return g
 
 
@@ -233,6 +238,8 @@ def inside(g, p):
         ok = loft_inside(g, p)
         for c in clips(g):
             ok &= (p - np.asarray(c['p'])) @ np.asarray(c['n'], float) >= 0
+        if g.get('keep'):
+            ok &= np.linalg.norm(p - np.asarray(g['keep']['c'], float), axis=1) <= g['keep']['r']
         return ok
     if k == 'ellipsoid':
         return (((p - g['c']) / g['r']) ** 2).sum(1) <= 1.0

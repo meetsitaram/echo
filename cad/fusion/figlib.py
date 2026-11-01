@@ -186,7 +186,19 @@ class Builder:
             body = self.clip(body, cp, f"{g['name']} cut{k + 1 if k else ''}")
             if cp.get('r'):
                 body = self.round_rim(body, cp, [q for q in planes if q is not cp], cp['r'], f"{g['name']} rim")
+        if g.get('keep'):
+            body = self.keep(body, g['keep'], f"{g['name']} dome")
         return body
+
+    def keep(self, body, ks, name):
+        """Intersect body with the sphere ks = {'c', 'r'}: keep what is inside it (a domed top)."""
+        tool = self.ellipsoid(dict(c=ks['c'], r=[ks['r']] * 3, name=name))
+        ci = self.f.combineFeatures.createInput(body, coll([tool]))
+        ci.operation = adsk.fusion.FeatureOperations.IntersectFeatureOperation
+        ci.isKeepToolBodies = False
+        cf = self.f.combineFeatures.add(ci)
+        cf.name = name
+        return cf.bodies.item(0)
 
     def round_rim(self, body, cp, others, r, name):
         """Fillet the rim that the clip plane cp left on body (not its edges on the other cut faces). Like

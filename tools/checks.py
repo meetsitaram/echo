@@ -177,7 +177,8 @@ def measure(spec, S):
     lo = {ln: bbox(m)[0] for ln, m in T.items()}
     hi = {ln: bbox(m)[1] for ln, m in T.items()}
     J = {j['name']: j for j in spec['joints']}
-    lobe = next(g for l in spec['links'].values() for g in l['geoms'] if g['name'] == 'L hip lobe')
+    lobe = next(S.geom[(ln, i)] for ln, l in spec['links'].items() for i, g in enumerate(l['geoms'])
+                if g['name'] == 'L hip lobe')           # with its cuts
     verts = np.vstack([m.to_mesh().vert_properties[:, :3] for m in T.values()])
     band = verts[(verts[:, 2] > 1.2) & (verts[:, 2] < 1.45)]
     # the head shape alone: the head link also carries the neck (it tilts with the head, iteration 18)
@@ -190,7 +191,9 @@ def measure(spec, S):
         'wrist_z': J['L_wrist_pitch']['origin'][2],
         'fingertip_z': lo['L_hand'][2],
         'knee_z': J['L_knee']['origin'][2],
-        'hips_black_bottom_z': float(G.mesh_of(lobe).bounds[0][2]),
+        # the black hips' lower edge in the front and side views: the lobe's underside in its front half (behind,
+        # it drops with the thigh's domed top, iteration 22)
+        'hips_black_bottom_z': float(min(v[2] for v in lobe.to_mesh().vert_properties[:, :3] if v[0] >= -0.02)),
         # where the grey torso ends and the black waist begins
         'pelvis_band_top_z': G.mesh_of([g for g in spec['links']['torso']['geoms'] if g['name'] == 'torso'][0])
         .bounds[0][2],

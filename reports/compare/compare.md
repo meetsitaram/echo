@@ -12,11 +12,11 @@ Figure 03: published specs (figure.ai) and landmarks measured on reveal-video fr
 | fingertip_z | 0.710 | 0.030 | 0.720 | +0.010 | ok |
 | knee_z | 0.540 | 0.030 | 0.535 | -0.005 | ok |
 | pelvis_band_top_z | 1.085 | 0.020 | 1.085 | +0.000 | ok |
-| hips_black_bottom_z | 0.860 | 0.030 | 0.857 | -0.003 | ok |
+| hips_black_bottom_z | 0.860 | 0.030 | 0.848 | -0.012 | ok |
 | head_height_m | 0.205 | 0.015 | 0.205 | -0.000 | ok |
 | head_depth_m | 0.183 | 0.015 | 0.190 | +0.007 | ok |
 | head_width_m | 0.138 | 0.012 | 0.140 | +0.002 | ok |
 | chest_depth_m | 0.235 | 0.025 | 0.231 | -0.004 | ok |
 | bideltoid_width_m | 0.510 | 0.040 | 0.525 | +0.015 | ok |
 | foot_length_m | 0.280 | 0.020 | 0.289 | +0.009 | ok |
-| mass (kg, bottom-up) | 61.0 | -10 % / +1.5 | 57.1 | -3.9 | ok |
+| mass (kg, bottom-up) | 61.0 | -10 % / +1.5 | 57.3 | -3.7 | ok |

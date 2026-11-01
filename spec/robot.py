@@ -82,11 +82,13 @@ def cap(name, p0, p1, r, color=BLACK, role='shell'):
     return dict(kind='capsule', name=name, p0=list(p0), p1=list(p1), r=r, color=color, role=role)
 
 
-def loft(name, sections, color=GREY, role='shell', open=('top', 'bottom'), clip=None):
+def loft(name, sections, color=GREY, role='shell', open=('top', 'bottom'), clip=None, keep=None):
     """sections: (z, cx, cy, a, b, n): superellipse |dx/a|^n + |dy/b|^n = 1 in the plane z, bottom to top or
     top to bottom. n = 2 is an ellipse, larger n is squarer. open: ends where the skin is a sleeve (no cap).
     clip: (point, normal): keep only the part in front of this plane (a visor cut from a head shape); or a list of
-    them: keep the part in front of every one (a shoe collar, a band between two planes)."""
+    them: keep the part in front of every one (a shoe collar, a band between two planes).
+    keep: (centre, radius): keep only the part inside this sphere (a domed top, round about the vertical through
+    the centre, so a yaw joint on that line turns it in place)."""
     secs = [dict(z=z, cx=cx, cy=cy, a=a, b=b, n=n) for z, cx, cy, a, b, n in sections]
     g = dict(kind='loft', name=name, sections=sorted(secs, key=lambda s: s['z']), color=color, role=role,
              open=list(open))
@@ -94,6 +96,8 @@ def loft(name, sections, color=GREY, role='shell', open=('top', 'bottom'), clip=
         planes = [dict(p=list(c[0]), n=list(c[1]), **({'r': c[2]} if len(c) > 2 else {}))
                   for c in (clip if isinstance(clip, list) else [clip])]
         g['clip'] = planes if isinstance(clip, list) else planes[0]
+    if keep:
+        g['keep'] = dict(c=list(keep[0]), r=keep[1])
     return g
 
 
@@ -561,8 +565,15 @@ def knee_pad(name, y, side):
 # range). The joint order stays pitch, roll, yaw (Asimov 1, Unitree G1 and H2): yaw first (H1) puts a motor above
 # each hip, where our torso's hem turns, and Figure's black hips (0.86-1.0 m, under the waist column) have no room
 # for one either.
-HIP_SEAM = HZ - 0.073                     # the lobe's flat underside; the thigh's top is 3 mm under it
-HIP_LOBE_CLIP = [((0, 0.088, 0), (0, 1, 0)), ((0, 0, HIP_SEAM), (0, 0, 1))]
+HIP_SEAM = HZ - 0.073                     # the lobe's underside on the yaw axis; the thigh's top is 3 mm under it
+# iteration 22 (user, of white lines in the side view): a flat seam lined up with the other hip's showed the
+# background through both, and so would any flat seam seen level. The seam is a dome round the yaw axis instead
+# (the thigh's top inside a sphere, the lobe's underside 3 mm outside it), so it still never sweeps as the thigh
+# yaws, but no straight line runs along it. It drops 9 mm to the sides and 3.6 cm to the back of the thigh, as
+# Figure's thigh top falls toward the back under its black hip.
+HIP_DOME_R = 0.28
+HIP_DOME_C = (0, HY, HIP_SEAM - 0.003 - HIP_DOME_R)
+HIP_LOBE_CLIP = [((0, 0.088, 0), (0, 1, 0))]
 # the bevel: over the pelvis block's length the outward roll (0.6 rad) tips the lobe's top inward toward the block, so
 # above the axis the lobe stays outboard of a slanted plane (3 mm clear at the full roll); behind the block it stays
 # full over the roll actuator, so from the front the lobe still reads round (a plane over its whole length left a fin)
@@ -645,19 +656,28 @@ link('L_hip_roll_link', 2.0, [
     # (iteration 6: full at the bottom-back so the back line runs on into the thigh, user review)
     # iteration 21: on the roll link, its underside the seam; its outer side 3 mm in from the thigh's at the seam
     # and 3 mm from the hanging wrist above
-    loft('L hip lobe', [(HZ - 0.088, -0.045, 0.105, 0.088, 0.062, 2.4),
+    # iteration 22: down over the thigh's domed top, its outline the thigh's (3 mm in on the outer side)
+    loft('L hip lobe', [(HZ - 0.130, -0.028, 0.105, 0.093, 0.062, 2.4),
+                        (HZ - 0.095, -0.036, 0.105, 0.099, 0.062, 2.4),
                         (HZ - 0.070, -0.040, 0.105, 0.097, 0.062, 2.6),
                         (HZ - 0.035, -0.033, 0.105, 0.103, 0.0615, 2.8),
                         (HZ + 0.005, -0.035, 0.105, 0.103, 0.058, 3.2),
                         (HZ + 0.035, -0.040, 0.1025, 0.100, 0.0565, 3.4),
                         (HZ + 0.065, -0.045, 0.100, 0.085, 0.050, 2.6),
                         (HZ + 0.080, -0.050, 0.100, 0.055, 0.036, 2.4)], GLOSS, open=(), clip=HIP_LOBE_CLIP),
+    # iteration 22: the roll actuator stood out of the lobe's slim back (its rim showed in a slot, and the slot's
+    # 3 mm behind it let the light through): a cap round it, on the outer side, flush with the lobe's back
+    loft('L hip roll cap', [(HZ + dz, -0.1045, HY, 0.0325, (0.066 ** 2 - dz ** 2) ** 0.5, 6.0)
+                            for dz in (-0.064, -0.055, -0.04, -0.02, 0.0, 0.02, 0.04, 0.055, 0.064)], GLOSS, open=(),
+         clip=HIP_LOBE_CLIP),
     cut(prism('L hip lobe bevel', -0.075, 0.14, HIP_BEVEL, BLACK), 'L hip lobe'),
+    # the underside: 3 mm outside the thigh's domed top
+    cut(ell('L hip lobe seam', HIP_DOME_C, (HIP_DOME_R + 0.003,) * 3), 'L hip lobe', 'L hip roll cap'),
     # hollow round the pitch actuator (pelvis) and its flange, and round the bracket, as the roll turns them
     *pitch_sweep('L hip lobe pitch sweep'),
     cut(roll_sweep('L hip lobe bracket sweep', [(0.023, 0.036, 0.025, 0.040)], -0.093, 0.003), 'L hip lobe'),
     # the roll actuator is round about the roll axis: a round opening, 3 mm clear (iteration 19)
-    cut(cyl('L hip lobe roll opening', (-0.10, HY, HZ), 'x', 0.063, 0.062), 'L hip lobe'),
+    cut(cyl('L hip lobe roll opening', (-0.10, HY, HZ), 'x', 0.063, 0.062), 'L hip lobe', 'L hip roll cap'),
     rbox('L hip front plate', (-0.0665, HY, (HIP_SEAM + 0.001 + HZ - 0.02) / 2),
          (0.007, 0.104, HZ - 0.02 - HIP_SEAM - 0.001), 0.002, BLACK, exposed=True),
     # under the pitch actuator, outside its sweep (3 mm), above the thigh
@@ -682,10 +702,10 @@ link('L_hip_yaw_link', 3.6, [
                      (KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
                      (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4)],
          # iteration 19: down to the knee axis in front, a notch behind, a socket round the knee drum
-         # iteration 21: up to 3 mm under the hip lobe, flat (the yaw turns it under the lobe)
-         clip=THIGH_KNEE + [below((-1.0, HIP_SEAM - 0.003), (1.0, HIP_SEAM - 0.003))]),
-    # round the hip's crown, which carries the yaw actuator (it turns in it), 3 mm clear
-    cut(cyl('L thigh top opening', (0, HY, HIP_SEAM), 'z', 0.048, 0.02), 'L thigh'),
+         # iteration 21: up to 3 mm under the hip lobe (the yaw turns it under the lobe); iteration 22: domed
+         clip=THIGH_KNEE, keep=(HIP_DOME_C, HIP_DOME_R)),
+    # round the hip yaw actuator and the crown on it (they turn in it), 3 mm clear
+    cut(cyl('L thigh top opening', (0, HY, HIP_SEAM - 0.006), 'z', 0.056, 0.032), 'L thigh'),
     cut(cyl('L thigh knee socket', (0, HY, KZ), 'y', KNEE_SOCKET, 0.075), 'L thigh'),
     # to the knee drum's crank (inside the drum); it stops 1 cm above the drum
     dict(cap('L knee pushrod', (0.035, HY, KZ + 0.15), (0.035, HY, KZ + 0.062), 0.008, BLACK, 'struct'),
@@ -860,6 +880,8 @@ def mirror_geom(g):
             g[k][1] = -g[k][1]
     if 'contact' in g:
         g['contact']['c'][1] = -g['contact']['c'][1]
+    if 'keep' in g:
+        g['keep']['c'][1] = -g['keep']['c'][1]
     for c in ([g['clip']] if isinstance(g.get('clip'), dict) else g.get('clip') or []):
         c['p'][1], c['n'][1] = -c['p'][1], -c['n'][1]
     if g['kind'] == 'cyl' and not isinstance(g['axis'], str):
