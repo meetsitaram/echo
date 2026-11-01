@@ -37,7 +37,7 @@ The joint table, ranges, masses and how each joint was designed are in [docs/DES
 
 ## Approach
 
-1. **One spec.** `spec/robot.py` places every part relative to a few anchor heights. Everything else is generated
+1. **One spec.** A single robot description places every part relative to a few anchor heights. Everything else is generated
    from it, so a change is one edit.
 2. **Check before building.** Offline checks cover:
    - proportions and mass;
@@ -71,7 +71,7 @@ The [lessons learned](LESSONS.md) list every trap we hit and how it was fixed. T
 ## Repository
 
 - `spec/`: the robot, the one source of truth
-- `tools/`: checks, masses, renders, robot models, simulation, motion
+- `tools/`: the steps the skill runs: checks, masses, renders, robot models, simulation, motion
 - `cad/`: the Fusion design (`echo.f3d`), the STEP file and the build scripts
 - `urdf/`: URDF and MuJoCo models with meshes
 - `reports/`: check results, masses, comparisons and renders
