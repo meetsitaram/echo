@@ -227,6 +227,13 @@ In Fusion (through the MCP, one short call each): `build.new_document()`, `build
 `cad/fusion/build.py`. Change the robot in `spec/robot.py` only (the anchors at the top set the proportions), then
 checks, rebuild, compare.
 
+## Build your own
+
+`skills/humanoid-from-spec/SKILL.md` describes how echo was made, for anyone building their own humanoid: one Python
+spec, offline checks proven on broken designs, a Fusion model built by script, robot files, a stand test, a
+retargeted walk, and publishing. It is also a Claude Code skill: copy the folder into `.claude/skills/` and ask
+Claude to build or iterate a humanoid. Keep `LESSONS.md` open beside it: every trap we hit, with what fixed it.
+
 ## Files
 
 | path | what |
@@ -245,6 +252,19 @@ checks, rebuild, compare.
 | `cad/echo.step` | the CAD model exported from Fusion: all 30 links at the zero pose, named as in the spec (STEP AP214) |
 | `urdf/echo.urdf`, `urdf/echo.xml` | ROS / Isaac and MuJoCo models (meshes from Fusion) |
 | `LESSONS.md` | what went wrong here and the rule that now prevents it |
+| `skills/humanoid-from-spec/` | the method as a skill: how to build your own humanoid this way, step by step, with every reference we used |
+| `THIRD_PARTY_NOTICES.md` | notices for adapted code (GMR, MIT), what was consulted but not copied, trademarks |
+
+## Credits and licences
+
+echo's design follows Asimov 1's internal layout (github.com/menloresearch/asimov-1) and was compared with Unitree's
+and AgiBot's published URDFs. None of their files are included, so their licences (CERN-OHL-S-2.0 and GPL-2.0,
+BSD-3-Clause, Mulan PSL v2) place no conditions on echo. The motion retargeting adapts GMR (github.com/YanjieZe/GMR,
+MIT); its notice is in `THIRD_PARTY_NOTICES.md`. The full list of references is in
+`skills/humanoid-from-spec/references/sources.md`.
+
+Figure and Figure 03 are trademarks of Figure AI, Inc. echo is an independent project, not affiliated with or
+endorsed by Figure AI. Figure's video frames used for comparison are not in this repository.
 
 ## Next
 

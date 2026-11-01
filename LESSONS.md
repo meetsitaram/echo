@@ -1,7 +1,9 @@
 # Lessons learned: echo (a Figure 03 replica)
 
 Builds on CDX-3R's `cad/fusion/LESSONS.md` and `docs/PIPELINE-PLAYBOOK.md` (C:\Users\PC\projects\cdx-3r): read those
-first. Below: what went wrong in this project, and the rule or test that now prevents it.
+first. Below: what went wrong in this project, and the rule or test that now prevents it. If you are building your
+own humanoid this way, start with `skills/humanoid-from-spec/SKILL.md` (the method) and keep this file open beside it
+(the traps).
 
 ## Process
 
@@ -25,13 +27,17 @@ first. Below: what went wrong in this project, and the rule or test that now pre
 | The link masses were hand budgets that summed to 61 kg exactly with the battery as the balance, and each budget was spread over the covers as if they were solid | Masses bottom-up from materials (`tools/mass_model.py`): cover walls, frame fill factors, catalogue actuators, explicit masses for the battery, compute and hands. Report the gap to the target (56.3 vs 61 kg) instead of padding the model to it |
 | A per-link rule (frame at least 15 % of the actuators' mass) failed a 2 cm neck post that carries a 0.3 kg actuator easily | A check needs a physical reason: a mass ratio says nothing about strength |
 | A `--bad` run of the mass check rewrote `reports/mass.md` with the broken design | Checks write only `reports/checks.md`; each tool writes its own report |
+| A measured target read the wrong shape: the black-hip height took the hip lobe before its cuts, and its lowest point anywhere (the domed seam drops at the back) | Measure the replica where the photo was measured (the lobe's underside in its front half, as seen in the front and side frames) and on the finished shape (with its cuts) |
+| A redesign done blind: the first hip fix gave the lobe a fin, a slot and a see-through seam, all visible only in pictures | After every geometry change: the checks, then close-up renders from the front, side, back and the angle the user looked from, before and after side by side; then the walk replay |
+| The user looked at the hip from below in the web viewer, an angle none of our standard views had | Render the angle the user reports from (a low front view here) and keep it in the before/after set |
+| Pictures and numbers in the repo drifted from the design: early renders of an old robot sat in `reports/`, and the README and the viewer quoted last round's mass | Before each commit, re-render every committed picture from the current spec (`render_pose.py`, `preview.py`, the README video) and copy the quoted numbers from the reports (`reports/mass.md`, `reports/checks.md`) |
 
 ## Mechanical design
 
 | Issue | Do instead |
 |---|---|
 | A roll/pitch waist (A3, H2) cannot hide under a one-piece fabric torso: 20 degrees of tilt needs ~5 cm of hem clearance | Yaw-only waist (Asimov 1); keep Figure's look with a black waist column that turns inside the pelvis block |
-| A closed black skirt over the hips: the hip roll brackets swing through ~16 cm radius as the thigh flexes | Covers that ride on the moving link (hip lobes on the hip pitch link); a pelvis block narrow and high enough for 97 degrees of hip flexion (its underside is Figure's arch between the legs) |
+| A closed black skirt over the hips: the hip roll brackets swing through ~16 cm radius as the thigh flexes | Covers that ride on the moving link (hip lobes first on the hip pitch link, since iteration 21 on the hip roll link: see below); a pelvis block narrow and high enough for 97 degrees of hip flexion (its underside is Figure's arch between the legs) |
 | Hip roll bracket ran through the hip pitch actuator | Roll actuator behind the pitch actuator driving backwards; bracket wraps behind and under |
 | ...which left a bracket corner behind and below the roll actuator, so the hip cover had to be a box | Drive the roll FORWARD: its output plate runs down the 9 mm gap between the two actuators (it turns in its own plane, so never meets the pitch actuator); the pitch-side bracket goes over the top (the output plate only swings below the axis). Nothing behind the roll actuator, so the cover is a round pod |
 | The elbow's output plate showed as a black rectangle on the outside of the arm | Put outputs on the inner face where the outside should read clean (elbow) |
@@ -60,11 +66,15 @@ first. Below: what went wrong in this project, and the rule or test that now pre
 | A clip plane at the knee axis never cut the thigh: its loft stopped 3 cm above the axis, and the knee showed a 3.7 cm black band in front | A clip only trims: run a part's sections past every plane meant to shape it, then look at the front view |
 | Rigid covers at a fold (elbow, 109 deg): the forearm's front face sweeps 7 cm up the upper arm, and any frame above the elbow is in its way | Cups: both covers run on round the actuator, hollow round it, side walls kept. The child ends on a line through the axis; the parent closes the outside of the fold down to 6 deg from where flexion turns that line, and in front is cut to the child's front face at full flexion (4 mm clear). Carry the stator from the sector the child never reaches |
 | The thigh hung under the hip lobe on a 12 mm plate and the yaw actuator's rim, 2.5 cm down ("that connection looks so weak for such a big robot"): the lobe rode on the pitch link, so the thigh rolled and yawed against it | Put the cover on the link before the last joint (the hip roll link): only that joint (yaw) moves the next cover against it, and a seam square to its axis never sweeps (3 mm). The cover then moves against the pelvis (roll): hollow it round the swept parts (convex hulls through the range, as prisms) and bevel it where the roll tips it toward the pelvis |
+| Reordering the hip joints (yaw first, as Unitree H1) looked like the way to let the thigh cup the hip motor, as the knee does | Check where the new first actuator goes before reordering: yaw first puts a motor above each hip, where the torso's hem turns, and Figure's black hip band (0.86-1.0 m) has no room for one either. Kept pitch, roll, yaw (Asimov 1, G1, H2) and moved the cover to another link instead: same ranges, same kinematics, the recorded walk still valid |
+| Widening the rolling lobe to clear the parts that turn inside it made it touch the hanging wrist, and its swept-volume cut broke through its outer surface in places | Move the actuator along its own axis (6 mm inboard: no kinematic change) before widening a cover; cut the swept volume in slices along the axis, each only as tall as the actuator is there (a cylinder is lower away from its centre line); find holes by sampling the uncut outer surface and testing the points against every cut |
+| Domed, the thigh's top wall crossed the rim of the yaw actuator inside it (the 'covers' check caught it) | A clearance opening must clear the actuator at every height the curved wall passes: the opening through the domed top runs 1 cm deeper |
 | White lines in the side view: the flat 3 mm hip seam lined up with the other hip's and showed the background through both, and the roll motor's 3 mm clearance cut through the lobe's slim back | Any flat seam is see-through seen level: curve it round the joint's axis (the thigh's top inside a sphere, `keep`; the lobe 3 mm outside it), and cap what a clearance cut reaches. Test with a green background: green inside the outline is light through a gap |
 | A bevel plane along the whole lobe left a fin, seen from the front | Cut only over the length of what it must clear (the pelvis block); the full back keeps the round outline |
 | Single-joint sweeps cannot see combined motions (a hip pitching, rolling and yawing at once) | Replay the recorded walk through the collision test (`tools/motion_collisions.py`, every 5th frame) before and after a change at a joint |
 | An oval pad standing off a rounded arm read as a disc on a post (3/4 view) | Set the disc into a flat side (the section squarer there, n 4), the child's side wall wrapping it 3 mm clear |
 | Knee pads inside the leg's width needed recesses that narrowed the shank's top | Pads outside both covers, domed, on mounts that turn in a small round hole on the axis |
+| A small domed pad's sections were closer together than the wall is thick, so the skin's cavity (each end moved in by the wall) put sections out of order and the interpolation failed ('x must be strictly increasing') | When moving a loft's ends in for the cavity, drop the middle sections the moved ends pass (`geom.inner_of`) |
 | A hip lobe's flat cut faces went through the hip motors and no check saw it: the sweep and skin checks take covers as 3 mm walls, open where they are cut | Check 'covers': each cover's skin closed on its flat cut faces (as Fusion draws them) against the motors of its own and the neighbouring links. Where a motor passes a cover's face, a round opening 3 mm clear of it, centred on the motor's axis |
 
 ## Motion (MuJoCo)
@@ -91,13 +101,31 @@ first. Below: what went wrong in this project, and the rule or test that now pre
 | A loft cut by several planes (shoe collar, a band between two lines) | `clip` takes a list of planes, applied in turn; a plane that misses the body makes `splitBodyFeatures.add` raise: keep the body |
 | MCP calls time out (~60 s) while Fusion carries on: both feet in one call, all 29 joints in one call | One link per call when it has cut lofts (~45 s each); rebuild only the joints of the links rebuilt (`joints([...])`, 5 s); after a timeout, read `status()` before retrying |
 | Past ~1,000 timeline features (repeated link rebuilds) every single-link call timed out, though the work still finished | Rebuild into a fresh document before the timeline passes ~900 |
+| A full build alone is now ~1,800 features, and one hip lobe with 17 prism cuts took 5-10 minutes to rebuild (each cut is a sketch, an extrusion and a combine) | One link per call, then poll `status()` with read-only calls (they time out too while Fusion works; keep asking); do the offline work (renders, video, docs) meanwhile; keep cuts few and convex |
 | `viewport.saveAsImageFile` returned True and wrote nothing: first while a moved joint's position was uncaptured, then for every save, even at rest (the MCP screenshot failed too) | `build.render` now reports whether the file was written; render poses offline from the spec's shapes (`tools/render_pose.py`, MuJoCo's renderer, same framing within 2 px) |
 | ...and `build.render` said "written" because an older picture of the same name was there | Delete the target before saving, then check that the file exists |
+| Renaming the document's appearances in one pass over `design.appearances` skipped some (renaming re-sorts the collection), so the STEP export still carried the old name | Collect the matching names first, rename, and repeat until none are left; then grep the export for the old name |
+| `app.data.activeProject` raised 'InternalValidationError : group' with no project selected in the data panel | Find the project by name in `app.data.activeHub.dataProjects`; `document.saveAs(name, folder, description, tag)` into a folder made with `rootFolder.dataFolders.add`; check `doc.isSaved` and `dataFile.versionNumber` |
+| The STEP's top-level product was named '(Unsaved)' while the document had never been saved | Save the document first (the root component takes its name), then export STEP and `.f3d` (`createFusionArchiveExportOptions`) |
+| Fusion held about 10 GB with six full builds open, and the user needed the memory for training runs | Do the Fusion steps first (rebuild, save, export) and say when Fusion can be closed; build in one document, not a new one each round; if asked to terminate it, check the document is saved (`isModified` false) and stop the process |
 
 ## Environment (Windows)
 
 | Issue | Do instead |
 |---|---|
 | `git clone` failed: "Current working directory has a path longer than allowed" (the session scratchpad path) | Clone into a short path (`C:\Users\PC\AppData\Local\Temp\figrefs`) |
+| Python could not open files in the session scratchpad (the full path is over 260 characters) | Keep working files in a short path (`%TEMP%\echo`), not the scratchpad |
+| Python's `zipfile` could not test the `.f3d` ('compression method not supported') | That is normal for Fusion archives: list the entries (`infolist`) to check the export, or open it in Fusion |
 | `import mujoco` fails under `python -I` (it lives in the user site-packages, which `-I` skips) | `-I` for anything that reads downloaded files; plain `python` for our own sim on our own files |
 | MuJoCo stand test rocked heel to toe, then leaned 5.5 degrees | Servo gains: kv = kp/6 (kp/25 was far under critical damping), kp = 8 x peak torque (servo give without gravity feed-forward). Both runs held the robot with no torque saturation |
+
+## Repository and publishing
+
+| Issue | Do instead |
+|---|---|
+| The first push was rejected (GH007): the commits carried the owner's private e-mail | Author commits with the GitHub no-reply address (`<id>+<login>@users.noreply.github.com`); push with `GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never` so a missing credential fails instead of hanging |
+| A public repo next to material we may not publish: the reference robot's video frames, comparison panels made from them, the operator's raw motion capture | Ignore them by pattern from the first commit (`reports/compare/figure_*`, `compare_*.png`, `detail_*.png`, `reports/motion/`, `reports/web/`); no reference logo (trademark): our own mark |
+| A 20 MB Fusion archive was committed under the old name and renamed in the next commit, so every clone downloaded it twice | Settle names before committing large binaries. To remove one: rebuild the commits without it (`git commit-tree` on the same final tree, verify the trees identical and the file unreachable), keep a backup branch, and force-push with a lease (`--force-with-lease=main:<old>`) only with the owner's go-ahead (the permission system blocks it otherwise) |
+| Renaming the robot and the repo (guna to echo) | Rename every file and mention in one commit (`git mv`, then a text replace over tracked files, then regenerate what bakes the name in: URDF, MJCF, STEP, videos), rename the repo through the GitHub API with the credential git already uses (never printed), then `git remote set-url`; GitHub redirects the old URL |
+| We built on other people's work (the reference robot's specs and frames, open robots' layouts and URDFs, retargeting code from another project) without a running list of sources and licences, and had to trace each one back at the end | Keep a sources list from day one (`skills/humanoid-from-spec/references/sources.md`). Reading a design is not copying it: Asimov's, Unitree's and AgiBot's licences bind only if their files are copied. Adapted code keeps its notice (`THIRD_PARTY_NOTICES.md`, GMR's MIT notice) and names its source in the file. The project needs its own licence for others to reuse it |
+| The user wanted to see changes before they went public | Publish the review page (the viewer with the new model, movies and renders), commit locally, and push only after the go-ahead |

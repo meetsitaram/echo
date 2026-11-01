@@ -1,0 +1,60 @@
+# Third-party notices
+
+echo's files were written for this project. The one exception is the motion retargeting, part of which is adapted
+from GMR. GMR's licence asks that its notice travel with every copy, so it is below.
+
+## Adapted into echo: GMR, General Motion Retargeting (MIT licence)
+
+- Source: https://github.com/YanjieZe/GMR
+- Used in:
+  - `tools/ik/pico_to_echo.json`: the IK table, derived from GMR's `xrobot_to_g1.json` (by way of the X2 table in
+    github.com/meetsitaram/agibot-x2-record-and-replay).
+  - `tools/retarget_pico.py`: the two-stage IK solve loop, after GMR's `motion_retarget.py`.
+- Changes: echo's body names and reference bodies, toe bodies, echo's elbow range, offsets recalibrated per take,
+  planted-foot locking and grounding.
+
+> Copyright 2025 Yanjieze
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+> documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+> rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+> permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+> the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+> THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+> TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> SOFTWARE.
+
+The rest of the retargeter (capture-to-robot transform, segment morph, arm-plane frames, elbow posture task,
+rest-frame calibration) is ported from the author's own scripts, in agibot-x2-record-and-replay and in the author's
+fork of NVIDIA's GR00T-WholeBodyControl (github.com/meetsitaram/GR00T-WholeBodyControl). No NVIDIA-authored code is
+included.
+
+## Consulted, not copied
+
+These were read for comparison or as design references. None of their files, code, meshes or models are in echo, so
+their licences place no conditions on it.
+
+| reference | what we took from it | licence |
+|---|---|---|
+| Asimov 1, github.com/menloresearch/asimov-1 | the internal layout: one actuator per joint, hip pitch-roll-yaw, yaw-only waist, parallel ankle; joint orders and ranges read from its URDF | hardware CERN-OHL-S-2.0, software GPL-2.0 |
+| Unitree G1, H1-2, H2 URDFs, github.com/unitreerobotics/unitree_ros | joint orders, offsets and ranges, for comparison | BSD-3-Clause |
+| AgiBot A3, github.com/AgibotTech/A3-A3U-robot-model; AgiBot X2, github.com/AgibotTech/agibot_x2_urdf | joint orders, offsets and ranges, for comparison | Mulan PSL v2 |
+
+## Trademarks and the reference robot
+
+Figure and Figure 03 are trademarks of Figure AI, Inc. echo is an independent project, neither affiliated with nor
+endorsed by Figure AI. Figure 03's published specifications (figure.ai) and frames of its reveal video were used to
+compare proportions; the frames are not in this repository, and echo uses its own mark, not Figure's logo.
+
+RobStride and its actuator model names, PICO and XRoboToolkit, Unitree, AgiBot, Asimov, Autodesk Fusion and MuJoCo
+belong to their owners and are named only to say what was used.
+
+## Libraries
+
+echo's tools import numpy, SciPy, trimesh, manifold3d, MuJoCo, mink, Pillow, imageio and matplotlib, each under its own
+licence. They are installed separately and not redistributed here.

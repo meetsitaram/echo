@@ -7,6 +7,9 @@ warm-started from the previous frame. For echo only the body names, the elbow ra
 'pelvis_ik' on the hip line (our pelvis frame is 3 cm under it; the X2's is on it) and a toe body in each foot. The IK
 table is tools/ik/pico_to_echo.json.
 
+The IK table and the solve loop are adapted from GMR (github.com/YanjieZe/GMR, MIT licence: its notice is in
+THIRD_PARTY_NOTICES.md); the rest is the author's own code.
+
   python tools/retarget_pico.py <raw tape .npz> [--start S] [--dur D] [--out reports/motion/<name>.npz]
 
 The take: t, q (29 joints, MuJoCo order), joint_names, root_pos, root_quat_wxyz at 50 Hz, smoothed (sigma 40 ms), plus
