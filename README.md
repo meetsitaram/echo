@@ -1,20 +1,20 @@
-# guna
+# echo
 
 A 1.727 m humanoid built to Figure 03's published specs and look, with internals we can actually build: an
 Asimov 1-style layout (one actuator per joint, 7075 frames, covers over them) around off-the-shelf RobStride
 actuators. Built in Fusion by script from one spec, and checked for physically impossible design before and after
 every change.
 
-<img src="docs/media/guna_walk.webp" alt="guna walking: a PICO full-body capture retargeted, kinematic playback" width="100%">
+<img src="docs/media/echo_walk.webp" alt="echo walking: a PICO full-body capture retargeted, kinematic playback" width="100%">
 
-guna walking a PICO full-body capture, retargeted to its joints and played back kinematically (the first 25 s of the
-take; [MP4](docs/media/guna_walk.mp4)).
+echo walking a PICO full-body capture, retargeted to its joints and played back kinematically (the first 25 s of the
+take; [MP4](docs/media/echo_walk.mp4)).
 
-![guna from the front, at 60 degrees and from the side](docs/media/guna_views.png)
+![echo from the front, at 60 degrees and from the side](docs/media/echo_views.png)
 
 ## How it matches Figure 03
 
-| | Figure 03 | guna | how it was checked |
+| | Figure 03 | echo | how it was checked |
 |---|---|---|---|
 | height | 1.727 m (5'8") | 1.727 m | spec geometry |
 | mass | 61 kg | 57.3 kg | bottom-up: every part from its material (below); the 3.7 kg gap is parts not modelled yet (Figure's tactile hands and palm cameras, cooling, more cabling) |
@@ -22,7 +22,7 @@ take; [MP4](docs/media/guna_walk.mp4)).
 | payload | 20 kg | 10 kg short carry, 3 kg continuous (our choice: smaller RS06 elbows, so the arms look like Figure's) | static torque check |
 | look | grey knit hood with a glossy black visor leaning forward, grey knit body flowing from the neck into the shoulders and tapering to the waist, oval arms with black elbow discs, black waist column and rounded hip lobes running on into full upper thighs, oval black knee pads with a glossy centre, black wrist cuffs and hands, white sneakers: black outsole with toe spring, a black stripe rising to the heel over a white window, an angled black collar | the same, with inverted triangles where Figure has its logo (we do not use Figure's trademark) | side by side with frames of Figure's reveal video (`tools/compare.py`; the frames are not in this repository) |
 
-Landmark heights and widths were measured on frames of Figure's reveal video and guna was iterated until all of
+Landmark heights and widths were measured on frames of Figure's reveal video and echo was iterated until all of
 them are inside tolerance (`reports/compare/compare.md`): chin 1.522 m, shoulder top 1.447, elbow 1.155, wrist
 0.955, fingertips 0.72, black waist 1.085, hips 0.86, knee 0.535, head 0.205 x 0.14 x 0.19 m, chest 0.231 deep,
 shoulders 0.525 wide, foot 0.289 long. Section by section (side and 60 degree views, the angle Figure's 3/4 frame
@@ -147,11 +147,11 @@ The shoulder and the neck needed new mechanisms, not just room:
 
 ## Walking: a PICO capture retargeted
 
-`tools/retarget_pico.py` turns a PICO full-body capture (the XRoboToolkit 24-joint skeleton) into guna's joint
+`tools/retarget_pico.py` turns a PICO full-body capture (the XRoboToolkit 24-joint skeleton) into echo's joint
 angles. It is the X2 retargeter from the author's agibot-x2-record-and-replay and gwbc-supermimic projects (after
-GMR), ported to guna's body names:
+GMR), ported to echo's body names:
 
-- The skeleton is morphed to guna's segment lengths along the human's directions.
+- The skeleton is morphed to echo's segment lengths along the human's directions.
 - Two-stage mink IK follows it frame to frame, with the elbow flex as a posture task.
 - New here: planted feet are locked where they landed (the capture's feet drift 5-10 cm per step), and the lowest
   sole is grounded every frame.
@@ -162,7 +162,7 @@ On the walking take above (51 s in all):
 - No joint sits at a limit more than 1.3 % of the time, except the neck pitch, which reaches its 23 deg look-up
   limit 21 % of the time when the operator looks up.
 
-`tools/render_motion.py` plays a take kinematically: joint angles only, no physics. It renders guna in its own
+`tools/render_motion.py` plays a take kinematically: joint angles only, no physics. It renders echo in its own
 colours as a movie, with or without the captured operator alongside, or plays it in MuJoCo's interactive viewer
 (`--viewer`). The raw capture is not in this repository.
 
@@ -238,11 +238,12 @@ checks, rebuild, compare.
 | `tools/mass_model.py`, `reports/mass.md` | bottom-up masses, centres of mass and inertias from the parts' materials |
 | `tools/compare.py`, `reports/compare/compare.md` | measurements against Figure 03 |
 | `tools/render_pose.py`, `reports/poses.png` | the spec's shapes in any pose, rendered offline |
-| `tools/retarget_pico.py`, `tools/ik/pico_to_guna.json` | PICO full-body capture to guna's joint angles (morph and two-stage mink IK, feet locked) |
+| `tools/retarget_pico.py`, `tools/ik/pico_to_echo.json` | PICO full-body capture to echo's joint angles (morph and two-stage mink IK, feet locked) |
 | `tools/render_motion.py`, `tools/export_web.py` | kinematic playback: movies, MuJoCo's viewer, a web viewer's model and motion |
 | `cad/fusion/build.py`, `figlib.py` | Fusion build |
-| `cad/guna.step` | the CAD model exported from Fusion: all 30 links at the zero pose, named as in the spec (STEP AP214) |
-| `urdf/guna.urdf`, `urdf/guna.xml` | ROS / Isaac and MuJoCo models (meshes from Fusion) |
+| `cad/echo.f3d` | the Fusion 360 design itself (File > Open > Open from my computer): all 30 links as components with their build timeline and the 29 joints with their limits |
+| `cad/echo.step` | the CAD model exported from Fusion: all 30 links at the zero pose, named as in the spec (STEP AP214) |
+| `urdf/echo.urdf`, `urdf/echo.xml` | ROS / Isaac and MuJoCo models (meshes from Fusion) |
 | `LESSONS.md` | what went wrong here and the rule that now prevents it |
 
 ## Next
@@ -260,5 +261,5 @@ checks, rebuild, compare.
 - Internals: replace the actuator cylinders with RobStride STEP models; real brackets in place of the blocks; FEA on
   the hip and knee brackets (CDX-3R stress workflow).
 - Fusion: a full build is now about 1,800 timeline features, and rebuilding one link with cut prisms in it took
-  several minutes (the hip lobes; the document is at 1,990). Its viewport has not been saving
+  several minutes (the hip lobes; the document in `cad/echo.f3d` is at 1,990). Its viewport has not been saving
   images, so the renders here are offline renders of the same shapes.

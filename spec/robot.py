@@ -1,4 +1,4 @@
-"""guna, a Figure 03 replica: the one source of truth for kinematics, actuators, masses and outer shape.
+"""echo, a Figure 03 replica: the one source of truth for kinematics, actuators, masses and outer shape.
 
 Run `python -I spec/robot.py` to write spec/robot.json, which the offline checks, the URDF writer and the Fusion
 build all read. Never hand-edit robot.json or the Fusion document: change this file and rebuild.

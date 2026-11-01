@@ -1,4 +1,4 @@
-# Lessons learned: guna (a Figure 03 replica)
+# Lessons learned: echo (a Figure 03 replica)
 
 Builds on CDX-3R's `cad/fusion/LESSONS.md` and `docs/PIPELINE-PLAYBOOK.md` (C:\Users\PC\projects\cdx-3r): read those
 first. Below: what went wrong in this project, and the rule or test that now prevents it.

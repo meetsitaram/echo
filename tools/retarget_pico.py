@@ -1,11 +1,11 @@
-"""PICO full-body capture -> guna (root pose + 29 joints), for kinematic playback.
+"""PICO full-body capture -> echo (root pose + 29 joints), for kinematic playback.
 
 Ported from the X2 retargeter in agibot-x2-record-and-replay (src/x2_recorder/pico_mocap/x2_ik.py, itself from
 gwbc-supermimic and GMR; both only read): the PICO 24-joint body is morphed to the robot's segment lengths along the
 human's directions, then a two-stage mink IK follows it (a frame task per body, the elbow flex as a posture task),
-warm-started from the previous frame. For guna only the body names, the elbow range and two reference bodies differ:
+warm-started from the previous frame. For echo only the body names, the elbow range and two reference bodies differ:
 'pelvis_ik' on the hip line (our pelvis frame is 3 cm under it; the X2's is on it) and a toe body in each foot. The IK
-table is tools/ik/pico_to_guna.json.
+table is tools/ik/pico_to_echo.json.
 
   python tools/retarget_pico.py <raw tape .npz> [--start S] [--dur D] [--out reports/motion/<name>.npz]
 
@@ -29,8 +29,8 @@ import numpy as np
 from scipy.spatial.transform import Rotation as sRot, Slerp
 
 ROOT = Path(__file__).resolve().parents[1]
-XML = ROOT / 'urdf' / 'guna.xml'
-IK_CONFIG = ROOT / 'tools' / 'ik' / 'pico_to_guna.json'
+XML = ROOT / 'urdf' / 'echo.xml'
+IK_CONFIG = ROOT / 'tools' / 'ik' / 'pico_to_echo.json'
 
 JOINT_NAMES = [
     'Pelvis', 'Left_Hip', 'Right_Hip', 'Spine1', 'Left_Knee', 'Right_Knee',
@@ -232,8 +232,8 @@ def is_rest_pose(frame: dict, slack: float = 0.25) -> bool:
 
 # ---------------------------------------------------------------- retargeter
 
-class GunaRetargeter:
-    """Stateful per-frame solver (warm-started from the previous frame); X2Retargeter with guna names."""
+class EchoRetargeter:
+    """Stateful per-frame solver (warm-started from the previous frame); X2Retargeter with echo names."""
 
     def __init__(self, config_path: Path = IK_CONFIG, iters: int = 2, damping: float = 0.5):
         self.model = build_mocap_model()
@@ -483,7 +483,7 @@ def ground(model: mujoco.MjModel, q: np.ndarray, sigma_s: float = 0.06) -> np.nd
 
 def retarget(tape, start=0.0, dur=None, log=print, lock=True):
     t, body, ok = load_tape(tape)
-    rt = GunaRetargeter()
+    rt = EchoRetargeter()
     cal = next((i for i in range(len(t)) if ok[i] and standing_problem(body_to_frame(body[i])) is None
                 and is_rest_pose(body_to_frame(body[i]))), None)
     if cal is None:
@@ -519,7 +519,7 @@ def main():
     ap.add_argument('--out', type=Path, default=None)
     a = ap.parse_args()
     take = retarget(a.tape, a.start, a.dur)
-    out = a.out or ROOT / 'reports' / 'motion' / f'{a.tape.stem}_guna.npz'
+    out = a.out or ROOT / 'reports' / 'motion' / f'{a.tape.stem}_echo.npz'
     out.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(out, **take)
     print(f"{out}: {take['t'][-1]:.1f} s, {len(take['t'])} frames at {FPS} Hz")

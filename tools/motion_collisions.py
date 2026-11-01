@@ -41,7 +41,7 @@ def hits(spec, take, step):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('take', nargs='?', default=os.path.join(G.ROOT, 'reports', 'motion', 'pico_seg30_walk_guna.npz'))
+    ap.add_argument('take', nargs='?', default=os.path.join(G.ROOT, 'reports', 'motion', 'pico_seg30_walk_echo.npz'))
     ap.add_argument('--step', type=int, default=5)
     ap.add_argument('--bad')
     a = ap.parse_args()

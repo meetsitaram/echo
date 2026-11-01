@@ -7,7 +7,7 @@ from Fusion with build.export_stl) it is used, converted to metres; otherwise th
 Mass, centre of mass and inertia of each link come from its parts' materials (tools/mass_model.py, the model the
 torque check uses); each joint's armature, damping and friction from the actuators that drive it (dynamics()).
 
-Outputs: urdf/guna.urdf (ROS / Isaac), urdf/guna.xml (MuJoCo, floor, feet contacts,
+Outputs: urdf/echo.urdf (ROS / Isaac), urdf/echo.xml (MuJoCo, floor, feet contacts,
 position servos limited to each joint's peak torque).
 """
 import argparse
@@ -23,7 +23,7 @@ import geom as G  # noqa: E402
 import mass_model as MM  # noqa: E402
 
 OUT = os.path.join(G.ROOT, 'urdf')
-NAME = 'guna'
+NAME = 'echo'
 
 
 def link_frames(R):

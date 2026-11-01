@@ -25,7 +25,7 @@ import checks as C  # noqa: E402
 import geom as G  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-XML = ROOT / 'urdf' / 'guna.xml'
+XML = ROOT / 'urdf' / 'echo.xml'
 PARENTS = [-1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21]
 GLOSSY = ('#08090B', '#0A1420')
 VIEWS = {'34': (150.0, -12.0, 3.2), 'side': (90.0, -6.0, 2.8), 'front': (180.0, -6.0, 3.0),
@@ -214,7 +214,7 @@ def main():
     ap.add_argument('--dur', type=float, default=None)
     ap.add_argument('--no-skeleton', action='store_true')
     ap.add_argument('--viewer', action='store_true', help="play in MuJoCo's interactive viewer instead")
-    ap.add_argument('--title', default='guna walking: PICO full-body capture retargeted (session 2026-08-22 seg30)')
+    ap.add_argument('--title', default='echo walking: PICO full-body capture retargeted (session 2026-08-22 seg30)')
     ap.add_argument('--out', type=Path, default=None)
     a = ap.parse_args()
     if a.viewer:

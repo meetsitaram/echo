@@ -51,7 +51,7 @@ def add(a, b, s=1.0):
 
 def appearance(design, hexcol, finish='matte'):
     app = adsk.core.Application.get()
-    name = f'guna {finish} {hexcol}'
+    name = f'echo {finish} {hexcol}'
     a = design.appearances.itemByName(name)
     if a:
         return a

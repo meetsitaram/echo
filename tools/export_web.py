@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import checks as C  # noqa: E402
 import geom as G  # noqa: E402
 
-XML = os.path.join(G.ROOT, 'urdf', 'guna.xml')
+XML = os.path.join(G.ROOT, 'urdf', 'echo.xml')
 GLOSSY = ('#08090B', '#0A1420')
 
 
@@ -102,13 +102,13 @@ def export_motion(take_path, out, fps=25):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('take', nargs='?', default=os.path.join(G.ROOT, 'reports', 'motion', 'pico_seg30_walk_guna.npz'))
+    ap.add_argument('take', nargs='?', default=os.path.join(G.ROOT, 'reports', 'motion', 'pico_seg30_walk_echo.npz'))
     ap.add_argument('--out', default=os.path.join(G.ROOT, 'reports', 'web'))
     ap.add_argument('--fps', type=int, default=25)
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
-    tris, size = export_glb(G.load(), os.path.join(a.out, 'guna.json'))
-    print(f'guna.json (glTF): {tris} triangles, {size / 1e6:.1f} MB')
+    tris, size = export_glb(G.load(), os.path.join(a.out, 'echo.json'))
+    print(f'echo.json (glTF): {tris} triangles, {size / 1e6:.1f} MB')
     n, size = export_motion(a.take, os.path.join(a.out, 'walk.json'), a.fps)
     print(f'walk.json: {n} frames, {size / 1e6:.1f} MB')
 

@@ -572,5 +572,5 @@
    ]
   ]
  },
- "_about": "PICO (XRoboToolkit 24-joint body) -> guna IK table: the X2 table of agibot-x2-record-and-replay (sim/gmr/xrobot_to_x2.json, from GMR xrobot_to_g1.json) with guna body names. X2 and guna pelvis, torso, leg and head frames are world-aligned at rest, so the rotation offsets carry over; the arm and head offsets are recalibrated per take (GunaRetargeter.calibrate). Rows: robot body -> [human joint, position cost, orientation cost, position offset, rotation offset wxyz]."
+ "_about": "PICO (XRoboToolkit 24-joint body) -> echo IK table: the X2 table of agibot-x2-record-and-replay (sim/gmr/xrobot_to_x2.json, from GMR xrobot_to_g1.json) with echo body names. X2 and echo pelvis, torso, leg and head frames are world-aligned at rest, so the rotation offsets carry over; the arm and head offsets are recalibrated per take (EchoRetargeter.calibrate). Rows: robot body -> [human joint, position cost, orientation cost, position offset, rotation offset wxyz]."
 }

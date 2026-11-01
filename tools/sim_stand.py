@@ -2,7 +2,7 @@
 
   python -I tools/sim_stand.py            stand 4 s in a slight crouch, then squat to 90 deg knees and back up
 
-The model (urdf/guna.xml) limits every joint to its actuator's peak torque. Position servos hold the
+The model (urdf/echo.xml) limits every joint to its actuator's peak torque. Position servos hold the
 targets; nothing balances actively, so the poses keep the centre of mass over the feet (ankles lean as in the
 static check). PASS when the pelvis stays within 3 cm of its target height path, tilts less than 5 degrees, and
 no joint sits at its torque limit for more than 0.2 s.
@@ -16,7 +16,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import geom as G  # noqa: E402
 
-XML = os.path.join(G.ROOT, 'urdf', 'guna.xml')
+XML = os.path.join(G.ROOT, 'urdf', 'echo.xml')
 
 
 def pose_vec(m, q):

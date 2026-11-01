@@ -1,4 +1,4 @@
-"""Build guna in Fusion from spec/robot.json (the scripts are the source of truth: never hand-edit
+"""Build echo in Fusion from spec/robot.json (the scripts are the source of truth: never hand-edit
 the document; change spec/robot.py, rerun the checks, rebuild the link).
 
 One short job per MCP call (long calls time out and freeze Fusion; CDX-3R lessons 78-79):
@@ -22,7 +22,7 @@ import adsk.fusion
 import figlib as F
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DOC = 'guna'
+DOC = 'echo'
 GLOSS, ALU, LENS = '#08090B', '#9EA3A8', '#0A1420'
 
 

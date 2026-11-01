@@ -1,4 +1,4 @@
-# guna (a Figure 03 replica): notes for Claude
+# echo (a Figure 03 replica): notes for Claude
 
 Read `LESSONS.md` first, then CDX-3R's `cad/fusion/LESSONS.md` and `docs/PIPELINE-PLAYBOOK.md`
 (C:\Users\PC\projects\cdx-3r).
@@ -16,6 +16,9 @@ Read `LESSONS.md` first, then CDX-3R's `cad/fusion/LESSONS.md` and `docs/PIPELIN
 - **Fusion calls:** one short job per MCP call (a batch of links ~30 s max); scripts imported from
   `cad/fusion` with `importlib.reload`; check `build.status()` after builds. Rebuild in a fresh document when
   most links change (`build.new_document()`).
+- **Fusion document:** saved in the Fusion hub as `echo` (project my-projects, folder echo; 2026-11-01, the user
+  closes Fusion between sessions to free memory). Open it from there to continue; after a rebuild, export
+  `cad/echo.step` and `cad/echo.f3d` from it. Its viewport has not been saving images: render offline.
 - **Actuators:** RobStride RS00/02/03/04/06 (`spec/actuators.json`, retailer numbers: confirm before ordering).
   Internal layout follows Asimov 1 (github.com/menloresearch/asimov-1, CERN-OHL-S-2.0).
 - **References:** robot URDFs cloned to C:\Users\PC\AppData\Local\Temp\figrefs (Unitree H2/G1/H1-2, AgiBot A3/X2,
