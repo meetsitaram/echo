@@ -177,7 +177,7 @@ def measure(spec, S):
     lo = {ln: bbox(m)[0] for ln, m in T.items()}
     hi = {ln: bbox(m)[1] for ln, m in T.items()}
     J = {j['name']: j for j in spec['joints']}
-    lobe = [g for g in spec['links']['L_hip_pitch_link']['geoms'] if g['name'] == 'L hip lobe'][0]
+    lobe = next(g for l in spec['links'].values() for g in l['geoms'] if g['name'] == 'L hip lobe')
     verts = np.vstack([m.to_mesh().vert_properties[:, :3] for m in T.values()])
     band = verts[(verts[:, 2] > 1.2) & (verts[:, 2] < 1.45)]
     # the head shape alone: the head link also carries the neck (it tilts with the head, iteration 18)
@@ -637,8 +637,8 @@ def break_spec(spec, case):
                 g['r'] = 0.06
     elif case == 'cover':
         # the hip lobe without its openings round the hip motors: its flat inner face cuts through both again
-        g = s['links']['L_hip_pitch_link']['geoms']
-        s['links']['L_hip_pitch_link']['geoms'] = [x for x in g if not (x['role'] == 'cut' and 'lobe' in x['name'])]
+        for l in s['links'].values():
+            l['geoms'] = [x for x in l['geoms'] if not (x['role'] == 'cut' and 'L hip lobe' in x['name'])]
     elif case == 'window':
         # a window cut through the calf over the upper ankle actuator: what a cut uncovers must count as showing
         sec = lambda z: dict(z=z, cx=-0.01, cy=0.17, a=0.06, b=0.06, n=4.0)

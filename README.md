@@ -116,8 +116,13 @@ about its axis or stop short of it, and the mechanism shows black, as on Figure:
   thigh and shank covers come down and up to the axis in concave sockets 4 mm clear, with a 6 deg seam in front
   and an open notch behind where the calf folds up to 123 deg. The domed oval knee pads ride on the thigh outside
   both covers, 1.5 cm proud, on mounts that turn in a small round hole on the axis.
-- **Hip lobes:** flat inside and underneath (0.86 m, Figure's black-hip line), with round openings 3 mm clear of
-  the hip motors where they pass the lobe's faces. The roll motor's rim shows in a slot on the lobe's side.
+- **Hip lobes:** each black lobe rides on the hip roll link, so only the hip yaw turns the thigh under it: the
+  thigh's flat top meets the lobe's flat underside in a 3 mm seam (0.857 m, Figure's black-hip line), with the roll
+  parts and the yaw actuator inside. Before, the lobe rode on the pitch link and the thigh, which rolls and yaws
+  against it, hung 2.5 cm below on a plate and the yaw actuator's rim. The lobe now rolls against the pelvis
+  instead: flat inside, hollow round what turns in it (the pitch actuator, its flange and the bracket to the roll
+  actuator, swept through the roll range) and bevelled at the front of its inner top, where the outward roll tips
+  it toward the pelvis block. The roll motor's rim shows in a slot on its side.
 - **Wrist:** a wrist cuff above the pitch axis.
 
 Ranges trimmed where the covers decide them: elbow 109 deg, knee 123 deg (the deep squat uses 115), hip roll 34 deg
@@ -173,6 +178,7 @@ Carried over from CDX-3R and extended for a robot. Each one was proven on a deli
 | skin | internal parts poking through the covers (over 0.5 % of a part) |
 | sweep | joint limits that cannot be reached without a collision: each joint swept from min to max, rigid parts and the covers' 3 mm walls, the covers across the joint included (only the actuator / flange contact is designed) |
 | poses | static torque vs rated (continuous tasks) and peak / 1.5 (short tasks), centre of mass over the feet, joints inside their limits after balancing, collisions, in 10 task poses: stand, walk, carry 3 / 10 kg, deep squat, arms straight out with 5 kg, arms out to the sides, lift 10 kg, single-leg stance, stair step |
+| walk (`tools/motion_collisions.py`) | combined joint motions the sweeps cannot see (a hip pitching, rolling and yawing at once): every 5th frame of the recorded walk, each leg link against every link not jointed to it. Calibrated with `--bad collide` |
 | MuJoCo (`tools/sim_stand.py`) | stands and squats to 90 degree knees and back with torques limited to each actuator's peak, with the bottom-up masses and the joints' armature and friction: max tilt 1.5 deg, no saturation |
 
 ## Run it
@@ -225,6 +231,7 @@ checks, rebuild, compare.
 | `spec/robot.py` → `spec/robot.json` | the one source of truth: kinematics, actuators, materials, shapes |
 | `spec/targets.json`, `spec/actuators.json` | Figure 03 targets; actuator catalogue with estimated joint dynamics |
 | `tools/checks.py`, `tools/geom.py` | physical checks; shapes and kinematics |
+| `tools/motion_collisions.py` | collisions along a recorded motion (combined joint motions) |
 | `tools/mass_model.py`, `reports/mass.md` | bottom-up masses, centres of mass and inertias from the parts' materials |
 | `tools/compare.py`, `reports/compare/compare.md` | measurements against Figure 03 |
 | `tools/render_pose.py`, `reports/poses.png` | the spec's shapes in any pose, rendered offline |
@@ -237,10 +244,12 @@ checks, rebuild, compare.
 
 ## Next
 
-- Hips: on Figure the thigh tops are cups round the black hip pods. With our joint order (pitch, roll, yaw from the
-  pelvis, as Asimov 1) the thigh turns against the pod in roll and yaw too, and the roll motor behind the hip
-  centre (13 cm out) leaves no room for a cup. With pitch last (yaw, roll, pitch, as Unitree H1) the thigh would
-  hinge on the pitch actuator's pod, and its top could be a cup round it, like the knee.
+- Hips: from the front, Figure's black hip band runs from thigh to thigh with both thigh tops tucked under it; ours
+  is a pelvis block between two lobes, its arch between the legs higher than the lobes' undersides. The joint
+  order stays pitch, roll, yaw (Asimov 1, Unitree G1 and H2): yaw first (Unitree H1) would put a motor above each
+  hip, where our torso's hem turns.
+- Walk: the recorded walk brushes the two thighs together at 35.6 s (2 frames, 1 cm3; 1 frame before the hip
+  change). Playback is kinematic; a controller would keep them apart.
 - Walking in physics: the PICO takes play kinematically. Walking them in MuJoCo needs a balance controller, such as a
   motion-tracking policy, on the realistic masses and joint dynamics.
 - Mass: confirm the rotor inertias, gearing and friction with RobStride's datasheets. Decide whether to close the
@@ -249,5 +258,6 @@ checks, rebuild, compare.
 - Hands: a real dexterous hand model (Figure 03 has 16-DOF hands).
 - Internals: replace the actuator cylinders with RobStride STEP models; real brackets in place of the blocks; FEA on
   the hip and knee brackets (CDX-3R stress workflow).
-- Fusion: the document's timeline is at about 1,450 features; rebuild into a fresh document before the next round of
-  link changes. Its viewport has not been saving images, so the renders here are offline renders of the same shapes.
+- Fusion: a full build is now about 1,800 timeline features, and rebuilding one link with cut prisms in it took
+  several minutes (the hip lobes; the document is at 1,930). Its viewport has not been saving images, so the
+  renders here are offline renders of the same shapes.

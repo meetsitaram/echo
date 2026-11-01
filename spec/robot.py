@@ -550,51 +550,121 @@ def knee_pad(name, y, side):
 
 # ---------------------------------------------------------------- left leg (mirrored below)
 
-# the lobe: flat inside, 3 mm clear of the pelvis block (a plane square to the pitch axis stays put as the hip
-# pitches), flat underneath at 0.86 m (Figure's black-hip line), chamfered at the outer bottom where the hip roll
-# plates swing up as the leg swings out
-HIP_LOBE_CLIP = [((0, 0.088, 0), (0, 1, 0)), ((0, 0, HZ - 0.07), (0, 0, 1)), ((0, 0.12, HZ - 0.07), (0, -0.04, 0.045))]
+# Hip (iteration 21, user, of the thigh hanging from the hip seen from below: "that connection looks so weak for
+# such a big robot"; it hung on a thin plate and a grey actuator rim in a 2.5 cm gap under the lobe). The thigh now
+# meets the black hip in a 3 mm seam, as Figure's thighs tuck in under its black hips: the lobe rides on the hip
+# ROLL link (it rolls with the thigh), so only the hip yaw turns the thigh under it, and a seam square to the yaw
+# axis never sweeps. The roll parts and the yaw actuator sit inside the lobe and the thigh. The roll moves the lobe
+# against the pelvis instead: its inner face is flat (the pitch and the inward roll keep it 3 mm clear of the
+# pelvis block), bevelled above the axis where the outward roll tips its top toward the block, and hollow round
+# what turns inside it (the pitch actuator, its flange and the bracket to the roll actuator, swept through the roll
+# range). The joint order stays pitch, roll, yaw (Asimov 1, Unitree G1 and H2): yaw first (H1) puts a motor above
+# each hip, where our torso's hem turns, and Figure's black hips (0.86-1.0 m, under the waist column) have no room
+# for one either.
+HIP_SEAM = HZ - 0.073                     # the lobe's flat underside; the thigh's top is 3 mm under it
+HIP_LOBE_CLIP = [((0, 0.088, 0), (0, 1, 0)), ((0, 0, HIP_SEAM), (0, 0, 1))]
+# the bevel: over the pelvis block's length the outward roll (0.6 rad) tips the lobe's top inward toward the block, so
+# above the axis the lobe stays outboard of a slanted plane (3 mm clear at the full roll); behind the block it stays
+# full over the roll actuator, so from the front the lobe still reads round (a plane over its whole length left a fin)
+HIP_BEVEL = [(0.0, HZ + 0.004), (0.088, HZ + 0.004), (0.088 + 0.0685, HZ + 0.104), (0.0, HZ + 0.104)]
+HIP_ROLL = (-0.35, 0.6)                   # outward 0.6 rad (iteration 17)
+
+
+def hull2d(pts):
+    """Convex hull of 2-D points, counter-clockwise (monotone chain)."""
+    pts = sorted(set(pts))
+
+    def half(seq):
+        h = []
+        for p in seq:
+            while len(h) >= 2 and ((h[-1][0] - h[-2][0]) * (p[1] - h[-2][1]) -
+                                   (h[-1][1] - h[-2][1]) * (p[0] - h[-2][0])) <= 0:
+                h.pop()
+            h.append(p)
+        return h
+    return half(pts)[:-1] + half(pts[::-1])[:-1]
+
+
+def roll_sweep(name, rects, x0, x1, gap=0.003):
+    """Cut: what the hip roll turns past the lobe. rects: (dy0, dy1, dz0, dz1) about the roll axis, fixed to the pitch
+    link or the pelvis; seen from the lobe, they turn through the roll range. One convex prism from x0 to x1, gap
+    clear."""
+    import math
+    pts = []
+    for y0, y1, z0, z1 in rects:
+        for k in range(21):
+            t = -(HIP_ROLL[0] + (HIP_ROLL[1] - HIP_ROLL[0]) * k / 20)    # the lobe turns +t: they turn -t in it
+            c, s = math.cos(t), math.sin(t)
+            for y, z in ((y0, z0), (y0, z1), (y1, z0), (y1, z1)):
+                for a in range(8):
+                    yy, zz = y + gap * math.cos(a * math.pi / 4), z + gap * math.sin(a * math.pi / 4)
+                    pts.append((round(HY + yy * c - zz * s, 5), round(HZ + yy * s + zz * c, 5)))
+    return prism(name, x0, x1 - x0, hull2d(pts), BLACK, 'cut')
+
+
+PITCH_ACT_Y = 0.092                       # the hip pitch actuator's centre on its axis (iteration 21: 6 mm inboard)
+
+
+def pitch_sweep(name):
+    """Cuts: the hip pitch actuator (round about y, on the pelvis) and its flange, swept by the roll; in slices along
+    x, each as tall as the actuator is at the slice's inner edge (a cylinder about y is lower away from x = 0)."""
+    r, h, rf = ACT['RS04']['r'], ACT['RS04']['h'], 0.6 * ACT['RS04']['r']
+    y0, y1 = PITCH_ACT_Y - h / 2 - HY, PITCH_ACT_Y + h / 2 - HY
+    f0 = y1 - 0.001                                           # the flange, FLANGE_T on the actuator's outer face
+    out, edges = [], [0.0, 0.015, 0.025, 0.035, 0.045, 0.055, r + 0.003]
+    for i in range(len(edges) - 1):
+        xa, xb = edges[i], edges[i + 1]
+        a, af = (max(r ** 2 - xa ** 2, 0) ** 0.5), (max(rf ** 2 - xa ** 2, 0) ** 0.5)
+        rects = [(y0, y1, -a, a)] + ([(f0, f0 + FLANGE_T, -af, af)] if af else [])
+        out += [cut(roll_sweep(f'{name} {i}f', rects, xa, xb), 'L hip lobe'),
+                cut(roll_sweep(f'{name} {i}b', rects, -xb, -xa), 'L hip lobe')]
+    return out
+
+
 # limits from the sweep: flexion stops at 97 deg (hip yaw actuator meets the pelvis block), extension at 0.30 rad
 # (the rounded hip lobe meets the waist column; walking needs ~0.2): a little range traded for Figure's hip shape
 # iteration 17: extension 0.24 (the hip roll actuator met the pelvis block at 0.257 once the lobe stopped hiding it);
 # the pitch actuator shows black between the pelvis block and the lobe, as on Figure
 joint('L_hip_pitch', 'pelvis', 'L_hip_pitch_link', (0, HY, HZ), 'y', (-1.65, 0.24), 'RS04',
-      act_c=(0, 0.098, HZ), out=+1, exposed=True)
-link('L_hip_pitch_link', 1.8, [
+      act_c=(0, PITCH_ACT_Y, HZ), out=+1, exposed=True)
+link('L_hip_pitch_link', 1.6, [
+    # from the pitch flange back over the roll output (its plate turns below the axis, its flange is a disc) onto
+    # the outer side of the roll actuator; within the roll actuator's radius of the roll axis, so the lobe rolling
+    # round it stays slim (iteration 21)
+    rbox('L hip bracket', (-0.045, 0.1295, HZ + 0.0325), (0.09, 0.013, 0.015), 0.003, BLACK, exposed=True),
+])
+# The roll actuator sits behind the pitch actuator and drives FORWARD: its output plate runs straight down the gap
+# between the two actuators (it turns in its own plane, so it never meets the pitch actuator), and two tabs
+# under the pitch actuator carry it to a crown on the hip yaw actuator, inside the thigh's top. Nothing reaches
+# behind the roll actuator, so the lobe can be round at the back (iteration 4).
+joint('L_hip_roll', 'L_hip_pitch_link', 'L_hip_roll_link', (0, HY, HZ), 'x', HIP_ROLL, 'RS04',
+      act_c=(-0.10, HY, HZ), out=+1, exposed=True)
+link('L_hip_roll_link', 2.0, [
     # Figure's hip lobe: a smooth rounded glossy pod over the hip mechanism (iteration 4: the boxy lobe with the
     # roll bracket's corner behind it read as a square butt, user review 2026-10-31)
     # (iteration 6: full at the bottom-back so the back line runs on into the thigh, user review)
-    loft('L hip lobe', [(HZ - 0.088, -0.045, 0.1025, 0.088, 0.048, 2.4),
-                        (HZ - 0.070, -0.040, 0.1025, 0.097, 0.055, 2.6),
-                        (HZ - 0.035, -0.033, 0.1025, 0.103, 0.0575, 2.8),
-                        (HZ + 0.035, -0.033, 0.1025, 0.103, 0.0575, 2.8),
-                        (HZ + 0.065, -0.030, 0.1025, 0.088, 0.052, 2.6),
-                        (HZ + 0.080, -0.025, 0.1025, 0.055, 0.038, 2.4)], GLOSS, open=(),
-         # iteration 17 (clearance): flat inside, 3 mm clear of the pelvis block (a plane square to the pitch axis
-         # stays put as the hip pitches), and flat underneath at 0.86 m, Figure's black-hip line, clear of the hip
-         # roll parts below
-         clip=HIP_LOBE_CLIP),
-    # iteration 19 (user: "the outer material is going into the hip motor"): the lobe's flat inner face cut
-    # through both hip motors, and the roll motor's rim stood 7 mm out of its back. Round openings 3 mm clear of
-    # the motors where they pass the cover's faces; the roll motor's rim shows in a slot on the lobe's outer side (a
-    # rear bulge over it met the hands in the deep squat)
-    cut(cyl('L hip lobe pitch opening', (0, 0.1045, HZ), 'y', 0.063, 0.053), 'L hip lobe'),
+    # iteration 21: on the roll link, its underside the seam; its outer side 3 mm in from the thigh's at the seam
+    # and 3 mm from the hanging wrist above
+    loft('L hip lobe', [(HZ - 0.088, -0.045, 0.105, 0.088, 0.062, 2.4),
+                        (HZ - 0.070, -0.040, 0.105, 0.097, 0.062, 2.6),
+                        (HZ - 0.035, -0.033, 0.105, 0.103, 0.0615, 2.8),
+                        (HZ + 0.005, -0.035, 0.105, 0.103, 0.058, 3.2),
+                        (HZ + 0.035, -0.040, 0.1025, 0.100, 0.0565, 3.4),
+                        (HZ + 0.065, -0.045, 0.100, 0.085, 0.050, 2.6),
+                        (HZ + 0.080, -0.050, 0.100, 0.055, 0.036, 2.4)], GLOSS, open=(), clip=HIP_LOBE_CLIP),
+    cut(prism('L hip lobe bevel', -0.075, 0.14, HIP_BEVEL, BLACK), 'L hip lobe'),
+    # hollow round the pitch actuator (pelvis) and its flange, and round the bracket, as the roll turns them
+    *pitch_sweep('L hip lobe pitch sweep'),
+    cut(roll_sweep('L hip lobe bracket sweep', [(0.023, 0.036, 0.025, 0.040)], -0.093, 0.003), 'L hip lobe'),
+    # the roll actuator is round about the roll axis: a round opening, 3 mm clear (iteration 19)
     cut(cyl('L hip lobe roll opening', (-0.10, HY, HZ), 'x', 0.063, 0.062), 'L hip lobe'),
-    # from the top of the pitch flange back OVER the roll output (its plate swings only below the axis, its flange
-    # is a disc) onto the top of the roll actuator
-    # (it shows in the motor openings, iteration 19)
-    rbox('L hip bracket', (-0.0525, 0.138, HZ + 0.044), (0.115, 0.018, 0.028), 0.005, exposed=True),
-])
-# The roll actuator sits behind the pitch actuator and drives FORWARD: its output plate runs straight down the 9 mm
-# gap between the two actuators (it turns in its own plane, so it never meets the pitch actuator) and a bottom
-# plate carries it under the pitch actuator to the hip yaw actuator. Nothing reaches behind the roll actuator, so
-# the lobe can be round at the back (iteration 4; before, the bracket wrapped behind and under).
-# outward 0.6 rad (iteration 17: the hip roll plates meet the lobe at 0.63)
-joint('L_hip_roll', 'L_hip_pitch_link', 'L_hip_roll_link', (0, HY, HZ), 'x', (-0.35, 0.6), 'RS04',
-      act_c=(-0.10, HY, HZ), out=+1, exposed=True)
-link('L_hip_roll_link', 1.3, [
-    rbox('L hip front plate', (-0.0665, HY, HZ - 0.0525), (0.007, 0.07, 0.065), 0.002, BLACK, exposed=True),
-    rbox('L hip bottom plate', (-0.02, HY, HZ - 0.08), (0.10, 0.06, 0.012), 0.003, BLACK, exposed=True),
+    rbox('L hip front plate', (-0.0665, HY, (HIP_SEAM + 0.001 + HZ - 0.02) / 2),
+         (0.007, 0.104, HZ - 0.02 - HIP_SEAM - 0.001), 0.002, BLACK, exposed=True),
+    # under the pitch actuator, outside its sweep (3 mm), above the thigh
+    rbox('L hip tab in', (-0.045, HY - 0.035, HIP_SEAM + 0.005), (0.042, 0.010, 0.010), 0.002, BLACK, exposed=True),
+    rbox('L hip tab out', (-0.045, HY + 0.035, HIP_SEAM + 0.005), (0.042, 0.010, 0.010), 0.002, BLACK, exposed=True),
+    # on the yaw actuator's back face, through a round hole in the thigh's top (it turns round it)
+    dict(cyl('L hip crown', (0, HY, (HZ - 0.083 + HZ - 0.070) / 2), 'z', 0.045, 0.013, BLACK), exposed=True),
 ])
 joint('L_hip_yaw', 'L_hip_roll_link', 'L_hip_yaw_link', (0, HY, HZ - 0.11), 'z', (-1.2, 1.2), 'RS03', out=-1,
       exposed=True)
@@ -610,9 +680,12 @@ link('L_hip_yaw_link', 3.6, [
     loft('L thigh', [(KZ - 0.04, 0.0, HY, 0.066, 0.066, 2.3), (KZ + 0.03, 0.0, HY, 0.066, 0.066, 2.3),
                      (KZ + 0.10, -0.003, HY, 0.070, 0.068, 2.3),
                      (KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
-                     (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4)],
+                     (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4)],
          # iteration 19: down to the knee axis in front, a notch behind, a socket round the knee drum
-         clip=THIGH_KNEE),
+         # iteration 21: up to 3 mm under the hip lobe, flat (the yaw turns it under the lobe)
+         clip=THIGH_KNEE + [below((-1.0, HIP_SEAM - 0.003), (1.0, HIP_SEAM - 0.003))]),
+    # round the hip's crown, which carries the yaw actuator (it turns in it), 3 mm clear
+    cut(cyl('L thigh top opening', (0, HY, HIP_SEAM), 'z', 0.048, 0.02), 'L thigh'),
     cut(cyl('L thigh knee socket', (0, HY, KZ), 'y', KNEE_SOCKET, 0.075), 'L thigh'),
     # to the knee drum's crank (inside the drum); it stops 1 cm above the drum
     dict(cap('L knee pushrod', (0.035, HY, KZ + 0.15), (0.035, HY, KZ + 0.062), 0.008, BLACK, 'struct'),

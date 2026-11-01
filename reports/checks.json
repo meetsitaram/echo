@@ -51,7 +51,7 @@
   "group": "targets",
   "item": "hips_black_bottom_z",
   "status": "PASS",
-  "detail": "0.860 (photo 0.86 +/- 0.03)"
+  "detail": "0.857 (photo 0.86 +/- 0.03)"
  },
  {
   "group": "targets",
@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.10 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "57.14 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1101,7 +1101,7 @@
   "group": "sweep",
   "item": "L_hip_yaw",
   "status": "WARN",
-  "detail": "[-1.20, +1.20] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L palm at -0.05 rad (pose-dependent)"
+  "detail": "[-1.20, +1.20] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L palm at -0.05 rad (pose-dependent); upper: L_hip_yaw_link / R_hip_yaw_link: L thigh / R thigh at +1.20 rad (pose-dependent)"
  },
  {
   "group": "sweep",
@@ -1303,6 +1303,12 @@
  },
  {
   "group": "torque",
+  "item": "L_hip_yaw",
+  "status": "PASS",
+  "detail": "36.7 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 92 % used"
+ },
+ {
+  "group": "torque",
   "item": "R_elbow",
   "status": "PASS",
   "detail": "10.1 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 92 % used"
@@ -1315,12 +1321,6 @@
  },
  {
   "group": "torque",
-  "item": "L_hip_yaw",
-  "status": "PASS",
-  "detail": "36.7 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 92 % used"
- },
- {
-  "group": "torque",
   "item": "L_knee",
   "status": "PASS",
   "detail": "133.5 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 83 % used"
@@ -1329,7 +1329,7 @@
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "57.9 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 72 % used"
+  "detail": "58.0 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 73 % used"
  },
  {
   "group": "torque",
@@ -1345,13 +1345,13 @@
  },
  {
   "group": "torque",
-  "item": "L_ankle_pitch",
+  "item": "R_ankle_pitch",
   "status": "PASS",
   "detail": "10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
  },
  {
   "group": "torque",
-  "item": "R_ankle_pitch",
+  "item": "L_ankle_pitch",
   "status": "PASS",
   "detail": "10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
  },
