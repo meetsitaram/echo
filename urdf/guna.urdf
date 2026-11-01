@@ -74,50 +74,50 @@
     <collision><geometry><mesh filename="meshes/R_shoulder_roll_link.stl"/></geometry></collision>
   </link>
   <link name="L_hip_yaw_link">
-    <inertial><origin xyz="0.00413252 -9.99882e-08 -0.129057" rpy="0 0 0"/><mass value="2.5819"/>
-      <inertia ixx="0.0172357" ixy="2.6717e-09" ixz="0.000600837" iyy="0.0171794" iyz="1.89072e-08" izz="0.00530539"/></inertial>
+    <inertial><origin xyz="0.00448801 -1.22602e-07 -0.129636" rpy="0 0 0"/><mass value="2.5919"/>
+      <inertia ixx="0.0178669" ixy="1.63206e-08" ixz="0.000723684" iyy="0.0174351" iyz="2.54651e-08" izz="0.00574538"/></inertial>
     <visual><geometry><mesh filename="meshes/L_hip_yaw_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_hip_yaw_link.stl"/></geometry></collision>
   </link>
   <link name="R_hip_yaw_link">
-    <inertial><origin xyz="0.00413252 -1.02499e-07 -0.129057" rpy="0 0 0"/><mass value="2.5819"/>
-      <inertia ixx="0.0172357" ixy="2.68826e-09" ixz="0.000600837" iyy="0.0171794" iyz="1.74828e-08" izz="0.00530539"/></inertial>
+    <inertial><origin xyz="0.00448801 -1.22411e-07 -0.129636" rpy="0 0 0"/><mass value="2.5919"/>
+      <inertia ixx="0.0178669" ixy="1.63718e-08" ixz="0.000723684" iyy="0.0174351" iyz="2.47314e-08" izz="0.00574538"/></inertial>
     <visual><geometry><mesh filename="meshes/R_hip_yaw_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_hip_yaw_link.stl"/></geometry></collision>
   </link>
   <link name="L_shoulder_yaw_link">
-    <inertial><origin xyz="1.0401e-12 -1.71733e-10 -0.0952954" rpy="0 0 0"/><mass value="0.7901"/>
-      <inertia ixx="0.00170771" ixy="8.51726e-10" ixz="-1.39284e-13" iyy="0.00189842" iyz="1.0179e-11" izz="0.000561438"/></inertial>
+    <inertial><origin xyz="-0.00494361 0.00348636 -0.0967449" rpy="0 0 0"/><mass value="1.0258"/>
+      <inertia ixx="0.00204438" ixy="-1.75436e-05" ixz="0.000122846" iyy="0.00232079" iyz="6.52222e-05" izz="0.000989966"/></inertial>
     <visual><geometry><mesh filename="meshes/L_shoulder_yaw_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_shoulder_yaw_link.stl"/></geometry></collision>
   </link>
   <link name="R_shoulder_yaw_link">
-    <inertial><origin xyz="-1.0401e-12 1.71733e-10 -0.0952954" rpy="0 0 0"/><mass value="0.7901"/>
-      <inertia ixx="0.00170771" ixy="8.51726e-10" ixz="1.39283e-13" iyy="0.00189842" iyz="-1.0179e-11" izz="0.000561438"/></inertial>
+    <inertial><origin xyz="-0.0049436 -0.00348636 -0.0967449" rpy="0 0 0"/><mass value="1.0258"/>
+      <inertia ixx="0.00204438" ixy="1.75398e-05" ixz="0.000122847" iyy="0.00232079" iyz="-6.52224e-05" izz="0.000989966"/></inertial>
     <visual><geometry><mesh filename="meshes/R_shoulder_yaw_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_shoulder_yaw_link.stl"/></geometry></collision>
   </link>
   <link name="L_knee_link">
-    <inertial><origin xyz="-0.00655449 0.000154138 -0.193233" rpy="0 0 0"/><mass value="2.4938"/>
-      <inertia ixx="0.0334698" ixy="7.08865e-06" ixz="-0.000559977" iyy="0.0335331" iyz="-2.47634e-05" izz="0.00284757"/></inertial>
+    <inertial><origin xyz="-0.00639916 0.000152485 -0.191465" rpy="0 0 0"/><mass value="2.5267"/>
+      <inertia ixx="0.0342834" ixy="7.16998e-06" ixz="-0.000621028" iyy="0.0342522" iyz="-2.41328e-05" izz="0.00297442"/></inertial>
     <visual><geometry><mesh filename="meshes/L_knee_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_knee_link.stl"/></geometry></collision>
   </link>
   <link name="R_knee_link">
-    <inertial><origin xyz="-0.00655449 -0.000154245 -0.193233" rpy="0 0 0"/><mass value="2.4938"/>
-      <inertia ixx="0.0334698" ixy="-7.09627e-06" ixz="-0.000559977" iyy="0.0335331" iyz="2.47459e-05" izz="0.00284757"/></inertial>
+    <inertial><origin xyz="-0.00639916 -0.00015266 -0.191465" rpy="0 0 0"/><mass value="2.5267"/>
+      <inertia ixx="0.0342834" ixy="-7.17113e-06" ixz="-0.000621028" iyy="0.0342522" iyz="2.41407e-05" izz="0.00297442"/></inertial>
     <visual><geometry><mesh filename="meshes/R_knee_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_knee_link.stl"/></geometry></collision>
   </link>
   <link name="L_elbow_link">
-    <inertial><origin xyz="-1.5282e-12 -0.00641872 -0.0768675" rpy="0 0 0"/><mass value="0.6188"/>
-      <inertia ixx="0.00106282" ixy="1.03731e-09" ixz="-1.77119e-14" iyy="0.000997793" iyz="0.000203314" izz="0.000582256"/></inertial>
+    <inertial><origin xyz="0.000316945 -0.00898374 -0.0715219" rpy="0 0 0"/><mass value="0.6646"/>
+      <inertia ixx="0.00137381" ixy="-9.88624e-07" ixz="-1.50707e-05" iyy="0.00128114" iyz="0.000318987" izz="0.000666068"/></inertial>
     <visual><geometry><mesh filename="meshes/L_elbow_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_elbow_link.stl"/></geometry></collision>
   </link>
   <link name="R_elbow_link">
-    <inertial><origin xyz="1.5282e-12 0.00641872 -0.0768675" rpy="0 0 0"/><mass value="0.6188"/>
-      <inertia ixx="0.00106282" ixy="1.03731e-09" ixz="1.77118e-14" iyy="0.000997793" iyz="-0.000203314" izz="0.000582256"/></inertial>
+    <inertial><origin xyz="0.00031668 0.00898374 -0.0715219" rpy="0 0 0"/><mass value="0.6646"/>
+      <inertia ixx="0.00137381" ixy="9.92997e-07" ixz="-1.50618e-05" iyy="0.00128114" iyz="-0.000318987" izz="0.000666069"/></inertial>
     <visual><geometry><mesh filename="meshes/R_elbow_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_elbow_link.stl"/></geometry></collision>
   </link>

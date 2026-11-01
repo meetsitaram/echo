@@ -19,4 +19,4 @@ Figure 03: published specs (figure.ai) and landmarks measured on reveal-video fr
 | chest_depth_m | 0.235 | 0.025 | 0.231 | -0.004 | ok |
 | bideltoid_width_m | 0.510 | 0.040 | 0.525 | +0.015 | ok |
 | foot_length_m | 0.280 | 0.020 | 0.289 | +0.009 | ok |
-| mass (kg, bottom-up) | 61.0 | -10 % / +1.5 | 56.5 | -4.5 | ok |
+| mass (kg, bottom-up) | 61.0 | -10 % / +1.5 | 57.1 | -3.9 | ok |

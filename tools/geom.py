@@ -195,7 +195,9 @@ def inner_of(g, t):
         ext_lo, ext_hi = dict(lo), dict(hi)
         ext_lo['z'] = lo['z'] - 0.02 if 'bottom' in op else lo['z'] + t
         ext_hi['z'] = hi['z'] + 0.02 if 'top' in op else hi['z'] - t
-        g['sections'] = [ext_lo] + g['sections'][1:-1] + [ext_hi]
+        # a closed end moved in by t can pass the next section (a small pad's sections are closer than the wall)
+        mid = [s for s in g['sections'][1:-1] if ext_lo['z'] < s['z'] < ext_hi['z']]
+        g['sections'] = [ext_lo] + mid + [ext_hi]
     elif k == 'ellipsoid':
         g['r'] = [r - t for r in g['r']]
     elif k == 'revolve':

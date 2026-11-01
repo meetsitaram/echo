@@ -81,11 +81,13 @@ def panel(path, h_px, targets, title):
 
 
 BANDS = {'head': (1.36, 1.75), 'shoulders': (1.05, 1.55), 'hips': (0.70, 1.20),
-         'knees': (0.30, 0.80)}                            # close-ups for review (metres above the floor)
+         'knees': (0.30, 0.80),                            # close-ups for review (metres above the floor)
+         'elbows': (1.03, 1.29, 1.0)}                      # (wider: both elbows in the front view)
 
 
 def detail(view, fig, rep, band, h_px=520):
-    """The same height band cut from both pictures (scaled by robot height) and shown side by side, larger."""
+    """The same height band cut from both pictures (scaled by robot height) and shown side by side, larger.
+    band: (low, high) in metres, optionally a third value: the crop's half width per unit of its height."""
     out = []
     for path, title in ((fig, 'Figure 03'), (rep, 'replica')):
         im = Image.open(os.path.join(DIR, path)).convert('RGB')
@@ -94,7 +96,7 @@ def detail(view, fig, rep, band, h_px=520):
         y0 = int(bot - band[1] / 1.727 * H)
         y1 = int(bot - band[0] / 1.727 * H)
         cx = (left + right) // 2
-        half = int((y1 - y0) * 0.45)
+        half = int((y1 - y0) * (band[2] if len(band) > 2 else 0.45))
         crop = crop_pad(im, (cx - half, y0, cx + half, y1))
         s = h_px / crop.height
         crop = crop.resize((int(crop.width * s), h_px), Image.LANCZOS)

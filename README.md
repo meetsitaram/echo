@@ -17,7 +17,7 @@ take; [MP4](docs/media/guna_walk.mp4)).
 | | Figure 03 | guna | how it was checked |
 |---|---|---|---|
 | height | 1.727 m (5'8") | 1.727 m | spec geometry |
-| mass | 61 kg | 56.5 kg | bottom-up: every part from its material (below); the 4.5 kg gap is parts not modelled yet (Figure's tactile hands and palm cameras, cooling, more cabling) |
+| mass | 61 kg | 57.1 kg | bottom-up: every part from its material (below); the 3.9 kg gap is parts not modelled yet (Figure's tactile hands and palm cameras, cooling, more cabling) |
 | battery | 2.3 kWh, 5 h | 2.3 kWh, 13.1 kg | 175 Wh/kg for a cell pack with BMS and case |
 | payload | 20 kg | 10 kg short carry, 3 kg continuous (our choice: smaller RS06 elbows, so the arms look like Figure's) | static torque check |
 | look | grey knit hood with a glossy black visor leaning forward, grey knit body flowing from the neck into the shoulders and tapering to the waist, oval arms with black elbow discs, black waist column and rounded hip lobes running on into full upper thighs, oval black knee pads with a glossy centre, black wrist cuffs and hands, white sneakers: black outsole with toe spring, a black stripe rising to the heel over a white window, an angled black collar | the same, with inverted triangles where Figure has its logo (we do not use Figure's trademark) | side by side with frames of Figure's reveal video (`tools/compare.py`; the frames are not in this repository) |
@@ -75,10 +75,10 @@ Each link's mass, centre of mass and inertia come from its parts (`tools/mass_mo
 
 | item | kg | share |
 |---|---|---|
-| actuators | 23.0 | 41 % |
+| actuators | 23.0 | 40 % |
 | battery | 13.1 | 23 % |
-| 7075 frames (with the allowance) | 8.8 | 16 % |
-| covers | 7.0 | 12 % |
+| 7075 frames (with the allowance) | 9.0 | 16 % |
+| covers | 7.5 | 13 % |
 | electronics | 2.9 | 5 % |
 | hands | 1.7 | 3 % |
 
@@ -105,10 +105,17 @@ about its axis or stop short of it, and the mechanism shows black, as on Figure:
 
 - **Torso openings:** round openings in the torso for the shoulder caps and the neck, and a round opening in the
   pelvis block for the waist column.
-- **Arm seams:** seams on the upper arm and forearm at the yaw joints, and a 9 cm elbow zone.
+- **Arm seams:** seams on the upper arm and forearm at the yaw joints.
+- **Elbow cups:** both covers run on round the elbow actuator, hollow round it and a grey sleeve on it, their side
+  walls kept. The forearm ends on a line through the axis; flexing 109 deg turns that line to 121 deg, so the upper
+  arm closes the back of the elbow down to a 6 deg seam, and the actuator hangs from a bracket behind it, where the
+  forearm never reaches. In front, the upper arm stops where the forearm's front face reaches at full flexion: the
+  fold's notch, which a rigid cover cannot avoid (Figure's knit creases there). Figure's round elbow disc is set
+  into the outer side wall, the forearm's wall wrapping it 3 mm clear, with a smaller disc on the inner side.
 - **Knee hinge:** the shank carries a black drum, round about the knee axis, between the thigh's fork cheeks. The
-  thigh and shank covers come down and up to it in concave sockets 4 mm clear, with a 6 deg seam in front and an
-  open notch behind where the calf folds up to 123 deg. The oval knee pads ride on the thigh.
+  thigh and shank covers come down and up to the axis in concave sockets 4 mm clear, with a 6 deg seam in front
+  and an open notch behind where the calf folds up to 123 deg. The domed oval knee pads ride on the thigh outside
+  both covers, 1.5 cm proud, on mounts that turn in a small round hole on the axis.
 - **Hip lobes:** flat inside and underneath (0.86 m, Figure's black-hip line), with round openings 3 mm clear of
   the hip motors where they pass the lobe's faces. The roll motor's rim shows in a slot on the lobe's side.
 - **Wrist:** a wrist cuff above the pitch axis.
@@ -151,7 +158,7 @@ On the walking take above (51 s in all):
 colours as a movie, with or without the captured operator alongside, or plays it in MuJoCo's interactive viewer
 (`--viewer`). The raw capture is not in this repository.
 
-## Checks (`reports/checks.md`: 244 checks, 0 failing)
+## Checks (`reports/checks.md`: 246 checks, 0 failing)
 
 Carried over from CDX-3R and extended for a robot. Each one was proven on a deliberately broken design first
 (`python -I tools/checks.py --bad <case>`: torque, collide, offaxis, floating, mass, poke, window, cover: all caught).
@@ -166,7 +173,7 @@ Carried over from CDX-3R and extended for a robot. Each one was proven on a deli
 | skin | internal parts poking through the covers (over 0.5 % of a part) |
 | sweep | joint limits that cannot be reached without a collision: each joint swept from min to max, rigid parts and the covers' 3 mm walls, the covers across the joint included (only the actuator / flange contact is designed) |
 | poses | static torque vs rated (continuous tasks) and peak / 1.5 (short tasks), centre of mass over the feet, joints inside their limits after balancing, collisions, in 10 task poses: stand, walk, carry 3 / 10 kg, deep squat, arms straight out with 5 kg, arms out to the sides, lift 10 kg, single-leg stance, stair step |
-| MuJoCo (`tools/sim_stand.py`) | stands and squats to 90 degree knees and back with torques limited to each actuator's peak, with the bottom-up masses and the joints' armature and friction: max tilt 1.0 deg, no saturation |
+| MuJoCo (`tools/sim_stand.py`) | stands and squats to 90 degree knees and back with torques limited to each actuator's peak, with the bottom-up masses and the joints' armature and friction: max tilt 1.5 deg, no saturation |
 
 ## Run it
 
@@ -230,16 +237,15 @@ checks, rebuild, compare.
 
 ## Next
 
-- Hips: on Figure the black hip pods sit in cups at the thigh tops. Here that needs a different hip layout: the hip
-  roll motor sits 10 cm behind the hip centre and reaches 13 cm out, so a cup round about the hip centre that clears
-  it would drop the black hips to 0.79 m. It would need a cradle on the hip roll link, a turning seam lower on the
-  thigh and a notch in the pelvis block.
+- Hips: on Figure the thigh tops are cups round the black hip pods. With our joint order (pitch, roll, yaw from the
+  pelvis, as Asimov 1) the thigh turns against the pod in roll and yaw too, and the roll motor behind the hip
+  centre (13 cm out) leaves no room for a cup. With pitch last (yaw, roll, pitch, as Unitree H1) the thigh would
+  hinge on the pitch actuator's pod, and its top could be a cup round it, like the knee.
 - Walking in physics: the PICO takes play kinematically. Walking them in MuJoCo needs a balance controller, such as a
   motion-tracking policy, on the realistic masses and joint dynamics.
 - Mass: confirm the rotor inertias, gearing and friction with RobStride's datasheets. Decide whether to close the
   4.5 kg gap to Figure's 61 kg, and with what: a larger battery, heavier hands, or the real frames once they are
   designed.
-- Shape: an oval elbow pad over the RS06 (Figure's elbow disc is about 9 x 12 cm, taller than wide).
 - Hands: a real dexterous hand model (Figure 03 has 16-DOF hands).
 - Internals: replace the actuator cylinders with RobStride STEP models; real brackets in place of the blocks; FEA on
   the hip and knee brackets (CDX-3R stress workflow).

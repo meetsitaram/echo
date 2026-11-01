@@ -359,6 +359,39 @@ link('head', 1.95, [
 
 # ---------------------------------------------------------------- left arm (mirrored below)
 
+def oval_pad(name, zc, y, side, w, h, n=2.3, t=0.0075, dome=0.0):
+    """An oval pad standing in the side plane at y (w x h half-sizes, t half-thick) centred at height zc, rim black, a
+    glossy centre (3/4 size) 1 mm prouder. side = +1 / -1: which way is out. dome: how much it thins toward its top
+    and bottom (0 a slab, 1 a lens), its inner face flat."""
+    dz = [h * d / 0.07 for d in (-0.069, -0.064, -0.055, -0.04, -0.02, 0.0, 0.02, 0.04, 0.055, 0.064, 0.069)]
+    half = lambda d, s: s * w * max(1 - abs(d / (s * h)) ** n, 0.0) ** (1 / n)
+    th = lambda d: t * (1 - dome * (1 - max(1 - (d / h) ** 2, 0.0) ** 0.5))
+    pad = loft(name, [(zc + d, 0.0, y + side * (th(d) - t), half(d, 1), th(d), 4.0) for d in dz], BLACK, open=())
+    eye = loft(name + ' centre', [(zc + d * 0.75, 0.0, y + side * (th(d) - t + 0.001), half(d * 0.75, 0.75), th(d),
+                                   4.0) for d in dz], GLOSS, 'decal', open=())
+    return [pad, eye]
+
+
+# Elbow cups (iteration 20, user: "the parts adjacent to the actuators can be like a cup into which the actuator can
+# slide and turn"; Figure's elbow is a black disc on the outer side with the grey covers wrapped round it). Angles
+# about the elbow axis seen from the side: 0 = forward, 90 = up. Both covers run on to the axis, as deep as the arm
+# (ELBOW_A), hollow round the actuator and a grey sleeve on it (ELBOW_SLEEVE, the forearm 3 mm clear of it); their
+# side walls stay. The forearm ends on a line through the axis (12 deg in front, 192 behind); flexing 1.9 rad it
+# turns that line to 121 deg, so the upper arm closes the back down to 186 deg (a 6 deg seam) and the actuator's
+# stator is held by a bracket behind it, in the sector the forearm never reaches. In front the upper arm stops where
+# the forearm's front face reaches at full flexion (FOLD, 4 mm clear): the fold's notch, which a rigid cover cannot
+# avoid (Figure's knit creases there). Figure's disc (about 9 x 12 cm) stands outside the arm on a mount through a
+# hole in the forearm's side wall. Before, both covers stopped short and the elbow showed as a 9 cm black band.
+ELBOW_SLEEVE, ELBOW_A = 0.0475, 0.0535
+FOLD = ((-0.1, EZ + 0.060 - 0.0263), (0.1, EZ + 0.060 + 0.0263))
+
+
+def elbow_ray(deg, r=0.1):
+    """Side-view point (x, z) at angle deg about the elbow axis."""
+    import math
+    return r * math.cos(math.radians(deg)), EZ + r * math.sin(math.radians(deg))
+
+
 # exposed (iteration 17): the actuator's face shows dark in the gap round the cap, in the torso's side opening
 joint('L_shoulder_pitch', 'torso', 'L_shoulder_pitch_link', (0, 0.115, SZ), 'y', (-3.0, 1.0), 'RS04', out=+1,
       exposed=True)
@@ -406,12 +439,31 @@ link('L_shoulder_roll_link', 1.0, [
 joint('L_shoulder_yaw', 'L_shoulder_roll_link', 'L_shoulder_yaw_link', (0, SY, SZ - 0.12), 'z', (-2.6, 2.6),
       'RS02', act_c=(0, SY, SZ - 0.09), out=-1, exposed='flange')   # its flange shows in the seam
 link('L_shoulder_yaw_link', 1.05, [
-    # iteration 17: ends 6 cm above the elbow axis, the forearm starts 3 cm below: a 9 cm black elbow zone (Figure's
-    # elbow disc is about 9 x 12 cm) the forearm folds through
-    loft('L upper arm lower', [(EZ + 0.061, 0, SY, 0.050, 0.042, 2.2), (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2),
-                               (SZ - 0.120, 0, SY, 0.053, 0.044, 2.2)]),
-    # from the elbow actuator's top up into the shoulder yaw flange (stopping short of the yaw actuator)
-    span('L upper arm frame', EZ + 0.04, SZ - 0.115, y=SY, sx=0.03, sy=0.03, exposed=True),
+    # iteration 17: ended 6 cm above the elbow axis (a 9 cm black elbow zone); iteration 20: on round the elbow,
+    # down to 186 deg behind, the fold cut out in front (the sector -10..125 deg below FOLD)
+    # squarer at the elbow (n 4): flat sides the disc sits flush on, as Figure's (round, it stood off the arm)
+    loft('L upper arm lower', [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
+                               (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.120, 0, SY, 0.053, 0.044, 2.2)],
+         clip=above(elbow_ray(186), elbow_ray(6))),
+    cut(loft('L upper arm fold', [(EZ - 0.06, 0, SY, 0.1, 0.06, 8.0), (EZ + 0.12, 0, SY, 0.1, 0.06, 8.0)],
+             clip=[below(*FOLD), above(elbow_ray(305), elbow_ray(125)), above(elbow_ray(170), elbow_ray(350))]),
+        'L upper arm lower'),
+    # hollow round the actuator, overlapping the sleeve by 2 mm (pieces that only touch fall apart)
+    cut(cyl('L upper arm elbow socket', (0, SY, EZ), 'y', ELBOW_SLEEVE - 0.002, 0.077), 'L upper arm lower'),
+    # a grey sleeve on the actuator: what shows of the elbow in the fold's notch
+    cyl('L elbow sleeve', (0, SY + 0.0025, EZ), 'y', ELBOW_SLEEVE, 0.055, GREY, 'shell'),
+    cut(cyl('L elbow sleeve bore', (0, SY + 0.0025, EZ), 'y', ELBOW_SLEEVE - 0.003, 0.06), 'L elbow sleeve'),
+    # the frame now starts above the forearm's reach (it met the forearm at 113 deg); the actuator hangs from it by a
+    # bracket behind (its top end shows in the shoulder yaw seam)
+    span('L upper arm frame', EZ + 0.066, SZ - 0.115, y=SY, sx=0.03, sy=0.03, exposed=True),
+    # (in the hollow round the actuator, which the skin check counts as outside the covers)
+    rbox('L elbow bracket', (-0.042, SY, EZ + 0.0375), (0.012, 0.04, 0.075), 0.003, BLACK, exposed=True),
+    rbox('L elbow bridge', (-0.024, SY, EZ + 0.071), (0.048, 0.03, 0.014), 0.003),
+    # Figure's disc: round, set into the side wall (the forearm's U round it), 6 mm proud; on a mount from the
+    # actuator's outer face (an oval pad standing off the arm read as a disc on a post, 3/4 view)
+    dict(cyl('L elbow disc mount', (0, SY + 0.031, EZ), 'y', 0.02, 0.015, BLACK), exposed=True),
+    *oval_pad('L elbow disc', EZ, SY + 0.043, +1, w=0.044, h=0.044, n=2.0, t=0.006, dome=0.5),
+    cut(cyl('L upper arm disc hole in', (0, SY - 0.043, EZ), 'y', 0.015, 0.012), 'L upper arm lower'),
 ])
 # Elbow: RS06 (88 mm), the size of Figure's elbow disc. User decision 2026-10-31: smaller elbows at the cost of
 # holding capacity (RS04 120 mm carried 20 kg short / 10 kg continuous; RS06 carries about 10 kg short / 4 kg
@@ -424,8 +476,17 @@ joint('L_elbow', 'L_shoulder_yaw_link', 'L_elbow_link', (0, SY, EZ), 'y', (-1.9,
 link('L_elbow_link', 0.85, [
     # no narrower than 0.085 across: the wrist yaw RS02 (79 mm) sits in the lower forearm
     # iteration 17: ends 6 mm above the lower forearm (a seam at the wrist yaw joint)
+    # iteration 20: flaring to the elbow's depth and on to a line through the axis (12 deg in front, 192 behind),
+    # hollow round the sleeve between its side walls; the outer wall wraps the disc 3 mm clear
     loft('L forearm', [(EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2), (EZ - 0.07, 0, SY, 0.048, 0.043, 2.2),
-                       (EZ - 0.030, 0, SY, 0.048, 0.043, 2.2)]),
+                       (EZ - 0.030, 0, SY, 0.048, 0.043, 2.2), (EZ - 0.010, 0, SY, ELBOW_A, 0.0425, 4.0),
+                       (EZ + 0.020, 0, SY, ELBOW_A, 0.0425, 4.0)],
+         clip=below(elbow_ray(192), elbow_ray(12))),
+    cut(cyl('L forearm socket', (0, SY, EZ), 'y', ELBOW_SLEEVE + 0.003, 0.077), 'L forearm'),
+    cut(cyl('L forearm disc opening', (0, SY + 0.043, EZ), 'y', 0.047, 0.016), 'L forearm'),
+    # a smaller disc on the inner side (Figure's elbow shows black both sides from the front), on the output's plate
+    dict(cyl('L elbow disc in mount', (0, SY - 0.040, EZ), 'y', 0.012, 0.014, BLACK), exposed=True),
+    *oval_pad('L elbow disc in', EZ, SY - 0.050, -1, w=0.03, h=0.03, n=2.0, t=0.004, dome=0.5),
     # side plate from the elbow's output flange (inner face) down onto the wrist yaw actuator
     rbox('L forearm frame', (0, SY - 0.031, EZ - 0.035), (0.04, 0.008, 0.10), 0.003, BLACK, exposed=True),
 ])
@@ -481,16 +542,10 @@ def knee_ray(deg, r=0.1):
 THIGH_KNEE = [above((-1.0, KZ), (1.0, KZ)), above(knee_ray(113), (0.0, KZ))]
 SHANK_KNEE = [below(knee_ray(174), knee_ray(354)), below(knee_ray(242), (0.0, KZ))]
 
-def knee_pad(name, y, side, w=0.05, h=0.07, n=2.3, t=0.0075):
-    """An oval pad standing in the side plane at y (w x h half-sizes), centred 1 cm above the knee axis, rim
-    black, a glossy centre (3/4 size) 1 mm prouder. side = +1 / -1: which way is out."""
-    zc = KZ + 0.01
-    dz = [-0.069, -0.064, -0.055, -0.04, -0.02, 0.0, 0.02, 0.04, 0.055, 0.064, 0.069]
-    half = lambda d, s: s * w * max(1 - abs(d / (s * h)) ** n, 0.0) ** (1 / n)
-    pad = loft(name, [(zc + d, 0.0, y, half(d, 1), t, 4.0) for d in dz], BLACK, open=())
-    eye = loft(name + ' centre', [(zc + d * 0.75, 0.0, y + side * 0.001, half(d * 0.75, 0.75), t, 4.0)
-                                  for d in dz], GLOSS, 'decal', open=())
-    return [pad, eye]
+def knee_pad(name, y, side):
+    """Oval knee pad, 10 x 14 cm, domed (14 mm thick in the middle), centred 1 cm above the knee axis; y is its inner
+    face's mid-plane + 7 mm."""
+    return oval_pad(name, KZ + 0.01, y, side, w=0.05, h=0.07, t=0.007, dome=0.6)
 
 
 # ---------------------------------------------------------------- left leg (mirrored below)
@@ -550,7 +605,10 @@ link('L_hip_yaw_link', 3.6, [
     # Figure; no wider than before at the top, where the hands hang beside the thigh
     # iteration 11 (side frame): Figure's thigh is 0.14 deep at 0.65 m and 0.15 at 0.70; ours was ~1 cm deeper.
     # The knee RS04 (centre 0.72 m) keeps 9 mm inside the front.
-    loft('L thigh', [(KZ + 0.03, 0.0, HY, 0.066, 0.066, 2.3), (KZ + 0.10, -0.003, HY, 0.070, 0.068, 2.3),
+    # iteration 20: the loft ran down only to 3 cm above the knee axis, so the clip below never cut it and the knee
+    # showed a 3.7 cm black band in front (Figure's thigh meets the shank in a seam): now down past the axis
+    loft('L thigh', [(KZ - 0.04, 0.0, HY, 0.066, 0.066, 2.3), (KZ + 0.03, 0.0, HY, 0.066, 0.066, 2.3),
+                     (KZ + 0.10, -0.003, HY, 0.070, 0.068, 2.3),
                      (KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
                      (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4)],
          # iteration 19: down to the knee axis in front, a notch behind, a socket round the knee drum
@@ -568,10 +626,13 @@ link('L_hip_yaw_link', 3.6, [
     # iteration 9: flush with the fuller knee instead of sticking out like ears
     # iteration 14 (side and 3/4 frames): ovals 10 cm wide x 14 cm tall, centred 1 cm above the axis, with a glossy
     # raised centre inside a rim; iteration 17: on the thigh, mounted on the knee cheeks, over the black knee zone
-    *knee_pad('L knee pad in', HY - 0.0615, -1),
-    *knee_pad('L knee pad out', HY + 0.0615, +1),
-    rbox('L knee pad mount in', (0, HY - 0.051, KZ + 0.015), (0.024, 0.010, 0.03), 0.002, BLACK, exposed=True),
-    rbox('L knee pad mount out', (0, HY + 0.051, KZ + 0.015), (0.024, 0.010, 0.03), 0.002, BLACK, exposed=True),
+    # iteration 20: outside both legs' covers, 1.5 cm proud, as Figure's bulge from the front (inside the thigh's
+    # width they needed recesses that narrowed the shank's top); the mounts pass through a round hole in the shank
+    *knee_pad('L knee pad in', HY - 0.076, -1),
+    *knee_pad('L knee pad out', HY + 0.076, +1),
+    # on the axis, so the hole they turn in is small (it notched the shank's top corners, seen from the front)
+    rbox('L knee pad mount in', (0, HY - 0.058, KZ), (0.022, 0.024, 0.022), 0.002, BLACK, exposed=True),
+    rbox('L knee pad mount out', (0, HY + 0.058, KZ), (0.022, 0.024, 0.022), 0.002, BLACK, exposed=True),
 ], 'knee RS04 drives the shank through a 2:1 linkage')
 # flexion 2.15 rad (iteration 17: through the knee zone the calf meets the thigh at 2.2; the deep squat uses 2.0)
 joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', act_c=None, remote=True,
@@ -630,11 +691,9 @@ link('L_knee_link', 2.08, [
     loft('L ankle sock', [(0.08, -0.013, HY, 0.048, 0.0470, 2.2), (0.105, -0.010, HY, 0.0455, 0.0460, 2.2),
                           (0.135, -0.005, HY, 0.0410, 0.0445, 2.2), (0.17, -0.004, HY, 0.0405, 0.0445, 2.2)], WHITE,
          clip=[above(*SOCK_LOW), below(*up(TRIM_LOW, 0.002))]),
-    # the knee pads ride on the thigh (iteration 17), in round recesses of the shank's top
-    cut(revolve('L shank pad recess in', 'y', (0, 0, KZ), [(HY - 0.0752, 0.0), (HY - 0.075, 0.086),
-                                                          (HY - 0.0512, 0.086), (HY - 0.051, 0.0)]), 'L shank'),
-    cut(revolve('L shank pad recess out', 'y', (0, 0, KZ), [(HY + 0.051, 0.0), (HY + 0.0512, 0.086),
-                                                           (HY + 0.075, 0.086), (HY + 0.0752, 0.0)]), 'L shank'),
+    # the knee pads ride on the thigh, outside the shank (iteration 20; before, in round recesses of the shank's
+    # top); their mounts turn in a round hole through its side walls
+    cut(cyl('L shank mount hole', (0, HY, KZ), 'y', 0.019, 0.16), 'L shank'),
     # the knee drum (the visible hinge, between the thigh's cheeks) and the knuckle inside it that carries the shank
     # plates and the pushrod's crank
     cyl('L knee drum', (0, HY, KZ), 'y', KNEE_R, 0.070, BLACK, 'shell'),
