@@ -82,13 +82,11 @@ owns.
 
 ## The README
 
-Lead with the video and a views strip. Then:
-- how it matches the target: a table of specs and how each was checked;
-- what is inside: joints, actuators, ranges and masses;
-- how joints get room;
-- the checks table;
-- the commands to run;
-- the files table;
-- what is next.
+Keep it short and readable on a phone: no wide tables.
+- Open with what the robot is, in one or two sentences, then the video and a views strip.
+- Then an overview (size, joints, actuators, battery, payload, deliverables, what was verified), the design ideas
+  and the approach, each as a few bullets.
+- Then the repository layout, a short quick start and the licence.
 
-Keep `LESSONS.md` beside it, with one row per issue and the fix that now prevents it.
+Put the detail in `docs/DESIGN.md`: joint table, ranges, masses, how each joint gets room, the checks and every
+command. Keep `LESSONS.md` beside it, with one row per issue and the fix that now prevents it.
