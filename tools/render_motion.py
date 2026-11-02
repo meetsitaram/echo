@@ -37,9 +37,13 @@ def rgba(hex_color):
     return [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)] + [1.0]
 
 
-def build_view_model(spec=None):
+def build_view_model(spec=None, room=None):
     """The MJCF's bodies and joints with every spec part as a coloured mesh geom (the MJCF's single grey mesh per
-    link hidden in group 3), a checker floor and lights."""
+    link hidden in group 3), a checker floor and lights; or, with room(ms), that room instead of the studio."""
+    return view_spec(spec, room).compile()
+
+
+def view_spec(spec=None, room=None):
     spec = spec or G.load()
     S = C.Solids(spec)
     m0 = mujoco.MjModel.from_xml_path(str(XML))
@@ -55,17 +59,18 @@ def build_view_model(spec=None):
     ms.visual.headlight.specular = [0.05, 0.05, 0.05]
     ms.add_material(name='matte', specular=0.08, shininess=0.15)
     ms.add_material(name='gloss', specular=0.7, shininess=0.9)
-    # a light studio: grey gradient sky, pale checker floor (1 m squares)
-    ms.add_texture(name='sky', type=mujoco.mjtTexture.mjTEXTURE_SKYBOX, builtin=mujoco.mjtBuiltin.mjBUILTIN_GRADIENT,
-                   rgb1=[0.97, 0.97, 0.98], rgb2=[0.80, 0.82, 0.85], width=512, height=3072)
-    ms.add_texture(name='grid', type=mujoco.mjtTexture.mjTEXTURE_2D, builtin=mujoco.mjtBuiltin.mjBUILTIN_CHECKER,
-                   rgb1=[0.93, 0.93, 0.94], rgb2=[0.84, 0.85, 0.87], width=512, height=512)
-    floor = ms.add_material(name='floor', reflectance=0.05)
-    floor.textures[mujoco.mjtTextureRole.mjTEXROLE_RGB] = 'grid'
-    floor.texrepeat = [1, 1]
-    floor.texuniform = True
-    ms.worldbody.add_geom(name='view floor', type=mujoco.mjtGeom.mjGEOM_PLANE, size=[30, 30, 0.05], material='floor',
-                          contype=0, conaffinity=0)
+    if room is None:
+        # a light studio: grey gradient sky, pale checker floor (1 m squares)
+        ms.add_texture(name='sky', type=mujoco.mjtTexture.mjTEXTURE_SKYBOX, builtin=mujoco.mjtBuiltin.mjBUILTIN_GRADIENT,
+                       rgb1=[0.97, 0.97, 0.98], rgb2=[0.80, 0.82, 0.85], width=512, height=3072)
+        ms.add_texture(name='grid', type=mujoco.mjtTexture.mjTEXTURE_2D, builtin=mujoco.mjtBuiltin.mjBUILTIN_CHECKER,
+                       rgb1=[0.93, 0.93, 0.94], rgb2=[0.84, 0.85, 0.87], width=512, height=512)
+        floor = ms.add_material(name='floor', reflectance=0.05)
+        floor.textures[mujoco.mjtTextureRole.mjTEXROLE_RGB] = 'grid'
+        floor.texrepeat = [1, 1]
+        floor.texuniform = True
+        ms.worldbody.add_geom(name='view floor', type=mujoco.mjtGeom.mjGEOM_PLANE, size=[30, 30, 0.05], material='floor',
+                              contype=0, conaffinity=0)
     # the MJCF's own spotlight is fixed over the origin: the floor went dark once the robot walked away from it
     for lt in ms.lights:
         lt.active = False
@@ -91,7 +96,9 @@ def build_view_model(spec=None):
                              material='gloss' if g['color'] in GLOSSY else 'matte', contype=0, conaffinity=0,
                              group=1, density=0)
         k += 1
-    return ms.compile()
+    if room is not None:
+        room(ms)
+    return ms
 
 
 def skeleton_geoms(scn, J, alpha=1.0):

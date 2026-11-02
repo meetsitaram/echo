@@ -484,7 +484,38 @@ def ground(model: mujoco.MjModel, q: np.ndarray, sigma_s: float = 0.06) -> np.nd
     return q
 
 
-def retarget(tape, start=0.0, dur=None, log=print, lock=True):
+PIN_V = 0.25          # a foot this slow (m/s) ...
+PIN_Z = 0.012         # ... and this close to its lowest height is planted
+PIN_TAU_S = 4.0       # the root's correction leaks back to the captured path over this long
+
+
+def pin_feet(model: mujoco.MjModel, q: np.ndarray, fps: int = FPS) -> tuple[np.ndarray, float]:
+    """Move the root horizontally so a planted foot stays exactly still (the slower foot when both are down); the
+    correction leaks back toward the captured path. The legs are untouched. Video captures slid the stance foot
+    ~5 cm/s even after lock_feet, the IK following its targets loosely (2026-11-01). Returns (q, planted fraction)."""
+    data = mujoco.MjData(model)
+    feet = {s: [] for s in 'LR'}
+    for i in range(len(q)):
+        data.qpos[:] = q[i]
+        mujoco.mj_kinematics(model, data)
+        for s in 'LR':
+            feet[s].append(data.xpos[model.body(f'{s}_foot').id].copy())
+    F = {s: np.array(v) for s, v in feet.items()}
+    V = {s: np.r_[np.zeros((1, 2)), np.diff(F[s][:, :2], axis=0)] for s in 'LR'}
+    low = {s: F[s][:, 2] < np.percentile(F[s][:, 2], 5) + PIN_Z for s in 'LR'}
+    corr, out, pinned = np.zeros(2), q.copy(), 0
+    for i in range(1, len(q)):
+        moving = [s for s in 'LR' if low[s][i] and np.linalg.norm(V[s][i]) * fps < PIN_V]
+        if moving:
+            s = min(moving, key=lambda k: np.linalg.norm(V[k][i]))
+            corr -= V[s][i]                               # cancel that foot's slide
+            pinned += 1
+        corr -= corr / (PIN_TAU_S * fps)
+        out[i, :2] += corr
+    return out, pinned / max(len(q) - 1, 1)
+
+
+def retarget(tape, start=0.0, dur=None, log=print, lock=True, hold=(), pin=False):
     t, body, ok = load_tape(tape)
     rt = EchoRetargeter()
     cal = next((i for i in range(len(t)) if ok[i] and standing_problem(body_to_frame(body[i])) is None
@@ -508,8 +539,14 @@ def retarget(tape, start=0.0, dur=None, log=print, lock=True):
         q.append(rt.solve(*p))
         if k % 500 == 0:
             log(f'  {tu[k]:6.1f} s  ({(time.time() - t0) / max(k, 1) * 1000:.0f} ms/frame)')
-    q = ground(rt.model, smooth(np.array(q)))
     names = [rt.model.joint(j).name for j in range(1, rt.model.njnt)]
+    q = np.array(q)
+    for n in hold:            # joints the capture can't see (a video's head and wrists): held straight
+        q[:, 7 + names.index(n)] = 0.0
+    q = ground(rt.model, smooth(q))
+    if pin:
+        q, frac = pin_feet(rt.model, q)
+        log(f'  feet pinned in {frac * 100:.0f} % of frames')
     return dict(t=tu - tu[0], q=q[:, 7:], joint_names=np.array(names), root_pos=q[:, :3], root_quat_wxyz=q[:, 3:7],
                 skel=skel, height_ratio=rt.height_scale, tape=str(tape), start=start)
 
@@ -520,8 +557,14 @@ def main():
     ap.add_argument('--start', type=float, default=0.0)
     ap.add_argument('--dur', type=float, default=None)
     ap.add_argument('--out', type=Path, default=None)
+    ap.add_argument('--pin', action='store_true', help='move the root so planted feet stay still (video captures)')
+    ap.add_argument('--hold', default='', help="joints to hold at zero: 'head', 'wrists', or joint names, comma-separated "
+                                               "(a video can't show a robot's visor direction or wrist twist)")
     a = ap.parse_args()
-    take = retarget(a.tape, a.start, a.dur)
+    groups = {'head': ['neck_yaw', 'neck_pitch'],
+              'wrists': [f'{s}_wrist_{j}' for s in 'LR' for j in ('yaw', 'pitch', 'roll')]}
+    hold = [n for h in a.hold.split(',') if h for n in groups.get(h, [h])]
+    take = retarget(a.tape, a.start, a.dur, hold=hold, pin=a.pin)
     out = a.out or ROOT / 'reports' / 'motion' / f'{a.tape.stem}_echo.npz'
     out.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(out, **take)

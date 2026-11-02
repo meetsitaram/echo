@@ -159,6 +159,30 @@ On the walking take above (51 s in all):
 colours as a movie, with or without the captured operator alongside, or plays it in MuJoCo's interactive viewer
 (`--viewer`). The raw capture is not in this repository.
 
+## Living room: motion from a video
+
+The second take comes from a video: Figure's public four-hour video of Figure 03 at work in rental homes, the
+living-room stretch at 3:28:40 (99.5 s, the person who set up the room out of frame). The clip and everything cut
+from it stay local (`reports/video/` is ignored); only echo's motion and our renders are published.
+
+1. `tools/video_nlf.py` runs NLF (Neural Localizer Fields, MIT code, research-use models; its model file carries its
+   own SMPL body, so no SMPL download) in its own environment on the RTX 5090: the SMPL body in every frame. NLF's
+   detector misses the bent-over robot, so the robot is also found by its difference from the empty room and passed
+   in as a box: 99.6 % of frames.
+2. `tools/nlf_to_tape.py` calibrates the camera (1.30 m up, 1.6 deg down: the horizon and height from the robot's own
+   feet and head), scales each frame about the camera so the lowest foot is on the floor, fills the 0.3 s NLF missed,
+   smooths (60 ms) and writes a 50 Hz tape in the PICO format.
+3. `tools/retarget_pico.py --hold head,wrists --pin` retargets it as the walking take, holding the head and wrists
+   straight (a video cannot show them) and pinning planted feet: they slide about 1 cm/s.
+4. `tools/scene_living_room.py` builds the room from the same frames: walls, fireplace, windows, sofa, tables, rug,
+   chairs and the TV traced to the floor through the calibrated camera, with Poly Haven's CC0 textures recoloured to
+   the room (`scenes/living_room/cc0/SOURCES.md`). A check over the whole take finds echo touching no furniture.
+5. `tools/render_compare.py` renders echo from the video's own camera, beside the clip for review or alone
+   (`--solo`) for publishing.
+
+echo bends 65-77 deg at the pick-ups where Figure folds over further: its hips stop at 97 deg of flexion. Its hands
+do not close, and there is no basket or toys yet.
+
 ## Checks (`reports/checks.md`: 246 checks, 0 failing)
 
 Carried over from CDX-3R and extended for a robot. Each one was proven on a deliberately broken design first

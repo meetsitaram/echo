@@ -44,6 +44,10 @@ keep a list like this from day one. It is how you credit people correctly and av
 | agibot-x2-record-and-replay, github.com/meetsitaram/agibot-x2-record-and-replay (the author's) | `x2_ik.py`, the X2 retargeter that `tools/retarget_pico.py` was ported from | the author's own | none |
 | The author's fork of NVIDIA's GR00T-WholeBodyControl, github.com/meetsitaram/GR00T-WholeBodyControl (gwbc-supermimic) | the author's own scripts there (`pico_tape_to_x2_gmr.py`, `build_gmr_x2_asset.py`): frame transform, segment morph, arm-plane frames, elbow posture task, rest calibration | the repo is Apache-2.0; these scripts are the author's | none for echo (no NVIDIA-authored code was ported); credited |
 | mink, github.com/kevinzakka/mink | the IK solver the retargeter calls | Apache-2.0 | none: a dependency, not copied |
+| Figure's home-work video, x.com/Figure_robot (2026-09-17), the living room at 3:28:40 | the living-room motion and the room's layout, measured from it | Figure's copyright; X's terms | the clip, its frames and the poses read from it stay local (`reports/video/` ignored); only echo's motion and our renders are published |
+| NLF, Neural Localizer Fields, github.com/isarandi/nlf | the body pose in each video frame | code MIT, models non-commercial research | none in the repo (a tool); note the research-use models before any commercial use |
+| HumanoidPose (arXiv 2610.25288), GVHMR, PromptHMR, VideoMimic, GMR's video path | surveyed for video-to-robot motion; GVHMR and PromptHMR need the SMPL files | various | none: consulted |
+| Poly Haven, polyhaven.com | nine texture photos for the living room | CC0 | none (listed in `scenes/living_room/cc0/SOURCES.md`) |
 
 ## Software
 

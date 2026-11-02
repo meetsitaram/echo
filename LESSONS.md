@@ -84,6 +84,22 @@ own humanoid this way, start with `.claude/skills/humanoid-from-spec/SKILL.md` (
 | Adding bodies to an `MjSpec` that had been compiled once put the right toe on the ankle pitch link: the right ankle roll had a zero Jacobian column and never moved | Add to a fresh spec and compile once; assert each added body's parent |
 | Kinematic playback with `mj_kinematics` alone left the directional light with a zero direction (a dark floor), and the MJCF's own spotlight sat over the origin | Call `mj_camlight` after `mj_kinematics`; light the viewing model on its own |
 | Retargeted stance feet slid 9 cm/s and sank up to 3 cm into the floor: PICO's feet drift with no contact sensing | Lock planted feet in the IK targets (a second pass over the take) and ground the lowest sole every frame: 2 cm/s, no sinking |
+| Motion from a video (2026-11-01): NLF's person detector missed the robot whenever it bent over, which is every pick-up (80 % of frames found) | The camera is fixed: find the robot by its difference from the empty room (the median of 60 frames) and pass that box to NLF as an extra detection: 99.6 % found, the bends included |
+| A floor fitted to the planted feet came out tilted a degree or two; from a camera 1.3 m up, looking almost level, that put the back wall 10.6 m away on one side and 14 m on the other, and the robot grew taller with distance | Solve the horizon and the camera's height from the robot itself: in each upright frame its foot and head are at known heights, and the ratio of their distances below the horizon holds at any depth or focal length. The robot then measures 1.60-1.62 m (head joint) from 4 to 9 m |
+| The camera's up vector had the wrong sign (tilting it up, not down): the robot came out 2.1 m tall | Derive it from the rule, not by eye: every ray on the horizon row is square to up, so u_z = (v_hz - c_y) when u_y = -f |
+| The feet slid with the video's depth jitter: each frame NLF puts the whole body a little nearer or farther | Scale each frame about the camera (the picture is unchanged) until the lowest foot is on the floor, then pin planted feet by moving the root (`--pin`): 5 cm/s to 1 cm/s |
+| The head and wrists took odd angles: a video cannot show a robot's visor direction or its wrist twist | Hold them straight (`--hold head,wrists`) and say so |
+| The hips stop at 97 deg of flexion, so echo bends 65-77 deg where Figure folds over at every pick-up | Open: a hip redesign (more flexion, a slimmer rear lobe) |
+
+## Scenes (MuJoCo)
+
+| Issue | Do instead |
+|---|---|
+| A room laid out by eye put walls through the walking robot and the coffee table under its feet | Measure the room from the same video: floor points marked on the empty-room frame, traced to the floor through the calibrated camera, so the room and the motion share one frame. Then check the whole take for overlaps with `mj_geomDistance` |
+| MuJoCo read no JPEG texture ("unsupported content type") | Keep sources as JPEG; write PNGs MuJoCo reads to an ignored build folder |
+| A 2D texture on a box geom stretched one image over each face | Build textured boxes as meshes with texture coordinates in metres (`_box_mesh`), and rounded upholstery as superellipsoid meshes |
+| Poly Haven's velvet is red and its linen blue; its walnut veneer is nearly grey | Keep the photo's detail (luminance about its mean) and recolour it to the room's colours |
+| Poly Haven's API refused Python's default user agent (403) | Send a user agent (curl -A) |
 
 ## Fusion API (new here)
 
@@ -123,6 +139,7 @@ own humanoid this way, start with `.claude/skills/humanoid-from-spec/SKILL.md` (
 
 | Issue | Do instead |
 |---|---|
+| A video of someone else's robot is theirs: its frames and clips cannot be published, and X's terms forbid downloading outside its own features | Keep the clip local and ignored (`reports/video/`), fetch only the minutes needed (an HTTP range read, ffmpeg -ss over the URL), publish only echo's motion and our own renders, and say where the motion came from with no affiliation implied |
 | The first push was rejected (GH007): the commits carried the owner's private e-mail | Author commits with the GitHub no-reply address (`<id>+<login>@users.noreply.github.com`); push with `GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never` so a missing credential fails instead of hanging |
 | A public repo next to material we may not publish: the reference robot's video frames, comparison panels made from them, the operator's raw motion capture | Ignore them by pattern from the first commit (`reports/compare/figure_*`, `compare_*.png`, `detail_*.png`, `reports/motion/`, `reports/web/`); no reference logo (trademark): our own mark |
 | A 20 MB Fusion archive was committed under the old name and renamed in the next commit, so every clone downloaded it twice | Settle names before committing large binaries. To remove one: rebuild the commits without it (`git commit-tree` on the same final tree, verify the trees identical and the file unreachable), keep a backup branch, and force-push with a lease (`--force-with-lease=main:<old>`) only with the owner's go-ahead (the permission system blocks it otherwise) |

@@ -19,6 +19,26 @@ python tools/retarget_pico.py <raw tape .npz> [--start S] [--dur D] [--out repor
 The take holds time, joint angles in MuJoCo order, root pose, and the skeleton at robot scale. Keep raw captures
 private: they record a person. Publish only the robot's motion, and only with the operator's approval.
 
+## Capture from a video
+
+A video of a robot (or a person) at work gives motion with no capture suit. echo's living-room take came from Figure's
+public video of Figure 03 tidying a room; see `docs/DESIGN.md` for the numbers.
+
+1. Choose a clip with a fixed camera and the whole body in view; cut out frames with people in them. Fetch only the
+   minutes you need (ffmpeg -ss on the file's URL reads just that range) and keep the clip out of the repo.
+2. Read the body in each frame with a model that needs no licence-gated download: NLF's TorchScript model carries its
+   own SMPL body (`tools/video_nlf.py`). Human pose models read a humanoid robot well when it stands, but their
+   detectors miss it bent over: with a fixed camera, find it by background difference and pass the box in.
+   Draw the skeleton over sample frames before trusting it.
+3. Calibrate the camera on the robot itself (`tools/nlf_to_tape.py`): its feet and head heights give the horizon and
+   the camera's height. A floor fitted to the feet tilts, and from a low camera a small tilt moves far points metres.
+4. Remove depth jitter: scale each frame about the camera until the lowest foot is on the floor.
+5. Retarget with `--hold head,wrists` (a video shows neither a visor's direction nor a wrist's twist) and `--pin`.
+6. Rebuild the room from the same frames, trace its floor points through the calibrated camera, and check the take
+   against the furniture before rendering.
+7. Render from the video's camera, beside the clip for your own review, and alone for publishing: the source video
+   is someone else's.
+
 ## Play it back
 
 ```bash

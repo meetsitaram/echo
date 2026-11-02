@@ -7,6 +7,11 @@ can buy. One Python spec generates the CAD, the robot models, the checks and the
 
 A human motion capture retargeted to echo and played back ([MP4](docs/media/echo_walk.mp4)).
 
+<img src="docs/media/echo_livingroom.webp" alt="echo tidying a living room" width="100%">
+
+echo tidying a living room: the motion is captured from a public video of Figure 03 at work, retargeted to echo and
+replayed in the same room, rebuilt from that video ([MP4](docs/media/echo_livingroom.mp4)).
+
 ![echo from the front, at 60 degrees and from the side](docs/media/echo_views.png)
 
 ## Overview
@@ -50,7 +55,9 @@ The joint table, ranges, masses and how each joint was designed are in [docs/DES
 4. **Build the CAD by script.** Fusion 360 builds the model from the same spec, through MCP.
 5. **Export and simulate.** URDF and MuJoCo models carry the bottom-up masses, and a MuJoCo test checks that the
    robot can stand and squat.
-6. **Move it.** A human motion capture is retargeted to the joints, replayed to check for collisions, and rendered.
+6. **Move it.** A motion capture is retargeted to the joints, replayed to check for collisions, and rendered. The
+   capture can be a person in a mocap suit, or a video: a body-pose model reads the robot in each frame, the camera is
+   calibrated on the room, and the room itself is rebuilt from the same frames.
 
 ## Start here
 
@@ -75,6 +82,7 @@ The [lessons learned](LESSONS.md) list every trap we hit and how it was fixed. T
 - `cad/`: the Fusion design (`echo.f3d`), the STEP file and the build scripts
 - `urdf/`: URDF and MuJoCo models with meshes
 - `reports/`: check results, masses, comparisons and renders
+- `scenes/`: rooms for echo to work in (the living room: layout measured from a video, CC0 textures)
 - `docs/`: design details and media
 - `.claude/skills/`: the method, as a guide and a Claude Code skill
 

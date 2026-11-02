@@ -35,6 +35,18 @@ rest-frame calibration) is ported from the author's own scripts, in agibot-x2-re
 fork of NVIDIA's GR00T-WholeBodyControl (github.com/meetsitaram/GR00T-WholeBodyControl). No NVIDIA-authored code is
 included.
 
+## Included: Poly Haven textures (CC0)
+
+`scenes/living_room/cc0/` holds nine texture photos from Poly Haven (polyhaven.com), released under CC0 1.0 (public
+domain). No conditions apply; they are listed with their sources in `scenes/living_room/cc0/SOURCES.md`.
+
+## Used as tools, not included
+
+| tool | used for | licence |
+|---|---|---|
+| NLF, Neural Localizer Fields, github.com/isarandi/nlf | reading the robot's body pose in each video frame (`tools/video_nlf.py`) | code MIT; models for non-commercial research use; neither is in this repository |
+| PyTorch, torchvision, OpenCV | running NLF | their own licences |
+
 ## Consulted, not copied
 
 These were read for comparison or as design references. None of their files, code, meshes or models are in echo, so
@@ -50,7 +62,9 @@ their licences place no conditions on it.
 
 Figure and Figure 03 are trademarks of Figure AI, Inc. echo is an independent project, neither affiliated with nor
 endorsed by Figure AI. Figure 03's published specifications (figure.ai) and frames of its reveal video were used to
-compare proportions; the frames are not in this repository, and echo uses its own mark, not Figure's logo.
+compare proportions; the frames are not in this repository, and echo uses its own mark, not Figure's logo. The
+living-room motion was measured from Figure's public home-work video (x.com/Figure_robot, 2026-09-17); the video, its
+frames and the poses read from it are not in this repository, only echo's retargeted motion and our own renders.
 
 RobStride and its actuator model names, PICO and XRoboToolkit, Unitree, AgiBot, Asimov, Autodesk Fusion and MuJoCo
 belong to their owners and are named only to say what was used.
