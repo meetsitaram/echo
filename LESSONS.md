@@ -104,6 +104,8 @@ Each row is something a person had to find by eye, on a small hobby-servo build 
 | A physics number is only as good as its inputs: friction, stiffness and infill were guesses, reported beside measured ones | Keep a table of each sim parameter's source: measured, scaled, copied or guessed. Randomize the guesses in training, and replace them from a test rig |
 | A background agent ended with no result and no notice, and was reported as still running | Before saying a background job is running, check that it and its output exist |
 | Stale docs: the public README described the previous robot after a fork, and the default branch's page lagged the design | Before any push, read the page a stranger lands on. Say which version it shows |
+| A trainer built for another robot ran happily on ours while dropping it from 12 cm at every reset: a height in the recipe was tuned to that robot's frame. Another setting silently did nothing, as it only acts through that robot's actuator model | Reused recipes hold absolute numbers and hidden assumptions. Before a long run: print every event and term of the loaded config and question each one; then reset, hold still with zero actions, and read the numbers (feet on the floor, none fall in 2 s). A clean smoke test only proves the code runs |
+| "Is it training our robot?" could only be answered by checking | Print from the running config: the model's source, mass, joints, each joint's actuator values against the parts catalogue. Add it to the pre-run check |
 | Notes were written only when the user asked | Add the lesson in the same step as the fix, in this repo and in any parent method repo, without being asked |
 
 ## Motion (MuJoCo)
