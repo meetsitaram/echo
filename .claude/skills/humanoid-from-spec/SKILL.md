@@ -1,6 +1,6 @@
 ---
 name: humanoid-from-spec
-description: Design and build a humanoid robot, or a look-alike of a reference robot, from one Python spec, the way the echo Figure 03 replica was built. Proportions come from reference photos and actuators are ones you can buy. The covers clear every joint, the offline physical checks are proven on broken designs, and the Fusion 360 model is built by script through MCP. Ends with a URDF/MJCF with bottom-up masses, a MuJoCo stand test, a retargeted motion-capture walk and a public repo with a README video. Use it whenever someone wants to design, model, replicate, re-proportion or iterate a humanoid or legged robot's mechanical design. It also covers CAD or a URDF/MJCF for a robot they are designing, matching a robot's look from photos or video frames found on the web, and how echo was built, even when they don't mention Fusion, a spec or this repo.
+description: Design and build a humanoid robot, or a look-alike of a reference robot, from one Python spec, the way the echo Figure 03 replica was built. Proportions come from reference photos and actuators are ones you can buy. The covers clear every joint, the offline physical checks are proven on broken designs, and the Fusion 360 model is built by script through MCP. Ends with a URDF/MJCF with bottom-up masses, a MuJoCo stand test, a retargeted motion-capture walk and a public repo with a README video. Use it whenever someone wants to design, model, replicate, re-proportion or iterate a humanoid or legged robot's mechanical design. It also covers CAD or a URDF/MJCF for a robot they are designing, matching a robot's look from photos, video frames or the reference robot's own URDF/MJCF model, validating joints by posing both robots alike, and how echo was built, even when they don't mention Fusion, a spec or this repo.
 ---
 
 # Build a humanoid from one spec
@@ -26,7 +26,7 @@ right or whether a trade-off is acceptable. You and the user do. So:
 
 Stop and show the user pictures whenever the look is at stake; don't push to a public repo without their go-ahead.
 
-## Five rules, and why
+## Eight rules, and why
 
 1. **One source of truth.** Everything is generated from `spec/robot.py`: the Fusion model, the URDF/MJCF, masses,
    renders and the web viewer. Never hand-edit the CAD or `robot.json`. A change is then one edit and a rebuild, and
@@ -41,6 +41,13 @@ Stop and show the user pictures whenever the look is at stake; don't push to a p
    Numbers hide ugly geometry.
 5. **Real parts, honest numbers.** Use actuators someone sells, compute masses bottom-up from materials, and report
    the gap to the target rather than padding the model to hit it.
+6. **Copy the reference's joints before its look.** If the reference has a model (URDF, MJCF, STEP), read every
+   joint's position, axis and range, and which body each actuator rides in; lay yours out the same way and take its
+   zero pose as yours. Laying joints out by reasoning cost a later build eight review rounds.
+7. **Measure, don't draw.** Slice the reference's meshes (or measure its frames) on a grid and build every visible
+   shape from the numbers; compare close-ups on a grid.
+8. **Validate motion, not just poses.** Move both robots through the reference's own poses and single-joint moves
+   with matched axis signs and compare where the joints land. It finds ranges no picture shows.
 
 ## Before you start
 
@@ -69,6 +76,10 @@ sections.
 Write the targets to `spec/targets.json`: landmark heights (chin, shoulder top, elbow, wrist, fingertip, hip line,
 knee) and widths, each with its source frame, time code and tolerance.
 
+If the reference robot's model is published, get it first and measure from it on a grid; check its licence (measure,
+never copy meshes) and keep it out of the repo. Look for motion in the maker's launch video as well as its photos.
+See `references/reference-models-and-review.md`.
+
 Measure heights in level views only; a raised camera lifts every top surface. For a 3/4 frame, fit the camera
 angle first: render the model at several angles and keep the one whose silhouette widths match (echo's 3/4 frame
 was at 60°, not 40°). Zoom into every region of the reference before modelling it. echo's "black head" turned out
@@ -80,8 +91,12 @@ to be a grey knit hood with a black visor, visible only in a close-up.
   (Asimov 1, Unitree G1/H2, AgiBot X2): download their URDFs and compare joint order, offsets and ranges.
 - **Before reordering joints for looks, check where the new first actuator goes.** A yaw-first hip needs a motor
   above each hip; echo had no room for one, so the hip covers were moved to another link instead.
+- **With a reference model: copy its joint layout** (positions, axes, ranges, which link each actuator rides in,
+  which axes share a height), take its zero pose, and find where it keeps its boards and battery.
 - **Actuators.** Put the catalog in `spec/actuators.json`: size, mass, rated and peak torque, gear, rotor inertia.
   Mark retailer numbers as "confirm before ordering".
+- **Hold every joint on both sides**: the output on one side, an idler bearing on the other, bridged clear of the
+  actuator's swept reach.
 - **Torque.** Size each joint with the task poses in step 4, not by feel. Trade capability for looks only knowingly
   and with the user: echo took smaller elbow motors to match Figure's arms, at 3 kg continuous instead of 20.
 - **Credit references.** Note the licence of every robot you borrow from. Asimov 1 is CERN-OHL-S-2.0 hardware and
@@ -147,7 +162,9 @@ sphere where several axes cross; spheres also hide seams. The patterns, with num
 
 ### 7. Build it in Fusion
 
-Build one link per MCP call (`build.link(name)`), then rebuild its joints (`build.joints([...])`). After any
+Build after the user approves the look (and, with a reference model, the pose validation); tell the user early that
+the spec is the CAD source and Fusion comes then. Build one link per MCP call (`build.link(name)`), then rebuild its
+joints (`build.joints([...])`). After any
 timeout, ask `build.status()` before retrying: Fusion keeps working after the call times out. Save the document
 into a hub folder, then export `cad/<name>.step`, `cad/<name>.f3d` and one STL per link. See
 `references/fusion-mcp.md`. If the viewport cannot save images, the offline renders are the same shapes.
@@ -179,6 +196,20 @@ Then commit and push, with the README video re-rendered and every quoted number 
 `LESSONS.md` row for each issue the round hit and how it was fixed. Never publish the reference robot's frames,
 panels made from them, raw motion captures or anyone's trademark.
 
+## Before you call it buildable
+
+Checks that pass mean only what they test. Collision and fit checks say nothing about whether a part can be made, or holds. Say so to the user, and before a design counts as ready, have these:
+
+- **Bought parts at their real shape:** sections of the maker's CAD, not a bounding box.
+- **Every fastener in the spec:** size, length, position, direction. Parts held by nothing show up.
+- **The build order as data**, with paths: each part goes in without cutting what's on; a key reaches each fastener at that moment; the thread bites something; the head clamps something.
+- **Per made part, not per link:** one piece without bought parts in it; walls at the process's minimum; fits the machine; exported with its holes, hollow where it is hollow.
+- **A load estimate through each section on the load path**, at a landing's load, against the material's weak direction. A hand estimate finds weak parts; it doesn't replace FEA or a test.
+- **Limits scaled to the robot:** a volume limit from a big robot hides real collisions on a small one.
+- **One joint built** with real parts before buying the rest.
+
+Each of these has a `--bad` case, as every check does.
+
 ## Each round
 
 1. Change `spec/robot.py`, with the reason in a comment.
@@ -186,7 +217,8 @@ panels made from them, raw motion captures or anyone's trademark.
 3. Render before/after from front, side, back, 3/4 and the user's angle; `compare.py` against the reference;
    a green-background render if any seam changed.
 4. `python -I tools/motion_collisions.py` if a joint or cover changed.
-5. Show the user the pictures and agree the change.
+5. Look at the pictures yourself, then show the user and agree the change; send them as files when the user is
+   remote, and take every circle on their screenshots literally.
 6. Rebuild the changed links in Fusion, rebuild their joints, check `status()`, save, then export STEP, `.f3d` and
    STLs.
 7. `make_robot_files.py`, `sim_stand.py`, `mass_model.py`, the README video and views, and the web viewer export.
@@ -222,4 +254,7 @@ The tools are generic, but some parts are echo's. Change these for a different r
 - `references/sources.md`: every reference echo was built from: target specs and frames, robot URDFs, parts data,
   code and tools, what each was used for, and what its licence asks. Read before you borrow anything, and
   start your own list on day one.
+- `references/reference-models-and-review.md`: matching a reference robot whose model you can open (copy its
+  joints, measure on a grid, validate by posing both), structure that holds (U-brackets, actuator sweeps), and how to
+  work through a user's review rounds. Read before any look-alike.
 - `LESSONS.md` at the repo root: the traps, with what fixed each.

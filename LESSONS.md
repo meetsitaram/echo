@@ -77,6 +77,24 @@ own humanoid this way, start with `.claude/skills/humanoid-from-spec/SKILL.md` (
 | A small domed pad's sections were closer together than the wall is thick, so the skin's cavity (each end moved in by the wall) put sections out of order and the interpolation failed ('x must be strictly increasing') | When moving a loft's ends in for the cavity, drop the middle sections the moved ends pass (`geom.inner_of`) |
 | A hip lobe's flat cut faces went through the hip motors and no check saw it: the sweep and skin checks take covers as 3 mm walls, open where they are cut | Check 'covers': each cover's skin closed on its flat cut faces (as Fusion draws them) against the motors of its own and the neighbouring links. Where a motor passes a cover's face, a round opening 3 mm clear of it, centred on the motor's axis |
 
+## Buildable, not only fitting
+
+Each row is something a person had to find by eye, on a small hobby-servo build made with these same tools. Passing collision checks said nothing about any of them.
+
+| Issue | Do instead |
+|---|---|
+| A flat 3 mm printed plate carried the whole robot's weight, bent across its thin side; the collision checks passed it | Estimate the stress through each section on the load path, at a landing's load (3 g), against the material across its print layers. Give each a `--bad` case. It finds weak parts; it does not replace FEA or a test |
+| A bracket and a mount were joined to their links only through a bought actuator's case: the "link is one solid" check counted the case as structure | Check connectivity per made part, not per link: each printed or machined part must be one piece with the bought parts left out |
+| Slivers under 1 mm beside bores, in plates that looked fine | Check walls on each part (a voxel opening at the smallest wall the process holds). Name what is thin on purpose, and why |
+| An actuator drawn as its bounding box hid a step round its output and a lump on its back, so a seat's floor was meaningless on the real part | Model bought parts from sections of the maker's CAD; never design a seat or a mount against a bounding box |
+| A plate's corner poked out of a rounded cover: a flag meant for parts that show had excused it from the skin check | Flag only what is meant to show. A part under a cover takes the cover's outline, inset, and stays under the check |
+| Fasteners were decorations, with no length or direction, so parts were held by nothing and no hole was ever defined | Put every fastener in the spec: size, length, position, direction. Let them drive the assembly checks, the BOM and the holes in the exported parts |
+| The finished robot passed, but a one-piece part had no way on, a tray closed on both sides could not take its actuator, and a bracket's screws sat under the next actuator | Hold the build order as data, with a path for each part. Check: it slides in without cutting what's on; a key reaches each screw at that moment; the thread bites something; the head clamps something |
+| A collision limit set for one robot's size hid real collisions on a robot five times smaller | Scale volume limits with the robot (by the cube of its size), and list what a limit hides before trusting it |
+| Thin covers exported solid, and reported hundreds of grams too heavy | Export what will really be made: the wall, with its holes. Look at the exported volumes |
+| Reported "0 failing" as if it meant "buildable" | Say what the checks do not cover. Build one joint with real parts before buying the rest |
+| An interrupted command had already run, and the report said nothing had changed | After any interrupted step, read the state before saying what is in it |
+
 ## Motion (MuJoCo)
 
 | Issue | Do instead |
