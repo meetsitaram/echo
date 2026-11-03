@@ -94,6 +94,17 @@ Each row is something a person had to find by eye, on a small hobby-servo build 
 | Thin covers exported solid, and reported hundreds of grams too heavy | Export what will really be made: the wall, with its holes. Look at the exported volumes |
 | Reported "0 failing" as if it meant "buildable" | Say what the checks do not cover. Build one joint with real parts before buying the rest |
 | An interrupted command had already run, and the report said nothing had changed | After any interrupted step, read the state before saying what is in it |
+| Reviewed for hours in offline renders, the user assumed they were looking at CAD, and asked late on "were you building the whole thing without Fusion?" | State at the start of each review what the pictures are (offline primitives, or CAD), and what that can't show. Say early when CAD comes, and what it would add |
+| A build video's parts were left out of place at the end, because a moved group didn't include what it was built on; small contact sheets hid it and the user found it | Assert in the renderer that every part ends at its final pose. Look at full-size frames of the finished result from several sides |
+| A moving part was only ever compared shut; open, it was a hollow ring against the reference's filled one | Compare moving parts through their range, against the reference's own footage |
+| Tools forked from a larger robot failed on the new one, and their names and assumptions were still the old robot's | Try each inherited tool early, and list which ones really work. Don't report a tool as available until it has run on this robot |
+| A first torque analysis looked plausible but was meaningless: the floor carried nothing and the root held all the weight. A fall detector read a height that was never the robot's height | Sanity-check physics results against something known before reporting: does the floor carry the weight? does the first frame pass? Report a test as invalid rather than rounding it into a result |
+| Collision on the feet only: a falling robot sank through the floor | Give the whole robot simple collision shapes before judging any fall or motion, and look at the video |
+| A motion scaled by theory asked for 2.4 times the actuator's no-load speed, with a joint at its limit half the time | After retargeting, report each joint's peak speed against its no-load speed and its time at a limit, before trying physics |
+| A physics number is only as good as its inputs: friction, stiffness and infill were guesses, reported beside measured ones | Keep a table of each sim parameter's source: measured, scaled, copied or guessed. Randomize the guesses in training, and replace them from a test rig |
+| A background agent ended with no result and no notice, and was reported as still running | Before saying a background job is running, check that it and its output exist |
+| Stale docs: the public README described the previous robot after a fork, and the default branch's page lagged the design | Before any push, read the page a stranger lands on. Say which version it shows |
+| Notes were written only when the user asked | Add the lesson in the same step as the fix, in this repo and in any parent method repo, without being asked |
 
 ## Motion (MuJoCo)
 

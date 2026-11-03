@@ -206,6 +206,7 @@ Checks that pass mean only what they test. Collision and fit checks say nothing 
 - **Per made part, not per link:** one piece without bought parts in it; walls at the process's minimum; fits the machine; exported with its holes, hollow where it is hollow.
 - **A load estimate through each section on the load path**, at a landing's load, against the material's weak direction. A hand estimate finds weak parts; it doesn't replace FEA or a test.
 - **Limits scaled to the robot:** a volume limit from a big robot hides real collisions on a small one.
+- **Sim results sanity-checked:** the floor carries the weight, the whole robot collides, inherited tools have really run on this robot, each joint's speed is under its actuator's, and every sim parameter's source (measured, scaled, copied, guessed) is written down.
 - **One joint built** with real parts before buying the rest.
 
 Each of these has a `--bad` case, as every check does.
