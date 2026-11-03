@@ -97,6 +97,8 @@ to be a grey knit hood with a black visor, visible only in a close-up.
   Mark retailer numbers as "confirm before ordering".
 - **Hold every joint on both sides**: the output on one side, an idler bearing on the other, bridged clear of the
   actuator's swept reach.
+- **Calculate a mechanism before offering it, from the range the motion really uses.** Compare joint strength with robots of the same class, read from their own models, by weight x leg length.
+- **Look for proven examples before picking a mechanism.** A neat calculation isn't evidence. Search for who has used that drive, bearing or material at this size and load, and name them when proposing it. If none turn up, say so, as it's a warning sign and the user's call. (A roller-chain knee on a large robot passed its torque numbers; a search only found chain on small robots, with larger machines using linkages, cables or belts. Search again when the size changes: what works at one scale may have no precedent at another.)
 - **Torque.** Size each joint with the task poses in step 4, not by feel. Trade capability for looks only knowingly
   and with the user: echo took smaller elbow motors to match Figure's arms, at 3 kg continuous instead of 20.
 - **Credit references.** Note the licence of every robot you borrow from. Asimov 1 is CERN-OHL-S-2.0 hardware and
