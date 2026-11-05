@@ -1,9 +1,9 @@
 {
  "2": {
   "pass": false,
-  "when": "2026-11-05T02:20",
+  "when": "2026-11-05T03:11",
   "failed": [
-   "tools/checks.py: 249 checks, 1 failing -> C:\\Users\\PC\\projects\\echo-v6\\reports\\checks.md"
+   "tools/checks.py: 249 checks, 1 failing -> C:\\Users\\PC\\projects\\echo-look\\reports\\checks.md"
   ]
  }
 }
