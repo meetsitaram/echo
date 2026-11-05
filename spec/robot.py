@@ -610,7 +610,18 @@ link('L_hand', 1.0, [
 # purpose (134 N m static against 120): the v5d run decides, and the check stands.
 KNEE_R, KNEE_SOCKET = 0.066, 0.070
 KNEE_W = 0.0615                           # the neck's half width, 2 mm inside the cheeks
-KNEE_FOLD = ((-0.1, KZ + 0.0834 + 0.06494), (0.1, KZ + 0.0834 - 0.06494))
+KNEE_FOLD_RAD, KNEE_FOLD_D = 2.15, 0.0699   # the fold plane: the calf's back face at this flexion, this far from the axis
+
+
+def knee_fold(rad=KNEE_FOLD_RAD, d=KNEE_FOLD_D):
+    """The fold plane's line in the side view, (x, z) rear point then front point."""
+    import math
+    nx, nz, tx, tz = -math.cos(rad), math.sin(rad), math.sin(rad), math.cos(rad)
+    return ((d * nx - 0.12 * tx, KZ + d * nz - 0.12 * tz), (d * nx + 0.12 * tx, KZ + d * nz + 0.12 * tz))
+
+
+KNEE_FOLD = knee_fold()
+KNEE_FOLD_DEG = 180 - KNEE_FOLD_RAD * 57.29578   # the plane's normal, in the side view
 
 
 def knee_ray(deg, r=0.1):
@@ -712,6 +723,9 @@ def pitch_sweep(name):
 # (the rounded hip lobe meets the waist column; walking needs ~0.2): a little range traded for Figure's hip shape
 # iteration 17: extension 0.24 (the hip roll actuator met the pelvis block at 0.257 once the lobe stopped hiding it);
 # the pitch actuator shows black between the pelvis block and the lobe, as on Figure
+THIGH_LOW = [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, 0.066, 4.0), (KZ + 0.03, 0.0, HY, KNEE_SOCKET, 0.066, 4.0),
+             (KZ + 0.10, 0.011, HY, 0.056, 0.068, 3.0), (KZ + 0.125, 0.00475, HY, 0.06275, 0.0685, 2.9),
+             (KZ + 0.16, -0.00325, HY, 0.07175, 0.069, 2.6)]
 joint('L_hip_pitch', 'pelvis', 'L_hip_pitch_link', (0, HY, HZ), 'y', (-1.65, 0.24), 'RS04',
       act_c=(0, PITCH_ACT_Y, HZ), out=+1, exposed=True)
 link('L_hip_pitch_link', 1.6, [
@@ -772,8 +786,10 @@ link('L_hip_yaw_link', 3.6, [
     # The knee RS04 (centre 0.72 m) keeps 9 mm inside the front.
     # iteration 20: the loft ran down only to 3 cm above the knee axis, so the clip below never cut it and the knee
     # showed a 3.7 cm black band in front (Figure's thigh meets the shank in a seam): now down past the axis
-    loft('L thigh', [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, 0.066, 4.0), (KZ + 0.03, 0.0, HY, KNEE_SOCKET, 0.066, 4.0),
-                     (KZ + 0.10, -0.003, HY, 0.070, 0.068, 3.0),
+    # iteration 35 (user: the thigh's back shows a corner and a notch, from holding 2.15 rad). The fold plane cannot move
+    # at this range: it is where the calf's back face lands. What can go is the corner: the back line bends in over its
+    # last 7 cm, so the plane meets it at about 30 deg, not 49, and the corner sits 1 cm lower; 13 cm deep there
+    loft('L thigh', THIGH_LOW + [
                      (KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
                      (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4),
                      (HIP_SEAM + 0.022, -0.041, HY, 0.095, 0.070, 2.4)],
@@ -785,11 +801,9 @@ link('L_hip_yaw_link', 3.6, [
     cut(cyl('L thigh top opening', (0, HY, HIP_SEAM - 0.006), 'z', 0.056, 0.032), 'L thigh'),
     cut(cyl('L thigh knee socket', (0, HY, KZ), 'y', KNEE_SOCKET, 0.16), 'L thigh'),
     cut(loft('L thigh fold', [(KZ - 0.06, -0.05, HY, 0.1, 0.09, 8.0), (KZ + 0.2, -0.05, HY, 0.1, 0.09, 8.0)],
-             clip=[below(*KNEE_FOLD), above(knee_ray(236.8), knee_ray(56.8))]), 'L thigh'),
-    # its underside dark, as the elbow's hem
-    loft('L thigh hem', [(KZ + 0.02, -0.002, HY, 0.068, 0.063, 4.0), (KZ + 0.17, -0.008, HY, 0.070, 0.066, 3.0)],
-         BLACK, 'decal', open=(), clip=[below(*up(KNEE_FOLD, 0.004)), above(*up(KNEE_FOLD, -0.0005)),
-                                        above(knee_ray(236.8), knee_ray(56.8))]),
+             clip=[below(*KNEE_FOLD), above(knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG))]), 'L thigh'),
+    # iteration 35: no dark hem here any more: from behind it stood out as a black wing over the drum, and Figure shows
+    # none; the thigh's end is its own grey face, read as a chamfer
     # in front (behind it the calf's ankle actuators fold up at deep knee bends); from the yoke, above the drum, up into the
     # hip yaw flange. Iteration 33: the frame no longer has a motor to pass through (it did, at x 12-36 mm, y +-40)
     span('L thigh frame', KZ + 0.074, HZ - 0.14, x=0.024, y=HY, sx=0.024, sy=0.08, color=BLACK, exposed=True),
@@ -838,7 +852,7 @@ def SHANK_FRONT(z):
 def SHANK_BACK(z):
     """The back line: straight from the collar to the RS03, then easing to the drum (it is what folds into the thigh)."""
     import numpy as np
-    return float(np.interp(z, (PITCH_Z, 0.35, 0.40, KZ - 0.075), (-0.0645, -0.0680, -0.0680, -0.0660))) if z > PITCH_Z else \
+    return float(np.interp(z, (PITCH_Z, 0.35, 0.40, KZ - 0.075), (-0.0645, -0.0655, -0.0660, -0.0660))) if z > PITCH_Z else \
         -0.0645 + 0.121 * (PITCH_Z - z)
 
 
