@@ -236,7 +236,7 @@ def sdf_mesh(g, hi=False):
     return trimesh.Trimesh(np.asarray(v, float), np.asarray(f, int), process=False)
 
 
-FINISH = {'silver': ((0.86, 0.865, 0.875), 1.0, 0.30), 'black': ((0.035, 0.036, 0.04), 0.9, 0.36)}
+FINISH = {'silver': ((0.86, 0.865, 0.875), 1.0, 0.30), 'black': ((0.035, 0.036, 0.04), 0.9, 0.36), 'bronze': ((0.70, 0.52, 0.31), 1.0, 0.34)}
 
 
 def finish_of(g, pts=None):

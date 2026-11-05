@@ -19,7 +19,7 @@ echo in the living room, from the quality renderer. The cover-off machinery and 
 
 ## Overview
 
-- **Size:** 1.727 m, 62.5 kg (every part's mass from its material; Figure 03 is 61 kg).
+- **Size:** 1.727 m, 62.3 kg (every part's mass from its material; Figure 03 is 61 kg).
 - **Joints:** 29: each leg 6, waist 1, neck 2, each arm 7.
 - **Actuators:** 29 off-the-shelf RobStride modules (RS00 to RS04 and RS06), each drawn at its maker's outline and
   bolted on its maker's hole patterns.
@@ -29,11 +29,12 @@ echo in the living room, from the quality renderer. The cover-off machinery and 
   iteration and not yet rebuilt.
 - **Walks:** in MuJoCo with a learned policy: 48 of 48 test walks without a fall; it rides out a 300 N shove at the
   neck and falls to a 650 N one.
-- **Checked, honestly:** 1,031 offline checks, of which 79 still fail. They include strength along named load
+- **Checked, honestly:** 1,134 offline checks, of which 64 still fail. They include strength along named load
   paths, contact areas, pins and bearings, screw threads and bolted joints, all proven on broken designs first. The
-  failures are mostly the arms and ankles, not yet redesigned, and the stair pose, which the direct knee can't do.
-- **Status:** a design in progress, not yet buildable: the legs, hips, waist and chest have real machined parts,
-  screws and bearings; the arms, ankles, feet and head are next. Strength figures are hand estimates, not FEA.
+  failures are mostly the arms, not yet redesigned, the motors' own thread depth, and the stair pose, which the
+  direct knee can't do.
+- **Status:** a design in progress, not yet buildable: the legs, ankles, feet, hips, waist, chest and neck have real
+  machined parts, screws, pins and bearings; the arms are next. Strength figures are hand estimates, not FEA.
 
 ## Design
 
@@ -48,7 +49,7 @@ echo in the living room, from the quality renderer. The cover-off machinery and 
   gussets at the folds. Underneath, each joint is a round machined housing on its motor's real face, a two-sided fork
   and a closed tube, with real bearings and screws ([joint template](reports/joint_template.md)). Motors and their
   housings are dark, structure is silver.
-- **Real parts, honest numbers.** The actuators are sold today, and masses add up from materials. The 1.5 kg over
+- **Real parts, honest numbers.** The actuators are sold today, and masses add up from materials. The 1.3 kg over
   Figure's weight stays visible rather than hidden.
 
 The joint table, ranges, masses and how each joint was designed are in [docs/DESIGN.md](docs/DESIGN.md).

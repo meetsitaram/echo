@@ -40,6 +40,7 @@ all move together. echo's first re-proportioning then passed every check first t
 | `revolve(name, axis, c, profile, ...)` | solid of revolution, profile `(t, r)` | anything that turns about its own axis |
 | `prism(name, x0, t, pts, color, role)` | convex polygon in the plane x = x0, extruded along +x | marks, swept-volume cuts |
 | `HW.machined(name, tree, color)` | a distance tree (`tools/sdf.py`), blends with real fillets, truly hollow, fill 1 | housings, forks, tubes, caps: `reports/joint_template.md` |
+| `HW.crank`, `HW.rod_end`, `HW.pin`, `HW.bushing` | a crank on a motor's hub; a spherical rod end (eye, ball, shank, jam nut); a steel pin or shoulder screw; a flanged bushing seated on its flange | a remote drive and its pivots (the ankle, `reports/joint_template.md` "Linkages") |
 
 Shaping lofts:
 - `clip=` keeps the part in front of a plane, or of every plane in a list. Helpers: `below(p, q)` and

@@ -146,7 +146,12 @@ def _joint(name):
 
 def _motor(joint):
     j = _joint(joint)
-    return j, j['act'], _S['frame'](j['act'], j['axis'], j['out'], j['clock'], _S['act'][j['act']]['r'])
+    if j['act']:
+        return j, j['act'], _S['frame'](j['act'], j['axis'], j['out'], j['clock'], _S['act'][j['act']]['r'])
+    # a remote drive (the ankle's): its motor is drawn in a link, named '<joint> actuator (buy) <model>', and carries its own frame
+    g = next(g for l in _S['links'].values() for g in l['geoms'] if g.get('role') == 'actuator' and g['name'].startswith(joint + ' actuator'))
+    f = g['outline']
+    return dict(j, act=f['model'], act_c=list(g['c']), axis=g['axis']), f['model'], f
 
 
 def _on_motor(j, f, r, ang, t):
@@ -563,6 +568,81 @@ def end_cap(c, axis, spigot_r, spigot_t, flange_r, t0, t1, post=None):
     else:
         pts += [(0.0, t1)]
     return s_rev(c, axis, rounded_poly(pts))
+
+
+# ---------------------------------------------------------------- linkages: cranks, rods with rod ends, pins, bushings (the ankle's; the arms' next)
+
+def crank(c, axis, t0, t1, hub_r, pin_c, eye_r, boss=None, bore_r=0.0):
+    """A crank on a motor's hub, as a tree: a lug from the hub (hub_r about c) to the pin's eye (eye_r about pin_c), t0..t1 along axis (world). boss: (t0, t1, r): a spacer
+    standing off the eye toward the rod end, so the rod end clears the crank's own screw heads. bore_r: a hole through the middle, where the hub's centre stands."""
+    u, v = {'y': (0, 2), 'x': (1, 2), 'z': (0, 1)}[axis]
+    k = 'xyz'.index(axis)
+    tree = s_ext(axis, t0, t1, lug((c[u], c[v]), hub_r, (pin_c[u], pin_c[v]), eye_r), e=0.0008)
+    if boss:
+        p = list(pin_c)
+        p[k] = (boss[0] + boss[1]) / 2
+        tree = s_union(0.0012, tree, s_cyl(p, axis, boss[2], abs(boss[1] - boss[0]), e=0.0005))
+    if bore_r:
+        q = list(c)
+        q[k] = (t0 + t1) / 2
+        tree = s_cut(0.0005, tree, s_cyl(q, axis, bore_r, abs(t1 - t0) + 0.002))
+    return tree
+
+
+def rod_end(name, c, pin_axis, rod_dir, eye_r, width, bore_r, neck=0.016, nut_r=0.0062, color='#3E4247', role='linkage', mass=0.012):
+    """A bought spherical rod end, drawn: its eye (axis pin_axis, eye_r, width), the ball standing proud, and a hex jam nut neck from the eye's centre along rod_dir.
+    Records what it is; the ball's misalignment is what lets the rod tilt across its pin. The rod itself is the caller's capsule, from eye centre to eye centre."""
+    d = [x / math.sqrt(sum(y * y for y in rod_dir)) for x in rod_dir]
+    nut = [c[i] + d[i] * neck for i in range(3)]
+    rec = dict(type='rod_end', bore=bore_r * 2000, eye=eye_r * 2000, width=width * 1000, pos=list(c), axis=pin_axis)
+    shank = [c[i] + d[i] * (neck + 0.002 + eye_r * 0.8) / 2 for i in range(3)]
+    return [dict(_cyl(name, c, pin_axis, eye_r, width, color, role, material='steel', mass=mass, hw=rec), segs=48),
+            dict(_cyl(f'{name} shank', shank, d, 0.0032, neck + 0.002 - eye_r * 0.8, color, role, material='steel', mass=0.002), segs=32),
+            dict(_cyl(f'{name} ball', c, pin_axis, eye_r * 0.62, width + 0.0012, BEARING_COLOR, role, material='steel', mass=0.002), segs=48),
+            dict(_cyl(f'{name} nut', nut, d, nut_r, 0.004, SCREW_COLOR, role, material='steel', mass=0.003), segs=6),
+            dict(_cut(f'{name} hole', c, pin_axis, bore_r, width + 0.004, [name, f'{name} ball']), segs=48)]
+
+
+def pin(name, c, axis, d, length, color=PIN_COLOR, role='struct', head=None, what='hardened ground pin'):
+    """A steel pin or shoulder screw on a pivot, role struct (a pivot reads it): d, length mm. head: (side +1/-1 along axis, head d mm, head length mm), drawn as hardware."""
+    m = math.pi / 4 * d * d * length * 1e-9 * 7850
+    out = [dict(_cyl(name, c, axis, d / 2000, length / 1000, color, role, material='steel', mass=m, fill=1.0, hw=dict(type='pin', d=d, length=length, pos=list(c), axis=axis, what=what)), segs=128)]
+    if role == 'hardware':                                   # a shoulder screw: hardware, not a frame part; its mass is its own
+        out[0].pop('fill')
+    if head:
+        k = 'xyz'.index(axis)
+        p = list(c)
+        p[k] += head[0] * (length + head[2]) / 2000
+        out.append(dict(_cyl(f'{name} head', p, axis, head[1] / 2000, head[2] / 1000, SCREW_COLOR, 'hardware', material='steel', mass=math.pi / 4 * head[1] ** 2 * head[2] * 1e-9 * 7850), segs=48))
+    return out
+
+
+def bushing(name, c, axis, d, D, length, flange=None, targets=(), color='#9A7B4F', seat_fit=0.0, bore_fit=0.0001, flange_in=0.0002):
+    """A flanged plain bushing (CuSn8, or a polymer one of the same size) in a seat, one part: d bore, D outside, length mm, centred on c; flange (side +1/-1 along axis, D mm, t mm)
+    on the seat's face, flange_in m into it, so it reads as seated against it. Cuts its seat in targets, seat_fit m under its outside. Its bore is bore_fit m under the pin's, so the pin
+    reads as running in it; the pivot check reads pin on bushing."""
+    k = 'xyz'.index(axis)
+    h = length / 2000
+    pts = [(d / 2000 - bore_fit, -h), (D / 2000, -h), (D / 2000, h), (d / 2000 - bore_fit, h)]
+    if flange:
+        sg, fd, ft = flange
+        ri, ro, rf = d / 2000 - bore_fit, D / 2000, fd / 2000
+        if sg > 0:
+            a = h - flange_in
+            pts = [(ri, -h), (ro, -h), (ro, a), (rf, a), (rf, a + ft / 1000), (ri, a + ft / 1000)]
+        else:
+            b = -h + flange_in
+            pts = [(ri, b - ft / 1000), (rf, b - ft / 1000), (rf, b), (ro, b), (ro, h), (ri, h)]
+    vol = math.pi / 4 * (D * D - d * d) * length + (math.pi / 4 * (flange[1] ** 2 - d * d) * flange[2] if flange else 0.0)
+    rec = dict(type='bushing', d=d, D=D, length=length, pos=list(c), axis=axis, flange=list(flange) if flange else None)
+    if flange:                                               # the end away from the flange stops 0.2 mm inside the seat
+        pts = [(r, t + (0.0002 if flange[0] > 0 else -0.0002) if (abs(t - (-h if flange[0] > 0 else h)) < 1e-9) else t) for r, t in pts]
+    out = [dict(kind='sdf', name=name, tree=s_rev(c, axis, [[r, t] for r, t in pts]), color=color, role='struct', material='bronze', fill=1.0, mass=vol * 1e-9 * 8800,
+                voxel=0.00015, voxel_hi=0.00015, finish='bronze', hw=rec)]
+    if targets:
+        out.append(dict(_cut(f'{name} seat', c, axis, D / 2000 - seat_fit + 0.0001, length / 1000, list(targets)), segs=128))
+        out.append(dict(_cut(f'{name} through', c, axis, d / 2000 + 0.0002, length / 1000 + 0.004, list(targets)), segs=128))
+    return out
 
 
 def self_test():

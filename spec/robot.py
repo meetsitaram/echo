@@ -58,6 +58,7 @@ MATERIALS = {
     'hand': dict(density=1500, note="the hand's motors, tendons and palm: explicit mass"),
     'steel': dict(density=7850, note='screws, pins and bearings: role hardware or bearing, explicit mass from spec/hardware.py (catalogue, or geometry times density)'),
     'brass': dict(density=8500, note='heat-set inserts: explicit mass from spec/hardware.py'),
+    'bronze': dict(density=8800, note='plain bushings (CuSn8, or a polymer bushing of the same size): explicit mass from spec/hardware.py'),
 }
 
 
@@ -308,8 +309,10 @@ def pelvis_tree():
 link('pelvis', 6.5, [
     # centre block; its underside is the arch between the legs (high enough for a hip flexed 60 degrees)
     # (iteration 4: shallower at the back, clear of the forward-facing hip roll outputs; the lobes cover the rest)
-    loft('pelvis', [(HZ - 0.01, 0.005, 0, 0.065, 0.058, 3.0), (HZ + 0.03, 0.005, 0, 0.075, 0.085, 3.2),
-                    (HZ + 0.088, 0.005, 0, 0.072, 0.08, 3.0)], GLOSS, open=()),
+    # iteration 43 (review: daylight between the black pelvis and the thighs, front and 3/4): it was the frame's side windows, under the block's old floor at HZ - 0.01.
+    # The block runs on down past them into a stem between the thighs, narrower than its top: the T of Figure's front view
+    loft('pelvis', [(HZ - 0.042, 0.004, 0, 0.056, 0.047, 2.6), (HZ - 0.022, 0.005, 0, 0.063, 0.056, 2.9), (HZ + 0.005, 0.005, 0, 0.071, 0.072, 3.1),
+                    (HZ + 0.03, 0.005, 0, 0.075, 0.085, 3.2), (HZ + 0.088, 0.005, 0, 0.072, 0.08, 3.0)], GLOSS, open=()),
     # it carries the power board and BMS (0.35 kg)
     HW.machined('pelvis frame', pelvis_tree(), BLACK, voxel=0.0008, voxel_hi=0.0006, exposed=True, add_mass=0.35, add_what='electronics', finish='silver', zones=[dict(c=[0.0, 0.0, HZ], axis='y', r=0.08, t0=0.0705, t1=0.2, finish='black'), dict(c=[0.0, 0.0, HZ], axis='y', r=0.08, t0=-0.2, t1=-0.0705, finish='black'), dict(c=[0.0, 0.0, 0.0], axis='z', r=0.07, t0=HZ + 0.0385, t1=1.2, finish='black')]),
     dict(cut(cyl('waist register', (0, 0, WY + 0.00543), 'z', HOUSING_BORE, 0.03955), 'pelvis frame'), segs=256),
@@ -429,16 +432,29 @@ link('torso', 19.96, [
 LINKS['torso']['geoms'].append(loft('neck flare', [
     (SZ + 0.092, -0.019, 0, 0.057, 0.083, 2.3), (SZ + 0.100, -0.020, 0, 0.0555, 0.073, 2.2), (SZ + 0.112, -0.021, 0, 0.0505, 0.060, 2.1),
     (SZ + 0.125, -0.021, 0, 0.0475, 0.0505, 2.0), (SZ + 0.14, -0.020, 0, 0.046, 0.046, 2.0)], GREY, 'knit', open=()))
-joint('neck_yaw', 'torso', 'neck_yaw_link', (NX, 0, NZ), 'z', (-1.4, 1.4), 'RS00', out=+1)
+joint('neck_yaw', 'torso', 'neck_yaw_link', (NX, 0, NZ), 'z', (-1.4, 1.4), 'RS00', out=+1,
+      flange=HW.machined('neck_yaw flange', HW.s_cyl((NX, 0, NZ + 0.0279), 'z', 0.0185, 0.0052, e=0.0005), BLACK, voxel=0.0003, voxel_hi=0.00025, finish='black'))
+def neck_housing():
+    """Iteration 43 (review: the head read as a box on a stick): a round housing round the pitch RS00, its motor on its real front face (6 M3), open behind where the motor goes in;
+    a short column down to a flange on the yaw motor's output (6 M3). Inside the neck's knit: every corner within 41 mm of the neck's axis."""
+    barrel = HW.s_cyl((NX, 0.00075, NP), 'y', 0.031, 0.0555, e=0.002)
+    column = HW.s_cyl((NX, 0.0, (NZ + 0.0303 + NP - 0.02) / 2), 'z', 0.0085, NP - 0.02 - NZ - 0.0303, e=0.0)      # inside the hub's ring of screws
+    base = HW.s_cyl((NX, 0.0, NZ + 0.0318), 'z', 0.019, 0.003, e=0.0006)
+    tree = HW.s_union(0.002, HW.s_union(0.007, barrel, column), base)
+    tree = HW.s_cut(0.0006, tree, HW.s_cyl((NX, -0.0018, NP), 'y', 0.0288, 0.0523), HW.s_cyl((NX, 0.026, NP), 'y', 0.0195, 0.006))      # the bore, open behind, its floor 0.05 mm on the motor's face; the flange's hole
+    tree = HW.s_cut(0.001, tree, *[HW.s_cyl((NX + 0.0305 * math.cos(math.radians(a)), 0.0, NP + 0.0305 * math.sin(math.radians(a))), 'y', 0.006, 0.04) for a in (0, 180)])   # windows over the motor, fore and aft
+    return HW.machined('neck housing', tree, BLACK, voxel=0.0004, voxel_hi=0.0003, finish='black', exposed=False)
+
+
 link('neck_yaw_link', 0.45, [
-    # iteration 18: only a post from the yaw flange up 2.5 mm into the pitch actuator; slim, because the neck's
-    # base tilts round it
-    dict(cyl('neck pitch post', (NX, 0, (NZ + 0.0295 + NP - 0.0275) / 2), 'z', 0.0115, NP - 0.0275 - NZ - 0.0295, BLACK, 'struct'), exposed=False, fill=0.8),
+    # iteration 18: the neck's base tilts round the pitch axis; iteration 43: the post became a housing round the pitch motor
+    neck_housing(),
 ])
 # iteration 18 (neck pitch swept with the covers): with the axis at the jaw the hood's underside crossed the pitch
 # actuator and the neck at every angle, and the chin swung into the neck. Now the neck tilts with the head, as
 # Figure's knit neck bends: one piece with the hood
-joint('neck_pitch', 'neck_yaw_link', 'head', (NX, 0, NP), 'y', (-0.4, 0.45), 'RS00', out=+1)
+joint('neck_pitch', 'neck_yaw_link', 'head', (NX, 0, NP), 'y', (-0.4, 0.45), 'RS00', out=+1,
+      flange=HW.machined('neck_pitch flange', HW.s_cyl((NX, 0.0279, NP), 'y', 0.0185, 0.0052, e=0.0005), BLACK, voxel=0.0003, voxel_hi=0.00025, finish='black'))
 # slim at the base, flaring into the hood, leaning a little forward, rising behind the head's sloped underside as on
 # Figure (iterations 4, 7); its back line runs up into the hood's nape without a notch (iteration 8). Below the
 # pitch axis its base is a zone of a sphere about the axes' crossing (round about both, so neither sweeps anything in
@@ -475,6 +491,19 @@ VISOR = [(z, cx, cy, a + 0.0015, b + 0.0015, n) for z, cx, cy, a, b, n in HEAD]
 # of hood behind it. One plane from the crown to the jaw (iterations 6, 7) kept black under the back of the head, where
 # Figure's grey neck flows up into the hood
 VISOR_EDGE = [above((0.07, CHIN + 0.004), (-0.08, CHIN + 0.088)), ahead(-0.078)]
+def head_frame():
+    """Iteration 43: a cheek on the pitch motor's flange, up to a round ring inside the head at brow height; the sensor block on its front, the board on its back, the display below.
+    The ring: 8 mm tall, 6 mm deep, 3 mm inside the shell's wall all round."""
+    z0 = CHIN + 0.118
+    cheek = HW.s_ext('y', 0.0302, 0.0342, HW.lug((NX, NP), 0.019, (0.012, z0 - 0.002), 0.013), e=0.0012)
+    cheek = HW.s_cut(0.0015, cheek, HW.s_ext('y', 0.0, 0.1, HW.lug((NX + 0.006, NP + 0.036), 0.007, (0.010, z0 - 0.03), 0.009)))
+    ring = HW.s_cut(0.0, HW.s_loft([(z0 - 0.004, 0.004, 0.0, 0.082, 0.060, 2.3), (z0 + 0.004, 0.004, 0.0, 0.082, 0.060, 2.3)], e=0.0015),
+                    HW.s_loft([(z0 - 0.006, 0.004, 0.0, 0.076, 0.054, 2.3), (z0 + 0.006, 0.004, 0.0, 0.076, 0.054, 2.3)]))
+    web = HW.s_box((0.012, 0.045, z0), (0.026, 0.03, 0.008), e=0.0015)
+    tabs = [HW.s_box((0.0795, y, z0 - 0.012), (0.006, 0.01, 0.018), e=0.001) for y in (-0.03, 0.03)]     # the display's two tabs
+    return HW.machined('head frame', HW.s_union(0.003, cheek, web, ring, *tabs), BLACK, voxel=0.0006, voxel_hi=0.0004, finish='silver')
+
+
 link('head', 1.95, [
     loft('head', HEAD, GREY, open=()),
     loft('visor', VISOR, GLOSS, 'decal', open=(), clip=VISOR_EDGE),
@@ -482,11 +511,14 @@ link('head', 1.95, [
     *camera_port('chin camera', VISOR, CHIN + 0.025, 0.0075),
     *tri_mark('face mark', VISOR, CHIN + 0.083, 0.03, '#F4F6F8'),
     loft('neck', NECK, GREY, 'knit'),
-    # cameras, mics, the face display: behind the visor, on the head frame
-    rbox('head electronics', (0.035, 0, CHIN + 0.09), (0.07, 0.08, 0.07), 0.024, '#2A2C30', mass=0.3,
-         material='electronics'),
+    # cameras, mics, the face display: behind the visor, on the head frame's ring (iteration 43: real volumes, 0.3 kg in all as before, a hand figure)
+    dict(rbox('head sensor block', (0.0705, 0, CHIN + 0.1338), (0.026, 0.075, 0.024), 0.006, '#2A2C30'), material='al7075', mass=0.06, finish='black'),     # the cameras' bracket
+    *[dict(cyl(f'head camera {k}', (0.0855, y, CHIN + 0.137), 'x', r, 0.007, '#121316'), mass=0.012, material='electronics', segs=48) for k, (y, r) in enumerate(((0.0, 0.0058), (-0.026, 0.0058), (0.026, 0.0058)))],
+    *[dict(cyl(f'head camera {k} glass', (0.0891, y, CHIN + 0.137), 'x', r * 0.72, 0.0006, LENS, 'decal'), material='pc', segs=48) for k, (y, r) in enumerate(((0.0, 0.0058), (-0.026, 0.0058), (0.026, 0.0058)))],
+    rbox('head display', (0.0795, 0, CHIN + 0.088), (0.003, 0.078, 0.048), 0.0012, '#1A1B1E', mass=0.07, material='electronics'),
+    rbox('head board', (-0.064, 0, CHIN + 0.1348), (0.03, 0.052, 0.026), 0.003, '#2E4A36', mass=0.08, material='electronics'),
     # frame: from the pitch flange (beside the pitch actuator's +y face) up into the head
-    HW.machined('head frame', HW.s_cut(0.0, HW.s_ext('y', 0.0302, 0.0342, HW.lug((NX, NP), 0.016, (0.018, CHIN + 0.088), 0.020), e=0.0015), HW.s_ext('y', 0.0, 0.1, HW.lug((NX + 0.006, NP + 0.03), 0.007, (0.016, CHIN + 0.085), 0.012))), BLACK, voxel=0.0006, finish='silver'),
+    head_frame(),
 ], 'cameras, mics')
 
 # ---------------------------------------------------------------- left arm (mirrored below)
@@ -870,7 +902,7 @@ def pitch_sweep(name):
     r, h, rf = HOUSING_OD, ACT['RS04']['h'], 0.0385
     y0, y1 = PITCH_ACT_Y - h / 2 - HY, PITCH_ACT_Y + 0.0285 - HY
     f0 = y1 - 0.001
-    out, edges = [], [0.0, 0.015, 0.025, 0.035, 0.045, 0.055, r + 0.003]
+    out, edges = [], [0.0, 0.008, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05, 0.055, 0.0595, r + 0.003]     # iteration 43: finer slices, the cut's edge read as jagged in a stride (review)
     for i in range(len(edges) - 1):
         xa, xb = edges[i], edges[i + 1]
         a, af = (max(r ** 2 - xa ** 2, 0) ** 0.5), (max(rf ** 2 - xa ** 2, 0) ** 0.5)
@@ -979,19 +1011,34 @@ def knee_body():
     # the hollow runs up round the barrel: its wall is the box's top, and no metal sits between them
     cavity = HW.s_cut(0.004, HW.s_loft(cav, e=0.003), HW.s_cyl((0.0, HY, KZ), 'y', KNEE_OD + 0.0003, 0.2), HW.s_box((0.0, HY, KZ + 0.05), (0.2, 0.2, 0.1)))
     rear = HW.s_box((KNEE_XS - 0.05, HY, (0.238 + 0.447) / 2), (0.1, 0.13, 0.447 - 0.238))
-    slots = [HW.s_box((-0.0348, HY - 0.0312, 0.238), (0.041, 0.016, 0.02), e=0.002), HW.s_box((-0.0268, HY + 0.0362, 0.238), (0.0285, 0.0135, 0.02), e=0.002)]
-    # lands for the panel's screws, and the ankle motors' seats on their front faces, outside the cranks' sweep. Not the motors' real patterns yet: the ankle's round
+    slots = [HW.s_box((-0.0348, HY - 0.0312, 0.238), (0.041, 0.016, 0.02), e=0.002), HW.s_box((-0.0248, HY + 0.0362, 0.238), (0.0325, 0.0135, 0.02), e=0.002)]
+    # lands for the panel's screws
     lands = [HW.s_box((KNEE_XS + 0.0035, HY + sg * 0.036, z), (0.0072, 0.015, 0.014), e=0.001) for sg, z in KNEE_PANEL_SCREWS]
-    seats = [HW.s_box((0.0315, HY - 0.03515, PITCH_Z), (0.011, 0.0187, 0.024), e=0.002), HW.s_box((-0.0468, HY - 0.03515, PITCH_Z), (0.0056, 0.0187, 0.024), e=0.001),
-             HW.s_box((0.0255, HY + 0.0356, ROLL_Z), (0.011, 0.0238, 0.024), e=0.002), HW.s_box((-0.010, HY + 0.0356, ROLL_Z + 0.037), (0.024, 0.0238, 0.012), e=0.002)]
-    inside = HW.s_inter(0.0, HW.s_union(0.0015, *lands, *seats), HW.s_loft(knee_secs(0.0009)))      # they end inside the wall, so none shows outside
+    # iteration 43: each ankle motor on its real face: a 4 mm plate across the section on the ears' front face, the stator screws through it, a hole round the hub for the crank.
+    # The pitch plate is cut where its rod passes (PITCH_SWEEP); the roll rod runs outside its plate's face
+    inner = HW.s_loft(knee_secs(0.0009))
+    plates = [HW.s_cut(0.0, HW.s_inter(0.0, HW.s_box((0.0, HY + sum(PITCH_PLATE) / 2, PITCH_Z - 0.00065), (0.2, abs(PITCH_PLATE[1] - PITCH_PLATE[0]), 0.1027)), inner),
+                       HW.s_cyl((CALF_X, HY + sum(PITCH_PLATE) / 2, PITCH_Z), 'y', 0.0315, 0.02, e=-0.0008),
+                       HW.s_box(((PITCH_SWEEP[0][0] + PITCH_SWEEP[1][0]) / 2, HY + sum(PITCH_PLATE) / 2, (PITCH_SWEEP[0][1] + PITCH_SWEEP[1][1]) / 2),
+                                (PITCH_SWEEP[1][0] - PITCH_SWEEP[0][0], 0.02, PITCH_SWEEP[1][1] - PITCH_SWEEP[0][1]), e=0.003)),
+              HW.s_cut(0.0, HW.s_inter(0.0, HW.s_box((0.0, HY + sum(ROLL_PLATE) / 2, (0.3497 + ROLL_Z + 0.05) / 2), (0.2, abs(ROLL_PLATE[1] - ROLL_PLATE[0]), ROLL_Z + 0.05 - 0.3497)), inner),
+                       HW.s_cyl((CALF_X, HY + sum(ROLL_PLATE) / 2, ROLL_Z), 'y', 0.0345, 0.02, e=-0.0008))]
+    inside = HW.s_inter(0.0, HW.s_union(0.0015, *lands), inner)      # they end inside the wall, so none shows outside
     shell = HW.s_union(0.0, HW.s_cut(0.0, outer, cavity), inside)      # no blend: one would ghost through the thin wall
+    shell = HW.s_union(0.0015, shell, *plates)
     shell = HW.s_union(0.004, shell, *feet)
-    pads = [HW.s_box((0.0035, HY + y * 0.026, 0.2405), (0.033, 0.0085, 0.013), e=0.001) for y in (-1, 1)]
-    shell = HW.s_union(0.0, shell, HW.s_inter(0.0, HW.s_union(0.0, *pads), HW.s_loft(knee_secs(0.0009))))
+    # iteration 43: below the floor, a closed tapered tube past both rods (2 mm wall), into a fork whose cheeks hold the cross's bushings. The thin plates that stopped at the floor are gone.
+    # Its outboard face stays inside the roll rod (y 29 at its edge), its back face in front of the pitch rod's sweep; the crown 45 mm over the axis, over all that turns under it
+    tube_secs = [(0.2365, 0.011, HY, 0.023, 0.0265, 3.2), (0.18, 0.0085, HY, 0.0215, 0.0265, 3.0), (0.142, 0.005, HY, 0.021, 0.0272, 2.8), (0.130, 0.005, HY, 0.021, 0.0275, 2.8)]
+    tube = HW.s_loft(tube_secs, e=0.002)
+    tube_cav = HW.s_loft([(z, cx, cy, a - 0.002, b - 0.002, n) for z, cx, cy, a, b, n in tube_secs if z > 0.135] + [(0.1405, 0.005, HY, 0.019, 0.0252, 2.8)], zlo=0.1405, zhi=0.2318)
+    cheeks = [HW.s_ext('y', HY + sg * 0.0225, HY + sg * 0.0275, HW.lug((0.0, AZ), 0.011, (0.005, 0.134), 0.021), e=0.0008) for sg in (-1, 1)]
+    fork = HW.s_inter(0.0, HW.s_union(0.0, *cheeks), HW.s_box((0.0, HY, 0.11), (0.08, 0.08, 0.06)))
+    lower = HW.s_cut(0.0, HW.s_union(0.003, tube, fork), tube_cav)
+    shell = HW.s_union(0.008, shell, lower)
     shell = HW.s_cut(0.0, shell, rear, *slots, HW.s_cyl((CALF_X, HY - 0.0271, PITCH_Z), 'y', 0.0365, 0.0026))      # the RS03's hub turns in that
     # user: "the dark color of the actuators doesn't show up". A round window each side of each ankle motor, so the black shows inside the silver. What it costs at walking load: reports/strength.md, 'closed section' rows
-    shell = HW.s_cut(0.002, shell, *[HW.s_cyl((CALF_X, HY + sg * 0.05, z), 'y', r, 0.03) for sg in (-1, 1) for z, r in ((PITCH_Z, 0.031), (ROLL_Z, 0.027))])
+    shell = HW.s_cut(0.002, shell, *[HW.s_cyl((CALF_X, HY + sg * 0.05, z), 'y', r if (sg, z) != (1, ROLL_Z) else 0.035, 0.03) for sg in (-1, 1) for z, r in ((PITCH_Z, 0.031), (ROLL_Z, 0.027))])      # iteration 43: the outer one over the RS06 opens to 35 mm, round its crank's rod end and pin
     return HW.machined('L shank body', shell, BLACK, voxel=0.0007, voxel_hi=0.0007, finish='silver', zones=[dict(c=[0.0, HY, KZ], axis='y', r=KNEE_OD + 0.006, finish='black')])
 
 
@@ -1148,12 +1195,43 @@ PITCH_CRANK, PITCH_ROD_END = (-0.0320, HY - 0.0398, 0.3054), (-0.0318, HY - 0.01
 ROLL_CRANK, ROLL_ROD_END = (-0.0360, HY + 0.0368, ROLL_Z), (0.0, HY + 0.034, AZ)
 
 
+# Iteration 43 (foot and ankle): y of each face from the leg's centre, left leg. Pitch RS03: ears' front face -25.8, hub -28.3, crank -28.1..-34.5 (0.2 into the hub), its spacer to -36.8,
+# rod end -36.8..-42.8 on a d6 shoulder screw. Roll RS06: ears +23.75, hub +25.25, crank +25.05..+31.25, spacer to +33.8, rod end +33.8..+39.8. Each motor's ears on a 4 mm plate across the
+# section (the shank body's), its stator screws through it; a hole round the hub for the crank to turn in. The pitch rod passes the RS03's lowest ear (22.5 deg on the maker's clock):
+# the plate is cut away there for the rod's sweep. Its two rear ears (67.5, 112.5) sit in the back panel's relief, the wall 1 mm off: no room for a plate or a head. So 5 of its 8 M4;
+# the RS06 the same at its two rear ears, 6 of 8 M3 (the scan of the RS03's turn, iteration 43: no turn clears all eight and keeps the motor inside the calf).
+PITCH_PLATE, ROLL_PLATE = (-0.02585, -0.0300), (0.0237, 0.02775)
+PITCH_CRANK_T, ROLL_CRANK_T = (-0.0281, -0.0345, -0.0368), (0.02505, 0.03125, 0.0338)
+PITCH_SWEEP = ((-0.0405, 0.226), (-0.0160, 0.297))     # x, z: where the pitch rod passes the plate over its range, 6.5 mm round (iteration 43, a scan of the crank's -1.15..+0.79 rad)
+
+
 def ankle_drive(s):
-    """The cranks and rods, at the zero pose: they move with the linkage, not with the shank or the foot, so they are drawn
-    ('linkage') and kept out of the collision checks."""
-    crank = lambda n, z, c: cap(f'{s} ankle {n} crank', (CALF_X, c[1], z), c, 0.008, '#3A3D42', 'linkage')
-    return [crank('pitch', PITCH_Z, PITCH_CRANK), cap(f'{s} ankle pitch rod', PITCH_CRANK, PITCH_ROD_END, 0.005, ALU, 'linkage'),
-            crank('roll', ROLL_Z, ROLL_CRANK), cap(f'{s} ankle roll rod', ROLL_CRANK, ROLL_ROD_END, 0.005, ALU, 'linkage')]
+    """The cranks (machined, bolted on each motor's 6 M4 hub), the rods (d10 7075) and a spherical rod end at each end on a pin. They move with the linkage, not with the shank
+    or the foot, so they are role 'linkage', out of the collision checks (check 'linkage' reads them). p0, p1 on a crank: its axis and its pin, for the strength rows."""
+    y = lambda t: HY + t
+    out = []
+    for n, z, c, t, hub_r, rod, end_w in (('pitch', PITCH_Z, PITCH_CRANK, PITCH_CRANK_T, 0.0208, PITCH_ROD_END, 0.006),
+                                          ('roll', ROLL_Z, ROLL_CRANK, ROLL_CRANK_T, 0.0175, ROLL_ROD_END, 0.006)):
+        t0, t1, tb = t
+        mid = (t0 + t1) / 2
+        tree = HW.crank((CALF_X, y(mid), z), 'y', y(t0), y(t1), hub_r, (c[0], y(mid), c[2]), 0.0075, boss=(y(t1), y(tb), 0.0052), bore_r=0.0085 if n == 'pitch' else 0.0072)
+        out.append(dict(HW.machined(f'{s} ankle {n} crank', tree, BLACK, voxel=0.0004, voxel_hi=0.0003, finish='silver'), role='linkage', p0=[CALF_X, y(mid), z], p1=[c[0], y(mid), c[2]]))
+        out.append(dict(cut(cyl(f'{s} ankle {n} crank pin hole', (c[0], y((t0 + tb) / 2), c[2]), 'y', 0.003, abs(tb - t0) + 0.002), f'{s} ankle {n} crank'), segs=48))
+        d = [rod[i] - c[i] for i in range(3)]
+        L = sum(x * x for x in d) ** 0.5
+        u = [x / L for x in d]
+        out.append(dict(cap(f'{s} ankle {n} rod', [c[i] + u[i] * 0.019 for i in range(3)], [rod[i] - u[i] * 0.019 for i in range(3)], 0.005, ALU, 'linkage'), pivots=[list(c), list(rod)]))
+        out += HW.rod_end(f'{s} ankle {n} rod end top', c, 'y', d, 0.0075, end_w, 0.003)
+        sg = 1 if n == 'roll' else -1
+        # the shoulder screw: from the crank's face through the spacer and the rod end, head outside
+        a, b = y(t0), c[1] + sg * end_w / 2
+        out += [dict(g, role='linkage') if g['role'] == 'struct' else g for g in
+                HW.pin(f'{s} ankle {n} crank pin', (c[0], (a + b) / 2, c[2]), 'y', 6.0, abs(b - a) * 1000, head=(sg, 10.0, 3.5), what='shoulder screw ISO 7379, d6, 12.9')]
+    lo = [ROLL_ROD_END[i] - ROLL_CRANK[i] for i in range(3)]
+    out += HW.rod_end(f'{s} ankle roll rod end bottom', ROLL_ROD_END, 'y', [-x for x in lo], 0.0075, 0.005, 0.003)
+    lo = [PITCH_ROD_END[i] - PITCH_CRANK[i] for i in range(3)]
+    out += HW.rod_end(f'{s} ankle pitch rod end bottom', PITCH_ROD_END, 'y', [-x for x in lo], 0.0075, 0.005, 0.003)
+    return out
 
 
 def SHANK_FRONT(z):
@@ -1246,29 +1324,72 @@ link('L_knee_link', 2.08, [
     cut(cyl('L knee rear cap hollow', (0, HY + 0.0278, KZ), 'y', 0.0479, 0.00125), 'L knee rear cap'),
     cut(cyl('L knee post hollow', (0, HY + 0.0375, KZ), 'y', 0.0125, 0.0082), 'L knee rear cap'),
     cut(cyl('L knee rear cap tab', (0.0545 * KNEE_TAB[0], HY + 0.0195, KZ + 0.0545 * KNEE_TAB[1]), [KNEE_TAB[0], 0.0, KNEE_TAB[1]], 0.0095, 0.012), 'L knee rear cap'),
-    # iteration 34: the lower plates inside the roll rod's plane (y 29.5). Iteration 41: they lap into the body's floor; the upper plates and pads are gone
-    span('L shank plate in', SHANK(0), 0.2448, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    span('L shank plate out', SHANK(0), 0.2448, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    motor('L ankle pitch actuator (buy) RS03', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2),
-    motor('L ankle roll actuator (buy) RS06', 'RS06', (CALF_X, HY, ROLL_Z), 'y', +1, MOTOR_CLOCK.get('L_ankle_roll', 0.0), r=ACT['RS06']['depth'] / 2),
+    # iteration 43: the plates and the fork's blocks are gone: the body runs on down past the rods as a closed tapered tube, into a fork that holds the cross on bushings (knee_body)
+    motor('L_ankle_pitch actuator (buy) RS03', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2),
+    motor('L_ankle_roll actuator (buy) RS06', 'RS06', (CALF_X, HY, ROLL_Z), 'y', +1, MOTOR_CLOCK.get('L_ankle_roll', 0.0), r=ACT['RS06']['depth'] / 2),
     *ankle_drive('L'),
-    # 32 mm deep (iteration 12: inside the slimmer ankle sock); iteration 34: outer face at 28.5 mm, inside the roll rod
-    rbox('L ankle fork cheek in', (0, HY - 0.0255, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
-    rbox('L ankle fork cheek out', (0, HY + 0.0255, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
-    rbox('L ankle fork bridge', (0, HY, AZ + 0.057), (0.032, 0.057, 0.012), 0.003, BLACK, exposed=True),
+    # the cross's pitch pins run in a bronze bushing in each cheek, flange inboard as the thrust face
+    *HW.bushing('L ankle pitch bushing in', (0, HY - 0.025, AZ), 'y', 12.0, 14.0, 5.0, flange=(1, 21.0, 1.0), targets=['L shank body']),
+    *HW.bushing('L ankle pitch bushing out', (0, HY + 0.025, AZ), 'y', 12.0, 14.0, 5.0, flange=(-1, 21.0, 1.0), targets=['L shank body']),
 ], 'RS03 pitch and RS06 roll in the calf, each with a crank and rod')
 # dorsiflexion 0.8 rad (iteration 12, was 0.9): the deepest pose uses 0.77 (90 deg squat); the 0.1 rad buys the
 # shoe's instep its height
 joint('L_ankle_pitch', 'L_knee_link', 'L_ankle_pitch_link', (0, HY, AZ), 'y', (-0.8, 0.55), None, remote=True,
       capacity=dict(model='RS03', count=1, ratio=1.5))
-link('L_ankle_pitch_link', 0.25, [
-    # iteration 34: 43 mm across, inside the narrower fork; its tail through the back clevis (a round hole) to the pitch arm
-    rbox('L ankle cross', (0, HY, AZ), (0.028, 0.043, 0.026), 0.004, BLACK, exposed=True),
-    dict(cyl('L ankle cross tail', (-0.0215, HY, AZ), 'x', 0.007, 0.015, BLACK), exposed=True),
-    dict(cap('L ankle pitch arm', (-0.029, HY, AZ), PITCH_ROD_END, 0.005, BLACK, 'struct'), exposed=True),
-])
+def ankle_cross():
+    """The cross (iteration 43): a round block, a boss along x for the roll shaft and one along y for the pitch pins, blended; the steel shaft through it; a stub pin pressed in each side.
+    The pitch arm clamps on the shaft behind the rear clevis, where the pitch rod's lower rod end hangs on its pin."""
+    c = (0.0, HY, AZ)
+    tree = HW.s_union(0.004, HW.s_cyl(c, 'x', 0.0115, 0.0306, e=0.0015), HW.s_cyl(c, 'y', 0.0108, 0.0424, e=0.0015))
+    hub = HW.s_cyl((-0.027, HY, AZ), 'x', 0.0095, 0.009, e=0.001)
+    lug = HW.s_inter(0.0, HW.s_ext('y', HY - 0.0095, HY - 0.0035, HW.lug((-0.0265, AZ), 0.0085, (PITCH_ROD_END[0], PITCH_ROD_END[2]), 0.0065), e=0.0006),
+                     HW.s_box((-0.0405, HY, AZ + 0.01), (0.036, 0.04, 0.06)))
+    arm = HW.s_union(0.002, hub, lug)
+    return [
+        HW.machined('L ankle cross', tree, BLACK, voxel=0.0004, voxel_hi=0.0003, finish='silver', exposed=True),
+        dict(HW.machined('L ankle pitch arm', arm, BLACK, voxel=0.0004, voxel_hi=0.0003, finish='silver', exposed=True), p0=[-0.0265, HY - 0.0065, AZ], p1=[PITCH_ROD_END[0], HY - 0.0065, PITCH_ROD_END[2]]),
+        *HW.pin('L ankle roll shaft', (-0.004, HY, AZ), 'x', 12.0, 55.0, what='ground shaft, d12 h6, through the cross and both clevis bushings; the arm keyed on its end'),
+        *HW.pin('L ankle pitch pin in', (0.0, HY - 0.0205, AZ), 'y', 12.0, 14.0, role='hardware', what='stub pin, d12 h6, pressed into the cross'),
+        *HW.pin('L ankle pitch pin out', (0.0, HY + 0.0205, AZ), 'y', 12.0, 14.0, role='hardware', what='stub pin, d12 h6, pressed into the cross'),
+        dict(cut(cyl('L ankle cross shaft hole', (-0.004, HY, AZ), 'x', 0.006, 0.06), 'L ankle cross', 'L ankle pitch arm'), segs=128),
+        *[dict(cut(cyl(f'L ankle cross pin hole {sd}', (0.0, HY + sg * 0.0175, AZ), 'y', 0.006, 0.0081), 'L ankle cross'), segs=128) for sd, sg in (('in', -1), ('out', 1))],
+        dict(cut(cyl('L ankle pitch arm pin hole', (PITCH_ROD_END[0], HY - 0.0065, PITCH_ROD_END[2]), 'y', 0.003, 0.0074), 'L ankle pitch arm'), segs=48),
+        *HW.pin('L ankle pitch arm pin', (PITCH_ROD_END[0], HY - 0.009, PITCH_ROD_END[2]), 'y', 6.0, 11.0, role='hardware', head=(-1, 10.0, 3.0), what='shoulder screw ISO 7379, d6, 12.9, into the arm'),
+    ]
+
+
+link('L_ankle_pitch_link', 0.25, ankle_cross())
 joint('L_ankle_roll', 'L_ankle_pitch_link', 'L_foot', (0, HY, AZ), 'x', (-0.3, 0.3), None, remote=True,
       capacity=dict(model='RS06', count=1, ratio=1.32))
+
+
+def foot_frame():
+    """The foot's frame (iteration 43): a 3 mm floor, a 3 mm rim, ribs under each clevis plate and along the middle, pockets between, 14 mm deep in all; the two clevis plates rise
+    from it to the roll axis, each round a bronze bushing. Inside the shoe's sole and midsole. The roll rod's post is its own part, bolted on after the pitch pins are in."""
+    out = HW.rounded_poly([(-0.046, HY - 0.029, 0.012), (-0.026, HY - 0.033, 0.006), (0.026, HY - 0.033, 0.006), (0.152, HY - 0.028, 0.014),
+                           (0.152, HY + 0.028, 0.014), (0.026, HY + 0.034, 0.006), (-0.026, HY + 0.034, 0.006), (-0.046, HY + 0.029, 0.012)])
+    tree = HW.s_ext('z', 0.010, 0.024, out, e=0.0012)
+    # iteration 43: 2 mm floor, 2.5 mm rim, a 3 mm rib down the middle, a 12 mm rib under each clevis plate (the post's screws are in them), 3 mm ribs elsewhere
+    bays = [(-0.0435, -0.0255), (-0.0135, 0.014), (0.026, 0.0895), (0.0925, 0.1495)]
+    pockets = []
+    for x0, x1 in bays:
+        w = 0.0255 if x1 < 0.09 else 0.0245
+        for y0, y1 in ((-w, -0.0015), (0.0015, w)):
+            pockets.append(HW.s_ext('z', 0.012, 0.03, HW.rounded_poly([(x0, HY + y0, 0.004), (x1, HY + y0, 0.004), (x1, HY + y1, 0.004), (x0, HY + y1, 0.004)]), e=0.0))
+    tree = HW.s_cut(0.0012, tree, *pockets)
+    plates = HW.s_union(0.0, *[HW.s_ext('x', x0, x1, HW.lug((HY, AZ), 0.0115, (HY, 0.031), 0.021), e=0.0008) for x0, x1 in ((0.017, 0.023), (-0.022, -0.017))])
+    plates = HW.s_cut(0.0015, plates, HW.s_ext('x', -0.03, 0.03, HW.lug((HY, AZ - 0.025), 0.0042, (HY, 0.041), 0.0095)))       # a window in each, between eye and floor
+    clevis = HW.s_inter(0.0, plates, HW.s_box((0.0, HY, 0.06), (0.1, 0.1, 0.1)))
+    tree = HW.s_union(0.004, tree, clevis)
+    return HW.machined('L foot frame', tree, BLACK, voxel=0.0006, voxel_hi=0.0004, finish='silver', exposed=True)
+
+
+def roll_post():
+    """Where the roll rod pushes: a post at y 28..31 between the outer cheek and the rod end, on a pad bolted to the frame with 2 M4 from below, its eye round the rod end's pin on the pitch axis' line."""
+    post = HW.s_ext('y', HY + 0.028, HY + 0.0315, HW.lug((0.0, AZ), 0.0075, (0.0, 0.03), 0.0115), e=0.0005)
+    pad = HW.s_box((0.001, HY + 0.0285, 0.0309), (0.051, 0.012, 0.0142), e=0.0015)
+    tree = HW.s_inter(0.0, HW.s_union(0.003, post, pad), HW.s_box((0.0, HY + 0.03, 0.0624), (0.06, 0.03, 0.0772)))
+    return HW.machined('L ankle roll post', tree, BLACK, voxel=0.0004, voxel_hi=0.0003, finish='silver', exposed=True)
 # Foot: the outsole (3 cm black rubber, rounded in plan, rocker toe) and the shoe's lower upper. The upper is one
 # loft cut in two: the toe (in front of x = 0.06, its own top: a low toe box and an instep rising to the ankle) and
 # the heel (behind, its top cut along COLLAR). A black stripe 1.2 mm proud runs from the midfoot sole up to the heel.
@@ -1298,24 +1419,24 @@ link('L_foot', 1.1, [
     # the contact box is the flat part that stands on the floor
     dict(loft('L sole', [(0.0, 0.040, HY, 0.120, 0.050, 2.6), (0.005, 0.0475, HY, 0.1325, 0.0545, 2.65),
                          (0.012, 0.0545, HY, 0.1415, 0.0570, 2.7), (0.020, 0.0565, HY, 0.1440, 0.0575, 2.75),
-                         (0.030, 0.058, HY, 0.1435, 0.0575, 2.8)], SOLE, open=()),
+                         (0.030, 0.058, HY, 0.1435, 0.0575, 2.8)], SOLE, open=('top',)),       # iteration 43: no top wall: the midsole sits there (assumptions.json shoe_walls)
          contact=dict(c=[0.040, HY, 0.015], size=[0.24, 0.10, 0.03])),
     # it carries the wireless charging coil (Figure 03 charges at 2 kW through its feet): Litz coil, ferrite, rectifier
-    rbox('L foot plate', (0.055, HY, 0.017), (0.21, 0.07, 0.016), 0.004, add_mass=0.3, add_what='electronics'),
-    loft('L shoe', SHOE, WHITE, open=('top',), clip=[ahead(0.058)]),
+    dict(foot_frame(), add_mass=0.3, add_what='electronics'),
+    *HW.bushing('L ankle roll bushing front', (0.020, HY, AZ), 'x', 12.0, 14.0, 6.0, flange=(-1, 19.0, 1.0), targets=['L foot frame']),
+    *HW.bushing('L ankle roll bushing back', (-0.0195, HY, AZ), 'x', 12.0, 14.0, 5.0, flange=(1, 19.0, 1.0), targets=['L foot frame']),
+    roll_post(),
+    dict(cut(cyl('L ankle roll post pin hole', (0.0, HY + 0.0298, AZ), 'y', 0.003, 0.0046), 'L ankle roll post'), segs=48),
+    *HW.pin('L ankle roll rod pin', (0.0, HY + 0.03225, AZ), 'y', 6.0, 8.5, role='hardware', head=(1, 9.0, 2.0), what='shoulder screw ISO 7379, d6, 12.9, into the post'),
+    dict(loft('L shoe', SHOE, WHITE, open=('top',), clip=[ahead(0.058)]), wall_fill=0.5),      # iteration 43: 1.5 mm molded TPU (assumptions.json shoe_walls)
     # the collar rim rounded (user: "curve this edge"; Figure's heel counter rolls over into the opening)
-    loft('L shoe heel', SHOE, WHITE, open=('top',), clip=[behind(0.062), rounded(below(*COLLAR), 0.008)]),
-    loft('L shoe midsole', [(z, cx, cy, a + 0.0012, b + 0.0012, n) for z, cx, cy, a, b, n in SHOE[:8]], SOLE,
-         'decal', open=(), clip=below(*RAIL)),
+    dict(loft('L shoe heel', SHOE, WHITE, open=('top',), clip=[behind(0.062), rounded(below(*COLLAR), 0.008)]), wall_fill=0.5),
+    dict(loft('L shoe midsole', [(z, cx, cy, a + 0.0012, b + 0.0012, n) for z, cx, cy, a, b, n in SHOE[:8]], SOLE,
+         'decal', open=(), clip=below(*RAIL)), wall_fill=0.45),                     # iteration 43: foam round the frame, not through it
     cut(loft('L shoe window out', WINDOW(+1), WHITE, open=()), 'L shoe', 'L shoe heel'),
     cut(loft('L shoe window in', WINDOW(-1), WHITE, open=()), 'L shoe', 'L shoe heel'),
     cut(loft('L shoe window out rim', WINDOW_DEEP(+1), WHITE, open=()), 'L shoe midsole'),
     cut(loft('L shoe window in rim', WINDOW_DEEP(-1), WHITE, open=()), 'L shoe midsole'),
-    rbox('L ankle clevis front', (0.02, HY, 0.06), (0.006, 0.04, 0.08), 0.002, BLACK, exposed=True),
-    rbox('L ankle clevis back', (-0.02, HY, 0.06), (0.006, 0.04, 0.08), 0.002, BLACK, exposed=True),
-    cut(cyl('L ankle clevis hole', (-0.02, HY, AZ), 'x', 0.010, 0.012), 'L ankle clevis back'),
-    # iteration 34: where the roll rod pushes, on the pitch axis' line, 34 mm out (8 mm wide: inside the shoe's window pocket)
-    rbox('L ankle roll pin', (ROLL_ROD_END[0], ROLL_ROD_END[1], (0.022 + AZ + 0.004) / 2), (0.014, 0.008, AZ + 0.004 - 0.022), 0.003),
 ])
 
 
@@ -1365,7 +1486,7 @@ def knee_hardware():
     # the back panel
     HW.bolt_group('L shank panel', 'L_knee_link', 'M3', 10, 'iso10642', [(KNEE_XS - 0.003, HY + sg * 0.036, z) for sg, z in KNEE_PANEL_SCREWS], 'x', 1, ['L shank back panel'], 'L shank body', 3.0,
                   load=dict(V=200.0, Fa=0.0, T=0.0, Mt=0.0, r=0.0375), note='shear flow in the closed section, a hand figure from the motor\'s torque on the section')
-    LINKS['L_knee_link']['geoms'].append(dict(motor('L ankle pitch relief', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2 * 1.012), role='cut', targets=['L shank back panel'], color='#000000', internal=True))      # the RS03's ears: machined into the panel's inner face
+    LINKS['L_knee_link']['geoms'].append(dict(motor('L ankle pitch relief', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2 * 1.012), role='cut', targets=['L shank back panel', 'L shank body'], color='#000000', internal=True))      # the RS03's ears: machined into the panel's inner face
     for k, (sg, z) in enumerate(KNEE_PANEL_SCREWS):                # a way in for head and key, through the wall behind the pad
         LINKS['L_knee_link']['geoms'].append(dict(cut(cyl(f'L shank panel head way {k + 1}', (KNEE_XS - 0.009, HY + sg * 0.036, z), 'x', 0.00365, 0.012), 'L shank back panel'), internal=True))
     # the thigh's top: the flange on the hip yaw's hub, and the tube's collar on the flange
@@ -1378,7 +1499,25 @@ def knee_hardware():
     HW.tab_notch('waist notch', 'waist_yaw', 'pelvis frame', 'pelvis')
     HW.tab_notch('L hip roll notch', 'L_hip_roll', 'L hip carrier', 'L_hip_pitch_link')
     HW.tab_notch('L shoulder stator notch', 'L_shoulder_pitch', 'chest frame', 'torso')
-    LINKS['L_knee_link']['geoms'].append(dict(motor('L ankle roll relief', 'RS06', (CALF_X, HY, ROLL_Z), 'y', +1, MOTOR_CLOCK.get('L_ankle_roll', 0.0), r=ACT['RS06']['depth'] / 2 * 1.012), role='cut', targets=['L shank back panel'], color='#000000', internal=True))
+    LINKS['L_knee_link']['geoms'].append(dict(motor('L ankle pitch relief way', 'RS03', (CALF_X, HY + 0.003, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2 * 1.012), role='cut', targets=['L shank body'], color='#000000', internal=True))      # the ears' way in: the motor goes in 3 mm off its plate, then onto it
+    LINKS['L_knee_link']['geoms'].append(dict(motor('L ankle roll relief', 'RS06', (CALF_X, HY, ROLL_Z), 'y', +1, MOTOR_CLOCK.get('L_ankle_roll', 0.0), r=ACT['RS06']['depth'] / 2 * 1.012), role='cut', targets=['L shank back panel', 'L shank body'], color='#000000', internal=True))
+    # ---- iteration 43, the ankle: each motor on its real front face, each crank on its real hub
+    HW.pattern('L ankle pitch stator', 'L_ankle_pitch', 'stator_front', 'L_knee_link', -PITCH_PLATE[1] * 1000, 12, clamps=['L shank body'], skip=(0, 1, 2), exposed=True,
+               note='5 of the 8 M4 of the RS03 through the 4 mm plate into the drawn 8 mm: the rod passes the lowest ear, the two rear ears sit in the panel\'s relief')
+    HW.pattern('L ankle roll stator', 'L_ankle_roll', 'stator_front', 'L_knee_link', ROLL_PLATE[1] * 1000, 12, clamps=['L shank body'], skip=(1, 2), exposed=True,
+               note='6 of the 8 M3 through the 4 mm plate into the drawn 8.5 mm: the two rear ears sit in the panel\'s relief')
+    HW.pattern('L ankle pitch hub', 'L_ankle_pitch', 'hub', 'L_knee_link', -PITCH_CRANK_T[1] * 1000, 12, head='iso7380', clamps=['L ankle pitch crank'], exposed=True, note='6 M4 button heads through the crank into the drawn 6 mm')
+    HW.pattern('L ankle roll hub', 'L_ankle_roll', 'hub', 'L_knee_link', ROLL_CRANK_T[1] * 1000, 12, head='iso7380', clamps=['L ankle roll crank'], exposed=True, note='6 M4 button heads through the crank into the drawn 6 mm')
+    for pat, sg in (('L ankle pitch stator', -1), ('L ankle roll stator', 1)):      # a key's way through the side wall to each stator screw
+        for k, g in enumerate(x for x in list(LINKS['L_knee_link']['geoms']) if x.get('hw', {}).get('pattern') == pat and x['hw']['type'] == 'screw'):
+            p = list(g['hw']['pos'])
+            p[1] += sg * (g['hw']['head_k'] / 1000 + 0.0005 + 0.025)
+            LINKS['L_knee_link']['geoms'].append(cut(cyl(f'{pat} way {k + 1}', p, 'y', 0.0031 if 'pitch' in pat else 0.0022, 0.05), 'L shank body'))      # the key's way, no wider than the hole
+            q = list(g['hw']['pos'])
+            q[1] += sg * (g['hw']['head_k'] / 2000 + 0.0003)
+            LINKS['L_knee_link']['geoms'].append(cut(cyl(f'{pat} spot face {k + 1}', q, 'y', g['hw']['head_d'] / 2000 + 0.0006, g['hw']['head_k'] / 1000 + 0.0006), 'L shank body'))      # where a head comes near the wall
+    HW.bolt_group('L ankle roll post', 'L_foot', 'M4', 25, 'iso4762', [(-0.0195, HY + 0.0285, 0.010), (0.020, HY + 0.0285, 0.010)], 'z', 1, ['L foot frame'], 'L ankle roll post', 14.0,
+                  load=dict(V=160.0, Fa=1385.0, T=0.0, Mt=10.0, r=0.0198), note='the roll rod at the peak of the RS06, 1,385 N along the post; its 6.6 deg lean, 160 N across, 61 mm up')
     # the pelvis: motors on their rear faces, from inside the bar; rings on the barrels; cups on the hubs
     HW.pattern('L hip pitch stator', 'L_hip_pitch', 'stator_rear', 'pelvis', -19.35, 10, clamps=['pelvis frame'], exposed=True, note='10 M4 through the bar\'s plate into the drawn rear 6 mm')
     HW.pattern('waist stator', 'waist_yaw', 'stator_rear', 'pelvis', -19.35, 10, clamps=['pelvis frame'], note='10 M4 up through the housing\'s plate')
@@ -1412,6 +1551,13 @@ def knee_hardware():
     HW.pattern('neck stator', 'neck_yaw', 'stator_front', 'torso', 24.5 + 3.5, 8, clamps=['chest frame'], note='6 M3 down through the bar\'s land')
     for k, g in enumerate(x for x in list(LINKS['torso']['geoms']) if x.get('hw', {}).get('pattern') == 'neck stator' and x['hw']['type'] == 'screw'):
         LINKS['torso']['geoms'].append(cut(cyl(f'neck stator way {k + 1}', (g['hw']['pos'][0], g['hw']['pos'][1], g['hw']['pos'][2] + 0.008), 'z', 0.0037, 0.0158), 'chest frame'))
+    # iteration 43: the neck. Pitch motor on the housing's front face, its hub through the flange into the head's cheek; the housing on the yaw hub
+    HW.pattern('neck pitch stator', 'neck_pitch', 'stator_front', 'neck_yaw_link', 28.5, 8, head='iso7380', clamps=['neck housing'], exposed=True, note='6 M3 button heads through the 3 mm plate into the drawn 5 mm')
+    HW.pattern('neck pitch hub', 'neck_pitch', 'hub', 'head', 33.2, 12, head='iso7380', clamps=['neck_pitch flange', 'head frame'], counterbore_to=34.6, exposed=True, note='6 M3 button heads, in a 1 mm counterbore, through the cheek and the flange')
+    HW.pattern('neck yaw hub', 'neck_yaw', 'hub', 'neck_yaw_link', 33.3, 12, head='iso7380', clamps=['neck_yaw flange', 'neck housing'], note='6 M3 button heads through the foot and the flange; a key down through the housing\'s floor')
+    for k, g in enumerate(x for x in list(LINKS['neck_yaw_link']['geoms']) if x.get('hw', {}).get('pattern') == 'neck yaw hub' and x['hw']['type'] == 'screw'):      # a key's way down through the bore's floor, before the pitch motor goes in
+        p = g['hw']['pos']
+        LINKS['neck_yaw_link']['geoms'].append(cut(cyl(f'neck yaw hub way {k + 1}', (p[0], p[1], (p[2] + 0.0018 + NP + 0.04) / 2), 'z', 0.0031, NP + 0.04 - p[2] - 0.0018), 'neck housing'))
     # the build order, each step checked by group 'assembly' (tools/hw_checks.py)
     py, my, up, back = (0, 1, 0), (0, -1, 0), (0, 0, 1), (-1, 0, 0)
     HW.step(['L_knee actuator (buy) RS04'], path=py, distance=0.08, screws=['L knee stator'], why='the motor into the barrel from the open end, hub first; 10 M4 from the inboard side, nothing there yet')
@@ -1420,7 +1566,33 @@ def knee_hardware():
     HW.step(['L knee outer cheek', 'L knee outer bearing', 'L knee outer ring', 'L knee post washer'], path=py, distance=0.02, screws=['L knee cheek', 'L knee cheek top', 'L knee post'], why='the outer cheek, bearing and ring in it, from outboard onto the post. 4 M5 into the crown, then the washer')
     HW.step(['L knee hub in'], path=my, distance=0.02, screws=['L knee hub in foot'], why='the hubs last: 2 M4 each, a key through the hole under the mark')
     HW.step(['L knee hub out'], path=py, distance=0.02, screws=['L knee hub out foot'], why='')
-    HW.step(['L shank back panel'], path=back, distance=0.02, screws=['L shank panel'], why='the ankle motors and rods are in from behind by now (their own round); the panel closes the section with 6 flush M3')
+    # iteration 43, the ankle. In the calf, panel off: each motor onto its plate, then its crank, rod and pins; the bushings into the fork's cheeks from inside
+    pm, rm = 'L_ankle_pitch actuator (buy) RS03', 'L_ankle_roll actuator (buy) RS06'
+    end = lambda n: [n, f'{n} ball', f'{n} nut', f'{n} shank']
+    HW.step([pm], path=py, distance=0.003, screws=['L ankle pitch stator'], why='the RS03 in from behind, then 4 mm toward its plate, hub into the hole; 7 M4 from the inboard side, a key through the wall at each')
+    HW.step([rm], path=my, distance=0.0016, screws=['L ankle roll stator'], why='the RS06 the same toward its plate, 8 M3 from outboard')
+    HW.step(['L ankle pitch crank'], path=my, distance=0.008, screws=['L ankle pitch hub'], why='the crank on the hub through the side window, 6 flush M4')
+    HW.step(['L ankle roll crank'], path=py, distance=0.008, screws=['L ankle roll hub'], why='')
+    HW.step(['L shank back panel'], path=back, distance=0.02, screws=['L shank panel'], why='the panel closes the section with 6 flush M3')
+    HW.step(['L ankle pitch bushing in'], path=py, distance=0.01, why='a bushing into each cheek from inside the fork, flange inboard')
+    HW.step(['L ankle pitch bushing out'], path=my, distance=0.01, why='')
+    # the foot on the bench: bushings in the clevis plates, the cross between them, the shaft through, the arm on its end
+    fb = ['L ankle roll bushing front', 'L ankle roll bushing back']
+    HW.step(fb[:1], path=(-1, 0, 0), distance=0.008, bench=['L foot frame'], why='on the bench: a bushing into each clevis plate from between them')
+    HW.step(fb[1:], path=(1, 0, 0), distance=0.008, bench=['L foot frame', *fb[:1]], why='')
+    HW.step(['L ankle cross'], path=up, distance=0.03, bench=['L foot frame', *fb], why='the cross down between the plates')
+    HW.step(['L ankle roll shaft'], path=back, distance=0.06, bench=['L foot frame', *fb, 'L ankle cross'], why='the shaft in from behind, through both bushings and the cross')
+    HW.step(['L ankle pitch arm'], path=back, distance=0.01, bench=['L foot frame', *fb, 'L ankle cross', 'L ankle roll shaft'], why='the arm pressed on the end of the shaft and pinned')
+    HW.step(['L foot frame'], path=(0, 0, -1), distance=0.03, with_parts=[*fb, 'L ankle cross', 'L ankle roll shaft', 'L ankle pitch arm'], why='the foot up into the fork: the cheeks pass between the clevis plates')
+    HW.step(['L ankle pitch pin in'], path=my, distance=0.02, why='each stub pin in from outside through its bushing, pressed into the cross')
+    HW.step(['L ankle pitch pin out'], path=py, distance=0.02, why='')
+    HW.step(['L ankle roll post'], path=up, distance=0.01, screws=['L ankle roll post'], why='the post for the roll rod on the frame, outboard of the pin it covers: 2 M4 from below')
+    HW.step(['L ankle pitch rod', *end('L ankle pitch rod end top'), *end('L ankle pitch rod end bottom')], path=(0, 0, -1), distance=0.003, why='each rod up through its slot in the floor, rod ends on')
+    HW.step(['L ankle roll rod', *end('L ankle roll rod end top'), *end('L ankle roll rod end bottom')], path=(0, 0, -1), distance=0.003, why='')
+    HW.step(['L ankle pitch crank pin', 'L ankle pitch crank pin head'], path=my, distance=0.02, why='a shoulder screw through each top rod end into its crank, through the side window')
+    HW.step(['L ankle roll crank pin', 'L ankle roll crank pin head'], path=py, distance=0.005, why='')
+    HW.step(['L ankle pitch arm pin', 'L ankle pitch arm pin head'], path=my, distance=0.012, why='the lower rod end of the pitch rod on the arm: a shoulder screw')
+    HW.step(['L ankle roll rod pin', 'L ankle roll rod pin head'], path=py, distance=0.012, why='the lower rod end of the roll rod on the post: a shoulder screw')
     # the pelvis
     HW.step(['L_hip_pitch actuator (buy) RS04', 'R_hip_pitch actuator (buy) RS04'], path=None, distance=0.08, screws=['L hip pitch stator', 'R hip pitch stator'], why='the hip motors into the bar from outboard, 10 M4 from inside the bar, in through the window underneath')
     HW.step(['waist_yaw actuator (buy) RS04'], path=up, distance=0.08, screws=['waist stator'], why='the waist motor from above, 10 M4 up from inside the bar')
@@ -1431,6 +1603,11 @@ def knee_hardware():
     HW.step(['L_shoulder_pitch actuator (buy) RS04', 'R_shoulder_pitch actuator (buy) RS04'], screws=['L shoulder stator', 'R shoulder stator'], why='each shoulder motor from outboard, 10 M4 from inside the bar')
     HW.step(['neck_yaw actuator (buy) RS00'], screws=['neck stator'], why='the neck motor up into the bar, through its top: 6 M3 down onto its face')
     HW.step(['battery', 'battery lower', 'compute'], why='pack and computer last, from behind and from the front, on their shelves. No path: they slide on the 0.2 mm the seats are drawn into them')
+    # iteration 43, the neck: housing on the yaw hub (a key down through its floor), the pitch motor in from behind, then the head's cheek on its hub
+    HW.step(['neck housing', 'neck_yaw flange'], path=up, distance=0.02, screws=['neck yaw hub'], why='the housing and flange on the yaw hub, 6 M3, a key down through the bore\'s floor')
+    HW.step(['neck_pitch actuator (buy) RS00'], path=my, distance=0.06, screws=['neck pitch stator'], why='the pitch motor into the housing from behind, 6 M3 through its front plate')
+    HW.step(['head frame', 'neck_pitch flange'], path=py, distance=0.02, screws=['neck pitch hub'], with_parts=['head sensor block', 'head display', 'head board', 'head camera 0', 'head camera 1', 'head camera 2'],
+            why='the head\'s cheek and flange on the hub, 6 M3, the ring and what it carries with it')
     # the leg's hip, on the bench
     HW.step(['L_hip_roll actuator (buy) RS04'], path=(1, 0, 0), distance=0.08, screws=['L hip roll stator'], bench=['L hip carrier'], why='on the bench: the roll motor into its barrel from the front, 10 M4 from behind')
     HW.step(['L hip yoke', 'L_hip_roll flange'], path=(1, 0, 0), distance=0.03, screws=['L hip roll hub'], bench=['L hip carrier', 'L_hip_roll actuator (buy) RS04'], why='the yoke onto the roll hub, 9 M5 from the front: there is no pitch motor on the bench')
@@ -1444,7 +1621,7 @@ def knee_hardware():
 knee_hardware()
 # iteration 41: bearings and every fastener in these two links are parts now, not the 6 % allowance's: it stays for their cables, thermal paste and small parts (a hand figure)
 LINKS['L_knee_link']['wiring'] = LINKS['L_hip_yaw_link']['wiring'] = 0.03
-for _ln in ('pelvis', 'torso', 'L_hip_pitch_link', 'L_hip_roll_link'):
+for _ln in ('pelvis', 'torso', 'L_hip_pitch_link', 'L_hip_roll_link', 'L_ankle_pitch_link', 'L_foot', 'neck_yaw_link'):     # iteration 43: the ankle's and the neck's bearings, pins and screws are parts now
     LINKS[_ln]['wiring'] = 0.03
 
 
@@ -1452,7 +1629,7 @@ for _ln in ('pelvis', 'torso', 'L_hip_pitch_link', 'L_hip_roll_link'):
 
 def mirror_geom(g):
     g = copy.deepcopy(g)
-    g['name'] = g['name'].replace('L ', 'R ', 1) if g['name'].startswith('L ') else g['name']
+    g['name'] = mirror_part(g['name'])                   # 'L ...' and 'L_...' (iteration 43: the ankle's motors are named for their joints)
     if 'targets' in g:
         g['targets'] = [mirror_part(t) for t in g['targets']]
     if 'hw' in g:

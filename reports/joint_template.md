@@ -33,6 +33,17 @@ The knee (iteration 41) is the pattern for the hips, elbow, shoulders and ankle.
 | Hip roll | Carrier: barrel on the roll axis, bolted on the rear face, a closed arm over the top to the pitch cup. Below, the roll output's plate sweeps, so the arm is one-sided over the top | `HW.round_housing` idea, `HW.tab_notch` |
 | Hip yaw | Yoke: boss on the roll hub, plate behind the pitch motor, a band concentric with the pitch axis, a closed housing round the RS03 and a ring on its front face | |
 | Chest | Disc on the waist cup, two closed rails, a round bar holding both shoulder pitch motors on their rear faces, the neck's motor inside its top. Pack and computer are passengers on shelves | |
+| Ankle drive (iteration 43) | Each calf motor on a 4 mm plate across the closed section, on its ears' front face; a crank on its 6 M4 hub; a d10 rod with a spherical rod end at each end on a d6 shoulder screw. The RS03 gets 5 of 8 M4 (its lowest ear is where its rod passes, its two rear ears sit in the panel's relief), the RS06 6 of 8 M3 | `HW.crank`, `HW.rod_end`, `HW.pin`, `HW.pattern` on a remote drive (`HW._motor` finds a motor named `<joint> actuator`) |
+| Ankle (iteration 43) | Shank runs on below its floor as a closed tapered tube, 2 mm wall, into a fork; a round cross between the cheeks on two d12 stub pins in flanged bronze bushings; a d12 shaft through the cross for roll, in bushings in the foot's two clevis plates; the pitch arm keyed on the shaft's rear end; the roll rod on a post bolted to the frame | `HW.bushing` |
+| Foot (iteration 43) | A pocketed frame: 2 mm floor, 2.5 mm rim, ribs, 14 mm deep, the clevis plates windowed; 1.51 kg to 1.02 kg for the foot with its shoe and 0.3 kg charging coil | |
+| Neck and head (iteration 43) | A round housing round the pitch RS00 on a column to the yaw hub, both motors on their real faces and hubs; a cheek up to a ring inside the head, carrying the camera bracket, the board and the display | |
+
+## Linkages (iteration 43)
+
+- A crank, rod and rod ends move with the linkage, so they are role `linkage`: not their motor link's frame, read by group `linkage`. A rod's `pivots` are its rod ends' centres; its tube starts past each rod end's nut.
+- Pins are `hardware` in bores their own size: a pin joins the parts it passes through (`frame_components`), and a pivot reads it as its pin. A running shaft that is also a frame part stays `struct`, in a bore its own size.
+- A flanged bushing reads as seated on its flange, 0.2 mm into the face it bears on; its sleeve stops 0.2 mm short of the seat's far face. The contact rule reads a thin press-fit shell as almost no area, so a press fit alone never joins two parts.
+- Scan a motor's clock against its rod's sweep before placing its ears' plate: the rod must pass 1.5 mm clear of every head.
 
 ## Build order, as data
 
