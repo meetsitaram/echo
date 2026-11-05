@@ -21,7 +21,7 @@ from gear_sonic.supermimic.robot_cfg import CFG
 from gear_sonic.supermimic.sim import TrackingSim
 
 
-MAX_CONTACTS = 24
+MAX_CONTACTS = 64
 
 
 def main():
@@ -31,6 +31,10 @@ def main():
     ap.add_argument('clip')
     ap.add_argument('--out', required=True)
     ap.add_argument('--seconds', type=float, default=15.0)
+    ap.add_argument('--push', type=float, default=0.0, help='m/s added to the pelvis in a random direction, as eval_design.py')
+    ap.add_argument('--push-every', type=float, default=2.0)
+    ap.add_argument('--shoves', default='', help='forces at the neck, t:newtons:seconds:direction;... direction in degrees from the robot heading: 0 pushes it forward, 90 to its left, 180 back')
+    ap.add_argument('--after-fall', type=float, default=0.0, help='keep simulating this long after a fall, the policy still running, instead of stopping')
     a = ap.parse_args()
     dev = 'cuda'
     data = joblib.load(a.motion)
@@ -58,24 +62,49 @@ def main():
     side = {}
     for b in range(m.nbody):
         n = m.body(b).name
-        side[b] = 0 if n.startswith('L_') else 1 if n.startswith('R_') else 2
+        side[b] = 2 if 'ankle' not in n and 'foot' not in n else 0 if n.startswith('L_') else 1  # a hand or knee on the floor is not a foot
     names = [m.joint(i).name for i in range(1, m.njnt)]
     rec = {k: [] for k in ('qpos', 'force', 'cop', 'torque', 'slip', 'other_n')}
-    CP, CF = [], []
+    CP, CF, PUSH = [], [], []
+    rng = np.random.default_rng(7)
+    SF, SP = [], []
+    neck = m.body('neck_yaw_link').id
+    shoves = [tuple(float(x) for x in s.split(':')) for s in a.shoves.split(';') if s]
     T = min(int((end - start).item()), int(a.seconds / CONTROL_DT))
     fell_at = -1.0
-    for t in range(T):
+    t = -1
+    while True:
+        t += 1
+        if fell_at < 0 and t >= T or fell_at >= 0 and t * CONTROL_DT >= fell_at + a.after_fall:
+            break
         with torch.no_grad():
             act = policy(sim.policy_input()).clamp(-20.0, 20.0)
+        kick = np.zeros(2)
+        if a.push and t % int(a.push_every / CONTROL_DT) == int(a.push_every / CONTROL_DT) - 1:
+            th = rng.uniform(0, 2 * np.pi)
+            kick = a.push * np.array([np.cos(th), np.sin(th)])
+            d.qvel[:2] += kick
+        PUSH.append(kick)
         d.ctrl[:] = (sim.default_q + sim.xi[:, 1:1 + len(names)] + sim.alpha * act)[0].cpu().numpy()
         f1 = sim.f + 1
         F, C, N = np.zeros((2, 3)), np.zeros((2, 3)), np.zeros(2)
         tau = np.zeros(m.nu)
+        now = t * CONTROL_DT
+        force = np.zeros(3)
+        for t0, newtons, dur, deg in shoves:
+            if t0 <= now < t0 + dur:
+                yaw = np.arctan2(2 * (d.qpos[3] * d.qpos[6] + d.qpos[4] * d.qpos[5]), 1 - 2 * (d.qpos[5] ** 2 + d.qpos[6] ** 2)) + np.radians(deg)
+                force = newtons * np.array([np.cos(yaw), np.sin(yaw), 0.0])
+        SF.append(force)
+        SP.append(d.xpos[neck].copy())
         other = 0.0
         for _ in range(sub):
             u = d.qvel[6:] / noload
             m.actuator_forcerange[:, 1] = effort * np.clip((1 - u) / (1 - knee), 0, 1)
             m.actuator_forcerange[:, 0] = -effort * np.clip((1 + u) / (1 - knee), 0, 1)
+            d.qfrc_applied[:] = 0
+            if force.any():
+                mujoco.mj_applyFT(m, d, force, np.zeros(3), d.xpos[neck], neck, d.qfrc_applied)
             mujoco.mj_step(m, d)
             tau += d.actuator_force
             w = np.zeros(6)
@@ -114,9 +143,10 @@ def main():
         CP.append(cp)
         CF.append(cf)
         lean = np.arccos(np.clip(1 - 2 * (d.qpos[4] ** 2 + d.qpos[5] ** 2), -1, 1))
-        if lean > 1.0 and fell_at < 0:
+        if (lean > 1.0 or other / sub > 100.0) and fell_at < 0:
             fell_at = t * CONTROL_DT
-            break
+            if a.after_fall <= 0:
+                break
         sim.qpos[0] = torch.as_tensor(d.qpos, device=dev, dtype=torch.float32)
         sim.qvel[0] = torch.as_tensor(d.qvel, device=dev, dtype=torch.float32)
         sim.f = torch.minimum(f1, end - 1)
@@ -126,8 +156,13 @@ def main():
     F = np.array(rec['force'])
     weight = mujoco.mj_getTotalmass(m) * 9.81
     np.savez(a.out, t=np.arange(len(q)) * CONTROL_DT, q=q[:, 7:], joint_names=np.array(names), root_pos=q[:, :3], root_quat_wxyz=q[:, 3:7],
-             force=F, cop=np.array(rec['cop']), torque=np.array(rec['torque']), other_n=np.array(rec['other_n']), weight=weight, fell_at=fell_at, clip=a.clip, contact_pos=np.array(CP), contact_force=np.array(CF))
+             force=F, cop=np.array(rec['cop']), torque=np.array(rec['torque']), other_n=np.array(rec['other_n']), weight=weight, fell_at=fell_at, clip=a.clip, contact_pos=np.array(CP), contact_force=np.array(CF), push=np.array(PUSH), shove_force=np.array(SF), shove_point=np.array(SP))
     fz = F[..., 2]
+    for t0, newtons, dur, deg in shoves:
+        k = int(t0 / CONTROL_DT)
+        if k < len(SP):
+            print(f'  shove {newtons:.0f} N for {dur} s ({newtons * dur:.0f} N s) at t {t0}, direction {deg}: neck height {SP[k][2]:.2f} m')
+    print(f'  lowest pelvis {q[:, 2].min():.2f} m')
     print(f'{a.clip}: {len(q) * CONTROL_DT:.1f} s, fell_at {fell_at}; weight {weight:.0f} N; floor force mean {fz.sum(1).mean():.0f} N ({fz.sum(1).mean() / weight:.3f} of weight), peak foot {fz.max():.0f} N; '
           f'both feet off {(fz.sum(1) < 1).mean() * 100:.1f}% of steps; one foot only {((fz > 1).sum(1) == 1).mean() * 100:.1f}%; both on {((fz > 1).sum(1) == 2).mean() * 100:.1f}%; floor force on other bodies mean {np.mean(rec["other_n"]):.1f} N')
     tq = np.array(rec['torque'])

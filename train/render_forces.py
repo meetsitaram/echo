@@ -75,7 +75,7 @@ def chart(t, fz, weight, i, window=6.0):
     return im
 
 
-def chart_portrait(t, fz, weight, i, w, h, window=6.0):
+def chart_portrait(t, fz, weight, i, w, h, window=6.0, other=None):
     """The same chart for a phone screen: large type, the readings in a row above the curves."""
     im = Image.new('RGB', (w, h), (250, 250, 252))
     dr = ImageDraw.Draw(im)
@@ -99,6 +99,8 @@ def chart_portrait(t, fz, weight, i, w, h, window=6.0):
         pts = [(float(X(t[k])), float(Y(fz[k, s]))) for k in range(lo, max(lo + 2, hi))]
         dr.line(pts, fill=RGB[s], width=5)
     dr.line([(X(t1), y0), (X(t1), y1)], fill=(30, 30, 30), width=2)
+    if other is not None and other[i] > 20:
+        dr.text((x0 + 10, 76), f'Body on floor {other[i]:4.0f} N', fill=(190, 30, 30), font=big)
     return im
 
 
@@ -110,6 +112,7 @@ def main():
     ap.add_argument('--dur', type=float, default=None)
     ap.add_argument('--title', default='')
     ap.add_argument('--view', default='hero')
+    ap.add_argument('--dist', type=float, default=None, help='camera distance')
     ap.add_argument('--portrait', action='store_true', help='1080 x 1920, for a phone: a closer camera, large type, the chart below')
     a = ap.parse_args()
     d = np.load(a.rec, allow_pickle=True)
@@ -133,7 +136,9 @@ def main():
     assert a.view in TRACKS_HEADING
     cam = mujoco.MjvCamera()
     cam.type = mujoco.mjtCamera.mjCAMERA_FREE
-    cam.elevation, cam.distance = el, 2.75 if a.portrait else 3.3
+    cam.elevation, cam.distance = el, a.dist or (2.75 if a.portrait else 3.3)
+    # Aim at the middle of the body whatever its height: standing, crouched or on the floor.
+    aim = np.clip(0.58 + 0.71 * (smooth_track(d['root_pos'][:, 2:], 0.4 * src)[:, 0] - 0.52), 0.3, 0.85)
     r = mujoco.Renderer(m, H_, W_)
     w = imageio.get_writer(a.out, fps=fps, codec='libx264', quality=7, pixelformat='yuv420p', macro_block_size=8, ffmpeg_params=['-movflags', '+faststart'])
     for i in frames:
@@ -142,13 +147,30 @@ def main():
         data.qpos[adr] = q[i]
         mujoco.mj_kinematics(m, data)
         mujoco.mj_camlight(m, data)
-        cam.lookat[:] = [track[i, 0], track[i, 1], 0.85]
+        cam.lookat[:] = [track[i, 0], track[i, 1], aim[i]]
         cam.azimuth = math.degrees(heading[i]) + az
         r.update_scene(data, cam)
         for p, f in zip(d['contact_pos'][i], d['contact_force'][i]):  # as MuJoCo's viewer shows them: each contact point and its force
             if np.isfinite(p).all():
                 arrow(r.scene, p, p + [0, 0, 0.006], (1.0, 0.55, 0.1, 1.0), 0.03)
                 arrow(r.scene, p, p + f / N_PER_M, (0.9, 0.1, 0.1, 1.0), 0.014)
+        shove = None
+        if 'push' in d.files:
+            recent = np.flatnonzero(np.abs(d['push'][max(0, i - int(0.5 * src)):i + 1]).sum(1) > 0)
+            if len(recent):
+                kick = d['push'][max(0, i - int(0.5 * src)):i + 1][recent[-1]]
+                shove = float(np.linalg.norm(kick))
+                c = data.qpos[:3] + [0, 0, 0.1]
+                arrow(r.scene, c - np.r_[kick, 0] / np.linalg.norm(kick) * 0.75, c - np.r_[kick, 0] / np.linalg.norm(kick) * 0.2, (0.1, 0.45, 1.0, 1.0), 0.04)
+        neck_n = 0.0
+        if 'shove_force' in d.files:
+            back = d['shove_force'][max(0, i - int(0.6 * src)):i + 1]
+            hit = np.flatnonzero(np.abs(back).sum(1) > 0)
+            if len(hit):
+                f = back[hit[-1]]
+                neck_n = float(np.linalg.norm(f))
+                tip = d['shove_point'][i]
+                arrow(r.scene, tip - f / neck_n * (0.25 + neck_n / 700.0), tip - f / neck_n * 0.05, (0.1, 0.45, 1.0, 1.0), 0.05)
         img = Image.fromarray(r.render())
         if a.portrait:
             dr = ImageDraw.Draw(img)
@@ -156,9 +178,11 @@ def main():
             dr.text((40, 40), a.title, fill=(255, 255, 255), font=big)
             dr.text((40, 100), 'Physics sim: every step simulated', fill=(215, 225, 235), font=small)
             dr.text((40, 140), 'Red arrows: contact forces from the solver', fill=(215, 225, 235), font=small)
-            strip = chart_portrait(t, F[..., 2], weight, i, W_, STRIP_)
+            if neck_n:
+                dr.text((40, 190), f'SHOVE {neck_n:.0f} N at the neck', fill=(120, 190, 255), font=big)
+            strip = chart_portrait(t, F[..., 2], weight, i, W_, STRIP_, other=d['other_n'])
         else:
-            caption(img, (12, 10), a.title)
+            caption(img, (12, 10), a.title + (f'    SHOVE {shove:.1f} m/s' if shove else ''))
             caption(img, (12, H - 24), f't {t[i]:5.1f} s   1x   CPU MuJoCo, every step simulated; red arrows: contact forces from the solver')
             strip = chart(t, F[..., 2], weight, i)
         frame = Image.new('RGB', (W_, H_ + STRIP_))
