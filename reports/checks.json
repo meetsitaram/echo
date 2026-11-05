@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "59.51 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "59.53 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -278,8 +278,8 @@
  {
   "group": "connect",
   "item": "torso covers mounted",
-  "status": "FAIL",
-  "detail": "2 separate pieces"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "group": "connect",

@@ -283,7 +283,7 @@ link('torso', 19.96, [
     loft('waist column', [(0.997, 0, 0, 0.068, 0.068, 2.0), (HEM - 0.03, 0, 0, 0.068, 0.068, 2.0)], GLOSS,
          open=('bottom',)),
     loft('torso rim', [(HEM - 0.035, 0, 0, 0.080, 0.094, 2.6), (HEM - 0.015, 0, 0, 0.095, 0.116, 2.9),
-                       (HEM + 0.005, 0, 0, 0.1005, 0.1245, 3.0)], GLOSS, open=('top',)),
+                       (HEM + 0.005, 0, 0, 0.0985, 0.1225, 3.0)], GLOSS, open=('top',)),
     loft('torso', TORSO),
     # Figure 03's pack is 2.3 kWh (figure.ai F.03 battery, 5 h at peak); at 175 Wh/kg for a cell pack with BMS and
     # case, 13.1 kg (it was 12.1 kg, 2 kWh: the hand mass budget's balance)
@@ -324,8 +324,9 @@ link('torso', 19.96, [
 # iteration 37 (close-up audit: Figure's neck runs down in one concave line into the shoulders; ours stood on a shelf in a collar). A knit
 # flare on the torso, from inside its top up round the neck. Role decal: soft, the rigid checks do not see it; the neck turns inside it.
 LINKS['torso']['geoms'].append(dict(loft('neck flare', [
-    (SZ + 0.085, -0.019, 0, 0.060, 0.095, 2.4), (SZ + 0.100, -0.020, 0, 0.0555, 0.073, 2.2), (SZ + 0.112, -0.021, 0, 0.0505, 0.060, 2.1),
+    (SZ + 0.092, -0.019, 0, 0.057, 0.083, 2.3), (SZ + 0.100, -0.020, 0, 0.0555, 0.073, 2.2), (SZ + 0.112, -0.021, 0, 0.0505, 0.060, 2.1),
     (SZ + 0.125, -0.021, 0, 0.0475, 0.0505, 2.0), (SZ + 0.14, -0.020, 0, 0.046, 0.046, 2.0)], GREY, 'decal', open=()), material='knit'))
+LINKS['torso']['geoms'].append(cut(cyl('neck flare bore', (NX, 0, SZ + 0.12), 'z', 0.036, 0.12), 'neck flare'))   # the neck runs through it
 joint('neck_yaw', 'torso', 'neck_yaw_link', (NX, 0, NZ), 'z', (-1.4, 1.4), 'RS00', out=+1)
 link('neck_yaw_link', 0.45, [
     # iteration 18: only a post from the yaw flange up 2.5 mm into the pitch actuator; slim, because the neck's
@@ -534,10 +535,10 @@ link('L_shoulder_roll_link', 1.0, [
 # crescent, and the roll fairing as a hook behind it). A knit dome on the arm over all three, into the torso's side.
 # Role decal: soft, the rigid checks do not see it; at high roll the real sleeve must bunch against the torso, untested.
 LINKS['L_shoulder_roll_link']['geoms'].append(dict(loft('L shoulder sleeve', [
-    (SZ - 0.085, -0.002, SY, 0.0555, 0.0465, 2.3), (SZ - 0.05, -0.008, SY - 0.002, 0.0635, 0.050, 2.3),
-    (SZ - 0.02, -0.0095, SY - 0.006, 0.068, 0.058, 2.4), (SZ + 0.015, -0.0095, SY - 0.008, 0.0675, 0.062, 2.4),
-    (SZ + 0.04, -0.008, SY - 0.01, 0.059, 0.058, 2.3), (SZ + 0.056, -0.006, SY - 0.012, 0.042, 0.046, 2.2),
-    (SZ + 0.0635, -0.005, SY - 0.014, 0.018, 0.022, 2.0)], GREY, 'decal', open=('bottom',)), material='knit'))
+    (SZ - 0.085, -0.002, SY, 0.0555, 0.0465, 2.3), (SZ - 0.05, -0.008, SY - 0.004, 0.0635, 0.054, 2.2),
+    (SZ - 0.02, -0.0095, SY - 0.012, 0.068, 0.070, 2.2), (SZ + 0.015, -0.0095, SY - 0.015, 0.0675, 0.077, 2.2),
+    (SZ + 0.04, -0.008, SY - 0.018, 0.059, 0.070, 2.1), (SZ + 0.056, -0.006, SY - 0.022, 0.042, 0.054, 2.0),
+    (SZ + 0.0635, -0.005, SY - 0.026, 0.018, 0.026, 2.0)], GREY, 'decal', open=('bottom',)), material='knit'))
 joint('L_shoulder_yaw', 'L_shoulder_roll_link', 'L_shoulder_yaw_link', (0, SY, SZ - 0.12), 'z', (-2.6, 2.6),
       'RS02', act_c=(0, SY, SZ - 0.09), out=-1, exposed='flange')   # its flange shows in the seam
 link('L_shoulder_yaw_link', 1.05, [
@@ -596,8 +597,8 @@ link('L_elbow_link', 0.85, [
     cut(cyl('L forearm axle hole in', (0, SY - ELBOW_W - 0.003, EZ), 'y', 0.02, 0.012), 'L forearm drum', 'L forearm'),
     cut(cyl('L forearm axle hole out', (0, SY + ELBOW_W + 0.003, EZ), 'y', 0.02, 0.012), 'L forearm drum', 'L forearm'),
     # the hubs: on the outside a cap on the stator's back, by the post; inside the idler, carried from the frame under the motor
-    dict(joint_hub('L elbow hub in', -1, EZ, SY, 0.043, -0.062, 0.015, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
-    dict(joint_hub('L elbow hub out', +1, EZ, SY, 0.043, -0.062, 0.015, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
+    dict(joint_hub('L elbow hub in', -1, EZ, SY, 0.043, -0.052, 0.024, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
+    dict(joint_hub('L elbow hub out', +1, EZ, SY, 0.043, -0.052, 0.024, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
     cut(cyl('L elbow hub idler bore', (0, SY - ELBOW_HUB_IN, EZ), 'y', 0.0185, 0.016), 'L elbow hub in'),
     *[g for sd, y in (('in', -1), ('out', +1)) for g in (
         cyl(f'L elbow hub ring {sd}', (0, SY + y * ELBOW_HUB_OUT, EZ), 'y', 0.034, 0.002, '#2A2C30', 'decal'),
@@ -702,7 +703,7 @@ KNEE_W = 0.036                            # the neck's half width, between the h
 KNEE_WIDE = 0.056                         # the shank's half width below the hub
 KNEE_HEM = 0.06                           # above the axis, where the thigh's full width ends
 HUB_IN, HUB_OUT = 0.041, 0.0615           # the hub's faces, from the leg's centre plane
-HUB_R, HUB_TAIL_Z, HUB_TAIL_R = 0.05, -0.07, 0.018   # round face; the tail's end circle, below the axis
+HUB_R, HUB_TAIL_Z, HUB_TAIL_R = 0.05, -0.064, 0.024   # round face; the tail's end circle, below the axis
 CHEEK_Y = 0.0385                          # thigh cheeks, 3 mm 7075, between neck and hub
 KNEE_FOLD_RAD, KNEE_FOLD_D = 2.15, 0.0699   # the fold plane: the calf's back face at this flexion, this far from the axis
 
@@ -912,7 +913,7 @@ link('L_hip_yaw_link', 3.6, [
     cut(cyl('L knee panel drum', (0, HY, KZ), 'y', KNEE_R - 0.001, 0.16), 'L knee panel'),
     # the sleeve's hem round the hub's top: the thigh's outline, between 2 and 6 cm over the axis, outside the neck
     dict(loft('L knee sleeve', [(KZ + 0.015, 0.0, HY, 0.067, 0.0605, 4.0), (KZ + 0.066, 0.0, HY, KNEE_SOCKET, 0.0605, 4.0)],
-              GREY, 'decal', open=(), clip=[above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), below((-1.0, KZ + 0.0605), (1.0, KZ + 0.0605))]),
+              GREY, 'decal', open=(), clip=[above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), below((-1.0, KZ + 0.0625), (1.0, KZ + 0.0625))]),
          material='knit'),
     cut(cyl('L knee sleeve hub', (0, HY, KZ), 'y', 0.0535, 0.16), 'L knee sleeve'),
     cut(cyl('L knee sleeve neck', (0, HY, KZ), 'y', KNEE_SOCKET, 2 * 0.0405), 'L knee sleeve'),

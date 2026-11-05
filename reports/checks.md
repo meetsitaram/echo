@@ -1,8 +1,8 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-05 05:10, 164 s
+spec: `spec/robot.json`, 2026-11-05 05:15, 164 s
 
-249 checks: 240 pass, 7 warn, **2 fail**
+249 checks: 241 pass, 7 warn, **1 fail**
 
 ## targets
 
@@ -28,7 +28,7 @@ spec: `spec/robot.json`, 2026-11-05 05:10, 164 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | total | 59.51 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
+| PASS | total | 59.53 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
 
 ## axis
 
@@ -79,7 +79,7 @@ spec: `spec/robot.json`, 2026-11-05 05:10, 164 s
 | PASS | pelvis structure |  |
 | PASS | pelvis covers mounted |  |
 | PASS | torso structure |  |
-| FAIL | torso covers mounted | 2 separate pieces |
+| PASS | torso covers mounted |  |
 | PASS | neck_yaw_link structure |  |
 | PASS | neck_yaw_link covers mounted |  |
 | PASS | head structure |  |
