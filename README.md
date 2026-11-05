@@ -12,16 +12,10 @@ force on each foot, from the solver. Motion Data by Bones Studio ([bones.studio]
 was rendered from the design as of 2026-11-05 with a policy trained before the latest structural changes; the
 exploded view and two short blends are posed, not simulated.
 
-<img src="docs/media/echo_walk.webp" alt="echo walking a retargeted motion capture" width="100%">
+![echo standing in the living room: knit grey body, glass visor, black joint hubs](docs/media/echo_room.jpg)
 
-A human motion capture retargeted to echo and played back ([MP4](docs/media/echo_walk.mp4)).
-
-<img src="docs/media/echo_livingroom.webp" alt="echo tidying a living room" width="100%">
-
-echo tidying a living room: the motion is captured from a public video of Figure 03 at work, retargeted to echo and
-replayed in the same room, rebuilt from that video ([MP4](docs/media/echo_livingroom.mp4)).
-
-![echo from the front, at 60 degrees and from the side](docs/media/echo_views.png)
+echo in the living room, from the quality renderer. The cover-off machinery and every part laid out are in
+[reports/parts](reports/parts) (`skeleton_shiny.png`, `parts_sheet.png`).
 
 ## Overview
 
