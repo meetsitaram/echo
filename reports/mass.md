@@ -2,20 +2,20 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 57.18 kg** (Figure 03: 61.0 kg).
+**Total 57.25 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
 | actuator | 22.99 | 40 % |
 | cells | 13.10 | 23 % |
-| al7075 | 8.85 | 15 % |
-| knit_pa12 | 3.97 | 7 % |
+| al7075 | 8.89 | 16 % |
+| knit_pa12 | 4.38 | 8 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
-| pc | 1.37 | 2 % |
+| pc | 1.38 | 2 % |
 | tpu | 1.03 | 2 % |
-| pa12 | 0.85 | 1 % |
 | eva | 0.47 | 1 % |
+| pa12 | 0.46 | 1 % |
 
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
 |---|---|---|---|---|
@@ -41,10 +41,10 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_hip_pitch_link | 1.59 | 1.60 | -0.091 -0.103 +0.931 | 0.0025 0.0030 0.0032 |
 | L_hip_roll_link | 1.43 | 2.00 | -0.017 +0.105 +0.850 | 0.0025 0.0059 0.0064 |
 | R_hip_roll_link | 1.43 | 2.00 | -0.017 -0.105 +0.850 | 0.0025 0.0059 0.0064 |
-| L_hip_yaw_link | 2.63 | 3.60 | +0.004 +0.100 +0.692 | 0.0059 0.0184 0.0189 |
-| R_hip_yaw_link | 2.63 | 3.60 | +0.004 -0.100 +0.692 | 0.0059 0.0184 0.0189 |
-| L_knee_link | 2.53 | 2.08 | -0.006 +0.100 +0.344 | 0.0030 0.0343 0.0343 |
-| R_knee_link | 2.53 | 2.08 | -0.006 -0.100 +0.344 | 0.0030 0.0343 0.0343 |
+| L_hip_yaw_link | 2.58 | 3.60 | +0.002 +0.100 +0.701 | 0.0058 0.0150 0.0155 |
+| R_hip_yaw_link | 2.58 | 3.60 | +0.002 -0.100 +0.701 | 0.0058 0.0150 0.0155 |
+| L_knee_link | 2.61 | 2.08 | -0.007 +0.100 +0.349 | 0.0035 0.0377 0.0378 |
+| R_knee_link | 2.61 | 2.08 | -0.007 -0.100 +0.349 | 0.0035 0.0377 0.0378 |
 | L_ankle_pitch_link | 0.03 | 0.25 | +0.000 +0.100 +0.085 | 0.0000 0.0000 0.0000 |
 | R_ankle_pitch_link | 0.03 | 0.25 | +0.000 -0.100 +0.085 | 0.0000 0.0000 0.0000 |
 | L_foot | 1.52 | 1.10 | +0.043 +0.100 +0.029 | 0.0017 0.0079 0.0083 |

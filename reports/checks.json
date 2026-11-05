@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.18 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "57.25 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1107,7 +1107,7 @@
   "group": "sweep",
   "item": "L_hip_roll",
   "status": "WARN",
-  "detail": "[-0.35, +0.60] rad clear; lower: L_hip_yaw_link / R_hip_yaw_link: L knee pad in centre / R knee pad in centre at -0.09 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent)"
+  "detail": "[-0.35, +0.60] rad clear; lower: L_foot / R_foot: L sole / R shoe midsole at -0.10 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent)"
  },
  {
   "group": "sweep",
@@ -1335,7 +1335,7 @@
   "group": "torque",
   "item": "L_knee",
   "status": "PASS",
-  "detail": "133.6 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 84 % used"
+  "detail": "133.9 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 84 % used"
  },
  {
   "group": "torque",
@@ -1371,7 +1371,7 @@
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "68.2 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used"
+  "detail": "68.3 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used"
  },
  {
   "group": "torque",
