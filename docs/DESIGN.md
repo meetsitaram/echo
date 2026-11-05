@@ -5,6 +5,25 @@ room under rigid covers, the walking motion, the checks, the commands and the fi
 [the skill doc](../.claude/skills/humanoid-from-spec/SKILL.md); for what went wrong and how it was fixed, see
 [LESSONS.md](../LESSONS.md).
 
+**Status, 2026-11-05.** Parts of this page describe the design up to iteration 35 and have been overtaken. What
+changed since:
+
+- **Knee:** an RS04 directly on the axis, its stator on the shank, in a round machined barrel with two CRBS 508
+  bearings and a fork into a closed thigh tube. No pushrod: a 4-bar can't give 2:1 over this range. It holds the
+  walk; the stair pose stays a known failure.
+- **Covers:** the grey is a knit garment, one panel per link over an open former, ending at the black hubs, with
+  gussets behind the knee and at the elbow. The cups, sockets, drums and pads described below are gone.
+- **Shoulder:** pitch and roll axes 30 mm inboard, the arm on a 30 mm jog, a fork round the RS06.
+- **Pelvis, hips, waist, chest:** a machined pelvis bar with barrel ends, the hip roll carrier on its axis, the
+  waist motor in a round housing, and a chest frame of disc, two rails and a shoulder bar, with the battery and
+  compute as passengers.
+- **Hardware:** screws, holes, bearings and the maker's motor outlines are in the spec (`spec/hardware.py`,
+  `spec/actuator_interfaces.json`, `spec/assumptions.json`); the template is [reports/joint_template.md](../reports/joint_template.md).
+- **Checks:** 1,031, with 79 failing (`reports/checks.md`), including the new strength, contact, pivot, fastener,
+  bearing and access groups. Strength: [reports/strength.md](../reports/strength.md), hand estimates.
+- **Still to do:** arms, ankles and feet, the head, then a retarget and fine-tune of the policy, then the Fusion
+  rebuild (the CAD and STEP files are from iteration 35).
+
 ## How it matches Figure 03
 
 | | Figure 03 | echo | how it was checked |

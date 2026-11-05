@@ -203,7 +203,7 @@ panels made from them, raw motion captures or anyone's trademark.
 Checks that pass mean only what they test. Collision and fit checks say nothing about whether a part can be made, or holds. Say so to the user, and before a design counts as ready, have these:
 
 - **Bought parts at their real shape:** sections of the maker's CAD, not a bounding box.
-- **Every fastener in the spec:** size, length, position, direction, what it clamps and threads into, placed by `spec/hardware.py`. Parts held by nothing show up. (On echo: the knee only, so far.)
+- **Every fastener in the spec:** size, length, position, direction, what it clamps and threads into, placed by `spec/hardware.py`. Parts held by nothing show up. (On echo: the legs, hips, waist and chest so far.)
 - **The build order as data**, with paths: each part goes in without cutting what's on; a key reaches each fastener at that moment; the thread bites something; the head clamps something.
 - **Per made part, not per link:** one piece without bought parts in it; walls at the process's minimum; fits the machine; exported with its holes, hollow where it is hollow.
 - **A load estimate through each section on the load path**, at a landing's load, against the material's weak direction. A hand estimate finds weak parts; it doesn't replace FEA or a test.
@@ -212,6 +212,32 @@ Checks that pass mean only what they test. Collision and fit checks say nothing 
 - **One joint built** with real parts before buying the rest.
 
 Each of these has a `--bad` case, as every check does.
+
+## What echo learned past the look
+
+From the rounds after the look was close (2026-11-05). `LESSONS.md` has the details.
+
+- **A fabric-looking robot is a garment over machinery.** If the reference is knit, model the grey as one knit panel
+  per link over an open former, ending at the black hubs, with gussets where folds need length (fabric across a
+  knee needs about 40 % more length bent than straight). Rigid-cover logic there keeps making new artefacts.
+- **Black is the actuator.** A thin dark plate stuck on a cover reads as fake; a hub on the motor reads as real.
+  Give parts a `finish` (dark for motors and their housings, silver for structure) and leave a seam's shadow line
+  round each hub.
+- **Close-up audit before review.** Look at every joint beside the reference, straight and bent, before showing the
+  user. A difference you can see is fixed or explained first, not handed over as a question.
+- **Round, not flat.** Joints are round housings on the motor's real face, two-sided forks and closed tubes, as on
+  real humanoids: the pattern is in `reports/joint_template.md`. Study the reference's uncovered footage (or its
+  patents' drawings) for layout, never to trace its parts.
+- **A structure check must prove load, not touch.** "Shapes touch" passed a 2 x 2 mm spine. Check contact area per
+  interface, a minimum section along each named load path, a pin or bearing at every passive joint, linkages that
+  reach their motors, and stators on a real mounting face.
+- **Scope the strength target to the goal.** For a robot that should walk on camera, size for calm walking with a
+  margin and report the shove peaks instead of building for them.
+- **Make the inside visible.** A parts sheet (`tools/parts_sheet.py`) and a cover-off render
+  (`tools/render_skeleton.py`, `tools/render_shiny.py`) show what really exists, gaps included.
+- **Renders that sell the design honestly.** `tools/render_quality.py` (glass visor, knit, shadows, room, depth of
+  field) and `tools/showcase.py` make the film in `docs/showcase_video.md`. Every motion shot is physics, labelled;
+  anything posed says so; the motion dataset's credit is on screen.
 
 ## Each round
 
