@@ -284,14 +284,18 @@ link('torso', 19.96, [
     loft('torso', TORSO),
     # Figure 03's pack is 2.3 kWh (figure.ai F.03 battery, 5 h at peak); at 175 Wh/kg for a cell pack with BMS and
     # case, 13.1 kg (it was 12.1 kg, 2 kWh: the hand mass budget's balance)
-    span('battery', BATT_TOP - 0.13, BATT_TOP, x=-0.03, sx=0.15, sy=0.17, f=0.01, color=CELL, mass=13.1),
+    # iteration 36: 13.1 kg at 2500 kg/m3 is 5.24 L; the box was 3.3 L (3970 kg/m3, denser than a cell). Two boxes, as the
+    # torso narrows to the hem: the upper as it was (3.31 L), a lower 1.93 L sliding forward and narrower, so no cover changes.
+    # Mass shared by volume. A single box needs the back of the torso out or a 6 mm wider hem
+    span('battery', BATT_TOP - 0.13, BATT_TOP, x=-0.03, sx=0.15, sy=0.17, f=0.01, color=CELL, mass=8.27),
+    span('battery lower', BATT_TOP - 0.235, BATT_TOP - 0.13 + 0.001, x=-0.01, sx=0.14, sy=0.131, f=0.01, color=CELL, mass=4.83),
     # 7075 frame: hub -> spine -> battery (stressed enclosure) -> shoulder beam -> neck post
-    span('spine', HEM - 0.035, BATT_TOP - 0.12, sx=0.06, sy=0.06, f=0.006),
+    span('spine', HEM - 0.035, BATT_TOP - 0.23, sx=0.06, sy=0.06, f=0.006),
     rbox('shoulder beam', (-0.02, 0, SZ - 0.045), (0.05, 0.20, 0.05), 0.006),
     span('neck post', SZ - 0.035, NZ - 0.02, x=NX, f=0.006),
-    # compute (a Jetson-class module, carrier and heat sink), on the shoulder beam's front, between the shoulder
-    # actuators
-    rbox('compute', (0.034, 0, SZ - 0.035), (0.06, 0.14, 0.05), 0.004, '#2A2C30', mass=1.6, material='electronics'),
+    # compute (a Jetson-class module, carrier and heat sink), iteration 36: 1.6 kg at 1500 kg/m3 is 1.07 L; the box was
+    # 0.42 L. In front of the battery, behind the chest: above it the torso's slope and the neck motor leave no room
+    rbox('compute', (0.071, 0, 1.31), (0.054, 0.17, 0.116), 0.004, '#2A2C30', mass=1.6, material='electronics'),
     rbox('chest light', (front_x(TORSO, 0, SZ - 0.01) + 0.0006 - 0.002, 0, SZ - 0.01), (0.004, 0.04, 0.006),
          0.0015, ACCENT, 'decal'),
     # our mark on the chest, below the light bar (dark grey on the grey knit); not Figure's logo

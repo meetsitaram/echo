@@ -2,13 +2,13 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 58.26 kg** (Figure 03: 61.0 kg).
+**Total 57.97 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
-| actuator | 23.49 | 40 % |
-| cells | 13.10 | 22 % |
-| al7075 | 9.08 | 16 % |
+| actuator | 23.49 | 41 % |
+| cells | 13.10 | 23 % |
+| al7075 | 8.79 | 15 % |
 | knit_pa12 | 4.48 | 8 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
@@ -20,7 +20,7 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
 |---|---|---|---|---|
 | pelvis | 5.64 | 6.50 | +0.000 +0.000 +0.953 | 0.0121 0.0336 0.0359 |
-| torso | 20.85 | 19.96 | -0.017 +0.000 +1.279 | 0.1298 0.1963 0.2387 |
+| torso | 20.56 | 19.96 | -0.010 +0.000 +1.250 | 0.1321 0.2593 0.2925 |
 | neck_yaw_link | 0.35 | 0.45 | -0.012 +0.000 +1.491 | 0.0001 0.0002 0.0002 |
 | head | 1.00 | 1.95 | +0.015 +0.004 +1.606 | 0.0033 0.0046 0.0052 |
 | L_shoulder_pitch_link | 0.88 | 0.99 | +0.000 +0.195 +1.390 | 0.0008 0.0011 0.0013 |
@@ -43,8 +43,8 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_hip_roll_link | 1.45 | 2.00 | -0.017 -0.105 +0.850 | 0.0025 0.0060 0.0064 |
 | L_hip_yaw_link | 2.61 | 3.60 | +0.002 +0.100 +0.597 | 0.0062 0.0271 0.0275 |
 | R_hip_yaw_link | 2.61 | 3.60 | +0.002 -0.100 +0.597 | 0.0062 0.0271 0.0275 |
-| L_knee_link | 2.99 | 2.08 | -0.007 +0.098 +0.346 | 0.0042 0.0383 0.0383 |
-| R_knee_link | 2.99 | 2.08 | -0.007 -0.098 +0.346 | 0.0042 0.0383 0.0383 |
+| L_knee_link | 2.99 | 2.08 | -0.007 +0.098 +0.346 | 0.0043 0.0383 0.0383 |
+| R_knee_link | 2.99 | 2.08 | -0.007 -0.098 +0.346 | 0.0043 0.0383 0.0383 |
 | L_ankle_pitch_link | 0.03 | 0.25 | -0.005 +0.099 +0.085 | 0.0000 0.0000 0.0000 |
 | R_ankle_pitch_link | 0.03 | 0.25 | -0.005 -0.099 +0.085 | 0.0000 0.0000 0.0000 |
 | L_foot | 1.51 | 1.10 | +0.043 +0.100 +0.029 | 0.0017 0.0078 0.0082 |
