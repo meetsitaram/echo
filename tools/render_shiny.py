@@ -33,7 +33,7 @@ BEND = {'L_hip_pitch': -0.35, 'L_knee': 0.75, 'L_ankle_pitch': -0.35, 'R_hip_pit
 VIEWS = [('Front right', (1.0, -0.8), 0.15, 2.45, 0.86), ('Side', (0.0, -1.0), 0.05, 2.45, 0.86),
          ('Back left', (-1.0, 0.8), 0.15, 2.45, 0.86), ('Legs', (1.0, -0.75), 0.1, 1.45, 0.50)]
 # (tint rgb, metal). Metal reflects the studio; the rest is painted.
-LOOK = {'struct': ((0.93, 0.94, 0.96), 1.0), 'actuator': ((0.30, 0.31, 0.33), 1.0), 'linkage': ((0.80, 0.81, 0.84), 1.0),
+LOOK = {'struct': ((0.93, 0.94, 0.96), 1.0), 'black': ((0.13, 0.135, 0.15), 1.0), 'actuator': ((0.17, 0.175, 0.19), 1.0), 'linkage': ((0.80, 0.81, 0.84), 1.0),
         'hardware': ((0.42, 0.43, 0.46), 1.0), 'bearing': ((0.72, 0.73, 0.75), 1.0), 'electronics': ((0.07, 0.08, 0.10), 0.35)}
 
 VS = """#version 330 core
@@ -98,7 +98,15 @@ def posed_meshes():
         tint, metal = LOOK['electronics'] if g['name'] in ELECTRONICS else LOOK[g['role']]
         tri = s.vertices[s.faces].reshape(-1, 3)
         nor = s.vertex_normals[s.faces].reshape(-1, 3)
-        verts.append(np.hstack((tri, nor, np.tile(tint, (len(tri), 1)), np.full((len(tri), 1), metal))))
+        rgb = np.tile(tint, (len(tri), 1)).astype(float)
+        if g.get('role') == 'struct' and g.get('finish'):      # dark is a motor and its housing, silver is structure: the part's own finish, masked where it has zones
+            # zones are in the zero pose: read them on the unposed solid's triangles
+            z0 = np.asarray(mesh.vert_properties[:, :3], float)
+            t0 = trimesh.Trimesh(z0, f, process=True)
+            s0 = trimesh.graph.smooth_shade(t0, angle=math.radians(35))
+            names = G.finish_of(g, s0.vertices[s0.faces].mean(1))
+            rgb[np.repeat(names == 'black', 3)] = LOOK['black'][0]
+        verts.append(np.hstack((tri, nor, rgb, np.full((len(tri), 1), metal))))
         count[g['role']] = count.get(g['role'], 0) + 1
     return np.vstack(verts).astype(np.float32), count
 

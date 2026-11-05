@@ -77,8 +77,7 @@ def finish(g, shell_ok=False):
         return (0.70, 0.71, 0.72), 1.0, 0.26
     if role in ('shell', 'decal', 'knit'):
         return tuple(int(g['color'][k:k + 2], 16) / 255 for k in (1, 3, 5)), 0.0, 0.3
-    # 7075: bare, fine machined
-    return (0.86, 0.865, 0.875), 1.0, 0.30
+    return G.FINISH[G.finish_of(g)]
 
 
 def collect(spec, links, roles=SKEL, skip=(), hi=True):
@@ -95,7 +94,15 @@ def collect(spec, links, roles=SKEL, skip=(), hi=True):
         for i, g in enumerate(l['geoms']):
             if g['role'] == 'cut' or g['role'] not in roles or g['name'] in skip:
                 continue
-            out.append((g['name'], part_mesh(spec, ln, i, g, cuts, hi), ln, finish(g), g))
+            m = part_mesh(spec, ln, i, g, cuts, hi)
+            if g.get('zones'):                       # one part, two finishes: masked
+                names = G.finish_of(g, m.triangles_center)
+                for fin in sorted(set(names)):
+                    sub = trimesh.Trimesh(m.vertices, m.faces[names == fin], process=False)
+                    sub.remove_unreferenced_vertices()
+                    out.append((f"{g['name']} {fin}", sub, ln, G.FINISH[fin], g))
+            else:
+                out.append((g['name'], m, ln, finish(g), g))
     return out
 
 
@@ -240,7 +247,7 @@ def sheet(imgs, labels, cols, out, font_size=26, title=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--spec')
-    ap.add_argument('--set', default='knee', choices=('knee', 'leg', 'section'))
+    ap.add_argument('--set', default='knee', choices=('knee', 'leg', 'section', 'body'))
     ap.add_argument('--out', required=True)
     ap.add_argument('--bends', default='0,0.6,2.15')
     ap.add_argument('--tag', default='')
@@ -274,6 +281,18 @@ def main():
                 imgs.append(rn.shot(parts, ang_cam(tgt, az, el, 2.05), tgt, poses=P, fov=26.0))
                 labs.append(f'{lab}, knee {q:.1f}')
         print(sheet(imgs, labs, 4, f'{a.out}.png', title=f'Thigh and shank, cover off. {a.tag}'))
+    if a.set == 'body':
+        links = ['pelvis', 'torso', 'neck_yaw_link', 'L_hip_pitch_link', 'L_hip_roll_link', 'R_hip_pitch_link', 'R_hip_roll_link']
+        parts = collect(spec, links, skip={'battery', 'battery lower', 'compute'} if 'nopack' in a.tag else set())
+        imgs, labs = [], []
+        for q, lab0 in (({}, 'standing'), ({'L_hip_pitch': -0.6, 'R_hip_pitch': 0.25, 'L_hip_roll': 0.15, 'waist_yaw': 0.3}, 'striding, waist turned')):
+            M = Rb.fk(q)
+            P = {l: M[l] for l in links}
+            for lab, az, el, tz, dist in (('front', 0, 4, 1.13, 1.45), ('3/4', 40, 12, 1.13, 1.45), ('side', 90, 4, 1.13, 1.45), ('back 3/4', 215, 12, 1.13, 1.45), ('hips', -35, 8, 0.93, 0.8)):
+                tgt = np.array([0.0, 0.0, tz])
+                imgs.append(rn.shot(parts, ang_cam(tgt, az, el, dist), tgt, poses=P))
+                labs.append(f'{lab}, {lab0}')
+        print(sheet(imgs, labs, 5, f'{a.out}.png', title=f'Pelvis, hips, chest, cover off. {a.tag}'))
     if a.set == 'section':
         parts = collect(spec, KNEE_LINKS)
         imgs, labs = [], []

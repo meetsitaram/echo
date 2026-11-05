@@ -55,6 +55,9 @@ ROOT = G.ROOT
 #    factor 2 on the 3,400 N case the same part sits near 60 MPa on an 810 N step (load ratio alone), which leaves room for a Kt of 2.5.
 # Not lowered to pass: failing rows are the design's open items (reports/strength.md).
 SF_MIN = 2.0
+# User, 2026-11-05: "only go as far as it looks right on camera and something that is buildable in real life that can walk around. It's ok if it breaks." So what's required is calm walking and each motor's own peak, at this factor, a hand estimate.
+# The 3,400 N shove and the side force are still read and printed, as a report: nothing is sized for them.
+SF_WALK = 1.5
 
 # Contact. One M5 with two diameters of edge distance all round needs a 10 x 10 pad. M5 is what the RS04's output takes
 # (retailer drawing: 9 x M5 on d36); nothing that carries a limb should be held by less. So a contact under 100 mm2 can't
@@ -176,34 +179,36 @@ SECTIONS = [
         load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1), ('L_hip_yaw', 1)], note='d66 x 2.5; no local buckling in this figure (D / t 26, plain 7075 tube: not close)'),
     sec('Thigh tube under its collar', LEG, 'L_hip_yaw_link', ['L thigh fork'], 'z', ('L_hip_yaw flange', 'lo', -0.012),
         load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1), ('L_hip_yaw', 1)]),
-    sec('Hip crown', LEG, 'L_hip_roll_link', ['L hip crown'], 'x', ('L hip crown', 'c', -0.02),
+    sec('Yaw housing at the motor', LEG, 'L_hip_roll_link', ['L hip yoke'], 'z', ('L_hip_yaw actuator (buy) RS03', 'c', 0.0),
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_yaw', 1)]),
-    sec('Hip tabs at the crown', LEG, 'L_hip_roll_link', ['L hip tab in', 'L hip tab out'], 'x', ('L hip crown', 'c', -0.03),
+    sec('Yoke band under the pitch motor', LEG, 'L_hip_roll_link', ['L hip yoke'], 'x', -0.03,
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_yaw', 1)]),
-    sec('Hip tabs at the front plate', LEG, 'L_hip_roll_link', ['L hip tab in', 'L hip tab out'], 'x', ('L hip front plate', 'hi', 0.001),
-        load='leg', cases=ABOVE_KNEE, motors=[('L_hip_yaw', 1)]),
-    sec('Hip front plate', LEG, 'L_hip_roll_link', ['L hip front plate'], 'z', ('L hip tab in', 'hi', 0.004),
+    sec('Yoke plate behind the pitch motor', LEG, 'L_hip_roll_link', ['L hip yoke'], 'z', ('joint:L_hip_pitch', 'c', -0.05),
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_roll', 1), ('L_hip_yaw', 1)]),
-    sec('Hip bracket at the roll motor', LEG, 'L_hip_pitch_link', ['L hip bracket'], 'x', ('L_hip_roll actuator (buy) RS04', 'hi', 0.0),
+    sec('Carrier arm over the roll output', LEG, 'L_hip_pitch_link', ['L hip carrier'], 'x', -0.071,
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_pitch', 1), ('L_hip_roll', 1)]),
-    sec('Hip bracket at the pitch flange', LEG, 'L_hip_pitch_link', ['L hip bracket'], 'x', ('joint:L_hip_pitch', 'c', -0.03),
+    sec('Carrier arm at the eye', LEG, 'L_hip_pitch_link', ['L hip carrier'], 'x', -0.045,
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_pitch', 1), ('L_hip_roll', 1)]),
-    sec('Pelvis frame beside the hip motor', LEG, 'pelvis', ['pelvis frame'], 'y', ('L_hip_pitch actuator (buy) RS04', 'lo', -0.005),
+    sec('Roll barrel', LEG, 'L_hip_pitch_link', ['L hip carrier'], 'x', -0.09,
+        load='leg', cases=ABOVE_KNEE, motors=[('L_hip_pitch', 1), ('L_hip_roll', 1)]),
+    sec('Pelvis bar between the hips', LEG, 'pelvis', ['pelvis frame'], 'y', 0.03,
+        load='leg', cases=ABOVE_KNEE, motors=[('L_hip_pitch', 1)]),
+    sec('Hip barrel on the pelvis', LEG, 'pelvis', ['pelvis frame'], 'y', 0.095,
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_pitch', 1)]),
 
     # ------------------------------------------------------------ pelvis to shoulder
-    sec('Pelvis frame under the waist motor', BODY, 'pelvis', ['pelvis frame'], 'z', ('waist_yaw actuator (buy) RS04', 'lo', -0.002),
+    sec('Waist housing on the pelvis', BODY, 'pelvis', ['pelvis frame'], 'z', ('waist_yaw actuator (buy) RS04', 'c', 0.0),
         load='upper', distal=['torso'], cases=FALLS, hip_moment=True, motors=[('waist_yaw', 1)]),
-    sec('Waist hub', BODY, 'torso', ['waist hub'], 'z', ('waist hub', 'lo', 0.005),
+    sec('Waist cup neck', BODY, 'torso', ['waist_yaw flange'], 'z', ('joint:waist_yaw', 'c', 0.0367),
         load='upper', distal=HAT, own=1, cases=LIFTS, hip_moment=True, motors=[('waist_yaw', 1), ('L_shoulder_pitch', 2)]),
-    sec('Spine', BODY, 'torso', ['spine'], 'z', ('waist hub', 'hi', 0.012),
-        load='upper', distal=HAT, own=1, cases=LIFTS, hip_moment=True, motors=[('waist_yaw', 1), ('L_shoulder_pitch', 2)]),
-    sec('Frame between spine and shoulder beam (the pack is not frame)', BODY, 'torso', '*', 'z', ('battery lower', 'hi', 0.0),
+    sec('Chest rails over the waist', BODY, 'torso', ['chest frame'], 'z', 1.09,
+        load='upper', distal=HAT, own=1, cases=LIFTS, hip_moment=True, motors=[('waist_yaw', 1), ('L_shoulder_pitch', 2)], note='two closed rails, tied at both ends'),
+    sec('Frame between waist and shoulder bar (the pack is not frame)', BODY, 'torso', '*', 'z', ('battery lower', 'hi', 0.0),
         load='upper', distal=HAT, own=1, cases=LIFTS, hip_moment=True, motors=[('waist_yaw', 1), ('L_shoulder_pitch', 2)],
-        note='slices every carrying part of the torso: side rails or a rear plate count as soon as they exist'),
-    sec('Shoulder beam under the neck', BODY, 'torso', ['shoulder beam'], 'z', ('shoulder beam', 'lo', 0.008),
+        note='slices every carrying part of the torso'),
+    sec('Chest bar under the neck', BODY, 'torso', ['chest frame'], 'y', 0.0,
         load='upper', distal=HAT, own=1, cases=LIFTS, motors=[('L_shoulder_pitch', 2), ('neck_yaw', 1)]),
-    sec('Shoulder beam toward the pitch motor', BODY, 'torso', ['shoulder beam'], 'y', ('L_shoulder_pitch actuator (buy) RS04', 'lo', -0.005),
+    sec('Chest bar at the shoulder motor', BODY, 'torso', ['chest frame'], 'y', ('L_shoulder_pitch actuator (buy) RS04', 'lo', -0.005),
         load='limb', distal=['L_shoulder_pitch_link'], cases=LIFTS, motors=[('L_shoulder_pitch', 1)]),
 
     # ------------------------------------------------------------ shoulder to hand
@@ -280,12 +285,11 @@ INTERFACES = [
     (LEG, 'L shank plate in', 'L shank body', 0.5), (LEG, 'L shank plate out', 'L shank body', 0.5),
     (LEG, 'L shank body', 'L shank back panel', 0.1), (LEG, 'L shank body', 'L knee rear cap', KNEE_SPLIT), (LEG, 'L shank body', 'L_knee actuator (buy) RS04', 0.67),
     (LEG, 'L thigh fork', 'L_knee flange', KNEE_SPLIT), (LEG, 'L thigh fork', 'L knee outer cheek', KNEE_SPLIT), (LEG, 'L thigh fork', 'L_hip_yaw flange', 1.0),
-    (LEG, 'L hip crown', 'L_hip_yaw actuator (buy) RS03', 1.0), (LEG, 'L hip tab in', 'L hip crown', 0.5), (LEG, 'L hip tab out', 'L hip crown', 0.5),
-    (LEG, 'L hip front plate', 'L hip tab in', 0.5), (LEG, 'L hip front plate', 'L hip tab out', 0.5), (LEG, 'L hip front plate', 'L_hip_roll flange', 1.0),
-    (LEG, 'L hip bracket', 'L_hip_roll actuator (buy) RS04', 1.0), (LEG, 'L hip bracket', 'L_hip_pitch flange', 1.0),
-    (LEG, 'pelvis frame', 'L_hip_pitch actuator (buy) RS04', 1.0),
-    (BODY, 'pelvis frame', 'waist_yaw actuator (buy) RS04', 'body'), (BODY, 'waist hub', 'waist_yaw flange', 'body'), (BODY, 'waist hub', 'spine', 'body'),
-    (BODY, 'spine', 'shoulder beam', 'body'), (BODY, 'shoulder beam', 'L_shoulder_pitch actuator (buy) RS04', 'arm'),
+    (LEG, 'L hip yoke', 'L hip yaw ring', 1.0), (LEG, 'L hip yaw ring', 'L_hip_yaw actuator (buy) RS03', 1.0), (LEG, 'L hip yoke', 'L_hip_roll flange', 1.0),
+    (LEG, 'L hip carrier', 'L_hip_roll actuator (buy) RS04', 1.0), (LEG, 'L hip carrier', 'L_hip_pitch flange', 1.0),
+    (LEG, 'pelvis frame', 'L_hip_pitch actuator (buy) RS04', 0.67), (LEG, 'pelvis frame', 'L hip ring', 1.0),
+    (BODY, 'pelvis frame', 'waist_yaw actuator (buy) RS04', 'body'), (BODY, 'pelvis frame', 'waist ring', 'body'), (BODY, 'chest frame', 'waist_yaw flange', 'body'),
+    (BODY, 'chest frame', 'L_shoulder_pitch actuator (buy) RS04', 'arm'),
     (ARM, 'L shoulder bracket', 'L_shoulder_pitch flange', 'arm'), (ARM, 'L shoulder bracket', 'L_shoulder_roll actuator (buy) RS06', 'arm'),
     (ARM, 'L shoulder roll axle', 'L_shoulder_roll flange', 'arm'), (ARM, 'L shoulder roll axle', 'L shoulder roll plate back', 'arm'),
     (ARM, 'L shoulder roll plate back', 'L shoulder roll plate back low', 'arm'), (ARM, 'L shoulder roll plate front', 'L shoulder roll plate front low', 'arm'),
@@ -300,7 +304,7 @@ INTERFACES = [
     (ARM, 'L forearm frame', 'L_wrist_yaw actuator (buy) RS02', 'arm'), (ARM, 'L forearm lower frame', 'L_wrist_yaw flange', 'arm'),
     (ARM, 'L forearm lower frame', 'L_wrist_pitch actuator (buy) RS00', 'arm'), (ARM, 'L wrist cheek', 'L_wrist_pitch flange', 'arm'),
     (ARM, 'L wrist cheek', 'L_wrist_roll actuator (buy) RS00', 'arm'), (ARM, 'L hand bracket', 'L_wrist_roll flange', 'arm'),
-    (NECK, 'neck post', 'neck_yaw actuator (buy) RS00', 'head'), (NECK, 'shoulder beam', 'neck post', 'head'),
+    (NECK, 'chest frame', 'neck_yaw actuator (buy) RS00', 'head'),
     (NECK, 'neck pitch post', 'neck_yaw flange', 'head'), (NECK, 'neck pitch post', 'neck_pitch actuator (buy) RS00', 'head'), (NECK, 'head frame', 'neck_pitch flange', 'head'),
     (ROD, 'L ankle cross', 'L ankle cross tail', 'rod pitch'), (ROD, 'L ankle cross tail', 'L ankle pitch arm', 'rod pitch'),
     (ROD, 'L foot plate', 'L ankle roll pin', 'rod roll'),
@@ -308,8 +312,8 @@ INTERFACES = [
 
 # Rigid parts on no path above, each with its reason. A new part must go in a table: see check_coverage.
 NOT_ON_PATH = {
+    'R hip ring': 'the right hip\'s ring: its left twin is in INTERFACES', 'R hip pitch retaining ring': 'hardware', 
     'L ankle fork bridge': 'ties the fork cheeks; the plates land in line with the cheeks, so the path passes beside it',
-    'neck post': 'sunk inside the shoulder beam along its whole length: no free section of its own',
     'battery': 'a passenger: role struct, but cells are not frame', 'battery lower': 'a passenger: role struct, but cells are not frame',
     'compute': 'a passenger', 'head electronics': 'a passenger',
 }
@@ -780,7 +784,7 @@ def bolted_rows(M):
             Ft = Fa / n + 2 * Mt / (n * r)
             rm = 1220.0                    # 12.9: nominal breaking stress (ISO 898-1)
             sf = dict(slip=mu * n * Fp / (V + T / r), separation=Fp / Ft if Ft > 0 else float('inf'), shear=0.6 * rm * As / (V / n + T / (n * r)), tension=proof / (Fp + phi * Ft), strip=strip / (Fp + phi * Ft))
-            ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_MIN and sf['tension'] >= SF_TENSION
+            ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_WALK and sf['tension'] >= SF_TENSION
             torque = assumed(spec, 'torque_coefficient') * Fp * h['d'] / 1000
             rows.append(dict(name=p['name'], joint=p['joint'], label=label, whatif=label.startswith('what if'), n=n, count=p['count'], thread=h['thread'], r=r * 1000, le=le, Fp=Fp, limit=limit, strip=strip, torque=torque, T=T, V=V, Mt=Mt, Fa=Fa, sf_each=sf, sf=min(sf['slip'], sf['separation'], sf['shear'], sf['strip'], sf['tension'] * SF_MIN / SF_TENSION), ok=ok))
     # our own screws in our own parts: each group says what it must pass (spec/robot.py, HW.bolt_group)
@@ -799,7 +803,7 @@ def bolted_rows(M):
         Ft = Fa / n + 2 * Mt / (n * r)
         rm = 1220.0
         sf = dict(slip=mu * n * Fp / max(V + T / r, 1e-6), separation=Fp / Ft if Ft > 0 else float('inf'), shear=0.6 * rm * As / max(V / n + T / (n * r), 1e-6), tension=proof / (Fp + phi * Ft), strip=strip / (Fp + phi * Ft))
-        ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_MIN and sf['tension'] >= SF_TENSION
+        ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_WALK and sf['tension'] >= SF_TENSION
         torque = assumed(spec, 'torque_coefficient') * Fp * h['d'] / 1000
         rows.append(dict(name=p['name'], joint='', label=p.get('note') or 'its load', whatif=False, n=n, count=p['count'], thread=h['thread'], r=r * 1000, le=le, Fp=Fp, limit=limit, strip=strip, torque=torque, T=T, V=V, Mt=Mt, Fa=Fa, sf_each=sf, sf=min(sf['slip'], sf['separation'], sf['shear'], sf['strip'], sf['tension'] * SF_MIN / SF_TENSION), ok=ok))
     return rows
@@ -891,7 +895,7 @@ def bearing_options(M):
 
 
 def verdict(sf):
-    return 'FAIL' if sf < 1 else ('MARGINAL' if sf < SF_MIN else 'pass')
+    return 'FAIL' if sf < 1 else ('MARGINAL' if sf < SF_WALK else 'pass')
 
 
 CASE_LABEL = {'peak': '3,400 N foot', 'side': '3,400 N + 1,614 N side', 'walk': '810 N walking', 'motor': 'motor peak', 'payload': '5 kg in the hand'}
@@ -976,6 +980,8 @@ def evaluate(M, s):
         row['why'] = 'a part this load comes through is gone'
     if best:
         row['sf'], row['case'] = best[0], best[1]
+        need = [(x['sf'], c) for c, x in row['results'].items() if c not in ('peak', 'side')]
+        row['sf_need'], row['case_need'] = min(need) if need else (best[0], best[1])
         row['sf_hollow'] = min(r.get('sf_hollow', float('inf')) for r in row['results'].values())
     return row
 
@@ -1029,8 +1035,8 @@ def contact(a, b):
 
 def interface_force(M, spec_force):
     if isinstance(spec_force, (int, float)):
-        return F_PEAK * spec_force
-    a_peak = F_PEAK / M.total
+        return F_WALK * spec_force
+    a_peak = F_WALK / M.total
     mass = lambda root: sum(M.link_mass[l][0] for l in M.R.subtree(root))
     if spec_force == 'arm':
         return max(mass('L_shoulder_pitch_link') * a_peak, (mass('L_shoulder_pitch_link') + HAND_KG) * G_ACC)
@@ -1045,7 +1051,7 @@ def interface_force(M, spec_force):
 
 
 def required_area(v):
-    return CONTACT_MIN_MM2 * max(1, math.ceil(SF_MIN * v / BOLT_SLIP_N))
+    return CONTACT_MIN_MM2 * max(1, math.ceil(SF_WALK * v / BOLT_SLIP_N))
 
 
 def evaluate_interfaces(M):
@@ -1160,9 +1166,9 @@ def hardware_report(M):
 
 
 def report(M, rows, irows, brows, path):
-    ranked = sorted(rows, key=lambda r: r['sf'])
-    n_fail = sum(r['sf'] < 1 for r in rows)
-    n_marg = sum(1 <= r['sf'] < SF_MIN for r in rows)
+    ranked = sorted(rows, key=lambda r: r.get('sf_need', r['sf']))
+    n_fail = sum(r.get('sf_need', r['sf']) < 1 for r in rows)
+    n_marg = sum(1 <= r.get('sf_need', r['sf']) < SF_WALK for r in rows)
     n_pass = len(rows) - n_fail - n_marg
     bad_if = [r for r in ranked if r['sf'] >= SF_MIN and r.get('sf_hollow') is not None and r['sf_hollow'] < SF_MIN]
     ibad = [r for r in irows if not r['ok']]
@@ -1171,7 +1177,7 @@ def report(M, rows, irows, brows, path):
          "Left side at the zero pose; the right is built as its mirror.", '',
          '**How far to trust this.** Every number is a hand estimate on a section cut from the spec\'s solid primitives. No FEA, no test. '
          'It finds the weak parts and ranks them; it cannot sign anything off.', '',
-         f'**Result:** {len(rows)} sections: **{n_fail} fail** (under 1 to yield), **{n_marg} marginal** (under {SF_MIN:.0f}), {n_pass} pass. '
+         f'**Result:** {len(rows)} sections on what is required, calm walking at 810 N and each motor at peak: **{n_fail} fail** (under 1 to yield), **{n_marg} marginal** (under {SF_WALK}), {n_pass} pass. The 3,400 N shove is reported in the SF column, and nothing is sized for it. '
          f'{len(ibad)} of {len(irows)} interfaces fail. '
          f'Sections that pass only because they are read as solid: {len(bad_if)}: at the mass model\'s fill they drop under {SF_MIN:.0f}.', '',
          '## Load cases', '',
@@ -1182,12 +1188,12 @@ def report(M, rows, irows, brows, path):
          '| motor peak | each motor beside the section at peak, one at a time, as a free moment; ankle motors as rod force | `spec/actuators.json`: a motor must not break its own bracket |',
          '| 5 kg in the hand | 5 kg per hand plus link weight, static, worst direction | `POSES` in `tools/checks.py`: "carry 10 kg at the chest" |', '',
          '## Sections, worst first (hand estimates)', '',
-         '"SF" is to yield on a solid section, governing case. "SF hollow" is the same at the fill the mass model charges for that part (`tools/mass_model.py`: 0.25 for anything thicker than 20 mm, 0.5 to 20 mm, 0.8 to 8 mm, beam 0.12), keeping the outline; '
+         '"SF" is to yield, worst of all cases, the 3,400 N shove included; the verdict reads calm walking and motor peak only (`other cases`).  "SF hollow" is the same at the fill the mass model charges for that part (`tools/mass_model.py`: 0.25 for anything thicker than 20 mm, 0.5 to 20 mm, 0.8 to 8 mm, beam 0.12), keeping the outline; '
          'the parts cannot be both as light as the mass model says and as strong as the SF says. Thin-wall buckling is not in it.', '',
          '| # | verdict | section | path | material | smallest section, mm | mm2 | governing case | N, V (N) | bending, torsion (N m) | stress (MPa) | SF | SF hollow | other cases (SF) | note |',
          '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|']
     for i, r in enumerate(ranked, 1):
-        v = verdict(r['sf'])
+        v = verdict(r.get('sf_need', r['sf']))
         if r['why'] or not r['case']:
             L.append(f"| {i} | **FAIL** | {r['name']} | {r['path']} | {r['material'] or 'n/a'} | {r['size']} | 0 | n/a | n/a | n/a | n/a | **0** | n/a | n/a | {r['why'] or ''} {r['note']} |")
             continue
@@ -1197,7 +1203,7 @@ def report(M, rows, irows, brows, path):
         mark = f'**{v}**' if v != 'pass' else v
         L.append(f"| {i} | {mark} | {r['name']} | {r['path']} | {r['material']} ({r['yield']:.0f}) | {r['size']} | {r['area']:.0f} | {CASE_LABEL[r['case']]} | {abs(g['N']):.0f}, {g['V']:.0f} | {g['Mb']:.0f}, {abs(g['T']):.0f} | {g['vm']:.0f} | **{fmt_sf(r['sf'])}**{extra} | {fmt_sf(r['sf_hollow'])} | {oth} | {r['note']} |")
     L += ['', '## Interfaces (hand estimates)', '',
-          f'Contact area between two rigid parts: overlap volume over its thinnest dimension, or the shared area of exactly coplanar faces. Required: {CONTACT_MIN_MM2:.0f} mm2 (the pad of one M5) x the bolts needed to pass the force at factor {SF_MIN:.0f} (slip load {BOLT_SLIP_N:.0f} N a bolt, from memory). '
+          f'Contact area between two rigid parts: overlap volume over its thinnest dimension, or the shared area of exactly coplanar faces. Required: {CONTACT_MIN_MM2:.0f} mm2 (the pad of one M5) x the bolts needed to pass the calm-walking force at factor {SF_WALK} (slip load {BOLT_SLIP_N:.0f} N a bolt, from memory). '
           'This only asks whether a joint has room to exist. Screws are read in their own table below, at the knee so far.', '',
           '| verdict | interface | path | force (N) | area (mm2) | required | kind | depth (mm) |', '|---|---|---|---|---|---|---|---|']
     for r in sorted(irows, key=lambda r: (r['ok'], r['area'] / max(r['need'], 1))):

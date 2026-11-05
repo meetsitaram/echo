@@ -407,9 +407,9 @@ def check_loadpath(spec, S, rep):
             rep.add('loadpath', r['name'], False, r['why'] or 'nothing to read', value=0.0)
             continue
         g = r['results'][r['case']]
-        ok = r['sf'] >= ST.SF_MIN
-        rep.add('loadpath', r['name'], ok, f"SF {r['sf']:.2f} to yield (needs {ST.SF_MIN:.0f}), {ST.CASE_LABEL[r['case']]}: {g['vm']:.0f} MPa on {r['size']} mm {r['material']}; a hand estimate", value=r['sf'])
-        if ok and r['sf_hollow'] is not None and r['sf_hollow'] < ST.SF_MIN:
+        ok = r['sf_need'] >= ST.SF_WALK
+        rep.add('loadpath', r['name'], ok, f"SF {r['sf_need']:.2f} on what's required, {ST.CASE_LABEL[r['case_need']]} (needs {ST.SF_WALK}); worst of all cases {r['sf']:.2f}, {ST.CASE_LABEL[r['case']]}: {g['vm']:.0f} MPa on {r['size']} mm {r['material']}; a hand estimate", value=r['sf_need'])
+        if ok and r['sf_hollow'] is not None and r['sf_hollow'] < ST.SF_WALK:
             rep.add('loadpath', f"{r['name']}, at the mass model's fill", False, f"SF {r['sf_hollow']:.2f} if as hollow as its mass assumes (fill {r['fill']:.2f}); solid {r['sf']:.2f}", warn=True)
     # coverage: a rigid part on no path must say why, so a new part can't slip past this check
     named = {n for x in ST.SECTIONS if x['parts'] != '*' for n in x['parts']} | {n for _, a, b, _ in ST.INTERFACES for n in (a, b)} | set(ST.NOT_ON_PATH)
@@ -603,6 +603,13 @@ def check_stator(spec, S, rep):
             out = j['out'] if j else 0
             motor = S.geom[(ln, i)]
             best, who = 0.0, ''
+            # a face its stator screws are in: the maker's real face, where it is (an RS04's rear face sits 13 mm in from its cover's end)
+            faces = []
+            for p in spec.get('hardware', {}).get('patterns', []):
+                if p['motor'] == g['name'] and p['which'].startswith('stator') and spec['hardware']:
+                    hw = next((x['hw'] for x in geoms if x.get('hw', {}).get('pattern') == p['name'] and x['hw']['type'] == 'screw'), None)
+                    if hw:
+                        faces.append(np.array(hw['face'], float))
             for k in main:
                 part = S.geom[(ln, k)]
                 inside = motor ^ part
@@ -627,6 +634,16 @@ def check_stator(spec, S, rep):
                         continue
                     if area > best:
                         best, who = area, geoms[k]['name']
+                for fp in faces:                  # the screwed face: a ring from the motor's bolt circle in, 1 mm thick
+                    plane = c + a * float((fp - c) @ a)
+                    zone = to_manifold(G.mesh_of(dict(kind='cyl', c=list(plane), axis=axis, r=g['r'], h=0.001))) - to_manifold(G.mesh_of(dict(kind='cyl', c=list(plane), axis=axis, r=0.6 * g['r'], h=0.002)))
+                    x = zone ^ part
+                    v = x.volume()
+                    if v > 1e-13:
+                        lo, hi = bbox(x)
+                        area = v / max(float((hi - lo) @ np.abs(a)), 1e-6) * 1e6
+                        if area > best:
+                            best, who = area, geoms[k]['name'] + ' (on its screwed face)'
             ok = best >= ST.CONTACT_MIN_MM2
             rep.add('stator', g['name'], ok, f'held by {who}, {best:.0f} mm2 on its end face' if ok else f'no mounting face: {best:.0f} mm2 on its ends (needs {ST.CONTACT_MIN_MM2:.0f}); what touches it overlaps its side wall', value=best)
 
@@ -942,7 +959,7 @@ def break_spec(spec, case):
         J['L_hip_yaw']['act_c'][0] += 0.02
     elif case == 'floating':
         s['links']['L_hip_pitch_link']['geoms'] = [g for g in s['links']['L_hip_pitch_link']['geoms']
-                                                   if g['name'] != 'L hip bracket']
+                                                   if g['name'] != 'L hip carrier']
     elif case == 'mass':
         next(g for g in s['links']['torso']['geoms'] if g['name'] == 'battery')['mass'] += 20
     elif case == 'poke':
@@ -975,14 +992,14 @@ def break_spec(spec, case):
                     g['fillet'] = 0.0002
                     g['c'][2] = f['c'][2] + f['r'] - 0.00002 + g['size'][2] / 2
     elif case == 'spineshrink':
-        g = next(x for x in s['links']['torso']['geoms'] if x['name'] == 'spine')
+        g = next(x for x in s['links']['L_shoulder_pitch_link']['geoms'] if x['name'] == 'L shoulder bracket')
         g['size'][0], g['size'][1] = 0.002, 0.002
         g['fillet'] = 0.0005
     elif case == 'norods':
         for ln in ('L_knee_link', 'R_knee_link'):
             s['links'][ln]['geoms'] = [g for g in s['links'][ln]['geoms'] if g['role'] != 'linkage']
     elif case == 'rolebad':           # a cover can't carry: the bracket as a shell, the thigh frame as knit
-        next(x for x in s['links']['L_hip_pitch_link']['geoms'] if x['name'] == 'L hip bracket')['role'] = 'shell'
+        next(x for x in s['links']['L_hip_pitch_link']['geoms'] if x['name'] == 'L hip carrier')['role'] = 'decal'
         next(x for x in s['links']['L_hip_yaw_link']['geoms'] if x['name'] == 'L knee outer cheek')['role'] = 'decal'
     elif case == 'newpart':           # a new bracket nobody added to a load path
         o = J['L_knee']['origin']

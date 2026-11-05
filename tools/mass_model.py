@@ -77,7 +77,9 @@ def parts(spec, S, ln):
         if 'mass' in g:
             m = g['mass']
         else:
-            m = vol * mats[mat]['density'] * (fill_of(g, solid) if g['role'] in ('struct', 'linkage') else g.get('wall_fill', 1.0))
+            # 2026-11-05: glossy covers are 2 mm polycarbonate. The checks keep 3 mm, as room; the mass takes the part
+            wall = g.get('wall_fill', 0.667 if (g['role'] == 'shell' and mat == 'pc') else 1.0)
+            m = vol * mats[mat]['density'] * (fill_of(g, solid) if g['role'] in ('struct', 'linkage') else wall)
         out.append((g['name'], mat, m, com, Iu * m))
         if g.get('add_mass'):
             out.append((g['name'] + ' (carried)', g.get('add_what', 'carried'), g['add_mass'], com, Iu * g['add_mass']))

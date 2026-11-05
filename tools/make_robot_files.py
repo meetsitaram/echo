@@ -196,6 +196,22 @@ def floor_geoms(ln, m, ind):
     return [f'{ind}<geom {attr} type="capsule" fromto="{fmt(a)} {fmt(b)}" size="{r:.4f}"/>']
 
 
+def under_faces(m, cap):
+    """The mesh simplified until it has under cap faces (MuJoCo refuses an STL over 200000; the machined pelvis
+    was 330000, iteration 42). Vertices move at most a fraction of a mm; the visual and inertia are unchanged."""
+    if len(m.faces) <= cap:
+        return m
+    import manifold3d as mf
+    import trimesh
+    src = mf.Manifold(mf.Mesh(vert_properties=np.asarray(m.vertices, np.float32), tri_verts=np.asarray(m.faces, np.uint32)))
+    tol = 0.00005
+    while True:
+        o = src.simplify(tol).to_mesh()
+        if len(o.tri_verts) <= cap or tol > 0.002:
+            return trimesh.Trimesh(np.asarray(o.vert_properties[:, :3], np.float64), np.asarray(o.tri_verts, np.int64), process=False)
+        tol *= 2
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--fusion', default=os.path.join(OUT, 'meshes', 'fusion'))
@@ -211,6 +227,7 @@ def main():
     for ln in spec['links']:
         m, src[ln] = link_mesh(spec, S, ln, a.fusion)
         m.apply_translation(-frames[ln])                 # mesh in the link frame
+        m = under_faces(m, 190000)                       # MuJoCo's STL reader stops at 200000 faces
         m.export(os.path.join(mesh_dir, f'{ln}.stl'))
         meshes[ln] = m
 

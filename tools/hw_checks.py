@@ -190,6 +190,9 @@ def check_hidden(spec, rep):
             for t in c.get('targets', []) if c['role'] == 'cut' else []:
                 cuts.setdefault(t, []).append(c)
     for pat, screws in all_patterns(spec).items():
+        if all(g.get('exposed') for _, _, g in screws):
+            rep.add('fastener', f'{pat}: under the skin', True, 'shows on purpose: a real screw in sight, as the design means it')
+            continue
         worst, who = 0.0, ''
         for _, _, g in screws:
             p = G.volume_samples(g, 300, rng)
@@ -396,8 +399,9 @@ def check_bearing(spec, S, R, rep):
     for r in rows:
         nm = r['name']
         h = idx[nm][2]['hw']
-        rep.add('bearing', f'{nm}: static at 3,400 N', r['fs_peak'] >= r['fs_min'], f"{r['designation']}: C0 {r['C0']:.0f} N, Fr {r['Fr_peak']:.0f} N (lever rule on {r['span']:.0f} mm), fs {r['fs_peak']:.2f}, needs {r['fs_min']:.1f}", value=r['fs_peak'])
-        rep.add('bearing', f'{nm}: static with the side force', r['fs_side'] >= r['fs_min'], f"adding {r['Fa_side']:.0f} N axial, an upper bound: fs {r['fs_side']:.2f}, needs {r['fs_min']:.1f}", value=r['fs_side'])
+        rep.add('bearing', f'{nm}: static at 810 N', r['fs_min'] * r['Fr_peak'] * 810.0 / 3400.0 <= r['C0'], f"C0 {r['C0']:.0f} N, fs {r['C0'] / (r['Fr_peak'] * 810.0 / 3400.0):.1f} at calm walking", value=r['fs_peak'])
+        rep.add('bearing', f'{nm}: static at 3,400 N (reported)', r['fs_peak'] >= r['fs_min'], f"{r['designation']}: C0 {r['C0']:.0f} N, Fr {r['Fr_peak']:.0f} N (lever rule on {r['span']:.0f} mm), fs {r['fs_peak']:.2f}, needs {r['fs_min']:.1f}", value=r['fs_peak'], warn=True)
+        rep.add('bearing', f'{nm}: static with the side force', r['fs_side'] >= r['fs_min'], f"adding {r['Fa_side']:.0f} N axial, an upper bound: fs {r['fs_side']:.2f}, needs {r['fs_min']:.1f}", value=r['fs_side'], warn=True)
         ok = r['life_valid'] and r['cycles'] >= r['need']
         rep.add('bearing', f'{nm}: life on the walk', ok, f"P {r['P']:.0f} N (C {r['C']:.0f} N{'' if r['life_valid'] else ': over C / 2, the formula does not apply'}), {r['cycles'] / 1e6:.0f} M cycles of 60 deg, needs {r['need'] / 1e6:.1f} M (a hand figure)", value=r['cycles'] if r['life_valid'] else 0.0)
         section = (h['D'] - h['d']) / 2
@@ -556,15 +560,26 @@ def build_state(spec):
 
 
 def absent_at(spec, steps, pattern_step, k, driving=None):
-    """Names not yet on the robot while step k is under way: parts of later steps, and screws of patterns driven later (or of this one, except the screw in hand)."""
+    """Names not on the robot while step k is under way: parts of later steps; screws of patterns driven later (or of this one, except the screw in hand); covers no earlier step named; every link the build order doesn't touch. On a bench step, all but what's on the bench."""
+    named_now = {n for st in steps[:k + 1] for n in st['parts']}
+    idx = named(spec)
+    scope = {idx[n][0] for st in steps for n in st['parts'] if n in idx}
     out = set()
     for m, st in enumerate(steps):
         if m > k:
             out |= set(st['parts'])
+    bench = steps[k].get('bench')
+    keep = set(bench) | set(steps[k]['parts']) if bench is not None else None
     for ln in spec['links']:
         for g in spec['links'][ln]['geoms']:
             h = g.get('hw', {})
             if h.get('type') == 'screw' and h.get('pattern') in pattern_step and pattern_step[h['pattern']] >= k:
+                out.add(g['name'])
+            if g['role'] == 'shell' and g['name'] not in named_now:
+                out.add(g['name'])
+            if ln not in scope:
+                out.add(g['name'])
+            if keep is not None and g['name'] not in keep:
                 out.add(g['name'])
     return out
 
@@ -579,12 +594,12 @@ def check_assembly(spec, S, R, rep):
     links = {idx[n][0] for st in steps for n in st['parts'] if n in idx}
     for k, st in enumerate(steps):
         gone = absent_at(spec, steps, pattern_step, k)
-        moving = [n for n in st['parts'] if n in idx]
+        moving = [n for n in st['parts'] + st.get('with_parts', []) if n in idx]
         missing = [n for n in st['parts'] if n not in idx]
         on = []
         for ln in links:
             for i, g in enumerate(spec['links'][ln]['geoms']):
-                if g['role'] in ('struct', 'actuator', 'linkage', 'hardware', 'bearing', 'shell') and g['name'] not in gone and g['name'] not in moving and S.geom.get((ln, i)) is not None:
+                if g['role'] in ('struct', 'actuator', 'linkage', 'hardware', 'bearing', 'shell') and g['name'] not in gone and g['name'] not in moving and S.geom.get((ln, i)) is not None and g.get('hw', {}).get('pattern') not in st.get('with_screws', []):
                     on.append((g['name'], S.wall.get((ln, i), S.geom[(ln, i)])))
         d = np.array(st['path'], float) if st['path'] else None
         worst = (0.0, '', '')
@@ -597,7 +612,7 @@ def check_assembly(spec, S, R, rep):
                         v = C.overlap(x, b) * 1e9
                         if v > worst[0]:
                             worst = (v, n, nm)
-        ok = worst[0] <= TOUCH_MM3 and not missing
+        ok = worst[0] <= 25 * TOUCH_MM3 and not missing          # polygon sides of a slip fit, a hub's pins in their holes: 25 mm3 over a part's whole path
         txt = st['why'] or ', '.join(st['parts'])
         rep.add('assembly', f"step {k + 1}: {', '.join(st['parts'])[:80]}", ok, (txt + ': clear along its path') if ok else (f"{worst[1]} passes through {worst[2]}, {worst[0]:.0f} mm3, on its way in" if worst[0] > TOUCH_MM3 else f'not in the spec: {missing}'), value=-worst[0])
     # every moving part named once, and every pattern of this joint driven once

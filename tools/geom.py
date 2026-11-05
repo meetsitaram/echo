@@ -236,6 +236,25 @@ def sdf_mesh(g, hi=False):
     return trimesh.Trimesh(np.asarray(v, float), np.asarray(f, int), process=False)
 
 
+FINISH = {'silver': ((0.86, 0.865, 0.875), 1.0, 0.30), 'black': ((0.035, 0.036, 0.04), 0.9, 0.36)}
+
+
+def finish_of(g, pts=None):
+    """A machined part's finish: its name, or for points, an array of names by its zones (masked anodising). A right side's zone is the left's reflected."""
+    base = g.get('finish') or ('black' if g.get('role') in ('actuator',) else 'silver')
+    if pts is None:
+        return base
+    out = np.full(len(pts), base, dtype=object)
+    q = np.asarray(pts, float) * (np.array([1.0, -1.0, 1.0]) if g.get('flip_y') else 1.0)
+    for z in g.get('zones', []):
+        i = 'xyz'.index(z['axis'])
+        d = q - np.asarray(z['c'], float)
+        t = d[:, i]
+        rr = np.sqrt(np.maximum((d * d).sum(1) - t * t, 0.0))
+        out[(rr <= z['r']) & (t >= z.get('t0', -9.0)) & (t <= z.get('t1', 9.0))] = z['finish']
+    return out
+
+
 def mesh_of(g):
     k = g['kind']
     if g.get('outline'):

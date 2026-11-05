@@ -180,7 +180,7 @@ def screw_geom(name, thread, length, head, pos, axis, sign, grade, clamps, into,
                 hw=dict(type='screw', thread=thread, d=d, length=length, head=head, grade=grade, pos=list(pos), dir=dirv, clamps=list(clamps), into=into, head_d=data['head_d'], head_k=data['head_k'], socket=data['socket'], pitch=data['pitch'], **hw))
 
 
-def pattern(name, joint, which, link, seat_t, length, head='iso4762', clamps=(), counterbore_to=None, grade=None, skip=(), note=''):
+def pattern(name, joint, which, link, seat_t, length, head='iso4762', clamps=(), counterbore_to=None, grade=None, skip=(), note='', exposed=False):
     """One call: every hole of a motor's pattern gets a screw, with a clearance hole in each clamped part (and a counterbore back to t = counterbore_to).
     joint: the joint whose motor it is. which: 'hub', 'stator_front' or 'stator_rear'. link: the link the screws belong to (the one they clamp).
     seat_t: where the head sits, mm along the motor's output direction from the middle of its length. length: nominal, mm. skip: indices to leave out."""
@@ -206,6 +206,8 @@ def pattern(name, joint, which, link, seat_t, length, head='iso4762', clamps=(),
         nm = f'{name} screw {k + 1}'
         face = _on_motor(j, f, r, ang, t_face)
         g = screw_geom(nm, thread, length, head, pos, axis, sign, grade, clamps, 'motor:' + motor_name, pattern=name, face=face, hole_depth=depth, angle=ang, r_bc=r, which=which, joint=joint, model=model)
+        if exposed:                                   # it shows on purpose: a real screw where the camera sees it
+            g['exposed'] = True
         _add(link, g)
         names.append(nm)
         if clamps:
@@ -346,9 +348,19 @@ def bolt_group(name, link, thread, length, head, positions, axis, sign, clamps, 
     return names
 
 
-def step(part_names, path=None, distance=0.05, screws=(), why=''):
-    """One step of the build order, as data: these parts go in along path (a world direction) by distance (m), then these screw patterns are driven. A part named in no step is in place from the start or isn't part of the joint."""
-    BUILD.append(dict(parts=list(part_names), path=list(path) if path else None, distance=distance, screws=list(screws), why=why))
+def step(part_names, path=None, distance=0.05, screws=(), why='', bench=None, with_parts=(), with_screws=()):
+    """One step of the build order, as data: these parts go in along path (a world direction) by distance (m), then these screw patterns are driven. A part named in no step is in place from the start or isn't part of the joint; covers aren't on until a step names them.
+    bench: this is a subassembly: only these parts are there. with_parts: parts already together with these, moving with them."""
+    BUILD.append(dict(parts=list(part_names), path=list(path) if path else None, distance=distance, screws=list(screws), why=why, bench=list(bench) if bench is not None else None, with_parts=list(with_parts), with_screws=list(with_screws)))
+
+
+def tab_notch(name, joint, target, link):
+    """A notch in a housing's plate for an RS04's cable tab: it leaves radially at 75 deg, behind the rear face."""
+    j, model, f = _motor(joint)
+    a = math.radians(75.0)
+    d = [math.cos(a) * f['x'][k] + math.sin(a) * f['y'][k] for k in range(3)]
+    c = [j['act_c'][k] + (0.0535 * d[k]) + (-0.0195) * f['out'][k] for k in range(3)]
+    _add(link, _cut(name, c, d, 0.0095, 0.02, [target]))
 
 
 def records():
@@ -393,6 +405,8 @@ def rounded_poly(pts, n=6):
 
 def lug(c0, r0, c1, r1, n=48):
     """The outline a lug has in its own plane: the hull of two circles, tangent lines between them. c: (u, v). Goes round counter-clockwise."""
+    if r1 > r0:                                                    # the walk below goes round the bigger end first
+        c0, r0, c1, r1 = c1, r1, c0, r0
     dx, dy = c1[0] - c0[0], c1[1] - c0[1]
     d = math.hypot(dx, dy)
     base = math.atan2(dy, dx)
@@ -440,8 +454,13 @@ def s_box(c, size, e=0.0):
     return dict(t='box', c=list(c), size=list(size), e=e)
 
 
-def machined(name, tree, color, voxel=0.001, voxel_hi=0.0005, exposed=False, **kw):
-    """A machined 7075 part: a distance tree, truly the shape it is, so it weighs what its solid weighs (fill 1). Its bores and threads are 'cut' geoms, as for any part."""
+def machined(name, tree, color, voxel=0.001, voxel_hi=0.0005, exposed=False, finish='silver', zones=None, **kw):
+    """A machined 7075 part: a distance tree, truly the shape it is, so it weighs what its solid weighs (fill 1). Its bores and threads are 'cut' geoms, as for any part.
+    finish: 'silver' (bead-blasted) or 'black' (anodised). Dark is a motor and its housing, silver is structure. zones: where one part is both, regions finished otherwise, masked when anodised:
+    dict(c, axis, r, t0, t1, finish): a cylinder, t0..t1 along +axis from c. Every renderer reads geom.finish_of."""
+    kw.update(finish=finish)
+    if zones:
+        kw.update(zones=zones)
     g = dict(kind='sdf', name=name, tree=tree, color=color, role='struct', material='al7075', fill=1.0, voxel=voxel, voxel_hi=voxel_hi, **kw)
     if exposed:
         g['exposed'] = True
@@ -469,6 +488,59 @@ def fork_yoke(axis_c, eye_r, top_c, top_r, front_secs, slot_t0, slot_t1, arch_r,
     slot = s_union(0.0, s_cyl((x0, (slot_t0 + slot_t1) / 2, z0), 'y', arch_r, slot_t1 - slot_t0),
                    s_box((x0, (slot_t0 + slot_t1) / 2, z0 - 0.15), (2 * arch_r, slot_t1 - slot_t0, 0.3)))
     return s_cut(0.0015, outer, slot, *([pocket] if pocket else []))
+
+
+def output_cup(c, axis, sign, hub=0.02485, floor=0.0058, race_r=0.025, head_r=0.021, end=0.0423):
+    """A motor's output as a part, for RS04 by default, a tree: floor on the hub, a neck with the inner race on it, a thin disc that seats it on the arm's eye. t along +axis from the motor's centre; sign: which way the output points. Scalloped for the heads by the caller.
+    Other motors: their hub face, a race d (race_r) over their heads' reach, head_r inside it. An undercut at the shoulder, so a race sits square."""
+    pts = [(0.0, hub - 0.0002), (race_r - 0.00004, hub - 0.0002), (race_r - 0.00004, 0.0342), (0.0247, 0.0342), (0.0247, 0.0349), (0.0253, 0.0349), (0.0253, 0.03455), (0.0264, 0.03455), (0.0264, 0.03695),
+           (0.040, 0.03695), (0.040, 0.0372), (0.0264, 0.0372), (0.0264, end), (head_r, end), (head_r, hub + floor), (0.0, hub + floor)]
+    return s_rev(c, axis, [[r, sign * t] for r, t in pts])
+
+
+def bearing_ring(c, axis, sign, od, lobes, lobe_r, bore=0.0327, thread=0.034, collar=0.0385, lip=0.0306, t_lip=0.0265, t_race_end=0.0345, t_end=0.03655, t_plate=0.0265, t_seat=0.0239, t_face=0.02445, inner=0.0602, t_lobe=0.0283):
+    """The ring that closes a housing round a motor's front and holds the outer race, a tree. lobes: (x, y, z, axis) centres at its rim screws. Same stack as output_cup."""
+    pts = [(lip, t_face), (inner, t_face), (inner, t_seat), (od, t_seat), (od, t_plate, 0.0012), (collar, t_plate, 0.0015), (collar, t_end, 0.0008), (thread, t_end), (thread, t_race_end), (bore, t_race_end), (bore, t_lip), (lip, t_lip)]
+    tree = s_rev(c, axis, [[r, sign * t] for r, t in rounded_poly(pts)])
+    # a dish between collar and rim, 1.8 thick there
+    tree = s_cut(0.001, tree, s_rev(c, axis, [[r, sign * t] for r, t in [(collar + 0.003, t_seat + 0.0014), (od - 0.006, t_seat + 0.0014), (od - 0.006, t_plate + 0.003), (collar + 0.003, t_plate + 0.003)]]))
+    h = abs(t_lobe - t_seat)
+    k = AXES[axis]
+    bumps = [s_cyl([lc[i] + sign * k[i] * (t_seat + t_lobe) / 2 for i in range(3)], axis, lobe_r + 0.001, h, e=0.0012) for lc in lobes]
+    return s_union(0.0008, tree, *bumps)
+
+
+def output_stack(name, joint, cup, out_link, stator_link, housing, ring_name, c, axis, od, rim_angles, rim_r, lobe_r, color, thrust=0.0, designation='CRBS 508', mass_note=''):
+    """Round a motor's output: ring on the housing, bearing in it, nut and threaded ring, rim screws. Needs the joint placed. The template's whole front stack in one call; each arm's motors take it with their own numbers. Writes the rim's screws as group '<name> rim'."""
+    k = AXES[axis]
+    u = [i for i in range(3) if k[i] == 0.0]
+    ctr = lambda t: tuple(c[i] + k[i] * t for i in range(3))
+    def ang(a):
+        p = list(ctr(0.0))
+        if axis == 'y':                       # x, z in the plane
+            p[0] += rim_r * math.cos(math.radians(a))
+            p[2] += rim_r * math.sin(math.radians(a))
+        else:
+            p[u[0]] += rim_r * math.cos(math.radians(a))
+            p[u[1]] += rim_r * math.sin(math.radians(a))
+        return p
+    tree = bearing_ring(c, axis, 1, od, [ang(a) for a in rim_angles], lobe_r)
+    _add(stator_link, machined(ring_name, tree, color, voxel=0.0005, voxel_hi=0.0004, exposed=True))
+    bearing(f'{name} bearing', designation, ctr(0.0305), axis, out_link, [cup], stator_link, [ring_name], joint)
+    _add(stator_link, _cut(f'{name} seat', ctr(0.0305), axis, 0.033, 0.00804, [ring_name]))
+    retainer(f'{name} nut', out_link, ctr(0.0257), axis, 0.0281, 0.02495, 0.0015, f'{name} bearing', kind='thin nut, M50 x 1, on the cup (made, not bought)')
+    retainer(f'{name} retaining ring', stator_link, ctr(0.03555), axis, 0.03405, 0.0305, 0.002, f'{name} bearing', kind='threaded ring, M68 x 1 (made, not bought)')
+    pos = [[ang(a)[i] + k[i] * 0.0283 for i in range(3)] for a in rim_angles]
+    bolt_group(f'{name} rim', stator_link, 'M3', 12, 'iso10642', pos, axis, -1, [ring_name], housing, 4.2, load=dict(V=0.0, Fa=thrust, T=0.0, Mt=0.0, r=rim_r), note='what the ring passes on: the bearing goes in it, not the screws, which only hold it')
+
+
+def seam_groove(name, secs, z0, width, depth, targets):
+    """A real seam between two panels: a groove width wide and depth deep round a z loft's surface (secs as robot.py's), from z0 up, cut from the targets. Pair it with a dark decal at its floor. Panels meeting flush read as one, as the user found."""
+    S = [list(s) for s in secs]
+    inner = [[z, cx, cy, a - depth, b - depth, n] for z, cx, cy, a, b, n in S]
+    near = min(S, key=lambda q: abs(q[0] - z0))
+    ring = s_cut(0.0, s_box((near[1], near[2], z0 + width / 2), (2 * near[3] + 0.02, 2 * near[4] + 0.02, width)), s_loft(inner))
+    return dict(kind='sdf', name=name, tree=ring, color='#000000', role='cut', targets=list(targets), voxel=0.0004, voxel_hi=0.0004)
 
 
 def closed_tube(z0, z1, cx, cy, r, wall, top_collar=None):
