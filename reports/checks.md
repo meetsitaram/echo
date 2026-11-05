@@ -1,6 +1,6 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-05 05:15, 164 s
+spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
 
 249 checks: 241 pass, 7 warn, **1 fail**
 
@@ -28,7 +28,7 @@ spec: `spec/robot.json`, 2026-11-05 05:15, 164 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | total | 59.53 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
+| PASS | total | 60.13 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
 
 ## axis
 
@@ -273,32 +273,32 @@ spec: `spec/robot.json`, 2026-11-05 05:15, 164 s
 
 | status | item | detail |
 |---|---|---|
-| FAIL | L_knee | 138.2 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 173 % used |
-| PASS | L_hip_yaw | 39.1 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 98 % used |
-| PASS | R_elbow | 10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
-| PASS | L_elbow | 10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
-| PASS | R_knee | 68.6 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 86 % used |
-| PASS | L_hip_roll | 60.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 76 % used |
-| PASS | L_shoulder_roll | 15.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 62 % used |
-| PASS | R_shoulder_roll | 15.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 62 % used |
+| FAIL | L_knee | 139.5 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 174 % used |
+| PASS | L_hip_yaw | 39.6 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 99 % used |
+| PASS | R_elbow | 10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
+| PASS | L_elbow | 10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
+| PASS | R_knee | 69.0 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 86 % used |
+| PASS | L_hip_roll | 61.5 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 77 % used |
+| PASS | R_shoulder_roll | 15.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 63 % used |
+| PASS | L_shoulder_roll | 15.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 63 % used |
 | PASS | R_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
 | PASS | L_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
-| PASS | L_shoulder_pitch | 16.1 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 40 % used |
-| PASS | R_shoulder_pitch | 16.1 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 40 % used |
-| PASS | R_ankle_pitch | 11.6 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used |
-| PASS | L_ankle_pitch | 11.6 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used |
+| PASS | L_shoulder_pitch | 16.2 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used |
+| PASS | R_shoulder_pitch | 16.2 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used |
+| PASS | R_ankle_pitch | 11.7 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used |
+| PASS | L_ankle_pitch | 11.7 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used |
 | PASS | L_hip_pitch | 28.9 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
 | PASS | R_hip_pitch | 28.9 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
 | PASS | R_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | L_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | neck_pitch | 0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used |
-| PASS | R_hip_roll | 2.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used |
+| PASS | R_hip_roll | 2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used |
 | PASS | R_wrist_yaw | 0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used |
 | PASS | L_wrist_yaw | 0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used |
 | PASS | R_hip_yaw | 0.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used |
 | PASS | R_shoulder_yaw | 0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used |
 | PASS | L_shoulder_yaw | 0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used |
 | PASS | L_ankle_roll | 0.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 48 N m (1 x RS06 x 1.3): 1 % used |
-| PASS | R_ankle_roll | 0.2 N m in 'stand' vs rated 15 N m (1 x RS06 x 1.3): 1 % used |
+| PASS | R_ankle_roll | 0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used |
 | PASS | waist_yaw | 0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used |
 | PASS | neck_yaw | 0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used |

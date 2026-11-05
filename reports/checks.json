@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "59.53 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "60.13 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1323,49 +1323,49 @@
   "group": "torque",
   "item": "L_knee",
   "status": "FAIL",
-  "detail": "138.2 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 173 % used"
+  "detail": "139.5 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 174 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_yaw",
   "status": "PASS",
-  "detail": "39.1 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 98 % used"
+  "detail": "39.6 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 99 % used"
  },
  {
   "group": "torque",
   "item": "R_elbow",
   "status": "PASS",
-  "detail": "10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
+  "detail": "10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
  },
  {
   "group": "torque",
   "item": "L_elbow",
   "status": "PASS",
-  "detail": "10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
+  "detail": "10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
  },
  {
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "68.6 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 86 % used"
+  "detail": "69.0 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 86 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "60.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 76 % used"
- },
- {
-  "group": "torque",
-  "item": "L_shoulder_roll",
-  "status": "PASS",
-  "detail": "15.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 62 % used"
+  "detail": "61.5 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 77 % used"
  },
  {
   "group": "torque",
   "item": "R_shoulder_roll",
   "status": "PASS",
-  "detail": "15.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 62 % used"
+  "detail": "15.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 63 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_shoulder_roll",
+  "status": "PASS",
+  "detail": "15.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 63 % used"
  },
  {
   "group": "torque",
@@ -1383,25 +1383,25 @@
   "group": "torque",
   "item": "L_shoulder_pitch",
   "status": "PASS",
-  "detail": "16.1 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 40 % used"
+  "detail": "16.2 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used"
  },
  {
   "group": "torque",
   "item": "R_shoulder_pitch",
   "status": "PASS",
-  "detail": "16.1 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 40 % used"
+  "detail": "16.2 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used"
  },
  {
   "group": "torque",
   "item": "R_ankle_pitch",
   "status": "PASS",
-  "detail": "11.6 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used"
+  "detail": "11.7 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used"
  },
  {
   "group": "torque",
   "item": "L_ankle_pitch",
   "status": "PASS",
-  "detail": "11.6 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used"
+  "detail": "11.7 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used"
  },
  {
   "group": "torque",
@@ -1437,7 +1437,7 @@
   "group": "torque",
   "item": "R_hip_roll",
   "status": "PASS",
-  "detail": "2.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
+  "detail": "2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
  },
  {
   "group": "torque",
@@ -1479,7 +1479,7 @@
   "group": "torque",
   "item": "R_ankle_roll",
   "status": "PASS",
-  "detail": "0.2 N m in 'stand' vs rated 15 N m (1 x RS06 x 1.3): 1 % used"
+  "detail": "0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used"
  },
  {
   "group": "torque",

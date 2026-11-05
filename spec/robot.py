@@ -317,6 +317,8 @@ link('torso', 19.96, [
     # (Figure has a sleeve seam): a grey liner behind the gap, so the seam reads as a shadow line, not a band
     dict(cyl('L torso shoulder liner', (0, 0.1465, SZ), 'y', 0.0625, 0.002, GREY, 'decal'), material='pa12'),
     dict(cyl('R torso shoulder liner', (0, -0.1465, SZ), 'y', 0.0625, 0.002, GREY, 'decal'), material='pa12'),
+    *[dict(cyl(f'{p} torso shoulder ring', (0, y * 0.149, SZ), 'y', 0.0585, 0.006, GREY, 'decal'), material='knit', mass=0.005) for p, y in (('L', 1), ('R', -1))],
+    *[cut(cyl(f'{p} torso shoulder ring hole', (0, y * 0.149, SZ), 'y', 0.042, 0.008), f'{p} torso shoulder ring') for p, y in (('L', 1), ('R', -1))],
     cut(cyl('L torso liner hole', (0, 0.1465, SZ), 'y', 0.042, 0.004), 'L torso shoulder liner'),
     cut(cyl('R torso liner hole', (0, -0.1465, SZ), 'y', 0.042, 0.004), 'R torso shoulder liner'),
 ], 'battery 13.1 kg (2.3 kWh, as Figure 03), compute, shoulder pitch and neck yaw actuators')
@@ -408,28 +410,30 @@ def oval_pad(name, zc, y, side, w, h, n=2.3, t=0.0075, dome=0.0):
     return [pad, eye]
 
 
-def joint_hub(name, side, zc, yc, r, tail_z, tail_r, y_in, y_out):
-    """A black hub in a limb's side view: the hull of a circle r on the axis and a smaller circle at the tail, as sections in z;
-    in the front view a leaf, thickest at the axis (Figure's front frame)."""
-    import math
-    sin_t = (r - tail_r) / -tail_z
-    z1, a1 = -r * sin_t, r * (1 - sin_t ** 2) ** 0.5
-    z2, a2 = tail_z - tail_r * sin_t, tail_r * (1 - sin_t ** 2) ** 0.5
+# Iteration 38 (review: the pick shape, a round face on a long tail, was drawn, not measured). Figure's black on a grid, across its
+# long axis (side frame, both knees; 3/4 far knee): 150 long x 103 wide, widths 63, 84, 94, 102, 103, 98, 89, 78, 62 at 10 to 90 % of its
+# length: a plump oval with a short chin. Elbow: 125 x 83, widths 56, 70, 77, 78, 82, 82, 79, 70, 54.
+HUB_T = (0.005, 0.03, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97, 0.995)
+KNEE_HUB_HALF = (0.010, 0.021, 0.0315, 0.042, 0.047, 0.051, 0.0515, 0.0495, 0.0445, 0.039, 0.031, 0.018, 0.009)
+ELBOW_HUB_HALF = (0.008, 0.017, 0.028, 0.035, 0.0385, 0.0395, 0.041, 0.041, 0.0395, 0.035, 0.027, 0.014, 0.007)
 
-    def half(z):
-        if z >= z1:
-            return math.sqrt(max(r ** 2 - z ** 2, 1e-6))
-        if z >= z2:
-            return a2 + (a1 - a2) * (z - z2) / (z1 - z2)
-        return math.sqrt(max(tail_r ** 2 - (z - tail_z) ** 2, 1e-6))
-    bot = tail_z - tail_r
-    zs = [bot + 0.0005, bot + 0.003, bot + 0.008, tail_z, z2 + (z1 - z2) * 0.5, z1, -0.2 * r, 0.2 * r, 0.5 * r, 0.76 * r, 0.92 * r, 0.99 * r]
-    b0 = (y_out - y_in) / 2
 
-    def thick(z):                 # the leaf
-        t = (z - bot) / (-bot) if z < 0 else z / r
-        return b0 * (0.55 + 0.45 * math.sin(min(max(t, 0.0), 1.0) * math.pi / 2)) if z < 0 else b0 * (1.0 - 0.3 * t ** 2)
-    return loft(name, [(zc + z, 0.0, yc + side * (y_in + y_out) / 2, max(half(z), 0.004), thick(z), 4.0) for z in zs], GLOSS, open=())
+def joint_hub(name, side, zc, yc, top, bot, halves, y_in, y_out):
+    """A black hub: the measured outline in the side view (top and bot from the axis), a leaf in the front view, thickest at its middle."""
+    mid, b0 = (top + bot) / 2, (y_out - y_in) / 2
+    secs = []
+    for t, a in zip(HUB_T, halves):
+        z = top + t * (bot - top)
+        u = abs(z - mid) / ((top - bot) / 2)
+        b = b0 * (1 - 0.42 * u ** 5)
+        secs.append((zc + z, 0.0, yc + side * (y_in + b), a, b, 4.0))
+    return loft(name, secs, GLOSS, open=())
+
+
+def hub_clearance(name, zc, yc, top, bot, halves, grow):
+    """The hub's outline grown by `grow`, through the whole limb: a cover's edge round it."""
+    return loft(name, [(zc + top + t * (bot - top), 0.0, yc, a + grow, 0.09, 4.0) for t, a in zip(HUB_T, halves)] +
+                [(zc + top + grow, 0.0, yc, 0.004, 0.09, 4.0), (zc + bot - grow, 0.0, yc, 0.004, 0.09, 4.0)], open=())
 
 
 def dome_pad(name, zc, y, side, w, h, t):
@@ -464,7 +468,8 @@ ELBOW_R, ELBOW_A = 0.050, 0.054           # drum radius; the upper arm's half de
 ELBOW_W = 0.0325                          # the neck's half width, between the hubs
 ELBOW_HUB_IN, ELBOW_HUB_OUT = 0.0375, 0.0535
 ELBOW_CHEEK_Y = 0.035
-ELBOW_HEM = 0.053
+ELBOW_HEM = 0.063
+ELBOW_HUB_TOP, ELBOW_HUB_BOT = 0.059, -0.066
 FOLD = ((-0.1, EZ + 0.0544 - 0.03425), (0.1, EZ + 0.0544 + 0.03425))
 
 
@@ -523,55 +528,51 @@ link('L_shoulder_roll_link', 1.0, [
     rbox('L shoulder roll lug', (-0.064, SY, SZ - 0.0195), (0.006, 0.02, 0.065), 0.002, BLACK, exposed=True),
     rbox('L shoulder roll step', (-0.0555, SY, SZ - 0.048), (0.023, 0.02, 0.008), 0.002, BLACK, exposed=True),
     rbox('L shoulder roll foot', (-0.0435, SY, SZ - 0.07), (0.013, 0.02, 0.04), 0.002, BLACK),
-    # iteration 31 (a black bracket stood out behind the shoulder in the side and back views; Figure shows only sleeve): a
-    # grey fairing over lug and step, part of the arm's back line. Behind the plane the cap's back turns in, so the
-    # roll never sweeps it
-    loft('L shoulder roll fairing', [(SZ - 0.064, -0.048, SY, 0.007, 0.018, 2.6), (SZ - 0.052, -0.056, SY, 0.0125, 0.018, 2.6),
-                                     (SZ - 0.035, -0.065, SY, 0.0075, 0.018, 3.0), (SZ - 0.005, -0.0665, SY, 0.006, 0.017, 3.0),
-                                     (SZ + 0.012, -0.0665, SY, 0.006, 0.0155, 3.0), (SZ + 0.019, -0.0665, SY, 0.0045, 0.0085, 2.4)],
-         open=()),
 ])
 # iteration 37 (close-up audit: Figure's shoulder is one knit sleeve, no ball, no ring, no tab; ours showed a ball in a ring with a dark
 # crescent, and the roll fairing as a hook behind it). A knit dome on the arm over all three, into the torso's side.
 # Role decal: soft, the rigid checks do not see it; at high roll the real sleeve must bunch against the torso, untested.
+# Iteration 38 (review: a club, wider than before). Its outside stays on the old cap's (0.2625 from the centre), it grows out of the arm over 11 cm with
+# no ring at its lower end (it starts inside the arm), and its top leans in to the torso's slope.
 LINKS['L_shoulder_roll_link']['geoms'].append(dict(loft('L shoulder sleeve', [
-    (SZ - 0.085, -0.002, SY, 0.0555, 0.0465, 2.3), (SZ - 0.05, -0.008, SY - 0.004, 0.0635, 0.054, 2.2),
-    (SZ - 0.02, -0.0095, SY - 0.012, 0.068, 0.070, 2.2), (SZ + 0.015, -0.0095, SY - 0.015, 0.0675, 0.077, 2.2),
-    (SZ + 0.04, -0.008, SY - 0.018, 0.059, 0.070, 2.1), (SZ + 0.056, -0.006, SY - 0.022, 0.042, 0.054, 2.0),
-    (SZ + 0.0635, -0.005, SY - 0.026, 0.018, 0.026, 2.0)], GREY, 'decal', open=('bottom',)), material='knit'))
+    (SZ - 0.114, 0.0, SY, 0.052, 0.043, 2.3), (SZ - 0.09, -0.003, SY - 0.003, 0.056, 0.049, 2.35), (SZ - 0.06, -0.0065, SY - 0.007, 0.0605, 0.0555, 2.35),
+    (SZ - 0.03, -0.0065, SY - 0.008, 0.0635, 0.061, 2.35), (SZ, -0.0055, SY - 0.008, 0.066, 0.0655, 2.35), (SZ + 0.025, -0.005, SY - 0.0095, 0.0625, 0.0655, 2.3),
+    (SZ + 0.045, -0.005, SY - 0.02, 0.054, 0.064, 2.15), (SZ + 0.057, -0.005, SY - 0.035, 0.04, 0.060, 2.0), (SZ + 0.065, -0.005, SY - 0.05, 0.018, 0.04, 2.0)],
+    GREY, 'decal', open=()), material='knit'))
 joint('L_shoulder_yaw', 'L_shoulder_roll_link', 'L_shoulder_yaw_link', (0, SY, SZ - 0.12), 'z', (-2.6, 2.6),
       'RS02', act_c=(0, SY, SZ - 0.09), out=-1, exposed='flange')   # its flange shows in the seam
+ARM_LOW = [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
+           (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.110, 0, SY, 0.053, 0.044, 2.2)]
 link('L_shoulder_yaw_link', 1.05, [
     # squarer at the elbow (n 4): flat sides under the pad, as Figure's. Iteration 23: ends in a hem and a socket round
     # the forearm's drum; a plane stops the socket's tail where it would thin to nothing behind the elbow
-    loft('L upper arm lower', [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
-                               (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.110, 0, SY, 0.053, 0.044, 2.2)],
+    loft('L upper arm lower', ARM_LOW,
          open=('bottom',), clip=above((-1.0, EZ + 0.02), (1.0, EZ + 0.02)), keep=(ARM_YAW_C, ARM_YAW_R)),
     cut(cyl('L upper arm elbow socket', (0, SY, EZ), 'y', ELBOW_A, 2 * (ELBOW_CHEEK_Y + 0.0015)), 'L upper arm lower'),
     # in front of where the tangent plane meets the socket (91 deg), everything below the plane
     cut(loft('L upper arm fold', [(EZ - 0.06, 0, SY, 0.1, 0.06, 8.0), (EZ + 0.12, 0, SY, 0.1, 0.06, 8.0)],
              clip=[below(*FOLD), above(elbow_ray(271.4), elbow_ray(91.4))]), 'L upper arm lower'),
     # the sides stop over the hub
-    cut(rbox('L upper arm side in', (0, SY - 0.0615, EZ - 0.0235), (0.2, 0.05, 0.153), 0.002), 'L upper arm lower', 'L elbow panel'),
-    cut(rbox('L upper arm side out', (0, SY + 0.0615, EZ - 0.0235), (0.2, 0.05, 0.153), 0.002), 'L upper arm lower', 'L elbow panel'),
-    # knit: the panel closes the fold, the hem wraps the hub's top (role decal: soft, the rigid checks do not see them)
-    dict(loft('L elbow panel', [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
-                                (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2)], GREY, 'decal', open=(),
-              clip=[below(*up(FOLD, 0.002)), above(elbow_ray(271.4), elbow_ray(91.4)), above((-1.0, EZ), (1.0, EZ))]), material='knit'),
+    cut(rbox('L upper arm side in', (0, SY - 0.0615, EZ - 0.0185), (0.2, 0.05, 0.163), 0.0005), 'L upper arm lower', 'L elbow panel'),
+    cut(rbox('L upper arm side out', (0, SY + 0.0615, EZ - 0.0185), (0.2, 0.05, 0.163), 0.0005), 'L upper arm lower', 'L elbow panel'),
+    # knit: the panel closes the fold, the hem wraps the hub's top, both the arm's own surface (role decal: soft, the rigid checks do not see them)
+    dict(loft('L elbow panel', ARM_LOW, GREY, 'decal', open=(),
+              clip=[below(*up(FOLD, 0.003)), above(*up((elbow_ray(271.4), elbow_ray(91.4)), -0.003)), above((-1.0, EZ), (1.0, EZ))], keep=(ARM_YAW_C, ARM_YAW_R)), material='knit'),
     cut(cyl('L elbow panel drum', (0, SY, EZ), 'y', ELBOW_R - 0.001, 0.12), 'L elbow panel'),
-    dict(loft('L elbow sleeve', [(EZ + 0.015, 0, SY, ELBOW_A - 0.002, 0.0425, 4.0), (EZ + 0.058, 0, SY, ELBOW_A, 0.0425, 4.0)], GREY, 'decal', open=(),
-              clip=[above((-1.0, EZ + 0.018), (1.0, EZ + 0.018)), below((-1.0, EZ + ELBOW_HEM + 0.002), (1.0, EZ + ELBOW_HEM + 0.002))]),
-         material='knit'),
-    cut(cyl('L elbow sleeve hub', (0, SY, EZ), 'y', 0.0455, 0.12), 'L elbow sleeve'),
+    dict(loft('L elbow sleeve', ARM_LOW, GREY, 'decal', open=(),
+              clip=[above((-1.0, EZ + 0.018), (1.0, EZ + 0.018)), below((-1.0, EZ + ELBOW_HEM + 0.001), (1.0, EZ + ELBOW_HEM + 0.001))]), material='knit'),
+    cut(hub_clearance('L elbow sleeve hub', EZ, SY, ELBOW_HUB_TOP, ELBOW_HUB_BOT, ELBOW_HUB_HALF, 0.003), 'L elbow sleeve'),
     cut(cyl('L elbow sleeve neck', (0, SY, EZ), 'y', ELBOW_A, 2 * (ELBOW_CHEEK_Y + 0.002)), 'L elbow sleeve'),
     span('L upper arm frame', EZ + 0.066, SZ - 0.115, y=SY, sx=0.03, sy=0.03, exposed=True),
     # the output: a bridge from the frame to a cheek each side, in the band between neck and hub (3 mm 7075, 4.6 cm wide round the bore: at the
     # actuator's peak 36 N m about 127 MPa, a hand estimate, scaling the 4 mm figure; 7075-T6 yields near 500). The inner is bolted to
     # the axle on the motor's output; the outer runs on a bearing round the post
     rbox('L elbow bridge', (0, SY, EZ + 0.063), (0.024, 2 * (ELBOW_CHEEK_Y + 0.0015), 0.010), 0.002, BLACK, exposed=True),
-    rbox('L elbow cheek in', (0, SY - ELBOW_CHEEK_Y, EZ + 0.016), (0.046, 0.003, 0.098), 0.002, BLACK, exposed=True),
-    rbox('L elbow cheek out', (0, SY + ELBOW_CHEEK_Y, EZ + 0.016), (0.046, 0.003, 0.098), 0.002, BLACK, exposed=True),
-    cut(cyl('L elbow cheek bearing bore', (0, SY + ELBOW_CHEEK_Y, EZ), 'y', 0.0195, 0.01), 'L elbow cheek out'),
+    rbox('L elbow cheek in', (0, SY - ELBOW_CHEEK_Y, EZ + 0.0425), (0.046, 0.003, 0.045), 0.002, GREY, exposed=True),
+    rbox('L elbow cheek out', (0, SY + ELBOW_CHEEK_Y, EZ + 0.0425), (0.046, 0.003, 0.045), 0.002, GREY, exposed=True),
+    dict(cyl('L elbow cheek disc in', (0, SY - ELBOW_CHEEK_Y, EZ), 'y', 0.040, 0.003, BLACK), exposed=True),
+    dict(cyl('L elbow cheek disc out', (0, SY + ELBOW_CHEEK_Y, EZ), 'y', 0.040, 0.003, BLACK), exposed=True),
+    cut(cyl('L elbow cheek bearing bore', (0, SY + ELBOW_CHEEK_Y, EZ), 'y', 0.0195, 0.01), 'L elbow cheek disc out'),
     dict(cyl('L elbow axle', (0, SY - 0.03575, EZ), 'y', 0.017, 0.0175, BLACK), exposed=True),
 ])
 # Elbow: RS06 (88 mm), the size of Figure's elbow disc. User decision 2026-10-31: smaller elbows at the cost of
@@ -588,7 +589,7 @@ link('L_elbow_link', 0.85, [
     # iteration 23: narrowing to the neck under the pads, up to the drum; the wrist yaw RS02 keeps its 3 mm at -0.07
     loft('L forearm', [(EZ - 0.146, 0, SY, 0.0445, 0.0415, 2.2), (EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2),
                        (EZ - 0.07, 0, SY, 0.048, 0.0428, 2.2),
-                       (EZ - 0.056, 0, SY, 0.048, ELBOW_W + 0.002, 4.0), (EZ - 0.022, 0, SY, 0.0485, ELBOW_W, 5.0),
+                       (EZ - 0.060, 0, SY, 0.048, 0.0405, 3.0), (EZ - 0.051, 0, SY, 0.048, 0.0377, 4.0), (EZ - 0.0425, 0, SY, 0.048, ELBOW_W + 0.0003, 5.0), (EZ - 0.022, 0, SY, 0.0485, ELBOW_W, 5.0),
                        (EZ - 0.008, 0, SY, 0.0488, ELBOW_W, 12.0), (EZ, 0, SY, ELBOW_R - 0.0005, ELBOW_W, 16.0)]),   # 0.5 mm inside the drum: no coincident faces
     cut(ell('L forearm seam', WRIST_YAW_C, (WRIST_YAW_R + 0.003,) * 3), 'L forearm'),   # iteration 24: as the upper arm's
     # the upper half of the drum (the lower half would only be a wall inside the forearm)
@@ -597,12 +598,14 @@ link('L_elbow_link', 0.85, [
     cut(cyl('L forearm axle hole in', (0, SY - ELBOW_W - 0.003, EZ), 'y', 0.02, 0.012), 'L forearm drum', 'L forearm'),
     cut(cyl('L forearm axle hole out', (0, SY + ELBOW_W + 0.003, EZ), 'y', 0.02, 0.012), 'L forearm drum', 'L forearm'),
     # the hubs: on the outside a cap on the stator's back, by the post; inside the idler, carried from the frame under the motor
-    dict(joint_hub('L elbow hub in', -1, EZ, SY, 0.043, -0.052, 0.024, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
-    dict(joint_hub('L elbow hub out', +1, EZ, SY, 0.043, -0.052, 0.024, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
+    dict(joint_hub('L elbow hub in', -1, EZ, SY, ELBOW_HUB_TOP, ELBOW_HUB_BOT, ELBOW_HUB_HALF, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
+    dict(joint_hub('L elbow hub out', +1, EZ, SY, ELBOW_HUB_TOP, ELBOW_HUB_BOT, ELBOW_HUB_HALF, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
     cut(cyl('L elbow hub idler bore', (0, SY - ELBOW_HUB_IN, EZ), 'y', 0.0185, 0.016), 'L elbow hub in'),
     *[g for sd, y in (('in', -1), ('out', +1)) for g in (
         cyl(f'L elbow hub ring {sd}', (0, SY + y * ELBOW_HUB_OUT, EZ), 'y', 0.034, 0.002, '#2A2C30', 'decal'),
         cyl(f'L elbow hub face {sd}', (0, SY + y * (ELBOW_HUB_OUT + 0.0003), EZ), 'y', 0.032, 0.002, GLOSS, 'decal'))],
+    *[dict(cyl(f'L elbow hub seal {sd}', (0, SY + y * 0.0355, EZ), 'y', 0.0405, 0.006, BLACK, 'decal'), material='pa12', mass=0.008) for sd, y in (('in', -1), ('out', +1))],
+    *[cut(cyl(f'L elbow hub seal bore {sd}', (0, SY + y * 0.0355, EZ), 'y', 0.0205, 0.008), f'L elbow hub seal {sd}') for sd, y in (('in', -1), ('out', +1))],
     dict(cyl('L elbow post', (0, SY + 0.03325, EZ), 'y', 0.017, 0.0145, BLACK), exposed=True),
     rbox('L elbow under motor', (0, SY - 0.005, EZ - 0.052), (0.03, 0.071, 0.008), 0.002, BLACK, exposed=True),
     # side plate from the stator's back down onto the wrist yaw actuator
@@ -701,9 +704,9 @@ link('L_hand', 1.0, [
 KNEE_R, KNEE_SOCKET = 0.066, 0.070
 KNEE_W = 0.036                            # the neck's half width, between the hubs
 KNEE_WIDE = 0.056                         # the shank's half width below the hub
-KNEE_HEM = 0.06                           # above the axis, where the thigh's full width ends
+KNEE_HEM = 0.07                           # above the axis, where the thigh's full width ends
 HUB_IN, HUB_OUT = 0.041, 0.0615           # the hub's faces, from the leg's centre plane
-HUB_R, HUB_TAIL_Z, HUB_TAIL_R = 0.05, -0.064, 0.024   # round face; the tail's end circle, below the axis
+HUB_TOP, HUB_BOT = 0.066, -0.084           # the hub, from the axis (fig_hub.py: 150 long; the front frame's black centred about 1 cm low)
 CHEEK_Y = 0.0385                          # thigh cheeks, 3 mm 7075, between neck and hub
 KNEE_FOLD_RAD, KNEE_FOLD_D = 2.15, 0.0699   # the fold plane: the calf's back face at this flexion, this far from the axis
 
@@ -720,7 +723,7 @@ KNEE_FOLD_DEG = 180 - KNEE_FOLD_RAD * 57.29578   # the plane's normal, in the si
 
 
 def knee_hub(name, side):
-    return joint_hub(name, side, KZ, HY, HUB_R, HUB_TAIL_Z, HUB_TAIL_R, HUB_IN, HUB_OUT)
+    return joint_hub(name, side, KZ, HY, HUB_TOP, HUB_BOT, KNEE_HUB_HALF, HUB_IN, HUB_OUT)
 
 
 def knee_ray(deg, r=0.1):
@@ -827,6 +830,10 @@ THIGH_LOW = [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, 0.0605, 4.0), (KZ + 0.03, 0.0, HY
              # takes the same surface past the fold plane
              (KZ + 0.10, -0.0051, HY, 0.0721, 0.0625, 3.0), (KZ + 0.125, -0.0060, HY, 0.0735, 0.0645, 2.9),
              (KZ + 0.16, -0.0071, HY, 0.0756, 0.066, 2.6)]
+# iteration 38: one list, for the thigh and the knit parts cut from the same surface
+THIGH_SECS = THIGH_LOW + [(KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
+                          (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4),
+                          (HIP_SEAM + 0.022, -0.041, HY, 0.095, 0.070, 2.4)]
 joint('L_hip_pitch', 'pelvis', 'L_hip_pitch_link', (0, HY, HZ), 'y', (-1.65, 0.24), 'RS04',
       act_c=(0, PITCH_ACT_Y, HZ), out=+1, exposed=True)
 link('L_hip_pitch_link', 1.6, [
@@ -890,10 +897,7 @@ link('L_hip_yaw_link', 3.6, [
     # iteration 35 (user: the thigh's back shows a corner and a notch, from holding 2.15 rad). The fold plane cannot move
     # at this range: it is where the calf's back face lands. What can go is the corner: the back line bends in over its
     # last 7 cm, so the plane meets it at about 30 deg, not 49, and the corner sits 1 cm lower; 13 cm deep there
-    loft('L thigh', THIGH_LOW + [
-                     (KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
-                     (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4),
-                     (HIP_SEAM + 0.022, -0.041, HY, 0.095, 0.070, 2.4)],
+    loft('L thigh', THIGH_SECS,
          # iteration 21: up to 3 mm under the hip lobe (the yaw turns it under the lobe); iteration 25: dished
          # iteration 26: flat sides at the knee (n 4) for the pads; the socket's tail stops where it would thin out
          clip=above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), open=('bottom',)),
@@ -905,17 +909,19 @@ link('L_hip_yaw_link', 3.6, [
     cut(loft('L thigh fold', [(KZ - 0.06, -0.05, HY, 0.1, 0.09, 8.0), (KZ + 0.2, -0.05, HY, 0.1, 0.09, 8.0)],
              clip=[below(*KNEE_FOLD), above(knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG))]), 'L thigh'),
     # iteration 36: the thigh's sides stop over the hub; the knit panel closes what the fold plane took from the back
-    cut(rbox('L thigh side in', (0, HY - 0.0655, KZ - 0.03), (0.3, 0.05, 2 * 0.09), 0.002), 'L thigh', 'L knee panel'),
-    cut(rbox('L thigh side out', (0, HY + 0.0655, KZ - 0.03), (0.3, 0.05, 2 * 0.09), 0.002), 'L thigh', 'L knee panel'),
-    dict(loft('L knee panel', THIGH_LOW + [(KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4)], GREY, 'decal', open=(),
-              clip=[below(*KNEE_FOLD), above(knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG)), above((-1.0, KZ), (1.0, KZ))]),
+    cut(rbox('L thigh side in', (0, HY - 0.0655, KZ - 0.025), (0.3, 0.05, 2 * 0.095), 0.0005), 'L thigh', 'L knee panel'),
+    cut(rbox('L thigh side out', (0, HY + 0.0655, KZ - 0.025), (0.3, 0.05, 2 * 0.095), 0.0005), 'L thigh', 'L knee panel'),
+    # iteration 38 (the dark sliver over the hub was the outer cheek, read off a part-ID render: seen through a lens between the thigh's fold
+    # cut and a panel on slightly different sections, its clip planes on the same lines). The panel is the thigh's own surface now, its planes
+    # 3 mm past the cut, so they lap
+    dict(loft('L knee panel', THIGH_SECS, GREY, 'decal', open=(),
+              clip=[below(*up(KNEE_FOLD, 0.003)), above(*up((knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG)), -0.003)), above((-1.0, KZ), (1.0, KZ))]),
          material='knit'),
     cut(cyl('L knee panel drum', (0, HY, KZ), 'y', KNEE_R - 0.001, 0.16), 'L knee panel'),
-    # the sleeve's hem round the hub's top: the thigh's outline, between 2 and 6 cm over the axis, outside the neck
-    dict(loft('L knee sleeve', [(KZ + 0.015, 0.0, HY, 0.067, 0.0605, 4.0), (KZ + 0.066, 0.0, HY, KNEE_SOCKET, 0.0605, 4.0)],
-              GREY, 'decal', open=(), clip=[above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), below((-1.0, KZ + 0.0625), (1.0, KZ + 0.0625))]),
-         material='knit'),
-    cut(cyl('L knee sleeve hub', (0, HY, KZ), 'y', 0.0535, 0.16), 'L knee sleeve'),
+    # the hem, the same surface below the rigid sides, round the hub 3 mm clear
+    dict(loft('L knee sleeve', THIGH_SECS, GREY, 'decal', open=(),
+              clip=[above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), below((-1.0, KZ + KNEE_HEM + 0.001), (1.0, KZ + KNEE_HEM + 0.001))]), material='knit'),
+    cut(hub_clearance('L knee sleeve hub', KZ, HY, HUB_TOP, HUB_BOT, KNEE_HUB_HALF, 0.003), 'L knee sleeve'),
     cut(cyl('L knee sleeve neck', (0, HY, KZ), 'y', KNEE_SOCKET, 2 * 0.0405), 'L knee sleeve'),
     # in front (behind it the calf's ankle actuators fold up at deep knee bends); from the yoke, above the drum, up into the
     # hip yaw flange. Iteration 33: the frame no longer has a motor to pass through (it did, at x 12-36 mm, y +-40)
@@ -923,9 +929,12 @@ link('L_hip_yaw_link', 3.6, [
     rbox('L knee yoke', (0.028, HY, KZ + 0.078), (0.024, 2 * (CHEEK_Y + 0.0015), 0.012), 0.002, BLACK, exposed=True),
     # the fork, in the band between neck and hub (3 mm 7075, 5.2 cm wide: the motor's peak 120 N m about 77 MPa as a beam, a hand
     # estimate, as before; the arm is unchanged). Inner: bolted to the axle on the motor's output. Outer: on a bearing round the post
-    rbox('L knee cheek in', (0, HY - CHEEK_Y, KZ + 0.018), (0.052, 0.003, 0.096), 0.002, BLACK, exposed=True),
-    rbox('L knee cheek out', (0, HY + CHEEK_Y, KZ + 0.018), (0.052, 0.003, 0.096), 0.002, BLACK, exposed=True),
-    cut(cyl('L knee cheek bearing bore', (0, HY + CHEEK_Y, KZ), 'y', 0.0225, 0.01), 'L knee cheek out'),
+    rbox('L knee cheek in', (0, HY - CHEEK_Y, KZ + 0.0585), (0.052, 0.003, 0.069), 0.002, GREY, exposed=True),
+    rbox('L knee cheek out', (0, HY + CHEEK_Y, KZ + 0.0585), (0.052, 0.003, 0.069), 0.002, GREY, exposed=True),
+    # iteration 38: their lower ends a disc about the axis: it turns in its own place, and closes the band from the front
+    dict(cyl('L knee cheek disc in', (0, HY - CHEEK_Y, KZ), 'y', 0.050, 0.003, BLACK), exposed=True),
+    dict(cyl('L knee cheek disc out', (0, HY + CHEEK_Y, KZ), 'y', 0.050, 0.003, BLACK), exposed=True),
+    cut(cyl('L knee cheek bearing bore', (0, HY + CHEEK_Y, KZ), 'y', 0.0225, 0.01), 'L knee cheek disc out'),
     rbox('L knee cheek in top', (0.02, HY - CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
     rbox('L knee cheek out top', (0.02, HY + CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
     # the axle: from the motor's output through the neck's wall and the inner cheek, into the inner hub on the idler bearing
@@ -1002,9 +1011,11 @@ link('L_knee_link', 2.08, [
     # above and below. Now two straight lines from the collar to the motor (SHANK_FRONT, SHANK_BACK), straight on above it
     # in front, easing into the drum behind, one section shape all the way (the old n 2.2 to 4 to 2.6 was the muscle's
     # shading). 110 mm at the RS03, 3 mm wall to the corners of its end faces with n 3.6.
-    # iteration 36: full width up to the tail's end, then the neck between the hubs
-    loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40, KZ - 0.115)] +
-         [(*shank_section(KZ - 0.09)[:4], 0.047, 5.0), (*shank_section(KZ - 0.075)[:4], 0.0385, 6.0),
+    # iteration 38 (review: an hourglass, daylight between chin and neck; Figure's front frame: full grey between the hubs, black ending about
+    # 4.4 cm under the axis as the shank's side comes round it): full width up beside the chin, which sits in its side; the band closed from
+    # there down, the cheeks fill it above
+    loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40, KZ - 0.09)] +
+         [(*shank_section(KZ - 0.072)[:4], 0.050, 3.4), (*shank_section(KZ - 0.061)[:4], 0.0412, 4.0), (*shank_section(KZ - 0.052)[:4], KNEE_W + 0.0003, 5.0),
           (KZ - 0.03, -0.001, HY, 0.0635, KNEE_W, 5.0),
           (KZ - 0.008, 0.0, HY, KNEE_R - 0.001, KNEE_W, 12.0), (KZ, 0.0, HY, KNEE_R - 0.0005, KNEE_W, 16.0)],
          clip=above(*up(TRIM_HIGH, -0.002))),
@@ -1029,8 +1040,15 @@ link('L_knee_link', 2.08, [
     *[g for sd, y in (('in', -1), ('out', +1)) for g in (
         cyl(f'L knee hub ring {sd}', (0, HY + y * HUB_OUT, KZ), 'y', 0.040, 0.002, '#2A2C30', 'decal'),
         cyl(f'L knee hub face {sd}', (0, HY + y * (HUB_OUT + 0.0003), KZ), 'y', 0.038, 0.002, GLOSS, 'decal'))],
-    *[rbox(f'L knee hub mark {sd}', (0, HY + y * (HUB_OUT - 0.0028), KZ - 0.079), (0.014, 0.004, 0.0025), 0.0005, '#F4F6F8', 'decal')
+    *[rbox(f'L knee hub mark {sd}', (0, HY + y * (HUB_OUT - 0.0048), KZ - 0.0735), (0.014, 0.004, 0.0025), 0.0005, '#F4F6F8', 'decal')
       for sd, y in (('in', -1), ('out', +1))],
+    *[dict(ell(f'L knee hub lip {sd}', (0, HY + y * (HUB_OUT - 0.0066), KZ - 0.0705), (0.030, 0.0048, 0.0115), GLOSS, 'decal'), material='pa12')
+      for sd, y in (('in', -1), ('out', +1))],
+    # a soft seal from the neck's wall to the hub: closes the band's 1 mm slots from front and back. Role decal, its mass given (a thin felt, not this solid);
+    # drawn solid across the bearing's bore, because the covers check counts a closed cavity as a loose piece
+    *[dict(cyl(f'L knee hub seal {sd}', (0, HY + y * 0.0385, KZ), 'y', 0.0505, 0.006, BLACK, 'decal'), material='pa12', mass=0.01) for sd, y in (('in', -1), ('out', +1))],
+    dict(cyl('L knee hub seal plug in', (0, HY - 0.0405, KZ), 'y', 0.0237, 0.023, BLACK, 'decal'), material='pa12', mass=0.001),
+    dict(cyl('L knee hub seal plug out', (0, HY + 0.0375, KZ), 'y', 0.0237, 0.016, BLACK, 'decal'), material='pa12', mass=0.001),
     # the stator: a plate on the motor's back down to the outer shank plate, and the post on to the outer hub
     rbox('L knee stator plate', (0, HY + 0.0325, KZ - 0.022), (0.08, 0.004, 0.106), 0.002, BLACK, exposed=True),
     dict(cyl('L knee post', (0, HY + 0.03825, KZ), 'y', 0.02, 0.0155, BLACK), exposed=True),
