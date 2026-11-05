@@ -77,7 +77,7 @@ def parts(spec, S, ln):
         if 'mass' in g:
             m = g['mass']
         else:
-            m = vol * mats[mat]['density'] * (fill_of(g, solid) if g['role'] in ('struct', 'linkage') else 1.0)
+            m = vol * mats[mat]['density'] * (fill_of(g, solid) if g['role'] in ('struct', 'linkage') else g.get('wall_fill', 1.0))
         out.append((g['name'], mat, m, com, Iu * m))
         if g.get('add_mass'):
             out.append((g['name'] + ' (carried)', g.get('add_what', 'carried'), g['add_mass'], com, Iu * g['add_mass']))
@@ -103,7 +103,7 @@ def link_inertials(spec, S=None):
         ps = parts(spec, S, ln)
         frames = [p for p in ps if p[1] == 'al7075']
         base = sum(p[2] for p in ps if p[1] != 'cells')
-        extra = WIRING * base
+        extra = spec['links'][ln].get('wiring', WIRING) * base
         carrier = frames or ps
         fm = sum(p[2] for p in carrier)
         ps = [(n, mat, m * (1 + extra / fm), c, I * (1 + extra / fm)) if any(p[0] == n for p in carrier) else

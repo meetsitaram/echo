@@ -63,7 +63,8 @@ A check that has never failed may not work. Each check has a `--bad` case in `br
 | newpart | a bracket on no load path | loadpath (coverage) |
 | token, tokenedge | hip bracket touching its flange by 0.02 mm, on the face or at the rim | contact |
 | norods | all ankle cranks and rods deleted | linkage, loadpath |
-| nostator | knee motor's plate and post off its back | stator |
+| nostator | the barrel's plate bored out past the knee motor's face | stator |
+| buildorder | the rear cap put on before the motor | assembly |
 | thinpin | a pin that touches both links, d2 under 3,400 N | pivot |
 | motorinto | a plate run into the knee motor | motorfit |
 | shortthread, longscrew, protrude | hub screws 3.5 shorter or 4 longer; a block in their way | fastener |

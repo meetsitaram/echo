@@ -29,7 +29,7 @@ SCREW_COLOR, PIN_COLOR, BEARING_COLOR = '#2B2D31', '#6E7278', '#C9CDD2'     # bl
 HEAD_CLEAR = 0.6                                                             # counterbore over the head's diameter, mm (about what ISO 4762 tables give)
 
 _S = dict(links=None, joints=None, frame=None, act=None)
-PATTERNS, BEARINGS, SINGLE = [], [], []
+PATTERNS, BEARINGS, SINGLE, GROUPS, BUILD = [], [], [], [], []
 
 
 def setup(links, joints, act, motor_frame):
@@ -221,15 +221,23 @@ def pattern(name, joint, which, link, seat_t, length, head='iso4762', clamps=(),
     return names
 
 
-def fastener(name, link, thread, length, head, pos, axis, sign, clamps=(), into=None, grade=None, clear_len=None, note=''):
+def thread_r(thread):
+    return float(thread[1:]) / 2000
+
+
+def fastener(name, link, thread, length, head, pos, axis, sign, clamps=(), into=None, grade=None, clear_len=None, note='', group=None):
     """One screw. pos: on the seat under its head. Cuts a clearance hole in each clamped part, and a tapped hole in 'into' (a part of ours), 1.5 pitch deeper than the tip for the tap's run-out."""
     grade = grade or assumed('screw_grade')
     data = screw_data(thread, head)
     dirv = [sign * v for v in AXES[axis]]
     run = 1.5 * data['pitch']
     span = clear_len if clear_len is not None else 0.0
-    g = screw_geom(name, thread, length, head, pos, axis, sign, grade, clamps, into, pattern=name, face=add_v(pos, dirv, span / 1000), hole_depth=length - span + run, single=True, note=note)
+    g = screw_geom(name, thread, length, head, pos, axis, sign, grade, clamps, into, pattern=group or name, face=add_v(pos, dirv, span / 1000), hole_depth=length - span + run, single=True, note=note)
     _add(link, g)
+    if head == 'iso10642' and clamps:             # its cone, in the part it clamps
+        hr, hk, r = data['head_d'] / 2000 + 0.0002, data['head_k'] / 1000 + 0.0001, thread_r(thread) + 0.0002
+        prof = [[0.0, 0.0], [0.0, hr], [hk, r], [hk, 0.0]] if sign > 0 else [[-hk, 0.0], [-hk, r], [0.0, hr], [0.0, 0.0]]
+        _add(link, dict(kind='revolve', name=f'{name} seat', axis=axis, c=list(pos), profile=prof, color='#000000', role='cut', targets=list(clamps), internal=True))
     if clamps and span:
         c = add_v(pos, dirv, span / 2000)
         _add(link, _cut(f'{name} hole', c, axis, data['clear'] / 2000, (span + 0.4) / 1000, clamps, hw=dict(type='hole', kind='clearance', thread=thread, d=data['clear'], pattern=name, pos=c, axis=axis, parts=list(clamps))))
@@ -310,7 +318,7 @@ def bearing(name, designation, c, axis, inner_link, inner_parts, outer_link, out
     hw = dict(type='bearing', designation=designation, d=b['d'], D=b['D'], B=b['B'], C=b['C'], C0=b['C0'], kind=b['kind'], da=b.get('da'), Da=b.get('Da'), source=b['source'], read_via=b['read_via'],
               pos=list(c), axis=axis, inner_link=inner_link, inner_parts=list(inner_parts), outer_link=outer_link, outer_parts=list(outer_parts), joint=joint, partner=partner, note=note)
     _add(outer_link, _cyl(name, c, axis, b['D'] / 2000, b['B'] / 1000, BEARING_COLOR, 'bearing', material='steel', mass=mass / 1000, hw=hw),
-         _cut(f'{name} inner', c, axis, b['d'] / 2000, (b['B'] + 1) / 1000, [name]))
+         dict(_cut(f'{name} inner', c, axis, b['d'] / 2000, (b['B'] + 1) / 1000, [name]), segs=128))
     BEARINGS.append(dict(name=name, designation=designation, joint=joint, partner=partner))
     return name
 
@@ -320,17 +328,169 @@ def axle(name, link, c, axis, d, length, color='#1B1C1F', exposed=True, **kw):
     return dict(_cyl(name, c, axis, d / 2000, length / 1000, color, 'struct', exposed=exposed, material='al7075', fill=1.0, hw=dict(type='axle', d=d, length=length, pos=list(c), axis=axis), **kw))
 
 
-def retainer(name, link, c, axis, ro, ri, h, part_of, kind='retaining ring', mass=None):
+def retainer(name, link, c, axis, ro, ri, h, part_of, kind='retaining ring', mass=None, **kw):
     """A bought or thin stop beside a race. Round, on the axis. kind says what it is. Its stopping is read from the solids by the 'bearing' checks, whatever it's called."""
     rho = assumed('steel_density')
     m = mass if mass is not None else math.pi * (ro ** 2 - ri ** 2) * h * rho
-    _add(link, _cyl(name, c, axis, ro, h, PIN_COLOR, 'hardware', material='steel', mass=m, hw=dict(type='retainer', kind=kind, part_of=part_of, pos=list(c), axis=axis, count=1, pattern=name, clamps=[])),
+    _add(link, _cyl(name, c, axis, ro, h, PIN_COLOR, 'hardware', material='steel', mass=m, hw=dict(type='retainer', kind=kind, part_of=part_of, pos=list(c), axis=axis, count=1, pattern=name, clamps=[]), **kw),
          _cut(f'{name} inner', c, axis, ri, h + 0.001, [name]))
     return name
 
 
+def bolt_group(name, link, thread, length, head, positions, axis, sign, clamps, into, clear_len, load, note=''):
+    """A row of our own screws in our own parts: one fastener per position, read as one joint by the checks. load: dict(V N, T N m, Mt N m, Fa N, r m): what the joint must pass, for 'bolted'."""
+    names = []
+    for k, p in enumerate(positions):
+        names.append(fastener(f'{name} screw {k + 1}', link, thread, length, head, p, axis, sign, clamps=clamps, into=into, clear_len=clear_len, note=note, group=name))
+    GROUPS.append(dict(name=name, link=link, thread=thread, count=len(positions), placed=names, load=load, note=note))
+    return names
+
+
+def step(part_names, path=None, distance=0.05, screws=(), why=''):
+    """One step of the build order, as data: these parts go in along path (a world direction) by distance (m), then these screw patterns are driven. A part named in no step is in place from the start or isn't part of the joint."""
+    BUILD.append(dict(parts=list(part_names), path=list(path) if path else None, distance=distance, screws=list(screws), why=why))
+
+
 def records():
-    return dict(patterns=PATTERNS, bearings=BEARINGS, singles=SINGLE, assumptions=ASSUME['rows'])
+    return dict(patterns=PATTERNS, bearings=BEARINGS, singles=SINGLE, groups=GROUPS, build=BUILD, assumptions=ASSUME['rows'])
+
+
+# ---------------------------------------------------------------- machined shapes (tools/sdf.py reads these trees). Metres. What the knee is made of, for the next joints
+
+def rounded_poly(pts, n=6):
+    """A polygon with its corners filleted. pts: [(u, v)] or [(u, v, radius)], in either winding; arcs of n segments, tangent to both edges. Radius clamped to what the two edges allow."""
+    P = [(p[0], p[1], p[2] if len(p) > 2 else 0.0) for p in pts]
+    m = len(P)
+    out = []
+    for i in range(m):
+        ax, ay, _ = P[i - 1]
+        bx, by, r = P[i]
+        cx, cy, _ = P[(i + 1) % m]
+        u, v = (ax - bx, ay - by), (cx - bx, cy - by)
+        lu, lv = math.hypot(*u), math.hypot(*v)
+        if r <= 0 or lu < 1e-9 or lv < 1e-9:
+            out.append([bx, by])
+            continue
+        u, v = (u[0] / lu, u[1] / lu), (v[0] / lv, v[1] / lv)
+        cosang = max(min(u[0] * v[0] + u[1] * v[1], 1.0), -1.0)
+        ang = math.acos(cosang)
+        if abs(ang - math.pi) < 1e-6:
+            out.append([bx, by])
+            continue
+        t = r / math.tan(ang / 2)
+        t = min(t, lu * 0.49, lv * 0.49)
+        r = t * math.tan(ang / 2)
+        w = math.hypot(u[0] + v[0], u[1] + v[1])
+        c = (bx + (u[0] + v[0]) / w * r / math.sin(ang / 2), by + (u[1] + v[1]) / w * r / math.sin(ang / 2))
+        a0 = math.atan2(by + u[1] * t - c[1], bx + u[0] * t - c[0])
+        a1 = math.atan2(by + v[1] * t - c[1], bx + v[0] * t - c[0])
+        da = (a1 - a0 + math.pi) % (2 * math.pi) - math.pi
+        for k in range(n + 1):
+            a = a0 + da * k / n
+            out.append([c[0] + r * math.cos(a), c[1] + r * math.sin(a)])
+    return out
+
+
+def lug(c0, r0, c1, r1, n=48):
+    """The outline a lug has in its own plane: the hull of two circles, tangent lines between them. c: (u, v). Goes round counter-clockwise."""
+    dx, dy = c1[0] - c0[0], c1[1] - c0[1]
+    d = math.hypot(dx, dy)
+    base = math.atan2(dy, dx)
+    beta = math.acos(max(min((r0 - r1) / d, 1.0), -1.0))          # from the centre line to where the tangent leaves
+    pts = []
+    for k in range(n + 1):                                         # round the big end, the long way
+        a = base + beta + (2 * math.pi - 2 * beta) * k / n
+        pts.append([c0[0] + r0 * math.cos(a), c0[1] + r0 * math.sin(a)])
+    for k in range(n // 2 + 1):                                    # round the small end
+        a = base - beta + 2 * beta * k / (n // 2)
+        pts.append([c1[0] + r1 * math.cos(a), c1[1] + r1 * math.sin(a)])
+    return pts
+
+
+def s_union(k, *of):
+    return dict(t='u', k=k, of=list(of))
+
+
+def s_inter(k, *of):
+    return dict(t='i', k=k, of=list(of))
+
+
+def s_cut(k, a, *b):
+    return dict(t='d', k=k, a=a, b=list(b))
+
+
+def s_cyl(c, axis, r, h, e=0.0):
+    return dict(t='cyl', c=list(c), axis=axis, r=r, h=h, e=e)
+
+
+def s_rev(c, axis, poly):
+    return dict(t='rev', c=list(c), axis=axis, poly=[list(p) for p in poly])
+
+
+def s_ext(axis, t0, t1, poly, e=0.0):
+    return dict(t='ext', axis=axis, t0=t0, t1=t1, poly=[list(p) for p in poly], e=e)
+
+
+def s_loft(secs, zlo=None, zhi=None, e=0.0):
+    secs = sorted([list(s) for s in secs])
+    return dict(t='loft', secs=secs, zlo=secs[0][0] if zlo is None else zlo, zhi=secs[-1][0] if zhi is None else zhi, e=e)
+
+
+def s_box(c, size, e=0.0):
+    return dict(t='box', c=list(c), size=list(size), e=e)
+
+
+def machined(name, tree, color, voxel=0.001, voxel_hi=0.0005, exposed=False, **kw):
+    """A machined 7075 part: a distance tree, truly the shape it is, so it weighs what its solid weighs (fill 1). Its bores and threads are 'cut' geoms, as for any part."""
+    g = dict(kind='sdf', name=name, tree=tree, color=color, role='struct', material='al7075', fill=1.0, voxel=voxel, voxel_hi=voxel_hi, **kw)
+    if exposed:
+        g['exposed'] = True
+    return g
+
+
+def round_housing(c, axis, od_r, t0, t1, face_t=None, collar_r=None, od_fillet=0.005, end_fillet=0.0008):
+    """A round housing round a motor, as a tree: the solid outside; its bores are cut by the caller, on the real faces. Closed at t0 by a plate, open at t1, where the motor goes in. t0, t1: its ends along +axis from c.
+    collar_r: a collar standing past the plate's face (face_t) to t0, for a bearing seat. od_fillet rounds the plate into the outside. First proposal for any RobStride motor: bore 0.05 over its radius, wall 4 to 5 mm."""
+    pts = [(0.0, t0)]
+    if collar_r:
+        pts += [(collar_r, t0, 0.001), (collar_r, face_t, 0.0015), (od_r, face_t, od_fillet)]
+    else:
+        pts += [(od_r, t0, od_fillet)]
+    pts += [(od_r, t1, end_fillet), (0.0, t1)]
+    return s_rev(c, axis, rounded_poly(pts))
+
+
+def fork_yoke(axis_c, eye_r, top_c, top_r, front_secs, slot_t0, slot_t1, arch_r, fillet=0.005, pocket=None):
+    """A two-sided fork that runs into a tube, as a tree. Side outline: a lug about the joint's y axis (eye_r) to the tube's end (top_r at top_c). Front outline: front_secs, a z loft whose sections go from squared at the eyes to round at the tube.
+    Cut by the slot (slot_t0 to slot_t1 along y), its roof a cylinder of arch_r about the axis, so what turns in the slot never sweeps the roof. pocket: a tree that hollows it."""
+    x0, y0, z0 = axis_c
+    side = s_ext('y', y0 - 0.2, y0 + 0.2, lug((x0, z0), eye_r, top_c, top_r))
+    outer = s_inter(fillet, side, s_loft(front_secs))
+    slot = s_union(0.0, s_cyl((x0, (slot_t0 + slot_t1) / 2, z0), 'y', arch_r, slot_t1 - slot_t0),
+                   s_box((x0, (slot_t0 + slot_t1) / 2, z0 - 0.15), (2 * arch_r, slot_t1 - slot_t0, 0.3)))
+    return s_cut(0.0015, outer, slot, *([pocket] if pocket else []))
+
+
+def closed_tube(z0, z1, cx, cy, r, wall, top_collar=None):
+    """A closed round tube along z, as (outer, cavity) trees the caller blends in. top_collar: (r, t, fillet): a flange at its top end, for screws from below."""
+    pts = [(0.0, z0), (r, z0)]
+    if top_collar:
+        pts += [(r, z1 - top_collar[1], top_collar[2]), (top_collar[0], z1 - top_collar[1], 0.0008), (top_collar[0], z1, 0.0008), (0.0, z1)]
+    else:
+        pts += [(r, z1), (0.0, z1)]
+    outer = s_rev((cx, cy, 0.0), 'z', rounded_poly(pts))
+    return outer, s_cyl((cx, cy, (z0 + z1) / 2), 'z', r - wall, z1 - z0 + 0.002)
+
+
+def end_cap(c, axis, spigot_r, spigot_t, flange_r, t0, t1, post=None):
+    """A round cap on a housing's open end, as a tree: a spigot that registers in the bore (spigot_t long, from t0), a flange on the housing's end face, up to t1 along +axis; optionally a post on its axis, post=(r, t_end, shoulder_r, shoulder_t)."""
+    pts = [(0.0, t0), (spigot_r, t0, 0.0003), (spigot_r, t0 + spigot_t), (flange_r, t0 + spigot_t, 0.0004), (flange_r, t1, 0.0012)]
+    if post:
+        # a 0.3 mm undercut at the shoulder, as for any seat a race must sit square on: no fillet in the race's corner
+        pts += [(post[2], t1, 0.0006), (post[2], post[3], 0.0003), (post[0] + 0.0003, post[3]), (post[0] + 0.0003, post[3] - 0.00025), (post[0] - 0.0003, post[3] - 0.00025), (post[0] - 0.0003, post[3] + 0.00025), (post[0], post[3] + 0.00025), (post[0], post[1], 0.0006), (0.0, post[1])]
+    else:
+        pts += [(0.0, t1)]
+    return s_rev(c, axis, rounded_poly(pts))
 
 
 def self_test():
@@ -353,7 +513,10 @@ def self_test():
     assert sum(1 for g in gs if g.get('hw', {}).get('type') == 'screw' and g['hw'].get('pattern') == 'p') == 9
     assert all(g['mass'] > 0 for g in gs if g['role'] in ('hardware', 'bearing'))
     print('hardware helpers ok:', len(gs), 'geoms,', {k: sum(1 for g in gs if g.get('hw', {}).get('type') == k) for k in sorted(kinds)})
-    for rec in (PATTERNS, BEARINGS, SINGLE):
+    # the shapes: polygons close and stay closed, a lug goes round
+    assert len(lug((0, 0), 0.05, (0, 0.15), 0.03)) > 50
+    assert len(rounded_poly([(0, 0), (0.01, 0, 0.002), (0.01, 0.01), (0, 0.01)])) > 4
+    for rec in (PATTERNS, BEARINGS, SINGLE, GROUPS, BUILD):
         rec.clear()
 
 

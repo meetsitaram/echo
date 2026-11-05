@@ -2,22 +2,22 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 62.41 kg** (Figure 03: 61.0 kg).
+**Total 62.20 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
 | actuator | 23.49 | 38 % |
 | cells | 13.10 | 21 % |
-| al7075 | 11.99 | 19 % |
-| garment | 5.55 | 9 % |
+| al7075 | 12.57 | 20 % |
+| garment | 4.14 | 7 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
-| pc | 1.15 | 2 % |
+| pc | 1.34 | 2 % |
 | tpu | 1.03 | 2 % |
+| steel | 0.64 | 1 % |
 | pa12 | 0.58 | 1 % |
 | eva | 0.47 | 1 % |
 | knit_pa12 | 0.30 | 0 % |
-| steel | 0.21 | 0 % |
 
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
 |---|---|---|---|---|
@@ -43,10 +43,10 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_hip_pitch_link | 1.61 | 1.60 | -0.089 -0.103 +0.931 | 0.0026 0.0032 0.0034 |
 | L_hip_roll_link | 1.47 | 2.00 | -0.018 +0.105 +0.851 | 0.0025 0.0062 0.0067 |
 | R_hip_roll_link | 1.47 | 2.00 | -0.018 -0.105 +0.851 | 0.0025 0.0062 0.0067 |
-| L_hip_yaw_link | 1.24 | 3.60 | +0.000 +0.097 +0.656 | 0.0040 0.0143 0.0148 |
-| R_hip_yaw_link | 1.24 | 3.60 | +0.000 -0.097 +0.656 | 0.0040 0.0143 0.0148 |
-| L_knee_link | 5.51 | 2.08 | -0.004 +0.103 +0.431 | 0.0087 0.0895 0.0896 |
-| R_knee_link | 5.51 | 2.08 | -0.004 -0.103 +0.431 | 0.0087 0.0895 0.0896 |
+| L_hip_yaw_link | 1.56 | 3.60 | -0.002 +0.103 +0.651 | 0.0038 0.0161 0.0163 |
+| R_hip_yaw_link | 1.56 | 3.60 | -0.002 -0.103 +0.651 | 0.0038 0.0161 0.0163 |
+| L_knee_link | 5.09 | 2.08 | -0.004 +0.101 +0.424 | 0.0077 0.0834 0.0845 |
+| R_knee_link | 5.09 | 2.08 | -0.004 -0.101 +0.424 | 0.0077 0.0834 0.0845 |
 | L_ankle_pitch_link | 0.03 | 0.25 | -0.005 +0.099 +0.085 | 0.0000 0.0000 0.0000 |
 | R_ankle_pitch_link | 0.03 | 0.25 | -0.005 -0.099 +0.085 | 0.0000 0.0000 0.0000 |
 | L_foot | 1.51 | 1.10 | +0.043 +0.100 +0.029 | 0.0017 0.0078 0.0082 |

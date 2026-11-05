@@ -221,10 +221,27 @@ def _revolve_r(g, t):
     return np.where((t >= min(ts)) & (t <= max(ts)), np.interp(t, ts, rs), -1.0)
 
 
+def sdf_mesh(g, hi=False):
+    """A machined part from its distance tree (tools/sdf.py): the checks' mesh, or with hi the finer one the renderers use. A right side's part is the left's mesh reflected."""
+    import sdf as SDF
+    if hi:
+        vox = g.get('voxel_hi', 0.0005)
+        v, f = SDF.cached(g['tree'], vox, vox * 0.004)
+    else:
+        vox = g.get('voxel', 0.001)
+        v, f = SDF.cached(g['tree'], vox, vox * 0.03)
+    if g.get('flip_y'):
+        v = v * np.array([1.0, -1.0, 1.0])
+        f = f[:, ::-1]
+    return trimesh.Trimesh(np.asarray(v, float), np.asarray(f, int), process=False)
+
+
 def mesh_of(g):
     k = g['kind']
     if g.get('outline'):
         return motor_mesh(g)
+    if k == 'sdf':
+        return sdf_mesh(g)
     if k == 'loft':
         return clipped(g, loft_mesh(g))
     if k == 'revolve':
@@ -256,7 +273,7 @@ def mesh_of(g):
         m.apply_translation(g['c'])
         return m
     if k == 'cyl':
-        m = trimesh.creation.cylinder(radius=g['r'], height=g['h'], sections=64)
+        m = trimesh.creation.cylinder(radius=g['r'], height=g['h'], sections=g.get('segs', 64))
         T = np.eye(4)
         T[:3, :3] = _frame_to(axis_vec(g['axis']))
         T[:3, 3] = g['c']
@@ -333,6 +350,10 @@ def inside(g, p):
     k = g['kind']
     if g.get('outline'):
         return motor_inside(g, p)
+    if k == 'sdf':
+        import sdf as SDF
+        q = p * np.array([1.0, -1.0, 1.0]) if g.get('flip_y') else p
+        return SDF.dist(g['tree'], q) <= 0.0
     if k == 'loft':
         ok = loft_inside(g, p)
         for c in clips(g):

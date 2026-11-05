@@ -72,6 +72,8 @@ uses 0.77).
 **Waist.** A roll/pitch waist cannot hide under a one-piece torso: 20° of tilt needs about 5 cm of hem clearance. A
 yaw-only waist (Asimov 1) keeps the look, and lifting uses the hips and knees.
 
+**Machined structure under the skin.** `reports/joint_template.md`: a round housing on the motor's own face, two bearings, a fork into a closed tube, a build order as data. The skin's shape comes first; structure sits 3 mm in. The knee is built this way; the other joints follow.
+
 ## Ranges
 
 Set each limit where the sweep finds contact, then compare it with what the tasks need: walking needs about 0.2 rad

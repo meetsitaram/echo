@@ -22,6 +22,7 @@ Geometry roles:
   actuator  bought actuator, stator side. Rigid. Lives in the joint's PARENT link, centred on the joint axis.
 """
 import copy
+import math
 import json
 import os
 import sys
@@ -214,7 +215,7 @@ def motor(name, model, c, axis, out, clock, color='#3A3D42', r=None):
 # most fits don't care. These do: the ankle RS03 (ears up and down, as the maker's drawing allows: 0.13 % outside the calf at the worst turn) and the knee, where a
 # screw must miss the cable: the tab points down and back, along the shank, and two of the stator's holes straddle the hub's tail. The others are the scan's best.
 MOTOR_CLOCK = {'waist_yaw': 15.0, 'neck_yaw': 45.0, 'neck_pitch': 90.0, 'L_shoulder_pitch': 262.5, 'L_shoulder_roll': 0.0, 'L_shoulder_yaw': 75.0, 'L_elbow': 0.0, 'L_wrist_yaw': 90.0,
-               'L_wrist_pitch': 30.0, 'L_wrist_roll': 165.0, 'L_hip_pitch': 15.0, 'L_hip_roll': 60.0, 'L_hip_yaw': 15.0, 'L_knee': 165.0, 'L_ankle_pitch': 90.0, 'L_ankle_roll': 60.0}
+               'L_wrist_pitch': 30.0, 'L_wrist_roll': 165.0, 'L_hip_pitch': 15.0, 'L_hip_roll': 60.0, 'L_hip_yaw': 15.0, 'L_knee': 195.0, 'L_ankle_pitch': 90.0, 'L_ankle_roll': 60.0}
 
 
 def link(name, budget, geoms, note=''):
@@ -224,15 +225,18 @@ def link(name, budget, geoms, note=''):
 
 
 def joint(name, parent, child, origin, axis, lim, act=None, act_c=None, out=+1, exposed=False, remote=False,
-          capacity=None, stator_on_child=False, clock=None):
+          capacity=None, stator_on_child=False, clock=None, flange=None):
     """act: actuator model whose stator is added to `parent`, centred at act_c (default: the joint origin) and
     aligned with `axis`. out = +1/-1: which end of the actuator faces the child (where its flange goes).
     stator_on_child: the stator rides on the child and the output drives the parent (the knee: the hub turns with the shank).
     capacity: what drives the joint, {'model', 'count', 'ratio'} (default: one `act`, ratio 1).
+    flange: a part of our own to stand for the output's flange (named '<joint> flange'), in place of the plain disc.
     clock: how far the motor is turned about its axis (motor_frame); default MOTOR_CLOCK."""
     j = dict(name=name, parent=parent, child=child, origin=list(origin), axis=axis, lower=lim[0], upper=lim[1],
              act=act, act_c=list(act_c or origin), out=out, exposed=exposed, remote=remote, stator_on_child=stator_on_child, clock=clock if clock is not None else MOTOR_CLOCK.get(name, 0.0),
              capacity=capacity or (dict(model=act, count=1, ratio=1.0) if act else None))
+    if flange:
+        j['flange'] = flange
     JOINTS.append(j)
     return j
 
@@ -688,16 +692,20 @@ link('L_hand', 1.0, [
 #   Figure, where its grey edge wraps the black. Both are role 'decal': the rigid checks do not see them, they are not
 #   structure, the shank folds into the panel and the tail pushes the hem aside past about 1.4 rad. What they do in a real
 #   knee (bunching, wear, snagging) is untested.
-KNEE_R, KNEE_SOCKET = 0.066, 0.070
+KNEE_R, KNEE_SOCKET = 0.066, 0.0715
 KNEE_W = 0.036                            # the neck's half width, between the hubs
 KNEE_WIDE = 0.056                         # the shank's half width below the hub
 KNEE_HEM = 0.07                           # above the axis, where the thigh's full width ends
-HUB_IN, HUB_OUT = 0.041, 0.0615           # the hub's faces, from the leg's centre plane
+HUB_IN, HUB_OUT = 0.043, 0.0615           # the hub's faces, from the leg's centre plane (iteration 41: inner face 41 to 43, the fork's eyes and CRBS 508s need the room; overall width kept)
 HUB_TOP, HUB_BOT = 0.066, -0.084           # the hub, from the axis (fig_hub.py: 150 long; the front frame's black centred about 1 cm low)
-CHEEK_Y = 0.0385                          # thigh cheeks, 3 mm 7075, between neck and hub
-KNEE_LIP_R, KNEE_COLLAR_R = 0.0235, 0.02125   # CRBT 405 A's shoulders (IKO: Da 47, da 42.5): the housing's and the shaft's. Also the room the M5 heads turn in: d8.5 on the d36 circle reaches r 22.25
 import math as _m                                                      # noqa: E402
 KNEE_TAB = (_m.cos(_m.radians(75 + MOTOR_CLOCK['L_knee'])), _m.sin(_m.radians(75 + MOTOR_CLOCK['L_knee'])))     # the RS04's cable tab, in the side view (x, z)
+KNEE_RIM_R, KNEE_RIM_LOBE = 0.0631, 0.0043
+KNEE_RIM_ANGLES = (22.5, 67.5, 112.5, 157.5, 202.5, 337.5)   # M3 round the rim; none under the motor, where the barrel runs into the body
+KNEE_CHEEK_SCREWS = ((-0.025, 0.079), (0.025, 0.079), (-0.019, 0.107), (0.019, 0.107))
+KNEE_WALL = 0.0017                        # the closed section's wall (1.4 past the RS03)
+KNEE_XS = -0.0505                         # where the back panel splits off, x
+KNEE_PANEL_SCREWS = ((1, 0.285), (1, 0.33), (1, 0.37), (-1, 0.285), (-1, 0.33), (-1, 0.37), (-1, 0.40))
 KNEE_FOLD_RAD, KNEE_FOLD_D = 2.15, 0.0699   # the fold plane: the calf's back face at this flexion, this far from the axis
 
 
@@ -816,9 +824,137 @@ def pitch_sweep(name):
 # iteration 17: extension 0.24 (the hip roll actuator met the pelvis block at 0.257 once the lobe stopped hiding it);
 # the pitch actuator shows black between the pelvis block and the lobe, as on Figure
 # iteration 39 (garment): from the full thigh the skin narrows smoothly to the hub's inner face (82 wide: motor stack, walls, cheeks; Figure's about 66). No socket, fold plane or hem
-KNEE_NECK = 0.0412
-THIGH_LOW = [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, KNEE_NECK, 6.0), (KZ + 0.04, 0.0, HY, KNEE_SOCKET, KNEE_NECK, 5.0), (KZ + 0.052, -0.001, HY, 0.0715, 0.0425, 4.5),
-             (KZ + 0.066, -0.002, HY, 0.072, 0.047, 3.6), (KZ + 0.082, -0.0035, HY, 0.0725, 0.055, 3.2),
+KNEE_NECK = 0.0438                        # iteration 41: 0.0412 + 2.6, what the machined stack needs (reports/joint_template.md)
+
+
+# Iteration 41 (user, 2026-11-05: "our connections are flat square ones while industry goes with strong cylindrical style", "my main goal is the looks for the skeleton structure as well"). The knee is the template for
+# the other joints (reports/joint_template.md). Our own shapes round RobStride's real faces, same principles as Figure 01 (round, closed, held both sides), no part traced. All y from the leg's centre, left leg, motor centred on it:
+#   y -42 inner cheek -37 | ring -36.6 | outer race 34.6..26.5 (CRBS 508, centre -30.5) in the barrel's collar, inner race on the cup | -24.85 hub face | -24.35 stator's front face, 10 M4 through the barrel's plate -29.6 |
+#   motor | +27.85 its rear cover | rear cap 28.45..31.4 with its post | outer cheek 31.65..42.6 with the second CRBS 508, centre +37.4 | hub +43 on, 61.5 end.
+# Load goes foot, shank body, barrel, two bearings, fork, tube: not through the motor's case. The motor hangs on its front face for torque, and its output on the cup.
+KNEE_BORE = 0.06005                       # the motor's d120, 0.05 over on the radius: a registered fit, also the heat path (with paste)
+KNEE_OD = 0.0635                          # 127 mm: 3.45 mm wall. Load wants far less (reports/strength.md: SF over 10); kept for the bore's roundness and the heat path, lobed at the rim's M3
+KNEE_PLATE, KNEE_COLLAR_END = -0.0296, -0.0366
+KNEE_REAR = 0.02845                       # the barrel's open end, and the rear cap's seat
+KNEE_IN_BEARING, KNEE_OUT_BEARING = -0.0305, 0.0374
+KNEE_RACE_R, KNEE_RACE_OD = 0.025, 0.033  # CRBS 508: d50, D66, 8 wide
+SLOT_IN, SLOT_OUT = -0.037, 0.03165       # the fork's slot, y from the leg's centre
+ARCH = 0.0677                             # the slot's roof about the axis: the barrel and its boss turn under it
+TUBE_TOP_C = (0.0, KZ + 0.15)             # where the fork has become the round tube
+TUBE_R, TUBE_WALL = 0.033, 0.002          # d66 x 2: the load leaves a lot in hand (reports/strength.md); what limits it is dents and the process, not stress
+THIGH_TOP = 0.7822                        # the flange on the hip yaw's hub ends here
+
+
+def knee_y(c=0.0):
+    return HY + c
+
+
+def knee_fork():
+    """The thigh's end: fork (inner cheek and tube in one piece) and the bolted outer cheek. Same outside, split on the slot's far face."""
+    front = [(KZ - 0.05, 0.0003, HY + 0.0003, 0.056, 0.0423, 7.0), (KZ + 0.066, 0.0003, HY + 0.0003, 0.056, 0.0423, 7.0), (KZ + 0.082, 0.0, HY + 0.0002, 0.052, 0.0412, 6.0), (KZ + 0.098, 0.0, HY + 0.0001, 0.046, 0.0385, 5.0),
+             (KZ + 0.114, 0.0, HY, 0.0405, 0.0358, 3.8), (KZ + 0.132, 0.0, HY, 0.0355, 0.0338, 2.6), (KZ + 0.15, 0.0, HY, TUBE_R, TUBE_R, 2.0), (KZ + 0.19, 0.0, HY, TUBE_R, TUBE_R, 2.0)]
+    bosses = [HW.s_cyl((x, HY + 0.0225, KZ + z), 'y', 0.0058, 0.02, e=0.0) for x, z in KNEE_CHEEK_SCREWS]
+    # the tube's bore runs on down into the crown, wide, leaving walls and a boss at each cheek screw: a closed box over the barrel
+    pocket = HW.s_cut(0.004, HW.s_loft([(KZ + 0.042, 0.0, HY - 0.0045, 0.0375, 0.0325, 4.5), (KZ + 0.075, 0.0, HY - 0.0045, 0.0370, 0.0325, 4.0), (KZ + 0.098, 0.0, HY - 0.0045, 0.0345, 0.0325, 3.2), (KZ + 0.118, 0.0, HY - 0.003, 0.0325, 0.0300, 2.6), (KZ + 0.135, 0.0, HY - 0.001, TUBE_R - TUBE_WALL, 0.0295, 2.3), (KZ + 0.155, 0.0, HY, TUBE_R - TUBE_WALL, TUBE_R - TUBE_WALL, 2.0), (THIGH_TOP + 0.001, 0.0, HY, TUBE_R - TUBE_WALL, TUBE_R - TUBE_WALL, 2.0)], e=0.0), *bosses, HW.s_cyl((0.0, HY, KZ), 'y', ARCH + 0.0045, 0.2))
+    yoke = HW.fork_yoke((0.0, HY, KZ), 0.048, TUBE_TOP_C, TUBE_R + 0.002, front, HY + SLOT_IN, HY + SLOT_OUT, ARCH, fillet=0.006, pocket=pocket)
+    tube, _ = HW.closed_tube(KZ + 0.15, THIGH_TOP + 0.0002, 0.0, HY, TUBE_R, TUBE_WALL, top_collar=(0.0445, 0.0042, 0.002))
+    tube = HW.s_cut(0.0, tube, pocket)
+    fork = HW.s_cut(0.0, HW.s_union(0.002, yoke, tube), HW.s_box((0.0, HY + SLOT_OUT + 0.05, KZ + 0.0375), (0.3, 0.1, 0.175)))     # the slot's far face, up to where the cheek ends: KZ + 0.125
+    outer = HW.s_inter(0.0, HW.s_inter(0.006, HW.s_ext('y', HY - 0.2, HY + 0.2, HW.lug((0.0, KZ), 0.048, TUBE_TOP_C, TUBE_R + 0.002)), HW.s_loft(front)),
+                       HW.s_box((0.0, HY + SLOT_OUT - 0.0002 + 0.05, KZ + 0.0375), (0.3, 0.1, 0.175)))
+    # pocketed from outside, a rim all round, a ring round the bearing, a land at each screw: all the metal is on a load path
+    web = HW.s_ext('y', HY + 0.0355, HY + 0.06, HW.lug((0.0, KZ + 0.012), 0.0415, (0.0, KZ + 0.118), 0.024))
+    keep = [HW.s_cyl((0, HY + 0.05, KZ), 'y', 0.0395, 0.04)] + [HW.s_cyl((x, HY + 0.05, KZ + z), 'y', 0.0072, 0.04) for x, z in KNEE_CHEEK_SCREWS]
+    outer = HW.s_cut(0.002, outer, HW.s_cut(0.002, web, *keep))
+    # the inner eye's opening, round the cup's neck: a key reaches the hub's M5s through the cup
+    return [
+        HW.machined('L thigh fork', fork, BLACK, voxel=0.0008, voxel_hi=0.0006, exposed=True),
+        cut(cyl('L thigh fork opening', (0, HY - 0.0395, KZ), 'y', 0.0266, 0.0065), 'L thigh fork'),
+        HW.machined('L knee outer cheek', outer, BLACK, voxel=0.0005, voxel_hi=0.0004, exposed=True),
+        cut(cyl('L knee outer cheek bearing bore', (0, HY + KNEE_OUT_BEARING - 0.00002, KZ), 'y', KNEE_RACE_OD, 0.00804), 'L knee outer cheek'),
+        cut(cyl('L knee outer cheek thread', (0, HY + (SLOT_OUT + KNEE_OUT_BEARING - 0.004) / 2, KZ), 'y', 0.034, KNEE_OUT_BEARING - 0.004 - SLOT_OUT + 0.0004), 'L knee outer cheek'),
+        cut(cyl('L knee outer cheek lip', (0, HY + 0.0425, KZ), 'y', 0.0312, 0.003), 'L knee outer cheek'),
+        *[cut(cyl(f'L knee cheek head way {k + 1}', (x, HY + (0.0413 if k < 2 else 0.0379), KZ + z), 'y', 0.0050, 0.0077), 'L knee outer cheek') for k, (x, z) in enumerate(KNEE_CHEEK_SCREWS)],
+    ]
+
+
+def knee_cup():
+    """The motor's output: floor on the hub, thin wall round the M5 heads, seat for the inner race, into the fork's inner cheek. One piece with the cheek when made (the fork and it are drawn apart for the checks' sake, as the flange of its joint).
+    Inside, scallops round the heads: the wall is 4 mm between heads and 2.45 at them, the key gets to each. Outside, the seat."""
+    hub, floor = -0.02485, -0.03065
+    poly = HW.rounded_poly([(0.0, hub + 0.0002), (KNEE_RACE_R - 0.00004, hub + 0.0002), (KNEE_RACE_R - 0.00004, -0.0342), (0.0247, -0.0342), (0.0247, -0.0349), (0.0253, -0.0349), (0.0253, -0.03455), (0.0264, -0.03455), (0.0264, -0.03695), (0.040, -0.03695), (0.040, -0.0372), (0.0264, -0.0372), (0.0264, -0.0423), (0.0210, -0.0423), (0.0210, floor), (0.0, floor)])
+    tree = HW.s_rev((0, HY, KZ), 'y', [[r, t] for r, t in poly])
+    return HW.machined('L_knee flange', tree, ALU, voxel=0.0004, voxel_hi=0.0003, exposed=True)
+
+
+def knee_secs(wall=0.0):
+    """The shank's closed section, (z, cx, cy, a, b, n), as an outside (wall 0) or a cavity. Front line tangent to the barrel, then the skin's, 3 mm in; the back line scooped behind the knee, so thigh and shank fold to 2.15 rad: their half angles at any radius have
+    to add up under 57 deg. At the RS03 the skin and the section square up (n 4.4): the motor is as deep as the shank (98.5 of 110), and the wall has to pass it (1.4 mm there)."""
+    top = [(KZ - 0.020, 0.058, -0.026, 0.025, 3.0), (KZ - 0.045, 0.0540, -0.0240, 0.026, 3.0), (KZ - 0.066, 0.0502, -0.0225, 0.0272, 3.0), (KZ - 0.075, 0.0497, -0.0240, 0.0335, 3.0),
+           (KZ - 0.088, 0.0490, -0.0300, 0.0415, 3.2), (KZ - 0.100, 0.0485, -0.0420, 0.0465, 3.4), (KZ - 0.115, 0.0480, -0.0530, 0.0495, 3.5), (KZ - 0.135, 0.0473, -0.0600, 0.0525, 3.6)]
+    out = [(z, (f + b) / 2, HY, (f - b) / 2 - wall, y - wall, n) for z, f, b, y, n in top]
+    for z, ncav, w in ((0.37, 3.7, wall), (0.34, 4.1, min(wall, 0.0014)), (PITCH_Z, 4.6, min(wall, 0.0014)), (0.265, 4.1, min(wall, 0.0014)), (0.25, 3.7, wall), (0.2325, 3.6, wall)):
+        q = shank_section(z)
+        f, b, y = q[1] + q[3] - 0.0033, q[1] - q[3] + 0.0033, q[4] - 0.0033
+        out.append((z, (f + b) / 2, HY, (f - b) / 2 - w, y - w, ncav if wall else q[5]))
+    return out
+
+
+def knee_body():
+    """The shank's top in one piece: the barrel round the RS04, a waist, then a closed section past both ankle motors, with the motors' seats. Open behind from z 0.238 up to the waist, closed by the back panel."""
+    c = (0.0, HY, KZ)
+    barrel = HW.round_housing(c, 'y', KNEE_OD, KNEE_COLLAR_END, KNEE_REAR, face_t=KNEE_PLATE, collar_r=0.0385)
+    barrel = HW.s_cut(0.0, barrel, HW.s_rev(c, 'y', HW.rounded_poly([(0.0405, KNEE_PLATE - 0.001), (0.0405, KNEE_PLATE + 0.0025, 0.001), (0.0475, KNEE_PLATE + 0.0025, 0.001), (0.0475, KNEE_PLATE - 0.001)])))      # plate 2.8 mm thin inside its ring of screws
+    bosses = [HW.s_cyl((KNEE_RIM_R * math.cos(math.radians(a)), HY + 0.0242, KZ + KNEE_RIM_R * math.sin(math.radians(a))), 'y', KNEE_RIM_LOBE, 0.0085, e=0.002) for a in KNEE_RIM_ANGLES]
+    outside = HW.s_loft(knee_secs())
+    outer = HW.s_union(0.009, barrel, outside)
+    outer = HW.s_union(0.002, outer, *bosses)
+    # the hubs' feet: under the motor, outside the cheeks' reach (the cheek's edge stops 16 deg behind straight down at 2.15 rad)
+    feet = [HW.s_ext('y', HY + y * 0.0300, HY + y * 0.0431, HW.lug((-0.001, KZ - 0.0735), 0.0072, (0.0125, KZ - 0.0735), 0.0072), e=0.001) for y in (-1, 1)]
+    outer = HW.s_cut(0.0, outer, HW.s_box((0.0, HY + KNEE_REAR + 0.03, KZ + 0.0075), (0.17, 0.06, 0.149)), HW.s_box((0.0, HY + KNEE_COLLAR_END - 0.03, KZ + 0.0075), (0.17, 0.06, 0.149)))      # the blend's bulge off the two ends: seats stay flat
+    cav = sorted(knee_secs(KNEE_WALL))
+    cav = [q for q in cav if q[0] > 0.2325]
+    cav = [(0.2355, *cav[0][1:])] + [q for q in cav if q[0] > 0.2355]                   # the floor, 3 mm: a bulkhead, with pads the lower plates lap into
+    # the hollow runs up round the barrel: its wall is the box's top, and no metal sits between them
+    cavity = HW.s_cut(0.004, HW.s_loft(cav, e=0.003), HW.s_cyl((0.0, HY, KZ), 'y', KNEE_OD + 0.0003, 0.2), HW.s_box((0.0, HY, KZ + 0.05), (0.2, 0.2, 0.1)))
+    rear = HW.s_box((KNEE_XS - 0.05, HY, (0.238 + 0.447) / 2), (0.1, 0.13, 0.447 - 0.238))
+    slots = [HW.s_box((-0.0348, HY - 0.0312, 0.238), (0.041, 0.016, 0.02), e=0.002), HW.s_box((-0.0268, HY + 0.0362, 0.238), (0.0285, 0.0135, 0.02), e=0.002)]
+    # lands for the panel's screws, and the ankle motors' seats on their front faces, outside the cranks' sweep. Not the motors' real patterns yet: the ankle's round
+    lands = [HW.s_box((KNEE_XS + 0.0035, HY + sg * 0.036, z), (0.0072, 0.015, 0.014), e=0.001) for sg, z in KNEE_PANEL_SCREWS]
+    seats = [HW.s_box((0.0315, HY - 0.03515, PITCH_Z), (0.011, 0.0187, 0.024), e=0.002), HW.s_box((-0.0468, HY - 0.03515, PITCH_Z), (0.0056, 0.0187, 0.024), e=0.001),
+             HW.s_box((0.0255, HY + 0.0356, ROLL_Z), (0.011, 0.0238, 0.024), e=0.002), HW.s_box((-0.010, HY + 0.0356, ROLL_Z + 0.037), (0.024, 0.0238, 0.012), e=0.002)]
+    inside = HW.s_inter(0.0, HW.s_union(0.0015, *lands, *seats), HW.s_loft(knee_secs(0.0009)))      # they end inside the wall, so none shows outside
+    shell = HW.s_union(0.0, HW.s_cut(0.0, outer, cavity), inside)      # no blend: one would ghost through the thin wall
+    shell = HW.s_union(0.004, shell, *feet)
+    pads = [HW.s_box((0.0035, HY + y * 0.026, 0.2405), (0.033, 0.0085, 0.013), e=0.001) for y in (-1, 1)]
+    shell = HW.s_union(0.0, shell, HW.s_inter(0.0, HW.s_union(0.0, *pads), HW.s_loft(knee_secs(0.0009))))
+    shell = HW.s_cut(0.0, shell, rear, *slots, HW.s_cyl((CALF_X, HY - 0.0271, PITCH_Z), 'y', 0.0365, 0.0026))      # the RS03's hub turns in that
+    return HW.machined('L shank body', shell, BLACK, voxel=0.0007, voxel_hi=0.0007)
+
+
+def knee_panel():
+    """The back of the closed section: the same outside and wall, behind the split, with a pad at each screw."""
+    outside = HW.s_loft(knee_secs())
+    cav = [q for q in sorted(knee_secs(KNEE_WALL)) if q[0] <= KZ - 0.1 and q[0] >= 0.2325]
+    tree = HW.s_cut(0.0, outside, HW.s_loft(cav))
+    pads = [HW.s_box((KNEE_XS - 0.002, HY + sg * 0.036, z), (0.0048, 0.015, 0.014), e=0.001) for sg, z in KNEE_PANEL_SCREWS]
+    tree = HW.s_union(0.0, tree, HW.s_inter(0.0, HW.s_union(0.0, *pads), HW.s_loft(knee_secs(0.0009))))
+    tree = HW.s_inter(0.0, tree, HW.s_box((KNEE_XS + 0.0002 - 0.05, HY, (0.238 + 0.447) / 2), (0.1, 0.13, 0.447 - 0.238)))      # the split, seated 0.2 mm on the lands
+    return HW.machined('L shank back panel', tree, BLACK, voxel=0.0006, voxel_hi=0.0005)
+
+
+def knee_rear_cap():
+    """Closes the barrel, carries the outer bearing's post, and takes heat off the motor's back through a skirt on its rear face. Lobed at its screws: M3 want 4.1 mm of edge."""
+    c = (0.0, HY, KZ)
+    cap = HW.end_cap(c, 'y', 0.060, 0.001, KNEE_OD, KNEE_REAR - 0.0013, 0.0314, post=(KNEE_RACE_R - 0.00004, 0.0414, 0.0263, 0.0333))
+    lobes = [HW.s_cyl((KNEE_RIM_R * math.cos(math.radians(a)), HY + 0.0299, KZ + KNEE_RIM_R * math.sin(math.radians(a))), 'y', KNEE_RIM_LOBE, 0.003, e=0.0006) for a in KNEE_RIM_ANGLES]
+    cap = HW.s_cut(0.0, cap, HW.s_rev(c, 'y', HW.rounded_poly([(0.0305, 0.0296, 0.001), (0.0555, 0.0296, 0.001), (0.0555, 0.033), (0.0305, 0.033)])))      # a dished plate, 1.6 thick inside the rim
+    skirt = HW.s_rev(c, 'y', HW.rounded_poly([(0.0485, 0.01475), (0.0598, 0.01475), (0.0598, KNEE_REAR + 0.001), (0.0580, KNEE_REAR + 0.001), (0.0580, 0.0167, 0.001), (0.0485, 0.0167)]))
+    return HW.machined('L knee rear cap', HW.s_union(0.0, HW.s_union(0.0006, cap, *lobes), skirt), BLACK, voxel=0.0005, voxel_hi=0.0004, exposed=True)
+
+
+THIGH_LOW = [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, KNEE_NECK, 6.0), (KZ + 0.04, 0.0, HY, KNEE_SOCKET, KNEE_NECK, 5.0), (KZ + 0.052, -0.001, HY, 0.0720, 0.0450, 4.5),
+             (KZ + 0.066, -0.002, HY, 0.0725, 0.0485, 3.6), (KZ + 0.082, -0.0035, HY, 0.0730, 0.055, 3.2),
              (KZ + 0.10, -0.0051, HY, 0.0721, 0.0615, 3.0), (KZ + 0.125, -0.0060, HY, 0.0735, 0.0645, 2.9),
              (KZ + 0.16, -0.0071, HY, 0.0756, 0.066, 2.6)]
 # iteration 38: one list, for the thigh and the knit parts cut from the same surface
@@ -874,8 +1010,9 @@ link('L_hip_roll_link', 2.0, [
     # on the yaw actuator's back face, through a round hole in the thigh's top (it turns round it)
     dict(cyl('L hip crown', (0, HY, (HZ - 0.083 + HZ - 0.070) / 2), 'z', 0.045, 0.013, BLACK), exposed=True),
 ])
+# iteration 41: a real flange, wide enough for the thigh tube's collar screws, with the hub's own 6 M4 inside it
 joint('L_hip_yaw', 'L_hip_roll_link', 'L_hip_yaw_link', (0, HY, HZ - 0.11), 'z', (-1.2, 1.2), 'RS03', out=-1,
-      exposed=True)
+      exposed=True, flange=HW.machined('L_hip_yaw flange', HW.s_rev((0, HY, 0.0), 'z', HW.rounded_poly([(0.0, THIGH_TOP), (0.0205, THIGH_TOP, 0.0005), (0.0205, 0.7872, 0.001), (0.0335, 0.7872, 0.001), (0.0335, THIGH_TOP, 0.0005), (0.0445, THIGH_TOP, 0.0005), (0.0445, HZ - 0.11 - 0.0283 + 0.0002, 0.0005), (0.0, HZ - 0.11 - 0.0283 + 0.0002)])), ALU, voxel=0.0004, voxel_hi=0.0003))
 link('L_hip_yaw_link', 3.6, [
     # iteration 6 (user review of the side view): Figure's thigh is full at the back under the hip and tapers to
     # the knee, so the back line runs on from the hip in one curve; the front stays nearly straight
@@ -888,47 +1025,27 @@ link('L_hip_yaw_link', 3.6, [
     # iteration 35 (user: the thigh's back shows a corner and a notch, from holding 2.15 rad). The fold plane cannot move
     # at this range: it is where the calf's back face lands. What can go is the corner: the back line bends in over its
     # last 7 cm, so the plane meets it at about 30 deg, not 49, and the corner sits 1 cm lower; 13 cm deep there
-    loft('L thigh', THIGH_SECS, GREY, 'knit',
+    # iteration 41: the former under the knit (2.5 of the 3.3 kg/m2 the garment's density stands for) was a placeholder for what holds the cloth out. Thigh: ribs off the tube, 1.5 assumed (wall_fill). Gaiter and shank: knit and foam only (0.8), as the shank's own body fills the skin to 3 mm, so a former there counted the same volume twice
+    dict(loft('L thigh', THIGH_SECS, GREY, 'knit',
          # iteration 21: up to 3 mm under the hip lobe (the yaw turns it under the lobe); iteration 25: dished
          # iteration 26: flat sides at the knee (n 4) for the pads; the socket's tail stops where it would thin out
-         clip=above((-1.0, KZ + 0.003), (1.0, KZ + 0.003)), open=()),
+         clip=above((-1.0, KZ + 0.003), (1.0, KZ + 0.003)), open=()), wall_fill=0.70),
     cut(ell('L thigh bowl', HIP_DOME_C, (HIP_DOME_R + 0.003,) * 3), 'L thigh'),
     # round the hip yaw actuator and the crown on it (they turn in it), 3 mm clear
     cut(cyl('L thigh top opening', (0, HY, HIP_SEAM - 0.006), 'z', 0.056, 0.032), 'L thigh'),
     # panels, not one jumpsuit (reports/garment_options.md): the thigh's panel stops at the fold plane behind the knee; a small gaiter closes from there to the shank's
     cut(loft('L thigh fold', [(KZ - 0.06, -0.05, HY, 0.1, 0.09, 8.0), (KZ + 0.2, -0.05, HY, 0.1, 0.09, 8.0)],
              clip=[below(*KNEE_FOLD), above(knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG))]), 'L thigh'),
-    loft('L knee gaiter', THIGH_SECS, GREY, 'knit', open=(), clip=[below(*up(KNEE_FOLD, 0.003)), above(*up((knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG)), -0.003)), above((-1.0, KZ + 0.003), (1.0, KZ + 0.003))]),
+    dict(loft('L knee gaiter', THIGH_SECS, GREY, 'knit', open=(), clip=[below(*up(KNEE_FOLD, 0.003)), above(*up((knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG)), -0.003)), above((-1.0, KZ + 0.003), (1.0, KZ + 0.003))]), wall_fill=0.24),
     # the sewn lines (decals): across the knee's front, as Figure's seam; a crease over each hub
     dict(loft('L knee seam', [(KZ + 0.0125, 0.001, HY, 0.0705, KNEE_NECK + 0.0003, 6.0), (KZ + 0.0145, 0.001, HY, 0.0705, KNEE_NECK + 0.0003, 6.0)], '#8E9297', 'decal', open=(), clip=ahead(0.005)), material='pa12', mass=0.002),
     *[dict(loft(f'L thigh crease {sd}', [(KZ + dz, -0.004, HY + y * w, 0.0011, 0.0011, 2.0) for dz, w in ((0.068, 0.0478), (0.076, 0.0518), (0.084, 0.0560), (0.094, 0.0598), (0.104, 0.0620))],
                   '#8E9297', 'decal', open=()), material='pa12', mass=0.001) for sd, y in (('in', -1), ('out', +1))],
-    # in front (behind it the calf's ankle actuators fold up at deep knee bends); from the yoke, above the drum, up into the
-    # hip yaw flange. Iteration 33: the frame no longer has a motor to pass through (it did, at x 12-36 mm, y +-40)
-    span('L thigh frame', KZ + 0.074, HZ - 0.14, x=0.024, y=HY, sx=0.024, sy=0.08, color=BLACK, exposed=True),
-    rbox('L knee yoke', (0.028, HY, KZ + 0.078), (0.024, 2 * (CHEEK_Y + 0.0015), 0.012), 0.002, BLACK, exposed=True),
-    # the fork, in the band between neck and hub (3 mm 7075, 5.2 cm wide: the motor's peak 120 N m about 77 MPa as a beam, a hand
-    # estimate, as before; the arm is unchanged). Inner: bolted to the axle on the motor's output. Outer: on a bearing round the post
-    rbox('L knee cheek in', (0, HY - CHEEK_Y, KZ + 0.0585), (0.052, 0.003, 0.069), 0.002, GREY, exposed=True),
-    rbox('L knee cheek out', (0, HY + CHEEK_Y, KZ + 0.0585), (0.052, 0.003, 0.069), 0.002, GREY, exposed=True),
-    # iteration 38: their lower ends a disc about the axis: it turns in its own place, and closes the band from the front
-    dict(cyl('L knee cheek disc in', (0, HY - CHEEK_Y, KZ), 'y', 0.050, 0.003, BLACK), exposed=True),
-    dict(cyl('L knee cheek disc out', (0, HY + CHEEK_Y, KZ), 'y', 0.050, 0.003, BLACK), exposed=True),
-    # iteration 40: the seat of the outer support: CRBT 405 A's 51 mm, disc and collar together (see KNEE_HW below)
-    cut(cyl('L knee cheek bearing bore', (0, HY + 0.03825, KZ), 'y', 0.0255, 0.0055), 'L knee cheek disc out', 'L knee cheek collar out', 'L knee cheek out'),
-    cut(cyl('L knee cheek lip', (0, HY + 0.0352, KZ), 'y', KNEE_LIP_R, 0.0007), 'L knee cheek collar out'),
-    dict(cyl('L knee cheek collar out', (0, HY + 0.0361, KZ), 'y', 0.031, 0.0022, BLACK), fill=1.0, exposed=True),
-    rbox('L knee cheek in top', (0.02, HY - CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
-    rbox('L knee cheek out top', (0.02, HY + CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
-    # iteration 40 (user: real connections). The axle was a d40 bar over the hub's d36 screw circle, its end under the 9 M5 heads: nothing could reach them or hold them. Now a cup, one piece with the flange
-    # and the inner cheek: r 36, hollow round the heads, floor 6 mm thick on the hub (so M5 x 12 stops 0.5 short of the drawn 6.5). The inner support sits in its mouth, in the cheek's disc
-    dict(cyl('L knee axle in', (0, HY - 0.0338, KZ), 'y', 0.036, 0.0077, BLACK), fill=1.0, exposed=True),
-    cut(cyl('L knee output pocket', (0, HY - 0.03185, KZ), 'y', KNEE_LIP_R, 0.0073), 'L knee axle in', 'L_knee flange'),
-    cut(cyl('L knee cheek idler bore', (0, HY - 0.03825, KZ), 'y', 0.0255, 0.0055), 'L knee cheek disc in', 'L knee axle in', 'L knee cheek in'),
+    *knee_fork(),
 ], 'the knee RS04 output: fork and axle; its stator rides on the shank')
 # flexion 2.15 rad (iteration 17: through the knee zone the calf meets the thigh at 2.2; the deep squat uses 2.0)
-joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', act_c=(0, HY + 0.00265, KZ), out=-1,
-      stator_on_child=True)
+joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', act_c=(0, HY, KZ), out=-1,
+      stator_on_child=True, flange=knee_cup())
 SHANK = lambda f: AZ + 0.045 + f * (KZ - AZ - 0.01)      # height at fraction f of the shank skin
 # Ankle drive, iteration 34 (DECISIONS 3, 4a; the solved numbers in the paper report of 2026-11-04, paper only: no published
 # example of this exact layout, a warning sign to keep in view). No shared parallel pair: each motor has its own crank and
@@ -966,7 +1083,7 @@ def shank_section(z):
     import numpy as np
     f, b = SHANK_FRONT(z), SHANK_BACK(z)
     return (z, (f + b) / 2, HY, (f - b) / 2, min(KNEE_WIDE, 0.0445 + 0.0604 * (z - 0.15)),
-            float(np.interp(z, (0.13, 0.25, 0.30, 0.40, KZ - 0.075), (2.8, 3.6, 3.6, 3.6, 3.0))))
+            float(np.interp(z, (0.13, 0.25, 0.27, 0.30, 0.33, 0.37, 0.40, KZ - 0.075), (2.8, 3.6, 4.0, 4.4, 4.0, 3.6, 3.6, 3.0))))
 
 
 # Shoe lines in the side view, (x, z) pairs (iteration 12, user: "feet so off"; Figure's shoe from the reveal frames:
@@ -1000,11 +1117,11 @@ link('L_knee_link', 2.08, [
     # iteration 38 (review: an hourglass, daylight between chin and neck; Figure's front frame: full grey between the hubs, black ending about
     # 4.4 cm under the axis as the shank's side comes round it): full width up beside the chin, which sits in its side; the band closed from
     # there down, the cheeks fill it above
-    loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40)] +
-         [(*shank_section(KZ - 0.10)[:4], 0.053, 3.2), (*shank_section(KZ - 0.084)[:4], 0.047, 3.8), (*shank_section(KZ - 0.07)[:4], 0.0425, 4.5), (*shank_section(KZ - 0.055)[:4], KNEE_NECK, 5.0),
-          (KZ - 0.03, -0.001, HY, 0.0645, KNEE_NECK, 6.0),
-          (KZ - 0.008, 0.0, HY, 0.0655, KNEE_NECK, 12.0), (KZ, 0.0, HY, 0.0662, KNEE_NECK, 16.0)],
-         GREY, 'knit', open=(), clip=above(*up(TRIM_HIGH, -0.002))),
+    dict(loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40)] +
+         [(*shank_section(KZ - 0.10)[:4], 0.053, 3.2), (*shank_section(KZ - 0.084)[:4], 0.0485, 3.8), (*shank_section(KZ - 0.07)[:4], 0.0465, 4.5), (*shank_section(KZ - 0.055)[:4], KNEE_NECK, 5.0),
+          (KZ - 0.03, -0.001, HY, 0.0665, KNEE_NECK, 6.0),
+          (KZ - 0.008, 0.0, HY, 0.0695, KNEE_NECK, 12.0), (KZ, 0.0, HY, 0.0702, KNEE_NECK, 16.0)],
+         GREY, 'knit', open=(), clip=above(*up(TRIM_HIGH, -0.002))), wall_fill=0.30),     # 0.24 over the body; below it the old former runs on to the collar: 0.30 overall, a hand figure
     loft('L ankle collar', [(0.11, -0.004, HY, 0.0395, 0.0465, 2.6), (0.15, -0.006, HY, 0.0455, 0.0470, 3.0),
                             (0.21, -0.0065, HY, 0.0505, 0.0505, 3.3)], BLACK,
          clip=[above(*TRIM_LOW), below(*TRIM_HIGH)]),
@@ -1013,18 +1130,13 @@ link('L_knee_link', 2.08, [
                           (0.135, -0.005, HY, 0.0410, 0.0445, 2.2), (0.17, -0.004, HY, 0.0405, 0.0445, 2.2)], WHITE,
          clip=[above(*SOCK_LOW), below(*up(TRIM_LOW, 0.002))]),
     # a disc round the axis, so the outside of the bend stays round
-    cyl('L knee disc', (0, HY, KZ), 'y', 0.0665, 2 * KNEE_NECK, GREY, 'knit'),
+    dict(cyl('L knee disc', (0, HY, KZ), 'y', 0.0702, 2 * KNEE_NECK, GREY, 'knit'), mass=0.02),   # iteration 41: the band round the bend only, 0.02, knit and foam: its end discs are not cloth, and half the band was counted in the thigh and shank panels (it read 0.21)
+
     # the hubs. A foot under the motor carries each to the shank's upper plates; the cheeks swing above it
-    dict(knee_hub('L knee hub in', -1), material='al7075'),
-    dict(knee_hub('L knee hub out', +1), material='al7075'),
-    # iteration 40: a d40 stub for the inner race (d24 was never a bearing's size that fits this load), its collar the race's shoulder at IKO's da
-    HW.axle('L knee idler stub', 'L_knee_link', (0, HY - 0.04125, KZ), 'y', 40.0, 11.5),
-    dict(cyl('L knee idler collar', (0, HY - 0.04085, KZ), 'y', KNEE_COLLAR_R, 0.0007, BLACK), fill=1.0, exposed=True),
-    cut(cyl('L knee idler collar screw way', (0, HY - 0.04085, KZ), 'y', 0.00225, 0.002), 'L knee idler collar'),
-    dict(cyl('L knee idler cap', (0, HY - 0.03475, KZ), 'y', KNEE_COLLAR_R, 0.0015, BLACK), fill=1.0, exposed=True),
-    rbox('L knee idler arm', (0, HY - 0.0445, KZ - 0.04), (0.012, 0.006, 0.075), 0.001, BLACK, exposed=True),
-    rbox('L knee hub foot in', (0, HY - 0.0385, KZ - 0.0735), (0.03, 0.022, 0.024), 0.002, BLACK, exposed=True),
-    rbox('L knee hub foot out', (0, HY + 0.0385, KZ - 0.0735), (0.03, 0.022, 0.024), 0.002, BLACK, exposed=True),
+    knee_hub('L knee hub in', -1),                                      # iteration 41: a cover with its own bracket under it: polycarbonate, 0.25 kg to 0.11
+
+    dict(knee_hub('L knee hub out', +1), material='al7075', wall_fill=0.67),     # the heat's last stop: 2 mm of 7075, the post's washer bears on its inner wall
+
     *[g for sd, y in (('in', -1), ('out', +1)) for g in (
         cyl(f'L knee hub ring {sd}', (0, HY + y * HUB_OUT, KZ), 'y', 0.040, 0.002, '#2A2C30', 'decal'),
         cyl(f'L knee hub face {sd}', (0, HY + y * (HUB_OUT + 0.0003), KZ), 'y', 0.038, 0.002, GLOSS, 'decal'))],
@@ -1032,26 +1144,21 @@ link('L_knee_link', 2.08, [
       for sd, y in (('in', -1), ('out', +1))],
     *[dict(ell(f'L knee hub lip {sd}', (0, HY + y * (HUB_OUT - 0.0066), KZ - 0.0705), (0.030, 0.0048, 0.0115), GLOSS, 'decal'), material='pa12')
       for sd, y in (('in', -1), ('out', +1))],
-    # the stator: a plate on the motor's back down to the outer shank plate, and the post on to the outer hub
-    rbox('L knee stator plate', (0, HY + 0.0325, KZ - 0.022), (0.08, 0.004, 0.106), 0.002, BLACK, exposed=True),
-    dict(HW.axle('L knee post', 'L_knee_link', (0, HY + 0.03825, KZ), 'y', 40.0, 15.5)),
-    dict(cyl('L knee post collar', (0, HY + 0.0350, KZ), 'y', KNEE_COLLAR_R, 0.0010, BLACK), fill=1.0, exposed=True),
-    dict(cyl('L knee post cap', (0, HY + 0.0408, KZ), 'y', KNEE_COLLAR_R, 0.0006, BLACK), fill=1.0, exposed=True),
-    # iteration 40: the plate only reached 3 of the motor's 10 rear screws, and sat on the rear cover, 13.2 mm behind the face those screws are in. A disc over the whole back, on a rim down to that face,
-    # both inside the motor's own d120, so the knit over it doesn't move. Hollow round the rear cover, notched for the cable tab
-    dict(cyl('L knee stator disc', (0, HY + 0.0325, KZ), 'y', 0.060, 0.004, BLACK), fill=1.0, exposed=True),
-    dict(cyl('L knee stator rim', (0, HY + 0.0239, KZ), 'y', 0.060, 0.0134, BLACK), fill=1.0, exposed=True),
-    cut(cyl('L knee stator rim hollow', (0, HY + 0.0239, KZ), 'y', 0.0475, 0.015), 'L knee stator rim'),
-    cut(cyl('L knee stator rim notch', (0.0505 * KNEE_TAB[0], HY + 0.0235, KZ + 0.0505 * KNEE_TAB[1]), list(KNEE_TAB[:1]) + [0.0] + list(KNEE_TAB[1:]), 0.0075, 0.03), 'L knee stator rim'),
-    # under the motor, joining the plates
-    rbox('L shank knee bridge', (0, HY, KZ - 0.070), (0.04, 0.0625, 0.008), 0.002, BLACK, exposed=True),
-    # iteration 34: the lower plates inside the roll rod's plane (y 29.5), the upper ones clamping the RS03; pads to the RS06
-    span('L shank plate in', SHANK(0), PITCH_Z - 0.048, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    span('L shank plate out', SHANK(0), PITCH_Z - 0.048, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    span('L shank plate in up', PITCH_Z - 0.05, KZ - 0.066, y=HY - 0.030, sy=0.005, f=0.0015, color=BLACK, exposed=True),
-    span('L shank plate out up', PITCH_Z - 0.05, KZ - 0.066, y=HY + 0.030, sy=0.005, f=0.0015, color=BLACK, exposed=True),
-    rbox('L ankle roll pad in', (CALF_X, HY - 0.026, ROLL_Z), (0.03, 0.004, 0.04), 0.001, BLACK, exposed=True),
-    rbox('L ankle roll pad out', (CALF_X, HY + 0.026, ROLL_Z), (0.03, 0.004, 0.04), 0.001, BLACK, exposed=True),
+    # iteration 41: the machined shank: barrel round the motor, closed section down past both ankle motors. The upper plates, stator plate, post, disc, rim and bridge are gone
+    knee_body(),
+    cut(dict(cyl('L knee register', (0, HY + 0.0026, KZ), 'y', KNEE_BORE, 0.0538), segs=256), 'L shank body'),
+    cut(cyl('L knee barrel lip', (0, HY - 0.0254, KZ), 'y', 0.0306, 0.0024), 'L shank body'),
+    cut(cyl('L knee barrel bearing bore', (0, HY + KNEE_IN_BEARING, KZ), 'y', KNEE_RACE_OD, 0.0080), 'L shank body'),
+    cut(cyl('L knee barrel thread', (0, HY - 0.0357, KZ), 'y', 0.034, 0.0024), 'L shank body'),
+    cut(cyl('L knee cable window', (0.054 * KNEE_TAB[0], HY + 0.0195, KZ + 0.054 * KNEE_TAB[1]), [KNEE_TAB[0], 0.0, KNEE_TAB[1]], 0.009, 0.03), 'L shank body'),
+    knee_panel(),
+    knee_rear_cap(),
+    cut(cyl('L knee rear cap hollow', (0, HY + 0.0278, KZ), 'y', 0.0479, 0.00125), 'L knee rear cap'),
+    cut(cyl('L knee post hollow', (0, HY + 0.0375, KZ), 'y', 0.0125, 0.0082), 'L knee rear cap'),
+    cut(cyl('L knee rear cap tab', (0.0545 * KNEE_TAB[0], HY + 0.0195, KZ + 0.0545 * KNEE_TAB[1]), [KNEE_TAB[0], 0.0, KNEE_TAB[1]], 0.0095, 0.012), 'L knee rear cap'),
+    # iteration 34: the lower plates inside the roll rod's plane (y 29.5). Iteration 41: they lap into the body's floor; the upper plates and pads are gone
+    span('L shank plate in', SHANK(0), 0.2448, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
+    span('L shank plate out', SHANK(0), 0.2448, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
     motor('L ankle pitch actuator (buy) RS03', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2),
     motor('L ankle roll actuator (buy) RS06', 'RS06', (CALF_X, HY, ROLL_Z), 'y', +1, MOTOR_CLOCK.get('L_ankle_roll', 0.0), r=ACT['RS06']['depth'] / 2),
     *ankle_drive('L'),
@@ -1128,21 +1235,70 @@ HW.setup(LINKS, JOINTS, ACT, motor_frame)
 
 
 def knee_hardware():
-    """The proof, within the knee as it stands: no hub or skin moved, hidden parts reshaped. Stack along y from the leg's centre (left leg, inboard negative; the motor's centre at +2.65 mm):
-    inner hub -41 | 0.5 gap | CRBT 405 A -40.5..-35.5 in the cheek's disc and the cup | cap | M5 heads -33.2..-28.2 on the cup's floor | flange on the hub, -22.2 | motor | rear face +17.3 | rim | disc to +34.5 |
-    collar | CRBT 405 A 35.5..40.5 in the disc's collar | 0.5 gap | outer hub +41. Both races d40, on the stub and the post. 61808 (7 wide) doesn't go in: the slot is 6.5. What's drawn is the biggest catalogue
-    bearing that does, and it's short on rating: reports/strength.md, group 'bearing'. Dimensions in y are those the hubs and motor fix, not choices."""
-    t = lambda y_mm: 2.65 - y_mm                                 # y from the leg's centre, in mm, to t along the output (out is -y, for this motor at this y)
-    HW.pattern('L knee hub', 'L_knee', 'hub', 'L_hip_yaw_link', t(-28.2), 12, clamps=['L_knee flange'], note='9 M5 through the cup floor into the drawn 6.5 mm')
+    """Every race stopped both ways, every screw in reach in its turn. The build order is at the end: reports/joint_template.md explains it."""
+    t = lambda y_mm: -y_mm                                       # y from the leg's centre, in mm, to t along the output (out is -y)
+    HW.pattern('L knee hub', 'L_knee', 'hub', 'L_hip_yaw_link', t(-30.65), 12, clamps=['L_knee flange'], note='9 M5 through the cup floor into the drawn 6.5 mm')
     HW.pin_holes('L knee hub pin hole', 'L_knee', 'L_knee flange')
-    HW.pattern('L knee stator', 'L_knee', 'stator_rear', 'L_knee_link', t(28.0), 16, clamps=['L knee stator rim', 'L knee stator disc', 'L knee stator plate'], counterbore_to=t(34.5), note='10 M4 through the rim into the drawn rear 6 mm')
-    HW.bearing('L knee outer bearing', 'CRBT 405 A', (0, HY + 0.038, KZ), 'y', 'L_knee_link', ['L knee post'], 'L_hip_yaw_link', ['L knee cheek disc out', 'L knee cheek collar out'], 'L_knee', partner='L knee inner bearing')
-    HW.bearing('L knee inner bearing', 'CRBT 405 A', (0, HY - 0.038, KZ), 'y', 'L_knee_link', ['L knee idler stub'], 'L_hip_yaw_link', ['L knee cheek disc in', 'L knee axle in'], 'L_knee', partner='L knee outer bearing')
-    # the stub's cap, held by one screw on the axis, its button head turned toward the motor in the cup
-    HW.fastener('L knee idler cap screw', 'L_knee_link', 'M4', 12, 'iso7380', (0, HY - 0.0340, KZ), 'y', -1, clamps=['L knee idler cap'], into='L knee idler stub', clear_len=1.5, note='holds the inner race on its stub')
+    for k, g in enumerate(x for x in list(LINKS['L_hip_yaw_link']['geoms']) if x.get('hw', {}).get('pattern') == 'L knee hub' and x['hw']['type'] == 'screw'):
+        LINKS['L_hip_yaw_link']['geoms'].append(cut(cyl(f'L knee hub head way {k + 1}', (g['hw']['pos'][0], HY - 0.0367, g['hw']['pos'][2]), 'y', 0.00455, 0.0121), 'L_knee flange'))
+    HW.pattern('L knee stator', 'L_knee', 'stator_front', 'L_knee_link', t(-29.6), 10, clamps=['L shank body'], note='10 M4 through the barrel plate into the drawn front 5 mm')
+    for k, g in enumerate(x for x in list(LINKS['L_knee_link']['geoms']) if x.get('hw', {}).get('pattern') == 'L knee stator' and x['hw']['type'] == 'screw'):      # the waist's fillet is spot-faced where a head and key come
+        LINKS['L_knee_link']['geoms'].append(cut(cyl(f'L knee stator spot face {k + 1}', (g['hw']['pos'][0], HY - 0.0361, g['hw']['pos'][2]), 'y', 0.0040, 0.013), 'L shank body'))
+    # the bearings: inner race on the cup, stopped by a nut on the hub side and the cup's shoulder; outer race in the barrel, stopped by the lip and a threaded ring. Outer side the other way round
+    HW.bearing('L knee inner bearing', 'CRBS 508', (0, HY + KNEE_IN_BEARING, KZ), 'y', 'L_hip_yaw_link', ['L_knee flange'], 'L_knee_link', ['L shank body'], 'L_knee', partner='L knee outer bearing')
+    HW.bearing('L knee outer bearing', 'CRBS 508', (0, HY + KNEE_OUT_BEARING, KZ), 'y', 'L_knee_link', ['L knee rear cap'], 'L_hip_yaw_link', ['L knee outer cheek'], 'L_knee', partner='L knee inner bearing')
+    HW.retainer('L knee inner nut', 'L_hip_yaw_link', (0, HY - 0.0257, KZ), 'y', 0.0281, KNEE_RACE_R - 0.00005, 0.0015, 'L knee inner bearing', kind='thin nut, M50 x 1, on the cup (made, not bought)')
+    HW.retainer('L knee inner ring', 'L_knee_link', (0, HY - 0.03555, KZ), 'y', 0.03405, 0.0305, 0.002, 'L knee inner bearing', kind='threaded ring, M68 x 1, in the barrel\'s collar (made, not bought)')
+    HW.retainer('L knee outer ring', 'L_hip_yaw_link', (0, HY + 0.0325, KZ), 'y', 0.03405, 0.0305, 0.0017, 'L knee outer bearing', kind='threaded ring, M68 x 1, in the cheek (made, not bought)')
+    HW.retainer('L knee post washer', 'L_knee_link', (0, HY + 0.04225, KZ), 'y', 0.0265, 0.0125, 0.0017, 'L knee outer bearing', kind='washer plate on the post (made, not bought)', exposed=True)
+    # the rear cap on the barrel: M3 countersunk, flush, under the cheek
+    th = [math.radians(a) for a in KNEE_RIM_ANGLES]
+    HW.bolt_group('L knee rim', 'L_knee_link', 'M3', 10, 'iso10642', [(KNEE_RIM_R * math.cos(a), HY + 0.0314, KZ + KNEE_RIM_R * math.sin(a)) for a in th], 'y', -1, ['L knee rear cap'], 'L shank body', 2.95,
+                  load=dict(V=0.0, Fa=1614.0, T=0.0, Mt=0.0, r=0.063), note='the side force and the post\'s tilt; the cap takes no torque')
+    # the outer cheek on the fork: M5 from outside, 2 d into the crown
+    xz = KNEE_CHEEK_SCREWS
+    HW.bolt_group('L knee cheek top', 'L_hip_yaw_link', 'M5', 14, 'iso7380', [(x, HY + 0.0342, KZ + z) for x, z in xz[2:]], 'y', -1, ['L knee outer cheek'], 'L thigh fork', 2.55,
+                  load=dict(V=1287.0, Fa=0.0, T=0.0, Mt=80.0, r=0.025), note='half of the outer support, 2,574 N, and half of the moment: the side force 1,614 N at 90 mm over the row, and the bearing 5.75 mm off the seam: an upper bound')
+    HW.bolt_group('L knee cheek', 'L_hip_yaw_link', 'M5', 16, 'iso7380', [(x, HY + 0.0376, KZ + z) for x, z in xz[:2]], 'y', -1, ['L knee outer cheek'], 'L thigh fork', 5.95,
+                  load=dict(V=1287.0, Fa=0.0, T=0.0, Mt=80.0, r=0.025), note='the other half, as the top pair')
+    # the washer on the post
+    HW.bolt_group('L knee post', 'L_knee_link', 'M4', 10, 'iso7380', [(0.0185 * math.cos(a), HY + 0.0431, KZ + 0.0185 * math.sin(a)) for a in (0.785, 2.356, 3.927, 5.498)], 'y', -1, ['L knee post washer'], 'L knee rear cap', 1.6,
+                  load=dict(V=0.0, Fa=1614.0, T=0.0, Mt=0.0, r=0.0185), note='the side force, on the inner race')
+    # the hubs' two screws each, into their feet: the head inside the hub, a key through a hole under the white mark
+    for sd, sg in (('in', -1), ('out', 1)):
+        pos = [(-0.001, HY + sg * 0.046, KZ - 0.0735), (0.0125, HY + sg * 0.046, KZ - 0.0735)]
+        HW.bolt_group(f'L knee hub {sd} foot', 'L_knee_link', 'M4', 12, 'iso4762', pos, 'y', -sg, [f'L knee hub {sd}'], 'L shank body', 2.8,
+                      load=dict(V=30.0, Fa=30.0, T=0.0, Mt=0.0, r=0.01), note='a cover: its own weight at 10 g')
+        for k, p in enumerate(pos):
+            LINKS['L_knee_link']['geoms'].append(cut(cyl(f'L knee hub {sd} key hole {k + 1}', (p[0], HY + sg * 0.0562, p[2]), 'y', 0.0042, 0.0108), f'L knee hub {sd}'))
+    LINKS['L_knee_link']['geoms'].append(dict(cut(cyl('L knee hub out post hole', (0, HY + 0.046, KZ), 'y', 0.023, 0.008), 'L knee hub out'), internal=True))
+    # the back panel
+    HW.bolt_group('L shank panel', 'L_knee_link', 'M3', 10, 'iso10642', [(KNEE_XS - 0.003, HY + sg * 0.036, z) for sg, z in KNEE_PANEL_SCREWS], 'x', 1, ['L shank back panel'], 'L shank body', 3.0,
+                  load=dict(V=200.0, Fa=0.0, T=0.0, Mt=0.0, r=0.0375), note='shear flow in the closed section, a hand figure from the motor\'s torque on the section')
+    LINKS['L_knee_link']['geoms'].append(dict(motor('L ankle pitch relief', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2 * 1.012), role='cut', targets=['L shank back panel'], color='#000000', internal=True))      # the RS03's ears: machined into the panel's inner face
+    for k, (sg, z) in enumerate(KNEE_PANEL_SCREWS):                # a way in for head and key, through the wall behind the pad
+        LINKS['L_knee_link']['geoms'].append(dict(cut(cyl(f'L shank panel head way {k + 1}', (KNEE_XS - 0.009, HY + sg * 0.036, z), 'x', 0.00365, 0.012), 'L shank back panel'), internal=True))
+    # the thigh's top: the flange on the hip yaw's hub, and the tube's collar on the flange
+    HW.pattern('L hip yaw hub', 'L_hip_yaw', 'hub', 'L_hip_yaw_link', 28.3 + 4.5, 10, clamps=['L_hip_yaw flange'], counterbore_to=28.3 + 9.5, note='6 M4 into the drawn 6 mm')
+    a6 = [math.radians(30 + 60 * k) for k in range(6)]
+    HW.bolt_group('L thigh collar', 'L_hip_yaw_link', 'M4', 12, 'iso4762', [(0.039 * math.cos(a), HY + 0.039 * math.sin(a), THIGH_TOP - 0.004) for a in a6], 'z', 1, ['L thigh fork'], 'L_hip_yaw flange', 4.0,
+                  load=dict(V=810.0, Fa=3400.0, T=60.0, Mt=120.0, r=0.039), note='the whole leg, and the yaw motor\'s and knee motor\'s peak')
+    # the build order, each step checked by group 'assembly' (tools/hw_checks.py)
+    py, my, up, back = (0, 1, 0), (0, -1, 0), (0, 0, 1), (-1, 0, 0)
+    HW.step(['L_hip_yaw flange'], path=up, distance=0.02, screws=['L hip yaw hub'], why='the flange on the hip yaw\'s hub, on the hip, before the leg comes up')
+    HW.step(['L_knee actuator (buy) RS04'], path=py, distance=0.08, screws=['L knee stator'], why='the motor into the barrel from the open end, hub first; 10 M4 from the inboard side, nothing there yet')
+    HW.step(['L knee rear cap'], path=py, distance=0.03, screws=['L knee rim'], why='the cap, skirt to the motor\'s back, post out; 6 flush M3')
+    HW.step(['L thigh fork', 'L_knee flange', 'L knee inner bearing', 'L knee inner nut', 'L knee inner ring'], path=my, distance=0.03, screws=['L knee hub'], why='fork and cup, bearing and nut on the cup, ring loose behind them, from inboard: the slot passes over the barrel, the cup into the bore. 9 M5 through the eye; the ring turned through the opening with a pin spanner')
+    HW.step(['L knee outer cheek', 'L knee outer bearing', 'L knee outer ring', 'L knee post washer'], path=py, distance=0.02, screws=['L knee cheek', 'L knee cheek top', 'L knee post'], why='the outer cheek, bearing and ring in it, from outboard onto the post. 4 M5 into the crown, then the washer')
+    HW.step(['L knee hub in'], path=my, distance=0.02, screws=['L knee hub in foot'], why='the hubs last: 2 M4 each, a key through the hole under the mark')
+    HW.step(['L knee hub out'], path=py, distance=0.02, screws=['L knee hub out foot'], why='')
+    HW.step(['L shank back panel'], path=back, distance=0.02, screws=['L shank panel'], why='the ankle motors and rods are in from behind by now (their own round); the panel closes the section with 7 flush M3')
+    HW.step([], screws=['L thigh collar'], why='the leg up to the flange: 6 M4 from below, up beside the tube')
 
 
 knee_hardware()
+# iteration 41: bearings and every fastener in these two links are parts now, not the 6 % allowance's: it stays for their cables, thermal paste and small parts (a hand figure)
+LINKS['L_knee_link']['wiring'] = LINKS['L_hip_yaw_link']['wiring'] = 0.03
 
 
 # ---------------------------------------------------------------- mirror, actuators, flanges
@@ -1170,6 +1326,8 @@ def mirror_geom(g):
             g['outline'][k][1] = -g['outline'][k][1]
     if g['kind'] == 'revolve' and g['axis'] == 'y':
         g['profile'] = [[-t, r] for t, r in reversed(g['profile'])]
+    if g['kind'] == 'sdf':                                # its tree stays as it is: the mesh and the inside test reflect it
+        g['flip_y'] = not g.get('flip_y', False)
     if g['kind'] == 'prism':
         g['pts'] = [[-y, z] for y, z in g['pts']]
     if g['kind'] == 'loft':
@@ -1248,6 +1406,11 @@ def build():
         t_hub = OUTLINES[j['act']]['t_hub_face'] / 1000
         t_out = a['h'] / 2 + FLANGE_T - 0.001
         c[ax] += j['out'] * (t_hub - 0.0002 + t_out) / 2
+        own = j.pop('flange', None)
+        if own:                                           # a real part stands for the flange
+            own = dict(mirror_geom(dict(own, name=f"{j['name']} flange")) if left is not j else dict(own, name=f"{j['name']} flange"), name=f"{j['name']} flange")
+            links[output]['geoms'].append(own)
+            continue
         # iteration 29: the wrists' flanges black (still 7075): bare metal showed as a bright chip in the gaps when bent
         links[output]['geoms'].append(cyl(f"{j['name']} flange", c, j['axis'], 0.6 * a['r'], t_out - t_hub + 0.0002,
                                               BLACK if 'wrist' in j['name'] else ALU, 'struct'))
@@ -1256,7 +1419,7 @@ def build():
             if g['role'] != 'cut':
                 g['material'] = material_of(g)
     rec = HW.records()
-    for k in ('patterns', 'bearings', 'singles'):         # the right side's, as the geoms are
+    for k in ('patterns', 'bearings', 'singles', 'groups'):         # the right side's, as the geoms are
         rec[k] = rec[k] + [mirror_record(r) for r in rec[k] if r['name'].startswith('L ')]
     return dict(frame='metres; X forward, Y left, Z up; floor z=0; zero pose standing, arms down, palms in',
                 actuators=ACT, materials=MATERIALS, links=links, joints=joints, root='pelvis', hardware=rec)

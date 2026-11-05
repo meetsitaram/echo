@@ -16,7 +16,7 @@ replayed in the same room, rebuilt from that video ([MP4](docs/media/echo_living
 
 ## Overview
 
-- **Size:** 1.727 m, 57.3 kg (every part's mass from its material; Figure 03 is 61 kg).
+- **Size:** 1.727 m, 62.2 kg (every part's mass from its material; Figure 03 is 61 kg).
 - **Joints:** 29: each leg 6, waist 1, neck 2, each arm 7.
 - **Actuators:** 29 off-the-shelf RobStride modules (RS00 to RS04 and RS06).
 - **Battery:** 2.3 kWh, the same as Figure 03's.
@@ -35,8 +35,8 @@ replayed in the same room, rebuilt from that video ([MP4](docs/media/echo_living
   visor head, black hips and joint discs, and white sneakers. echo carries its own mark, not Figure's logo.
 - **Covers that clear every joint.** Rigid covers must move without touching, so each joint gets a shape that turns
   in place: cups round the elbows, a hinge at each knee, sockets at the shoulders and a domed seam at each hip.
-- **Real parts, honest numbers.** The actuators are sold today, and masses add up from materials. The 3.7 kg gap to
-  Figure's weight stays visible rather than padded.
+- **Real parts, honest numbers.** The actuators are sold today, and masses add up from materials. The 1.2 kg over
+  Figure's weight stays visible rather than hidden.
 
 The joint table, ranges, masses and how each joint was designed are in [docs/DESIGN.md](docs/DESIGN.md).
 

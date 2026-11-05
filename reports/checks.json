@@ -108,7 +108,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "62.41 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)",
+  "detail": "62.20 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)",
   "value": null
  },
  {
@@ -977,105 +977,126 @@
   "item": "Shank lower plates",
   "status": "PASS",
   "detail": "SF 6.12 to yield (needs 2), 3,400 N + 1,614 N side: 82 MPa on 2 x 40.0 x 4.0 mm al7075; a hand estimate",
-  "value": 6.117582293374578
+  "value": 6.117582293384745
  },
  {
   "group": "loadpath",
-  "item": "Shank upper plates",
+  "item": "Shank closed section at the ankle pitch motor, panel on",
   "status": "PASS",
-  "detail": "SF 5.33 to yield (needs 2), 3,400 N + 1,614 N side: 94 MPa on 2 x 40.0 x 5.0 mm al7075; a hand estimate",
-  "value": 5.3311115094363215
+  "detail": "SF 11.75 to yield (needs 2), 3,400 N + 1,614 N side: 43 MPa on 118.4 x 116.9 mm al7075; a hand estimate",
+  "value": 11.754150305270953
  },
  {
   "group": "loadpath",
-  "item": "Knee hub feet",
+  "item": "Shank closed section at the ankle roll motor, panel on",
   "status": "PASS",
-  "detail": "SF 15.96 to yield (needs 2), 3,400 N + 1,614 N side: 32 MPa on 2 x 30.0 x 22.0 mm al7075; a hand estimate",
-  "value": 15.958525150089702
+  "detail": "SF 15.89 to yield (needs 2), 3,400 N + 1,614 N side: 32 MPa on 124.0 x 123.9 mm al7075; a hand estimate",
+  "value": 15.889871646404117
  },
  {
   "group": "loadpath",
-  "item": "Knee idler arm (inner second support)",
+  "item": "Shank waist behind the knee",
   "status": "PASS",
-  "detail": "SF 3.57 to yield (needs 2), 3,400 N foot: 141 MPa on 12.0 x 6.0 mm al7075; a hand estimate",
-  "value": 3.565846748111781
+  "detail": "SF 14.66 to yield (needs 2), 3,400 N + 1,614 N side: 34 MPa on 86.2 x 73.7 mm al7075; a hand estimate",
+  "value": 14.655859650160451
  },
  {
   "group": "loadpath",
-  "item": "Knee idler stub",
+  "item": "Barrel where it meets the waist",
   "status": "PASS",
-  "detail": "SF 101.51 to yield (needs 2), 3,400 N foot: 5 MPa on 40.0 x 40.0 mm al7075; a hand estimate",
-  "value": 101.50867961895548
+  "detail": "SF 11.03 to yield (needs 2), 3,400 N + 1,614 N side: 46 MPa on 79.8 x 60.1 mm al7075; a hand estimate",
+  "value": 11.030486659501639
  },
  {
   "group": "loadpath",
-  "item": "Knee stator plate, outer bearing fitted",
+  "item": "Barrel at the axis (walls, net of the bore)",
   "status": "PASS",
-  "detail": "SF 4.56 to yield (needs 2), 3,400 N foot: 110 MPa on 80.0 x 4.0 mm al7075; a hand estimate",
-  "value": 4.559237679638229
+  "detail": "SF 57.65 to yield (needs 2), 3,400 N foot: 9 MPa on 2 x 58.3 x 8.2 + 20.1 x 13.9 + 20.1 x 13.8 mm al7075; a hand estimate",
+  "value": 57.64946971099892
  },
  {
   "group": "loadpath",
-  "item": "Knee stator rim, the motor's torque",
+  "item": "Barrel plate round the inner bearing",
   "status": "PASS",
-  "detail": "SF 67.92 to yield (needs 2), motor peak: 7 MPa on 2 x 13.4 x 12.5 mm al7075; a hand estimate",
-  "value": 67.91883668848604
+  "detail": "SF 487.16 to yield (needs 2), 3,400 N foot: 1 MPa on 24.1 x 5.0 + 24.0 x 11.0 + 366.6 x 125.0 mm al7075; a hand estimate",
+  "value": 487.1586258306191
  },
  {
   "group": "loadpath",
-  "item": "Knee post",
+  "item": "Knee post at its root",
   "status": "PASS",
-  "detail": "SF 104.45 to yield (needs 2), 3,400 N foot: 5 MPa on 40.0 x 40.0 mm al7075; a hand estimate",
-  "value": 104.44627551038577
+  "detail": "SF 147.72 to yield (needs 2), 3,400 N foot: 3 MPa on 52.3 x 52.3 mm al7075; a hand estimate",
+  "value": 147.72463250136738
  },
  {
   "group": "loadpath",
-  "item": "Knee axle, now a cup",
+  "item": "Rear cap at the axis",
   "status": "PASS",
-  "detail": "SF 16.45 to yield (needs 2), motor peak: 31 MPa on 72.0 x 72.0 mm al7075; a hand estimate",
-  "value": 16.453902591760016
+  "detail": "SF 46.16 to yield (needs 2), 3,400 N foot: 11 MPa on 127.0 x 26.7 mm al7075; a hand estimate",
+  "value": 46.156733238938074
  },
  {
   "group": "loadpath",
-  "item": "Knee cheek discs at the bores (net of them)",
+  "item": "Cup neck between bearing and cheek",
   "status": "PASS",
-  "detail": "SF 19.12 to yield (needs 2), 3,400 N foot: 26 MPa on 4 x 24.5 x 3.0 mm al7075; a hand estimate",
-  "value": 19.12499759455052
+  "detail": "SF 33.98 to yield (needs 2), motor peak: 15 MPa on 52.8 x 52.8 mm al7075; a hand estimate",
+  "value": 33.97652650209712
  },
  {
   "group": "loadpath",
-  "item": "Knee cheeks over the discs, both",
+  "item": "Fork inner eye, net of its opening",
   "status": "PASS",
-  "detail": "SF 10.14 to yield (needs 2), 3,400 N foot: 50 MPa on 2 x 52.0 x 3.0 mm al7075; a hand estimate",
-  "value": 10.14131795357648
+  "detail": "SF 2.79 to yield (needs 2), 3,400 N foot: 180 MPa on 19.9 x 5.1 + 20.0 x 5.2 mm al7075; a hand estimate",
+  "value": 2.793921900690608
  },
  {
   "group": "loadpath",
-  "item": "Knee inner cheek alone (the only one that takes motor torque)",
+  "item": "Outer cheek at its bearing",
   "status": "PASS",
-  "detail": "SF 5.46 to yield (needs 2), motor peak: 92 MPa on 52.0 x 3.0 mm al7075; a hand estimate",
-  "value": 5.458226876594066
+  "detail": "SF 36.64 to yield (needs 2), 3,400 N foot: 14 MPa on 95.7 x 11.1 mm al7075; a hand estimate",
+  "value": 36.6384499271066
  },
  {
   "group": "loadpath",
-  "item": "Knee cheeks out of plane, under the recorded side force",
-  "status": "FAIL",
-  "detail": "SF 0.91 to yield (needs 2), 3,400 N + 1,614 N side: 551 MPa on 2 x 52.0 x 3.0 mm al7075; a hand estimate",
-  "value": 0.9122419939476929
- },
- {
-  "group": "loadpath",
-  "item": "Knee cheek tops",
+  "item": "Fork cheeks over the barrel, both",
   "status": "PASS",
-  "detail": "SF 13.02 to yield (needs 2), 3,400 N foot: 39 MPa on 2 x 66.0 x 3.0 mm al7075; a hand estimate",
-  "value": 13.023583087817252
+  "detail": "SF 77.21 to yield (needs 2), 3,400 N foot: 7 MPa on 86.8 x 84.3 mm al7075; a hand estimate",
+  "value": 77.21260975572062
  },
  {
   "group": "loadpath",
-  "item": "Thigh frame",
+  "item": "Fork inner cheek alone (the only one that takes motor torque)",
   "status": "PASS",
-  "detail": "SF 19.15 to yield (needs 2), 3,400 N foot: 26 MPa on 80.0 x 24.0 mm al7075; a hand estimate",
-  "value": 19.15321750601224
+  "detail": "SF 111.58 to yield (needs 2), motor peak: 5 MPa on 86.8 x 73.7 mm al7075; a hand estimate",
+  "value": 111.58253258159019
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork cheeks out of plane, under the recorded side force",
+  "status": "PASS",
+  "detail": "SF 122.05 to yield (needs 2), 3,400 N + 1,614 N side: 4 MPa on 86.8 x 84.3 mm al7075; a hand estimate",
+  "value": 122.05493812704877
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork crown",
+  "status": "PASS",
+  "detail": "SF 89.92 to yield (needs 2), 3,400 N foot: 6 MPa on 80.7 x 79.4 mm al7075; a hand estimate",
+  "value": 89.91583882090247
+ },
+ {
+  "group": "loadpath",
+  "item": "Thigh tube",
+  "status": "PASS",
+  "detail": "SF 20.35 to yield (needs 2), 3,400 N foot: 25 MPa on 66.0 x 66.0 mm al7075; a hand estimate",
+  "value": 20.34715397641168
+ },
+ {
+  "group": "loadpath",
+  "item": "Thigh tube under its collar",
+  "status": "PASS",
+  "detail": "SF 20.30 to yield (needs 2), 3,400 N foot: 25 MPa on 66.0 x 66.0 mm al7075; a hand estimate",
+  "value": 20.30440125528483
  },
  {
   "group": "loadpath",
@@ -1130,22 +1151,22 @@
   "group": "loadpath",
   "item": "Pelvis frame under the waist motor",
   "status": "PASS",
-  "detail": "SF 300.49 to yield (needs 2), 3,400 N foot: 2 MPa on 150.0 x 70.0 mm al7075; a hand estimate",
-  "value": 300.49263219965803
+  "detail": "SF 300.33 to yield (needs 2), 3,400 N foot: 2 MPa on 150.0 x 70.0 mm al7075; a hand estimate",
+  "value": 300.3288176949904
  },
  {
   "group": "loadpath",
   "item": "Waist hub",
   "status": "PASS",
-  "detail": "SF 294.45 to yield (needs 2), 3,400 N foot: 2 MPa on 98.8 x 98.8 mm al7075; a hand estimate",
-  "value": 294.44623421498864
+  "detail": "SF 294.29 to yield (needs 2), 3,400 N foot: 2 MPa on 98.8 x 98.8 mm al7075; a hand estimate",
+  "value": 294.2889261312919
  },
  {
   "group": "loadpath",
   "item": "Spine",
   "status": "PASS",
-  "detail": "SF 69.49 to yield (needs 2), 3,400 N foot: 7 MPa on 60.0 x 60.0 mm al7075; a hand estimate",
-  "value": 69.4909127660772
+  "detail": "SF 69.46 to yield (needs 2), 3,400 N foot: 7 MPa on 60.0 x 60.0 mm al7075; a hand estimate",
+  "value": 69.46370880403946
  },
  {
   "group": "loadpath",
@@ -1179,15 +1200,15 @@
   "group": "loadpath",
   "item": "Shoulder roll post (front of the fork)",
   "status": "PASS",
-  "detail": "SF 7.66 to yield (needs 2), 3,400 N foot: 66 MPa on 24.0 x 24.0 mm al7075; a hand estimate",
-  "value": 7.65552266421559
+  "detail": "SF 7.63 to yield (needs 2), 3,400 N foot: 66 MPa on 24.0 x 24.0 mm al7075; a hand estimate",
+  "value": 7.6287653596284875
  },
  {
   "group": "loadpath",
   "item": "Shoulder roll axle (back of the fork)",
   "status": "PASS",
-  "detail": "SF 6.13 to yield (needs 2), 3,400 N foot: 82 MPa on 22.0 x 22.0 mm al7075; a hand estimate",
-  "value": 6.13068608252911
+  "detail": "SF 6.11 to yield (needs 2), 3,400 N foot: 82 MPa on 22.0 x 22.0 mm al7075; a hand estimate",
+  "value": 6.109258331344343
  },
  {
   "group": "loadpath",
@@ -1221,36 +1242,36 @@
   "group": "loadpath",
   "item": "Fork bridge",
   "status": "PASS",
-  "detail": "SF 5.67 to yield (needs 2), 3,400 N foot: 89 MPa on 50.0 x 10.0 mm al7075; a hand estimate",
-  "value": 5.673464214241722
+  "detail": "SF 5.65 to yield (needs 2), 3,400 N foot: 89 MPa on 50.0 x 10.0 mm al7075; a hand estimate",
+  "value": 5.653634528313926
  },
  {
   "group": "loadpath",
   "item": "Upper arm frame",
   "status": "PASS",
-  "detail": "SF 42.09 to yield (needs 2), 3,400 N foot: 12 MPa on 30.0 x 30.0 mm al7075; a hand estimate",
-  "value": 42.092736714223406
+  "detail": "SF 41.95 to yield (needs 2), 3,400 N foot: 12 MPa on 30.0 x 30.0 mm al7075; a hand estimate",
+  "value": 41.94561571065929
  },
  {
   "group": "loadpath",
   "item": "Elbow bridge beside the frame",
   "status": "PASS",
-  "detail": "SF 4.25 to yield (needs 2), 3,400 N foot: 118 MPa on 24.0 x 10.0 mm al7075; a hand estimate",
-  "value": 4.24702410463759
+  "detail": "SF 4.23 to yield (needs 2), 3,400 N foot: 119 MPa on 24.0 x 10.0 mm al7075; a hand estimate",
+  "value": 4.23218006033899
  },
  {
   "group": "loadpath",
   "item": "Elbow cheeks over the discs, both",
   "status": "PASS",
-  "detail": "SF 24.81 to yield (needs 2), 3,400 N foot: 20 MPa on 2 x 46.0 x 3.0 mm al7075; a hand estimate",
-  "value": 24.81106070988134
+  "detail": "SF 24.72 to yield (needs 2), 3,400 N foot: 20 MPa on 2 x 46.0 x 3.0 mm al7075; a hand estimate",
+  "value": 24.72434199221016
  },
  {
   "group": "loadpath",
   "item": "Elbow inner cheek alone (the only one that takes motor torque)",
   "status": "FAIL",
-  "detail": "SF 0.83 to yield (needs 2), 3,400 N foot: 609 MPa on 46.0 x 3.0 mm al7075; a hand estimate",
-  "value": 0.825440688653089
+  "detail": "SF 0.82 to yield (needs 2), 3,400 N foot: 612 MPa on 46.0 x 3.0 mm al7075; a hand estimate",
+  "value": 0.8225556383575527
  },
  {
   "group": "loadpath",
@@ -1277,22 +1298,22 @@
   "group": "loadpath",
   "item": "Forearm frame",
   "status": "PASS",
-  "detail": "SF 3.61 to yield (needs 2), 3,400 N foot: 139 MPa on 40.0 x 5.0 mm al7075; a hand estimate",
-  "value": 3.6146842281142413
+  "detail": "SF 3.60 to yield (needs 2), 3,400 N foot: 140 MPa on 40.0 x 5.0 mm al7075; a hand estimate",
+  "value": 3.6020503151705907
  },
  {
   "group": "loadpath",
   "item": "Elbow idler arm",
   "status": "PASS",
-  "detail": "SF 10.35 to yield (needs 2), 3,400 N foot: 49 MPa on 12.0 x 4.0 mm al7075; a hand estimate",
-  "value": 10.345054371846372
+  "detail": "SF 10.31 to yield (needs 2), 3,400 N foot: 49 MPa on 12.0 x 4.0 mm al7075; a hand estimate",
+  "value": 10.308896713781884
  },
  {
   "group": "loadpath",
   "item": "Under the elbow motor",
   "status": "PASS",
-  "detail": "SF 54.93 to yield (needs 2), 3,400 N foot: 9 MPa on 30.0 x 8.0 mm al7075; a hand estimate",
-  "value": 54.92681931074487
+  "detail": "SF 54.73 to yield (needs 2), 3,400 N foot: 9 MPa on 30.0 x 8.0 mm al7075; a hand estimate",
+  "value": 54.734841088125506
  },
  {
   "group": "loadpath",
@@ -1326,8 +1347,8 @@
   "group": "loadpath",
   "item": "Head frame",
   "status": "PASS",
-  "detail": "SF 15.82 to yield (needs 2), 3,400 N foot: 32 MPa on 30.0 x 6.0 mm al7075; a hand estimate",
-  "value": 15.818850300753866
+  "detail": "SF 15.76 to yield (needs 2), 3,400 N foot: 32 MPa on 30.0 x 6.0 mm al7075; a hand estimate",
+  "value": 15.763560830095829
  },
  {
   "group": "loadpath",
@@ -1401,13 +1422,6 @@
  },
  {
   "group": "loadpath",
-  "item": "role: L knee hub in",
-  "status": "WARN",
-  "detail": "7075 with role shell: not counted as load-bearing. If it carries load, make it struct",
-  "value": null
- },
- {
-  "group": "loadpath",
   "item": "role: L knee hub out",
   "status": "WARN",
   "detail": "7075 with role shell: not counted as load-bearing. If it carries load, make it struct",
@@ -1432,7 +1446,7 @@
   "item": "L ankle fork cheek in / L shank plate in",
   "status": "PASS",
   "detail": "451 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
-  "value": 450.69996728085766
+  "value": 450.6999672808576
  },
  {
   "group": "contact",
@@ -1443,150 +1457,59 @@
  },
  {
   "group": "contact",
-  "item": "L shank plate in / L shank plate in up",
-  "status": "FAIL",
-  "detail": "20 mm2 (overlap, 0.50 deep), needs 300 to pass 1700 N",
-  "value": 19.852634144354735
- },
- {
-  "group": "contact",
-  "item": "L shank plate out / L shank plate out up",
-  "status": "FAIL",
-  "detail": "20 mm2 (overlap, 0.50 deep), needs 300 to pass 1700 N",
-  "value": 19.852168205782494
- },
- {
-  "group": "contact",
-  "item": "L knee hub foot in / L shank plate in up",
+  "item": "L shank plate in / L shank body",
   "status": "PASS",
-  "detail": "566 mm2 (overlap, 5.00 deep), needs 300 to pass 1700 N",
-  "value": 566.0459540862399
+  "detail": "398 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
+  "value": 398.4946975429862
  },
  {
   "group": "contact",
-  "item": "L knee hub foot out / L shank plate out up",
+  "item": "L shank plate out / L shank body",
   "status": "PASS",
-  "detail": "566 mm2 (overlap, 5.00 deep), needs 300 to pass 1700 N",
-  "value": 566.0458375507923
+  "detail": "415 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
+  "value": 414.99690223625436
  },
  {
   "group": "contact",
-  "item": "L knee idler arm / L knee hub foot in",
-  "status": "FAIL",
-  "detail": "188 mm2 (overlap, 6.00 deep), needs 300 to pass 1700 N",
-  "value": 188.4735519799147
- },
- {
-  "group": "contact",
-  "item": "L knee idler stub / L knee idler arm",
-  "status": "FAIL",
-  "detail": "204 mm2 (overlap, 5.50 deep), needs 300 to pass 1700 N",
-  "value": 203.7996227578772
- },
- {
-  "group": "contact",
-  "item": "L knee stator plate / L knee hub foot out",
+  "item": "L shank body / L shank back panel",
   "status": "PASS",
-  "detail": "390 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
-  "value": 390.1366990418739
+  "detail": "1606 mm2 (overlap, 0.20 deep), needs 100 to pass 340 N",
+  "value": 1605.8376635598156
  },
  {
   "group": "contact",
-  "item": "L knee stator plate / L knee post",
+  "item": "L shank body / L knee rear cap",
   "status": "PASS",
-  "detail": "1255 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
-  "value": 1254.6190514700352
+  "detail": "536 mm2 (overlap, 0.69 deep), needs 400 to pass 2574 N",
+  "value": 535.5569793020323
  },
  {
   "group": "contact",
-  "item": "L knee stator rim / L_knee actuator (buy) RS04",
+  "item": "L shank body / L_knee actuator (buy) RS04",
   "status": "PASS",
-  "detail": "3608 mm2 (overlap, 0.16 deep), needs 500 to pass 3400 N",
-  "value": 3607.639157082111
+  "detail": "8212 mm2 (flush, 0.00 deep), needs 400 to pass 2278 N",
+  "value": 8211.710021885956
  },
  {
   "group": "contact",
-  "item": "L knee stator rim / L knee stator disc",
+  "item": "L thigh fork / L_knee flange",
   "status": "PASS",
-  "detail": "3699 mm2 (overlap, 0.10 deep), needs 500 to pass 3400 N",
-  "value": 3698.550527244791
+  "detail": "1461 mm2 (overlap, 0.38 deep), needs 400 to pass 2574 N",
+  "value": 1460.7735666955894
  },
  {
   "group": "contact",
-  "item": "L knee stator plate / L knee stator disc",
+  "item": "L thigh fork / L knee outer cheek",
   "status": "PASS",
-  "detail": "6675 mm2 (overlap, 4.00 deep), needs 500 to pass 3400 N",
-  "value": 6675.300981145544
+  "detail": "543 mm2 (overlap, 1.67 deep), needs 400 to pass 2574 N",
+  "value": 543.0774188040373
  },
  {
   "group": "contact",
-  "item": "L knee axle in / L_knee flange",
+  "item": "L thigh fork / L_hip_yaw flange",
   "status": "PASS",
-  "detail": "2333 mm2 (overlap, 0.25 deep), needs 500 to pass 3400 N",
-  "value": 2332.8078981139906
- },
- {
-  "group": "contact",
-  "item": "L knee cheek disc in / L knee axle in",
-  "status": "PASS",
-  "detail": "2025 mm2 (overlap, 0.65 deep), needs 500 to pass 3400 N",
-  "value": 2025.4259443301253
- },
- {
-  "group": "contact",
-  "item": "L knee cheek in / L knee cheek disc in",
-  "status": "PASS",
-  "detail": "1186 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
-  "value": 1185.6343848201302
- },
- {
-  "group": "contact",
-  "item": "L knee cheek out / L knee cheek disc out",
-  "status": "PASS",
-  "detail": "1186 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
-  "value": 1185.634316171165
- },
- {
-  "group": "contact",
-  "item": "L knee yoke / L knee cheek in",
-  "status": "FAIL",
-  "detail": "106 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
-  "value": 106.26143778932067
- },
- {
-  "group": "contact",
-  "item": "L knee yoke / L knee cheek out",
-  "status": "FAIL",
-  "detail": "106 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
-  "value": 106.26148651515123
- },
- {
-  "group": "contact",
-  "item": "L thigh frame / L knee cheek in top",
-  "status": "PASS",
-  "detail": "382 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
-  "value": 382.13190940425073
- },
- {
-  "group": "contact",
-  "item": "L thigh frame / L knee cheek out top",
-  "status": "PASS",
-  "detail": "382 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
-  "value": 382.131984829078
- },
- {
-  "group": "contact",
-  "item": "L thigh frame / L knee yoke",
-  "status": "PASS",
-  "detail": "1542 mm2 (overlap, 10.00 deep), needs 300 to pass 1700 N",
-  "value": 1542.1508795125003
- },
- {
-  "group": "contact",
-  "item": "L thigh frame / L_hip_yaw flange",
-  "status": "PASS",
-  "detail": "781 mm2 (overlap, 3.30 deep), needs 500 to pass 3400 N",
-  "value": 780.6608464650977
+  "detail": "2357 mm2 (overlap, 0.20 deep), needs 500 to pass 3400 N",
+  "value": 2356.9906621127684
  },
  {
   "group": "contact",
@@ -1655,273 +1578,273 @@
   "group": "contact",
   "item": "pelvis frame / waist_yaw actuator (buy) RS04",
   "status": "PASS",
-  "detail": "6897 mm2 (overlap, 32.85 deep), needs 300 to pass 1853 N",
+  "detail": "6897 mm2 (overlap, 32.85 deep), needs 300 to pass 1860 N",
   "value": 6897.093109921504
  },
  {
   "group": "contact",
   "item": "waist hub / waist_yaw flange",
   "status": "PASS",
-  "detail": "4065 mm2 (overlap, 2.85 deep), needs 300 to pass 1853 N",
+  "detail": "4065 mm2 (overlap, 2.85 deep), needs 300 to pass 1860 N",
   "value": 4064.9669347705835
  },
  {
   "group": "contact",
   "item": "waist hub / spine",
   "status": "PASS",
-  "detail": "3395 mm2 (overlap, 10.00 deep), needs 300 to pass 1853 N",
+  "detail": "3395 mm2 (overlap, 10.00 deep), needs 300 to pass 1860 N",
   "value": 3394.767049649116
  },
  {
   "group": "contact",
   "item": "spine / shoulder beam",
   "status": "FAIL",
-  "detail": "0 mm2 (gap, 235.00 mm of air, 0.00 deep), needs 300 to pass 1853 N",
+  "detail": "0 mm2 (gap, 235.00 mm of air, 0.00 deep), needs 300 to pass 1860 N",
   "value": 0.0
  },
  {
   "group": "contact",
   "item": "shoulder beam / L_shoulder_pitch actuator (buy) RS04",
   "status": "PASS",
-  "detail": "5282 mm2 (overlap, 1.85 deep), needs 100 to pass 316 N",
+  "detail": "5282 mm2 (overlap, 1.85 deep), needs 100 to pass 317 N",
   "value": 5282.32776899945
  },
  {
   "group": "contact",
   "item": "L shoulder bracket / L_shoulder_pitch flange",
   "status": "PASS",
-  "detail": "1187 mm2 (overlap, 4.85 deep), needs 100 to pass 316 N",
+  "detail": "1187 mm2 (overlap, 4.85 deep), needs 100 to pass 317 N",
   "value": 1187.399299283256
  },
  {
   "group": "contact",
   "item": "L shoulder bracket / L_shoulder_roll actuator (buy) RS06",
   "status": "PASS",
-  "detail": "545 mm2 (overlap, 2.08 deep), needs 100 to pass 316 N",
+  "detail": "545 mm2 (overlap, 2.08 deep), needs 100 to pass 317 N",
   "value": 544.5996273874913
  },
  {
   "group": "contact",
   "item": "L shoulder roll axle / L_shoulder_roll flange",
   "status": "PASS",
-  "detail": "380 mm2 (overlap, 3.25 deep), needs 100 to pass 316 N",
+  "detail": "380 mm2 (overlap, 3.25 deep), needs 100 to pass 317 N",
   "value": 379.5222406575146
  },
  {
   "group": "contact",
   "item": "L shoulder roll axle / L shoulder roll plate back",
   "status": "PASS",
-  "detail": "380 mm2 (overlap, 6.00 deep), needs 100 to pass 316 N",
+  "detail": "380 mm2 (overlap, 6.00 deep), needs 100 to pass 317 N",
   "value": 379.52224065751477
  },
  {
   "group": "contact",
   "item": "L shoulder roll plate back / L shoulder roll plate back low",
   "status": "PASS",
-  "detail": "115 mm2 (flush, 0.00 deep), needs 100 to pass 316 N",
+  "detail": "115 mm2 (flush, 0.00 deep), needs 100 to pass 317 N",
   "value": 115.39776856889947
  },
  {
   "group": "contact",
   "item": "L shoulder roll plate front / L shoulder roll plate front low",
   "status": "PASS",
-  "detail": "115 mm2 (flush, 0.00 deep), needs 100 to pass 316 N",
+  "detail": "115 mm2 (flush, 0.00 deep), needs 100 to pass 317 N",
   "value": 115.3977685689147
  },
  {
   "group": "contact",
   "item": "L shoulder roll plate back low / L shoulder roll bridge",
   "status": "PASS",
-  "detail": "451 mm2 (overlap, 6.00 deep), needs 100 to pass 316 N",
+  "detail": "451 mm2 (overlap, 6.00 deep), needs 100 to pass 317 N",
   "value": 450.91056755398574
  },
  {
   "group": "contact",
   "item": "L shoulder roll plate front low / L shoulder roll bridge",
   "status": "PASS",
-  "detail": "451 mm2 (overlap, 6.00 deep), needs 100 to pass 316 N",
+  "detail": "451 mm2 (overlap, 6.00 deep), needs 100 to pass 317 N",
   "value": 450.91056755398466
  },
  {
   "group": "contact",
   "item": "L shoulder roll plate back low / L_shoulder_yaw actuator (buy) RS02",
   "status": "FAIL",
-  "detail": "87 mm2 (overlap, 1.50 deep), needs 100 to pass 316 N",
+  "detail": "87 mm2 (overlap, 1.50 deep), needs 100 to pass 317 N",
   "value": 87.07791467003076
  },
  {
   "group": "contact",
   "item": "L shoulder roll plate front low / L_shoulder_yaw actuator (buy) RS02",
   "status": "FAIL",
-  "detail": "87 mm2 (overlap, 1.50 deep), needs 100 to pass 316 N",
+  "detail": "87 mm2 (overlap, 1.50 deep), needs 100 to pass 317 N",
   "value": 87.07790961935558
  },
  {
   "group": "contact",
   "item": "L upper arm frame / L_shoulder_yaw flange",
   "status": "PASS",
-  "detail": "753 mm2 (overlap, 2.75 deep), needs 100 to pass 316 N",
+  "detail": "753 mm2 (overlap, 2.75 deep), needs 100 to pass 317 N",
   "value": 753.4451595957343
  },
  {
   "group": "contact",
   "item": "L upper arm frame / L elbow bridge",
   "status": "PASS",
-  "detail": "619 mm2 (overlap, 2.00 deep), needs 100 to pass 316 N",
+  "detail": "619 mm2 (overlap, 2.00 deep), needs 100 to pass 317 N",
   "value": 618.9647442973188
  },
  {
   "group": "contact",
   "item": "L elbow bridge / L elbow cheek in",
   "status": "PASS",
-  "detail": "149 mm2 (overlap, 3.00 deep), needs 100 to pass 316 N",
+  "detail": "149 mm2 (overlap, 3.00 deep), needs 100 to pass 317 N",
   "value": 148.57738944328906
  },
  {
   "group": "contact",
   "item": "L elbow bridge / L elbow cheek out",
   "status": "PASS",
-  "detail": "149 mm2 (overlap, 3.00 deep), needs 100 to pass 316 N",
+  "detail": "149 mm2 (overlap, 3.00 deep), needs 100 to pass 317 N",
   "value": 148.57705047739836
  },
  {
   "group": "contact",
   "item": "L elbow cheek in / L elbow cheek disc in",
   "status": "PASS",
-  "detail": "788 mm2 (overlap, 3.00 deep), needs 100 to pass 316 N",
+  "detail": "788 mm2 (overlap, 3.00 deep), needs 100 to pass 317 N",
   "value": 787.5600639983052
  },
  {
   "group": "contact",
   "item": "L elbow cheek out / L elbow cheek disc out",
   "status": "PASS",
-  "detail": "788 mm2 (overlap, 3.00 deep), needs 100 to pass 316 N",
+  "detail": "788 mm2 (overlap, 3.00 deep), needs 100 to pass 317 N",
   "value": 787.5596964812513
  },
  {
   "group": "contact",
   "item": "L elbow cheek disc in / L elbow axle",
   "status": "PASS",
-  "detail": "492 mm2 (overlap, 0.20 deep), needs 100 to pass 316 N",
+  "detail": "492 mm2 (overlap, 0.20 deep), needs 100 to pass 317 N",
   "value": 491.653906697238
  },
  {
   "group": "contact",
   "item": "L elbow axle / L_elbow flange",
   "status": "PASS",
-  "detail": "906 mm2 (overlap, 0.60 deep), needs 100 to pass 316 N",
+  "detail": "906 mm2 (overlap, 0.60 deep), needs 100 to pass 317 N",
   "value": 906.4624298609779
  },
  {
   "group": "contact",
   "item": "L elbow post / L forearm frame",
   "status": "PASS",
-  "detail": "875 mm2 (overlap, 5.00 deep), needs 100 to pass 316 N",
+  "detail": "875 mm2 (overlap, 5.00 deep), needs 100 to pass 317 N",
   "value": 875.3468070252238
  },
  {
   "group": "contact",
   "item": "L forearm frame / L_elbow actuator (buy) RS06",
   "status": "PASS",
-  "detail": "1618 mm2 (flush, 0.00 deep), needs 100 to pass 316 N",
+  "detail": "1618 mm2 (flush, 0.00 deep), needs 100 to pass 317 N",
   "value": 1618.0472962083372
  },
  {
   "group": "contact",
   "item": "L elbow idler stub / L elbow idler arm",
   "status": "FAIL",
-  "detail": "74 mm2 (overlap, 3.50 deep), needs 100 to pass 316 N",
+  "detail": "74 mm2 (overlap, 3.50 deep), needs 100 to pass 317 N",
   "value": 74.37895718793767
  },
  {
   "group": "contact",
   "item": "L elbow idler arm / L elbow under motor",
   "status": "FAIL",
-  "detail": "55 mm2 (overlap, 3.00 deep), needs 100 to pass 316 N",
+  "detail": "55 mm2 (overlap, 3.00 deep), needs 100 to pass 317 N",
   "value": 54.57900631825496
  },
  {
   "group": "contact",
   "item": "L elbow under motor / L forearm frame",
   "status": "PASS",
-  "detail": "223 mm2 (overlap, 4.50 deep), needs 100 to pass 316 N",
+  "detail": "223 mm2 (overlap, 4.50 deep), needs 100 to pass 317 N",
   "value": 222.97931704708657
  },
  {
   "group": "contact",
   "item": "L forearm frame / L_wrist_yaw actuator (buy) RS02",
   "status": "PASS",
-  "detail": "362 mm2 (overlap, 5.00 deep), needs 100 to pass 316 N",
+  "detail": "362 mm2 (overlap, 5.00 deep), needs 100 to pass 317 N",
   "value": 362.38257048958184
  },
  {
   "group": "contact",
   "item": "L forearm lower frame / L_wrist_yaw flange",
   "status": "PASS",
-  "detail": "628 mm2 (overlap, 4.25 deep), needs 100 to pass 316 N",
+  "detail": "628 mm2 (overlap, 4.25 deep), needs 100 to pass 317 N",
   "value": 627.6680687992931
  },
  {
   "group": "contact",
   "item": "L forearm lower frame / L_wrist_pitch actuator (buy) RS00",
   "status": "PASS",
-  "detail": "314 mm2 (overlap, 1.50 deep), needs 100 to pass 316 N",
+  "detail": "314 mm2 (overlap, 1.50 deep), needs 100 to pass 317 N",
   "value": 314.4039227555314
  },
  {
   "group": "contact",
   "item": "L wrist cheek / L_wrist_pitch flange",
   "status": "PASS",
-  "detail": "452 mm2 (overlap, 5.00 deep), needs 100 to pass 316 N",
+  "detail": "452 mm2 (overlap, 5.00 deep), needs 100 to pass 317 N",
   "value": 451.963716552546
  },
  {
   "group": "contact",
   "item": "L wrist cheek / L_wrist_roll actuator (buy) RS00",
   "status": "PASS",
-  "detail": "149 mm2 (overlap, 2.56 deep), needs 100 to pass 316 N",
+  "detail": "149 mm2 (overlap, 2.56 deep), needs 100 to pass 317 N",
   "value": 149.07086860400867
  },
  {
   "group": "contact",
   "item": "L hand bracket / L_wrist_roll flange",
   "status": "PASS",
-  "detail": "230 mm2 (overlap, 3.50 deep), needs 100 to pass 316 N",
+  "detail": "230 mm2 (overlap, 3.50 deep), needs 100 to pass 317 N",
   "value": 230.04605581133774
  },
  {
   "group": "contact",
   "item": "neck post / neck_yaw actuator (buy) RS00",
   "status": "PASS",
-  "detail": "1385 mm2 (overlap, 6.60 deep), needs 100 to pass 73 N",
+  "detail": "1385 mm2 (overlap, 6.60 deep), needs 100 to pass 74 N",
   "value": 1385.378936699089
  },
  {
   "group": "contact",
   "item": "shoulder beam / neck post",
   "status": "PASS",
-  "detail": "1729 mm2 (overlap, 40.00 deep), needs 100 to pass 73 N",
+  "detail": "1729 mm2 (overlap, 40.00 deep), needs 100 to pass 74 N",
   "value": 1728.7968244173485
  },
  {
   "group": "contact",
   "item": "neck pitch post / neck_yaw flange",
   "status": "PASS",
-  "detail": "290 mm2 (overlap, 1.00 deep), needs 100 to pass 73 N",
+  "detail": "290 mm2 (overlap, 1.00 deep), needs 100 to pass 74 N",
   "value": 289.8972227238114
  },
  {
   "group": "contact",
   "item": "neck pitch post / neck_pitch actuator (buy) RS00",
   "status": "PASS",
-  "detail": "257 mm2 (overlap, 2.50 deep), needs 100 to pass 73 N",
+  "detail": "257 mm2 (overlap, 2.50 deep), needs 100 to pass 74 N",
   "value": 256.7427335610897
  },
  {
   "group": "contact",
   "item": "head frame / neck_pitch flange",
   "status": "PASS",
-  "detail": "523 mm2 (overlap, 0.50 deep), needs 100 to pass 73 N",
+  "detail": "523 mm2 (overlap, 0.50 deep), needs 100 to pass 74 N",
   "value": 523.1536573350775
  },
  {
@@ -2075,7 +1998,7 @@
   "group": "contact",
   "item": "L_knee_link: frame in one piece",
   "status": "FAIL",
-  "detail": "5 pieces: L knee idler stub + L knee idler collar + L knee idler cap + L knee idler arm + L knee hub foot in + L knee hub foot out + L knee stator plate + L knee post + L knee post collar + L knee post cap + L knee stator disc + L knee stator rim + L shank knee bridge + L shank plate in up + L shank plate out up + L ankle roll pad in + L ankle roll pad out + L ankle roll crank; L shank plate in + L shank plate out + L ankle fork cheek in + L ankle fork cheek out + L ankle fork bridge; L ankle pitch crank; L ankle pitch rod; L ankle roll rod. Only by: L shank plate in / L shank plate in up 20 mm2 overlap; L shank plate out / L shank plate out up 20 mm2 overlap; L shank plate in up / L ankle pitch crank 48 mm2 overlap; L shank plate out up / L ankle roll rod 44 mm2 overlap; L ankle pitch crank / L ankle pitch rod 86 mm2 overlap; L ankle roll crank / L ankle roll rod 84 mm2 overlap",
+  "detail": "5 pieces: L shank body + L shank back panel + L knee rear cap + L shank plate in + L shank plate out + L ankle fork cheek in + L ankle fork cheek out + L ankle fork bridge; L ankle pitch crank; L ankle pitch rod; L ankle roll crank; L ankle roll rod. Only by: L shank body / L ankle roll rod 3 mm2 overlap; L ankle pitch crank / L ankle pitch rod 86 mm2 overlap; L ankle roll crank / L ankle roll rod 84 mm2 overlap",
   "value": -5.0
  },
  {
@@ -2129,17 +2052,17 @@
  },
  {
   "group": "pivot",
-  "item": "L knee cheek bearing bore: bearing seat",
+  "item": "L knee outer cheek bearing bore: bearing seat",
   "status": "PASS",
-  "detail": "CRBT 405 A: inner race on L knee post, outer in L knee cheek disc out; rating in group bearing",
+  "detail": "CRBS 508: inner race on L knee rear cap, outer in L knee outer cheek; rating in group bearing",
   "value": -0.0
  },
  {
   "group": "pivot",
-  "item": "L knee cheek idler bore: bearing seat",
+  "item": "L knee barrel bearing bore: bearing seat",
   "status": "PASS",
-  "detail": "CRBT 405 A: inner race on L knee idler stub, outer in L knee cheek disc in; rating in group bearing",
-  "value": -0.0
+  "detail": "CRBS 508: inner race on L_knee flange, outer in L shank body; rating in group bearing",
+  "value": -3.198577779343364e-05
  },
  {
   "group": "linkage",
@@ -2185,13 +2108,6 @@
  },
  {
   "group": "linkage",
-  "item": "L ankle pitch crank clear of L shank plate in up",
-  "status": "FAIL",
-  "detail": "moving part inside a fixed one, 0.03 cm3",
-  "value": -3.332452457389506e-08
- },
- {
-  "group": "linkage",
   "item": "L_ankle_roll: has a motor, crank and rod",
   "status": "PASS",
   "detail": "",
@@ -2231,20 +2147,6 @@
   "status": "FAIL",
   "detail": "capsules overlapping, no pin or bearing part",
   "value": 0.0
- },
- {
-  "group": "linkage",
-  "item": "L ankle roll crank clear of L shank plate out up",
-  "status": "FAIL",
-  "detail": "moving part inside a fixed one, 0.48 cm3",
-  "value": -4.846154438842522e-07
- },
- {
-  "group": "linkage",
-  "item": "L ankle roll rod clear of L shank plate out up",
-  "status": "FAIL",
-  "detail": "moving part inside a fixed one, 0.09 cm3",
-  "value": -8.848497255827238e-08
  },
  {
   "group": "stator",
@@ -2355,22 +2257,22 @@
   "group": "stator",
   "item": "L ankle pitch actuator (buy) RS03",
   "status": "PASS",
-  "detail": "held by L shank plate out up, 3697 mm2 on its end face",
-  "value": 3696.5705781492716
+  "detail": "held by L shank body, 401 mm2 on its end face",
+  "value": 400.70905260070026
  },
  {
   "group": "stator",
   "item": "L ankle roll actuator (buy) RS06",
   "status": "PASS",
-  "detail": "held by L ankle roll pad out, 1199 mm2 on its end face",
-  "value": 1198.673039178646
+  "detail": "held by L shank body, 462 mm2 on its end face",
+  "value": 462.27481817603626
  },
  {
   "group": "stator",
   "item": "L_knee actuator (buy) RS04",
   "status": "PASS",
-  "detail": "held by L knee stator disc, 10839 mm2 on its end face",
-  "value": 10838.656186695756
+  "detail": "held by L shank body, 5640 mm2 on its end face",
+  "value": 5640.34506528041
  },
  {
   "group": "skin",
@@ -2710,14 +2612,14 @@
  },
  {
   "group": "skin",
-  "item": "L_knee flange",
+  "item": "L shank body",
   "status": "PASS",
-  "detail": "0.00 % outside the skin",
+  "detail": "0.05 % outside the skin",
   "value": null
  },
  {
   "group": "skin",
-  "item": "R_knee flange",
+  "item": "L shank back panel",
   "status": "PASS",
   "detail": "0.00 % outside the skin",
   "value": null
@@ -2739,6 +2641,20 @@
  {
   "group": "skin",
   "item": "L_knee actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin",
+  "value": null
+ },
+ {
+  "group": "skin",
+  "item": "R shank body",
+  "status": "PASS",
+  "detail": "0.22 % outside the skin",
+  "value": null
+ },
+ {
+  "group": "skin",
+  "item": "R shank back panel",
   "status": "PASS",
   "detail": "0.00 % outside the skin",
   "value": null
@@ -2908,7 +2824,7 @@
   "group": "poses",
   "item": "stand: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet",
+  "detail": "CoM 11.8 cm inside the feet",
   "value": null
  },
  {
@@ -3118,14 +3034,14 @@
   "group": "torque",
   "item": "L_knee",
   "status": "FAIL",
-  "detail": "144.5 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 181 % used",
+  "detail": "144.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 180 % used",
   "value": null
  },
  {
   "group": "torque",
   "item": "L_hip_yaw",
   "status": "FAIL",
-  "detail": "41.4 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 103 % used",
+  "detail": "41.1 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 103 % used",
   "value": null
  },
  {
@@ -3146,14 +3062,14 @@
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "71.0 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 89 % used",
+  "detail": "71.1 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 89 % used",
   "value": null
  },
  {
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "63.9 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 80 % used",
+  "detail": "63.6 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 80 % used",
   "value": null
  },
  {
@@ -3216,14 +3132,14 @@
   "group": "torque",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "29.1 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used",
+  "detail": "29.2 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used",
   "value": null
  },
  {
   "group": "torque",
   "item": "R_hip_pitch",
   "status": "PASS",
-  "detail": "29.1 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used",
+  "detail": "29.2 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used",
   "value": null
  },
  {
@@ -3251,7 +3167,7 @@
   "group": "torque",
   "item": "R_hip_roll",
   "status": "PASS",
-  "detail": "3.0 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 4 % used",
+  "detail": "2.9 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 4 % used",
   "value": null
  },
  {
@@ -3277,13 +3193,6 @@
  },
  {
   "group": "torque",
-  "item": "L_ankle_roll",
-  "status": "PASS",
-  "detail": "0.3 N m in 'stand' vs rated 15 N m (1 x RS06 x 1.3): 2 % used",
-  "value": null
- },
- {
-  "group": "torque",
   "item": "R_shoulder_yaw",
   "status": "PASS",
   "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used",
@@ -3298,16 +3207,16 @@
  },
  {
   "group": "torque",
-  "item": "R_ankle_roll",
+  "item": "L_ankle_roll",
   "status": "PASS",
-  "detail": "0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 2 % used",
+  "detail": "0.5 N m x 1.5 in 'single-leg stance (walking)' vs peak 48 N m (1 x RS06 x 1.3): 1 % used",
   "value": null
  },
  {
   "group": "torque",
-  "item": "waist_yaw",
+  "item": "R_ankle_roll",
   "status": "PASS",
-  "detail": "0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used",
+  "detail": "0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used",
   "value": null
  },
  {
@@ -3315,6 +3224,13 @@
   "item": "neck_yaw",
   "status": "PASS",
   "detail": "0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used",
+  "value": null
+ },
+ {
+  "group": "torque",
+  "item": "waist_yaw",
+  "status": "PASS",
+  "detail": "0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used",
   "value": null
  },
  {
@@ -3411,16 +3327,16 @@
  {
   "group": "motorfit",
   "item": "L ankle pitch actuator (buy) RS03",
-  "status": "FAIL",
-  "detail": "inside: L shank plate out up 2.2 cm3, L shank plate in up 2.0 cm3",
-  "value": -4.181355822554234
+  "status": "PASS",
+  "detail": "clear",
+  "value": 0.0
  },
  {
   "group": "motorfit",
   "item": "L ankle roll actuator (buy) RS06",
-  "status": "FAIL",
-  "detail": "inside: L ankle roll pad in 1.5 cm3, L ankle roll pad out 1.5 cm3",
-  "value": -2.938005325056282
+  "status": "PASS",
+  "detail": "clear",
+  "value": 0.0
  },
  {
   "group": "motorfit",
@@ -3433,15 +3349,15 @@
   "group": "fastener",
   "item": "L knee hub: engagement",
   "status": "FAIL",
-  "detail": "M5 x 12, 6.0 mm in the motor's drawn thread (1.20 d, the rule is 2.0 d). Strip force 21.9 kN at this length, so preload 10.3 kN, by 0.75 x proof",
-  "value": 1.1999999999999982
+  "detail": "M5 x 12, 6.2 mm in the motor's drawn thread (1.24 d, the rule is 2.0 d). Strip force 22.7 kN at this length, so preload 10.3 kN, by 0.75 x proof",
+  "value": 1.2399999999999995
  },
  {
   "group": "fastener",
   "item": "L knee hub: tip inside its hole",
   "status": "PASS",
-  "detail": "0.5 mm short of the 6.5 mm hole",
-  "value": 0.5000000000000089
+  "detail": "0.3 mm short of the 6.5 mm hole",
+  "value": 0.3000000000000025
  },
  {
   "group": "fastener",
@@ -3459,17 +3375,129 @@
  },
  {
   "group": "fastener",
+  "item": "L knee cheek top: engagement",
+  "status": "PASS",
+  "detail": "M5 x 14, 11.5 mm in L thigh fork (2.29 d, the rule is 2.0 d). Strip force 67.0 kN at this length, so preload 10.3 kN, by 0.75 x proof",
+  "value": 2.29
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek top: tip inside its hole",
+  "status": "PASS",
+  "detail": "1.2 mm short of the 12.6 mm hole",
+  "value": 1.1999999999999975
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek top: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek top: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek: engagement",
+  "status": "PASS",
+  "detail": "M5 x 16, 10.0 mm in L thigh fork (2.01 d, the rule is 2.0 d). Strip force 58.8 kN at this length, so preload 10.3 kN, by 0.75 x proof",
+  "value": 2.009999999999998
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek: tip inside its hole",
+  "status": "PASS",
+  "detail": "1.2 mm short of the 11.2 mm hole",
+  "value": 1.20000000000001
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L hip yaw hub: engagement",
+  "status": "FAIL",
+  "detail": "M4 x 10, 5.5 mm in the motor's drawn thread (1.38 d, the rule is 2.0 d). Strip force 16.1 kN at this length, so preload 6.4 kN, by 0.75 x proof",
+  "value": 1.375000000000015
+ },
+ {
+  "group": "fastener",
+  "item": "L hip yaw hub: tip inside its hole",
+  "status": "PASS",
+  "detail": "0.5 mm short of the 6.0 mm hole",
+  "value": 0.4999999999999396
+ },
+ {
+  "group": "fastener",
+  "item": "L hip yaw hub: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L hip yaw hub: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L thigh collar: engagement",
+  "status": "PASS",
+  "detail": "M4 x 12, 8.0 mm in L_hip_yaw flange (2.00 d, the rule is 2.0 d). Strip force 37.4 kN at this length, so preload 6.4 kN, by 0.75 x proof",
+  "value": 2.0000000000000018
+ },
+ {
+  "group": "fastener",
+  "item": "L thigh collar: tip inside its hole",
+  "status": "PASS",
+  "detail": "1.0 mm short of the 9.1 mm hole",
+  "value": 1.0499999999999936
+ },
+ {
+  "group": "fastener",
+  "item": "L thigh collar: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L thigh collar: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
   "item": "L knee stator: engagement",
   "status": "FAIL",
-  "detail": "M4 x 16, 5.3 mm in the motor's drawn thread (1.32 d, the rule is 2.0 d). Strip force 15.5 kN at this length, so preload 6.4 kN, by 0.75 x proof",
-  "value": 1.3249999999999997
+  "detail": "M4 x 10, 4.7 mm in the motor's drawn thread (1.19 d, the rule is 2.0 d). Strip force 13.9 kN at this length, so preload 6.4 kN, by 0.75 x proof",
+  "value": 1.1874999999999976
  },
  {
   "group": "fastener",
   "item": "L knee stator: tip inside its hole",
   "status": "PASS",
-  "detail": "0.7 mm short of the 6.0 mm hole",
-  "value": 0.7000000000000011
+  "detail": "0.3 mm short of the 5.0 mm hole",
+  "value": 0.25000000000000977
  },
  {
   "group": "fastener",
@@ -3487,28 +3515,140 @@
  },
  {
   "group": "fastener",
-  "item": "L knee idler cap screw: engagement",
+  "item": "L knee rim: engagement",
   "status": "PASS",
-  "detail": "M4 x 12, 10.5 mm in L knee idler stub (2.62 d, the rule is 2.0 d). Strip force 49.1 kN at this length, so preload 6.4 kN, by 0.75 x proof",
-  "value": 2.6249999999999987
+  "detail": "M3 x 10, 7.0 mm in L shank body (2.35 d, the rule is 2.0 d). Strip force 24.7 kN at this length, so preload 3.7 kN, by 0.75 x proof",
+  "value": 2.3499999999999956
  },
  {
   "group": "fastener",
-  "item": "L knee idler cap screw: tip inside its hole",
+  "item": "L knee rim: tip inside its hole",
   "status": "PASS",
-  "detail": "1.1 mm short of the 11.6 mm hole",
-  "value": 1.050000000000006
+  "detail": "0.8 mm short of the 7.8 mm hole",
+  "value": 0.7500000000000133
  },
  {
   "group": "fastener",
-  "item": "L knee idler cap screw: clear of what it does not belong in",
+  "item": "L knee rim: clear of what it does not belong in",
   "status": "PASS",
   "detail": "head and shank clear; clearance holes and counterbores cut",
   "value": 0
  },
  {
   "group": "fastener",
-  "item": "L knee idler cap screw: clear through the joints beside it",
+  "item": "L knee rim: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee post: engagement",
+  "status": "PASS",
+  "detail": "M4 x 10, 8.4 mm in L knee rear cap (2.10 d, the rule is 2.0 d). Strip force 39.3 kN at this length, so preload 6.4 kN, by 0.75 x proof",
+  "value": 2.1000000000000045
+ },
+ {
+  "group": "fastener",
+  "item": "L knee post: tip inside its hole",
+  "status": "PASS",
+  "detail": "1.0 mm short of the 9.4 mm hole",
+  "value": 1.0499999999999812
+ },
+ {
+  "group": "fastener",
+  "item": "L knee post: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee post: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub in foot: engagement",
+  "status": "PASS",
+  "detail": "M4 x 12, 9.2 mm in L shank body (2.30 d, the rule is 2.0 d). Strip force 43.0 kN at this length, so preload 6.4 kN, by 0.75 x proof",
+  "value": 2.3
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub in foot: tip inside its hole",
+  "status": "PASS",
+  "detail": "1.1 mm short of the 10.2 mm hole",
+  "value": 1.0500000000000007
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub in foot: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub in foot: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub out foot: engagement",
+  "status": "PASS",
+  "detail": "M4 x 12, 9.2 mm in L shank body (2.30 d, the rule is 2.0 d). Strip force 43.0 kN at this length, so preload 6.4 kN, by 0.75 x proof",
+  "value": 2.3000000000000034
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub out foot: tip inside its hole",
+  "status": "PASS",
+  "detail": "1.0 mm short of the 10.2 mm hole",
+  "value": 1.0499999999999865
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub out foot: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub out foot: clear through the joints beside it",
+  "status": "PASS",
+  "detail": "2 joints swept, 13 steps",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L shank panel: engagement",
+  "status": "PASS",
+  "detail": "M3 x 10, 7.0 mm in L shank body (2.33 d, the rule is 2.0 d). Strip force 24.6 kN at this length, so preload 3.7 kN, by 0.75 x proof",
+  "value": 2.333333333333333
+ },
+ {
+  "group": "fastener",
+  "item": "L shank panel: tip inside its hole",
+  "status": "PASS",
+  "detail": "0.8 mm short of the 7.8 mm hole",
+  "value": 0.7500000000000009
+ },
+ {
+  "group": "fastener",
+  "item": "L shank panel: clear of what it does not belong in",
+  "status": "PASS",
+  "detail": "head and shank clear; clearance holes and counterbores cut",
+  "value": 0
+ },
+ {
+  "group": "fastener",
+  "item": "L shank panel: clear through the joints beside it",
   "status": "PASS",
   "detail": "2 joints swept, 13 steps",
   "value": -0.0
@@ -3522,6 +3662,34 @@
  },
  {
   "group": "fastener",
+  "item": "L knee cheek top: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee cheek: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L hip yaw hub: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L thigh collar: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
   "item": "L knee stator: under the skin",
   "status": "PASS",
   "detail": "all inside",
@@ -3529,7 +3697,35 @@
  },
  {
   "group": "fastener",
-  "item": "L knee idler cap screw: under the skin",
+  "item": "L knee rim: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee post: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub in foot: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L knee hub out foot: under the skin",
+  "status": "PASS",
+  "detail": "all inside",
+  "value": -0.0
+ },
+ {
+  "group": "fastener",
+  "item": "L shank panel: under the skin",
   "status": "PASS",
   "detail": "all inside",
   "value": -0.0
@@ -3538,175 +3734,1099 @@
   "group": "holes",
   "item": "L knee hub, clearance d5.5: edge distance",
   "status": "PASS",
-  "detail": "18.0 mm to the edge of L_knee flange (needs 6.6)",
-  "value": 11.359032637549076
+  "detail": "7.0 mm to the edge of L_knee flange (needs 6.6)",
+  "value": 0.35232740286899755
  },
  {
   "group": "holes",
   "item": "L knee hub, clearance d5.5: ligament",
   "status": "PASS",
   "detail": "3.5 mm to the next hole in L_knee flange (needs 2.8)",
-  "value": 0.7897349674220333
+  "value": 0.7897177211066175
  },
  {
   "group": "holes",
   "item": "L knee hub pin hole, pin d6.0: edge distance",
-  "status": "PASS",
-  "detail": "18.0 mm to the edge of L_knee flange (needs 7.2)",
-  "value": 10.805023258767115
+  "status": "FAIL",
+  "detail": "7.0 mm to the edge of L_knee flange (needs 7.2)",
+  "value": -0.19667453599124496
  },
  {
   "group": "holes",
   "item": "L knee hub pin hole, pin d6.0: ligament",
   "status": "PASS",
   "detail": "3.5 mm to the next hole in L_knee flange (needs 3.0)",
-  "value": 0.529698018931076
+  "value": 0.5297035957665308
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 1, clearance d5.5: edge distance",
+  "status": "PASS",
+  "detail": "12.0 mm to the edge of L knee outer cheek (needs 6.6)",
+  "value": 5.386193580662823
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 1, clearance d5.5: ligament",
+  "status": "PASS",
+  "detail": "23.1 mm to the next hole in L knee outer cheek (needs 2.8)",
+  "value": 20.385998929741948
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 1, tapped d4.2: edge distance",
+  "status": "PASS",
+  "detail": "6.3 mm to the edge of L thigh fork (needs 5.0)",
+  "value": 1.2887048934636072
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 1, tapped d4.2: ligament",
+  "status": "PASS",
+  "detail": "24.4 mm to the next hole in L thigh fork (needs 2.1)",
+  "value": 22.33587674581823
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 2, clearance d5.5: edge distance",
+  "status": "PASS",
+  "detail": "12.0 mm to the edge of L knee outer cheek (needs 6.6)",
+  "value": 5.384572582682502
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 2, clearance d5.5: ligament",
+  "status": "PASS",
+  "detail": "23.1 mm to the next hole in L knee outer cheek (needs 2.8)",
+  "value": 20.385998929741948
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 2, tapped d4.2: edge distance",
+  "status": "PASS",
+  "detail": "6.3 mm to the edge of L thigh fork (needs 5.0)",
+  "value": 1.2919487412782784
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek top screw 2, tapped d4.2: ligament",
+  "status": "PASS",
+  "detail": "24.4 mm to the next hole in L thigh fork (needs 2.1)",
+  "value": 22.33587674581823
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 1, clearance d5.5: edge distance",
+  "status": "PASS",
+  "detail": "16.0 mm to the edge of L knee outer cheek (needs 6.6)",
+  "value": 9.40632981606789
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 1, clearance d5.5: ligament",
+  "status": "PASS",
+  "detail": "20.9 mm to the next hole in L knee outer cheek (needs 2.8)",
+  "value": 18.136274889669863
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 1, tapped d4.2: edge distance",
+  "status": "PASS",
+  "detail": "6.5 mm to the edge of L thigh fork (needs 5.0)",
+  "value": 1.4916646662660638
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 1, tapped d4.2: ligament",
+  "status": "PASS",
+  "detail": "24.4 mm to the next hole in L thigh fork (needs 2.1)",
+  "value": 22.335859549027894
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 2, clearance d5.5: edge distance",
+  "status": "PASS",
+  "detail": "16.0 mm to the edge of L knee outer cheek (needs 6.6)",
+  "value": 9.409524032425727
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 2, clearance d5.5: ligament",
+  "status": "PASS",
+  "detail": "20.9 mm to the next hole in L knee outer cheek (needs 2.8)",
+  "value": 18.136274889669863
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 2, tapped d4.2: edge distance",
+  "status": "PASS",
+  "detail": "6.5 mm to the edge of L thigh fork (needs 5.0)",
+  "value": 1.4871486832126752
+ },
+ {
+  "group": "holes",
+  "item": "L knee cheek screw 2, tapped d4.2: ligament",
+  "status": "PASS",
+  "detail": "24.4 mm to the next hole in L thigh fork (needs 2.1)",
+  "value": 22.335859549027894
+ },
+ {
+  "group": "holes",
+  "item": "L hip yaw hub, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "29.3 mm to the edge of L_hip_yaw flange (needs 5.4)",
+  "value": 23.916934488530913
+ },
+ {
+  "group": "holes",
+  "item": "L hip yaw hub, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "10.7 mm to the next hole in L_hip_yaw flange (needs 2.2)",
+  "value": 8.429998196283977
+ },
+ {
+  "group": "holes",
+  "item": "L hip yaw hub, counterbore d7.6: edge distance",
+  "status": "PASS",
+  "detail": "5.3 mm to the edge of L_hip_yaw flange (needs 5.3)",
+  "value": 0.017584638028707467
+ },
+ {
+  "group": "holes",
+  "item": "L hip yaw hub, counterbore d7.6: ligament",
+  "status": "PASS",
+  "detail": "7.6 mm to the next hole in L_hip_yaw flange (needs 1.5)",
+  "value": 6.080000295382336
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 1, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L thigh fork (needs 5.4)",
+  "value": 0.09816014291339403
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 1, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "34.5 mm to the next hole in L thigh fork (needs 2.2)",
+  "value": 32.249999940395355
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 1, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L_hip_yaw flange (needs 4.0)",
+  "value": 1.5387074317723815
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 1, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "19.2 mm to the next hole in L_hip_yaw flange (needs 1.6)",
+  "value": 17.55236376086027
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 2, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L thigh fork (needs 5.4)",
+  "value": 0.09328302544456246
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 2, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "34.5 mm to the next hole in L thigh fork (needs 2.2)",
+  "value": 32.25127530433766
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 2, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L_hip_yaw flange (needs 4.0)",
+  "value": 1.5373925286821088
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 2, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "19.2 mm to the next hole in L_hip_yaw flange (needs 1.6)",
+  "value": 17.55529046630483
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 3, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L thigh fork (needs 5.4)",
+  "value": 0.09835014956516286
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 3, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "34.5 mm to the next hole in L thigh fork (needs 2.2)",
+  "value": 32.249999940395355
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 3, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L_hip_yaw flange (needs 4.0)",
+  "value": 1.539066585669667
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 3, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "19.2 mm to the next hole in L_hip_yaw flange (needs 1.6)",
+  "value": 17.554242783716262
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 4, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L thigh fork (needs 5.4)",
+  "value": 0.09853096229435376
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 4, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "34.5 mm to the next hole in L thigh fork (needs 2.2)",
+  "value": 32.250002920627594
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 4, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L_hip_yaw flange (needs 4.0)",
+  "value": 1.5397045775862916
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 4, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "19.2 mm to the next hole in L_hip_yaw flange (needs 1.6)",
+  "value": 17.552360939515054
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 5, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L thigh fork (needs 5.4)",
+  "value": 0.09911822480075205
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 5, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "34.5 mm to the next hole in L thigh fork (needs 2.2)",
+  "value": 32.25127679962075
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 5, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L_hip_yaw flange (needs 4.0)",
+  "value": 1.5389495354429878
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 5, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "19.2 mm to the next hole in L_hip_yaw flange (needs 1.6)",
+  "value": 17.555293411521994
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 6, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L thigh fork (needs 5.4)",
+  "value": 0.09936999867874174
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 6, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "34.5 mm to the next hole in L thigh fork (needs 2.2)",
+  "value": 32.25000292062761
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 6, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "5.5 mm to the edge of L_hip_yaw flange (needs 4.0)",
+  "value": 1.5383485912049033
+ },
+ {
+  "group": "holes",
+  "item": "L thigh collar screw 6, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "19.2 mm to the next hole in L_hip_yaw flange (needs 1.6)",
+  "value": 17.554243828646463
  },
  {
   "group": "holes",
   "item": "L knee stator, clearance d4.5: edge distance",
   "status": "PASS",
-  "detail": "5.5 mm to the edge of L knee stator rim + L knee stator disc + L knee stator plate (needs 5.4)",
-  "value": 0.10926275977762412
+  "detail": "9.8 mm to the edge of L shank body (needs 5.4)",
+  "value": 4.438497883694763
  },
  {
   "group": "holes",
   "item": "L knee stator, clearance d4.5: ligament",
   "status": "PASS",
-  "detail": "28.3 mm to the next hole in L knee stator rim + L knee stator disc + L knee stator plate (needs 2.2)",
-  "value": 26.005853586740976
+  "detail": "28.3 mm to the next hole in L shank body (needs 2.2)",
+  "value": 26.005801519596666
  },
  {
   "group": "holes",
-  "item": "L knee stator, counterbore d7.6: edge distance",
+  "item": "L knee rim screw 1, clearance d3.4: edge distance",
   "status": "PASS",
-  "detail": "5.5 mm to the edge of L knee stator rim + L knee stator disc + L knee stator plate (needs 5.3)",
-  "value": 0.2092627602131989
+  "detail": "4.3 mm to the edge of L knee rear cap (needs 4.1)",
+  "value": 0.20501521419242064
  },
  {
   "group": "holes",
-  "item": "L knee stator, counterbore d7.6: ligament",
+  "item": "L knee rim screw 1, clearance d3.4: ligament",
   "status": "PASS",
-  "detail": "25.2 mm to the next hole in L knee stator rim + L knee stator disc + L knee stator plate (needs 1.5)",
-  "value": 23.655893099834223
+  "detail": "44.4 mm to the next hole in L knee rear cap (needs 1.7)",
+  "value": 42.734382469254896
  },
  {
   "group": "holes",
-  "item": "L knee idler cap screw, clearance d4.5: edge distance",
+  "item": "L knee rim screw 1, tapped d2.5: edge distance",
   "status": "PASS",
-  "detail": "21.2 mm to the edge of L knee idler cap (needs 5.4)",
-  "value": 15.824384377874289
+  "detail": "3.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 0.05000596551677994
  },
  {
   "group": "holes",
-  "item": "L knee idler cap screw, clearance d4.5: ligament",
+  "item": "L knee rim screw 1, tapped d2.5: ligament",
   "status": "PASS",
-  "detail": "no other hole in the plane",
-  "value": 996.75
+  "detail": "45.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 44.29463142185083
  },
  {
   "group": "holes",
-  "item": "L knee idler cap screw, tapped d3.3: edge distance",
+  "item": "L knee rim screw 2, clearance d3.4: edge distance",
   "status": "PASS",
-  "detail": "20.0 mm to the edge of L knee idler stub (needs 4.0)",
-  "value": 16.0158818289303
+  "detail": "4.3 mm to the edge of L knee rear cap (needs 4.1)",
+  "value": 0.2050162548470693
  },
  {
   "group": "holes",
-  "item": "L knee idler cap screw, tapped d3.3: ligament",
+  "item": "L knee rim screw 2, clearance d3.4: ligament",
   "status": "PASS",
-  "detail": "no other hole in the plane",
-  "value": 997.35
+  "detail": "44.4 mm to the next hole in L knee rear cap (needs 1.7)",
+  "value": 42.73438826317063
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 2, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "3.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 0.05000836913557727
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 2, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "45.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 44.29462989402765
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 3, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "4.3 mm to the edge of L knee rear cap (needs 4.1)",
+  "value": 0.20501625484707198
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 3, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "44.4 mm to the next hole in L knee rear cap (needs 1.7)",
+  "value": 42.734388263170636
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 3, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "3.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 0.050008369135574604
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 3, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "45.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 44.29462989402765
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 4, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "4.3 mm to the edge of L knee rear cap (needs 4.1)",
+  "value": 0.20501393352108277
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 4, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "44.4 mm to the next hole in L knee rear cap (needs 1.7)",
+  "value": 42.734382469254896
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 4, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "3.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 0.05000596551677994
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 4, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "45.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 44.29463142185083
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 5, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "4.3 mm to the edge of L knee rear cap (needs 4.1)",
+  "value": 0.20501911267603834
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 5, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "44.4 mm to the next hole in L knee rear cap (needs 1.7)",
+  "value": 42.73439006884705
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 5, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "3.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 0.05000322831732973
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 5, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "45.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 44.294653912681454
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 6, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "4.3 mm to the edge of L knee rear cap (needs 4.1)",
+  "value": 0.2050203978456464
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 6, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "44.4 mm to the next hole in L knee rear cap (needs 1.7)",
+  "value": 42.73439006884705
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 6, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "3.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 0.05000322831732973
+ },
+ {
+  "group": "holes",
+  "item": "L knee rim screw 6, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "45.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 44.294653912681454
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 1, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee post washer (needs 5.4)",
+  "value": 0.5999859301555128
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 1, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "21.7 mm to the next hole in L knee post washer (needs 2.2)",
+  "value": 19.404973191433346
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 1, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee rear cap (needs 4.0)",
+  "value": 2.0399859301555128
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 1, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "22.9 mm to the next hole in L knee rear cap (needs 1.6)",
+  "value": 21.20495354273545
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 2, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee post washer (needs 5.4)",
+  "value": 0.5999835737319454
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 2, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "21.7 mm to the next hole in L knee post washer (needs 2.2)",
+  "value": 19.4155877871661
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 2, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee rear cap (needs 4.0)",
+  "value": 2.0399835737319454
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 2, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "22.9 mm to the next hole in L knee rear cap (needs 1.6)",
+  "value": 21.21561533583822
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 3, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee post washer (needs 5.4)",
+  "value": 0.6000199461629592
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 3, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "21.7 mm to the next hole in L knee post washer (needs 2.2)",
+  "value": 19.415600580651635
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 3, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee rear cap (needs 4.0)",
+  "value": 2.040019946162959
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 3, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "22.9 mm to the next hole in L knee rear cap (needs 1.6)",
+  "value": 21.215615323855396
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 4, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee post washer (needs 5.4)",
+  "value": 0.6000208036035133
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 4, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "21.7 mm to the next hole in L knee post washer (needs 2.2)",
+  "value": 19.404947080260975
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 4, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "6.0 mm to the edge of L knee rear cap (needs 4.0)",
+  "value": 2.0400208036035132
+ },
+ {
+  "group": "holes",
+  "item": "L knee post screw 4, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "22.9 mm to the next hole in L knee rear cap (needs 1.6)",
+  "value": 21.20492743156227
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 1, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "9.7 mm to the edge of L knee hub in (needs 5.4)",
+  "value": 4.349989748001099
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 1, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "9.0 mm to the next hole in L knee hub in (needs 2.2)",
+  "value": 6.7500002831274095
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 1, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "7.2 mm to the edge of L shank body (needs 4.0)",
+  "value": 3.214724067613823
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 1, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "10.2 mm to the next hole in L shank body (needs 1.6)",
+  "value": 8.550000195210286
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 2, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "7.1 mm to the edge of L knee hub in (needs 5.4)",
+  "value": 1.665936635178455
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 2, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "9.0 mm to the next hole in L knee hub in (needs 2.2)",
+  "value": 6.7500000298076674
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 2, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "7.2 mm to the edge of L shank body (needs 4.0)",
+  "value": 3.200243433931376
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub in foot screw 2, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "10.2 mm to the next hole in L shank body (needs 1.6)",
+  "value": 8.55000000149519
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 1, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "9.7 mm to the edge of L knee hub out (needs 5.4)",
+  "value": 4.349989748001099
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 1, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "9.0 mm to the next hole in L knee hub out (needs 2.2)",
+  "value": 6.7500002831274095
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 1, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "7.2 mm to the edge of L shank body (needs 4.0)",
+  "value": 3.217209460078258
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 1, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "10.2 mm to the next hole in L shank body (needs 1.6)",
+  "value": 8.550000195210286
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 2, clearance d4.5: edge distance",
+  "status": "PASS",
+  "detail": "7.1 mm to the edge of L knee hub out (needs 5.4)",
+  "value": 1.6682875942768431
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 2, clearance d4.5: ligament",
+  "status": "PASS",
+  "detail": "9.0 mm to the next hole in L knee hub out (needs 2.2)",
+  "value": 6.7500000298076674
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 2, tapped d3.3: edge distance",
+  "status": "PASS",
+  "detail": "7.2 mm to the edge of L shank body (needs 4.0)",
+  "value": 3.2006993456006296
+ },
+ {
+  "group": "holes",
+  "item": "L knee hub out foot screw 2, tapped d3.3: ligament",
+  "status": "PASS",
+  "detail": "10.2 mm to the next hole in L shank body (needs 1.6)",
+  "value": 8.55000000149519
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 1, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "5.9 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 1.8480064954323439
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 1, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "36.3 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 34.59935828120251
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 1, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "7.0 mm to the edge of L shank body (needs 3.0)",
+  "value": 4.000758706560129
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 1, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "36.7 mm to the next hole in L shank body (needs 1.5)",
+  "value": 35.249030351638794
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 2, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "8.1 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 3.9701396996365688
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 2, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "5.3 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 3.600641701065201
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 2, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "11.5 mm to the edge of L shank body (needs 3.0)",
+  "value": 8.489390570695953
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 2, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "5.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 4.2509660720825195
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 3, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "7.0 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 2.9206699006843726
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 3, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "31.3 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 29.599311900697025
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 3, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "10.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 7.077519648153411
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 3, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "5.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 4.250948190689087
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 4, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "5.9 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 1.8650402197613847
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 4, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "36.3 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 34.59936738610267
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 4, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "7.0 mm to the edge of L shank body (needs 3.0)",
+  "value": 4.0009565353393555
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 4, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "6.3 mm to the next hole in L shank body (needs 1.5)",
+  "value": 4.7509583830833435
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 5, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "8.1 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 3.9805547695580135
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 5, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "5.3 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 3.600237387138595
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 5, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "11.5 mm to the edge of L shank body (needs 3.0)",
+  "value": 8.478417644865722
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 5, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "5.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 4.2509660720825195
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 6, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "7.0 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 2.920640958547592
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 6, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "26.2 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 24.463462172448803
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 6, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "10.1 mm to the edge of L shank body (needs 3.0)",
+  "value": 7.065941595881208
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 6, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "5.8 mm to the next hole in L shank body (needs 1.5)",
+  "value": 4.250948190689087
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 7, clearance d3.4: edge distance",
+  "status": "PASS",
+  "detail": "5.7 mm to the edge of L shank back panel (needs 4.1)",
+  "value": 1.6149006199488696
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 7, clearance d3.4: ligament",
+  "status": "PASS",
+  "detail": "26.2 mm to the next hole in L shank back panel (needs 1.7)",
+  "value": 24.463474249839948
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 7, tapped d2.5: edge distance",
+  "status": "PASS",
+  "detail": "7.0 mm to the edge of L shank body (needs 3.0)",
+  "value": 4.000946998596191
+ },
+ {
+  "group": "holes",
+  "item": "L shank panel screw 7, tapped d2.5: ligament",
+  "status": "PASS",
+  "detail": "21.7 mm to the next hole in L shank body (needs 1.5)",
+  "value": 20.24904227256775
  },
  {
   "group": "bolted",
   "item": "L knee hub, the design, the supports take the force",
   "status": "PASS",
-  "detail": "9 M5, Fp 10.3 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 2.1, separation inf, shear 14.0, tension 1.3 (needs 1.1), strip 2.1; a hand estimate",
+  "detail": "9 M5, Fp 10.3 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 2.1, separation inf, shear 14.0, tension 1.3 (needs 1.1), strip 2.2; a hand estimate",
   "value": 2.0958749999999995
  },
  {
   "group": "bolted",
   "item": "L knee hub, what if the motor carried it all",
   "status": "WARN",
-  "detail": "Not the design's load: a bracket on what the motor's bearing could be asked. 9 M5, Fp 10.3 kN by 0.75 x proof, T 120 N m, V 3400 N, Fa 1614 N, Mt 133 N m: slip 1.4, separation 5.7, shear 9.3, tension 1.3 (needs 1.1), strip 2.0; a hand estimate",
+  "detail": "Not the design's load: a bracket on what the motor's bearing could be asked. 9 M5, Fp 10.3 kN by 0.75 x proof, T 120 N m, V 3400 N, Fa 1614 N, Mt 142 N m: slip 1.4, separation 5.3, shear 9.3, tension 1.3 (needs 1.1), strip 2.1; a hand estimate",
   "value": 1.3879966887417214
  },
  {
   "group": "bolted",
   "item": "L knee stator, the design, the supports take the force",
   "status": "PASS",
-  "detail": "10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 4.2, separation inf, shear 28.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate",
-  "value": 2.424242424242424
+  "detail": "10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 4.2, separation inf, shear 28.4, tension 1.3 (needs 1.1), strip 2.2; a hand estimate",
+  "value": 2.1752956598672846
  },
  {
   "group": "bolted",
   "item": "L knee stator, what if the motor carried it all",
   "status": "WARN",
-  "detail": "Not the design's load: a bracket on what the motor's bearing could be asked. 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 3400 N, Fa 1614 N, Mt 133 N m: slip 1.7, separation 9.6, shear 11.3, tension 1.3 (needs 1.1), strip 2.4; a hand estimate",
+  "detail": "Not the design's load: a bracket on what the motor's bearing could be asked. 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 3400 N, Fa 1614 N, Mt 142 N m: slip 1.7, separation 9.2, shear 11.3, tension 1.3 (needs 1.1), strip 2.1; a hand estimate",
   "value": 1.692221852098601
+ },
+ {
+  "group": "bolted",
+  "item": "L hip yaw hub, the design, the supports take the force",
+  "status": "FAIL",
+  "detail": "6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 1.5, separation inf, shear 9.8, tension 1.3 (needs 1.1), strip 2.5; a hand estimate",
+  "value": 1.4550029999999996
+ },
+ {
+  "group": "bolted",
+  "item": "L hip yaw hub, what if the motor carried it all",
+  "status": "WARN",
+  "detail": "Not the design's load: a bracket on what the motor's bearing could be asked. 6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 0 N, Fa 1614 N, Mt 102 N m: slip 1.5, separation 2.6, shear 9.8, tension 1.2 (needs 1.1), strip 2.3; a hand estimate",
+  "value": 1.4550029999999996
+ },
+ {
+  "group": "bolted",
+  "item": "L knee rim, the side force and the post's tilt; the cap takes no torque",
+  "status": "PASS",
+  "detail": "6 M3, Fp 3.7 kN by 0.75 x proof, T 0 N m, V 0 N, Fa 1614 N, Mt 0 N m: slip 3294000000.0, separation 13.6, shear 3681960000.0, tension 1.3 (needs 1.1), strip 6.7; a hand estimate",
+  "value": 2.3891236126682296
+ },
+ {
+  "group": "bolted",
+  "item": "L knee cheek top, half of the outer support, 2,574 N, and half of the moment: the side force 1,614 N at 90 mm over the row, and the bearing 5.75 mm off the seam: an upper bound",
+  "status": "PASS",
+  "detail": "2 M5, Fp 10.3 kN by 0.75 x proof, T 0 N m, V 1287 N, Fa 0 N, Mt 80 N m: slip 2.4, separation 3.2, shear 16.2, tension 1.3 (needs 1.1), strip 6.1; a hand estimate",
+  "value": 2.283067251220117
+ },
+ {
+  "group": "bolted",
+  "item": "L knee cheek, the other half, as the top pair",
+  "status": "PASS",
+  "detail": "2 M5, Fp 10.3 kN by 0.75 x proof, T 0 N m, V 1287 N, Fa 0 N, Mt 80 N m: slip 2.4, separation 3.2, shear 16.2, tension 1.3 (needs 1.1), strip 5.3; a hand estimate",
+  "value": 2.283067251220117
+ },
+ {
+  "group": "bolted",
+  "item": "L knee post, the side force, on the inner race",
+  "status": "PASS",
+  "detail": "4 M4, Fp 6.4 kN by 0.75 x proof, T 0 N m, V 0 N, Fa 1614 N, Mt 0 N m: slip 3834000000.0, separation 15.8, shear 6426960000.0, tension 1.3 (needs 1.1), strip 6.1; a hand estimate",
+  "value": 2.394008235725515
+ },
+ {
+  "group": "bolted",
+  "item": "L knee hub in foot, a cover: its own weight at 10 g",
+  "status": "PASS",
+  "detail": "2 M4, Fp 6.4 kN by 0.75 x proof, T 0 N m, V 30 N, Fa 30 N, Mt 0 N m: slip 63.9, separation 426.0, shear 428.5, tension 1.3 (needs 1.1), strip 6.7; a hand estimate",
+  "value": 2.4231048163474256
+ },
+ {
+  "group": "bolted",
+  "item": "L knee hub out foot, a cover: its own weight at 10 g",
+  "status": "PASS",
+  "detail": "2 M4, Fp 6.4 kN by 0.75 x proof, T 0 N m, V 30 N, Fa 30 N, Mt 0 N m: slip 63.9, separation 426.0, shear 428.5, tension 1.3 (needs 1.1), strip 6.7; a hand estimate",
+  "value": 2.4231048163474256
+ },
+ {
+  "group": "bolted",
+  "item": "L shank panel, shear flow in the closed section, a hand figure from the motor's torque on the section",
+  "status": "PASS",
+  "detail": "7 M3, Fp 3.7 kN by 0.75 x proof, T 0 N m, V 200 N, Fa 0 N, Mt 0 N m: slip 19.2, separation inf, shear 128.9, tension 1.3 (needs 1.1), strip 6.7; a hand estimate",
+  "value": 2.424242424242424
+ },
+ {
+  "group": "bolted",
+  "item": "L thigh collar, the whole leg, and the yaw motor's and knee motor's peak",
+  "status": "PASS",
+  "detail": "6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 810 N, Fa 3400 N, Mt 120 N m: slip 2.4, separation 4.0, shear 16.4, tension 1.3 (needs 1.1), strip 5.6; a hand estimate",
+  "value": 2.3091597085405136
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: static at 3,400 N",
-  "status": "FAIL",
-  "detail": "CRBT 405 A: C0 2520 N, Fr 2325 N (lever rule on 76 mm), fs 1.08, needs 1.5",
-  "value": 1.0837483023992758
+  "status": "PASS",
+  "detail": "CRBS 508: C0 6170 N, Fr 2227 N (lever rule on 68 mm), fs 2.77, needs 1.5",
+  "value": 2.7704205792884546
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: static with the side force",
-  "status": "FAIL",
-  "detail": "adding 1614 N axial, an upper bound: fs 0.83, needs 1.5",
-  "value": 0.830197263747498
+  "status": "PASS",
+  "detail": "adding 1614 N axial, an upper bound: fs 2.10, needs 1.5",
+  "value": 2.1005981030953778
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: life on the walk",
   "status": "PASS",
-  "detail": "P 894 N (C 2000 N), 44 M cycles of 60 deg, needs 31.5 M (a hand figure)",
-  "value": 43917237.18059734
+  "detail": "P 867 N (C 4900 N), 966 M cycles of 60 deg, needs 31.5 M (a hand figure)",
+  "value": 966406994.8292838
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: outer race seat wall",
   "status": "PASS",
-  "detail": "5.5 mm of L knee cheek disc out + L knee cheek collar out, needs 2.8 (the race's section)",
-  "value": 5.46263934241648
+  "detail": "6.3 mm of L knee outer cheek, needs 4.0 (the race's section)",
+  "value": 6.31530416582352
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: outer race seat land",
   "status": "PASS",
-  "detail": "89 % of its 5 mm width seated, needs 80 %",
-  "value": 0.8947368421052632
+  "detail": "100 % of its 8 mm width seated, needs 80 %",
+  "value": 1.0
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: outer race stopped toward +y",
-  "status": "FAIL",
-  "detail": "nothing of its own link beside the shoulder band (0 %): it could walk that way. A standard circlip needs about 1.75 mm and a groove (estimate); the slot leaves 0.5 mm",
-  "value": 0.0
- },
- {
-  "group": "bearing",
-  "item": "L knee outer bearing: outer race stopped toward -y",
   "status": "PASS",
   "detail": "100 % of its shoulder band has a part of its own link beside it",
   "value": 1.0
  },
  {
   "group": "bearing",
+  "item": "L knee outer bearing: outer race stopped toward -y",
+  "status": "PASS",
+  "detail": "100 % of its shoulder band has a part of its own link beside it",
+  "value": 0.9999999999999986
+ },
+ {
+  "group": "bearing",
   "item": "L knee outer bearing: inner race seat wall",
   "status": "PASS",
-  "detail": "20.0 mm of L knee post, needs 2.8 (the race's section)",
-  "value": 20.0
+  "detail": "8.1 mm of L knee rear cap, needs 4.0 (the race's section)",
+  "value": 8.149981207162
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: inner race seat land",
   "status": "PASS",
-  "detail": "100 % of its 5 mm width seated, needs 80 %",
+  "detail": "100 % of its 8 mm width seated, needs 80 %",
   "value": 1.0
  },
  {
@@ -3714,83 +4834,83 @@
   "item": "L knee outer bearing: inner race stopped toward +y",
   "status": "PASS",
   "detail": "100 % of its shoulder band has a part of its own link beside it",
-  "value": 1.0
+  "value": 0.9999999999999992
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: inner race stopped toward -y",
   "status": "PASS",
-  "detail": "100 % of its shoulder band has a part of its own link beside it",
-  "value": 1.0
+  "detail": "46 % of its shoulder band has a part of its own link beside it",
+  "value": 0.45827541597377697
  },
  {
   "group": "bearing",
   "item": "L knee outer bearing: goes in",
   "status": "PASS",
-  "detail": "5 mm wide; nothing in its way, 0.2 mm or more from what turns against it",
+  "detail": "8 mm wide; nothing in its way, 0.2 mm or more from what turns against it",
   "value": 0
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: static at 3,400 N",
-  "status": "FAIL",
-  "detail": "CRBT 405 A: C0 2520 N, Fr 2325 N (lever rule on 76 mm), fs 1.08, needs 1.5",
-  "value": 1.0837483023992756
+  "status": "PASS",
+  "detail": "CRBS 508: C0 6170 N, Fr 2573 N (lever rule on 68 mm), fs 2.40, needs 1.5",
+  "value": 2.3983455461415155
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: static with the side force",
-  "status": "FAIL",
-  "detail": "adding 1614 N axial, an upper bound: fs 0.83, needs 1.5",
-  "value": 0.8301972637474979
+  "status": "PASS",
+  "detail": "adding 1614 N axial, an upper bound: fs 1.88, needs 1.5",
+  "value": 1.879512138239797
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: life on the walk",
   "status": "PASS",
-  "detail": "P 894 N (C 2000 N), 44 M cycles of 60 deg, needs 31.5 M (a hand figure)",
-  "value": 43917237.180597305
+  "detail": "P 990 N (C 4900 N), 620 M cycles of 60 deg, needs 31.5 M (a hand figure)",
+  "value": 619903668.0793165
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: outer race seat wall",
   "status": "PASS",
-  "detail": "10.5 mm of L knee cheek disc in + L knee axle in, needs 2.8 (the race's section)",
-  "value": 10.456621461088702
+  "detail": "5.5 mm of L shank body, needs 4.0 (the race's section)",
+  "value": 5.4783039865194
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: outer race seat land",
   "status": "PASS",
-  "detail": "89 % of its 5 mm width seated, needs 80 %",
-  "value": 0.8947368421052632
+  "detail": "100 % of its 8 mm width seated, needs 80 %",
+  "value": 1.0
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: outer race stopped toward +y",
   "status": "PASS",
   "detail": "100 % of its shoulder band has a part of its own link beside it",
-  "value": 1.0000000000000002
+  "value": 1.0
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: outer race stopped toward -y",
-  "status": "FAIL",
-  "detail": "nothing of its own link beside the shoulder band (0 %): it could walk that way. A standard circlip needs about 1.75 mm and a groove (estimate); the slot leaves 0.5 mm",
-  "value": 0.0
+  "status": "PASS",
+  "detail": "100 % of its shoulder band has a part of its own link beside it",
+  "value": 1.0000000000000007
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: inner race seat wall",
   "status": "PASS",
-  "detail": "18.4 mm of L knee idler stub, needs 2.8 (the race's section)",
-  "value": 18.35199469790615
+  "detail": "4.0 mm of L_knee flange, needs 4.0 (the race's section)",
+  "value": 4.017389689932006
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: inner race seat land",
   "status": "PASS",
-  "detail": "100 % of its 5 mm width seated, needs 80 %",
+  "detail": "100 % of its 8 mm width seated, needs 80 %",
   "value": 1.0
  },
  {
@@ -3798,20 +4918,20 @@
   "item": "L knee inner bearing: inner race stopped toward +y",
   "status": "PASS",
   "detail": "100 % of its shoulder band has a part of its own link beside it",
-  "value": 1.0000000000000002
+  "value": 0.9999999999999999
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: inner race stopped toward -y",
   "status": "PASS",
-  "detail": "100 % of its shoulder band has a part of its own link beside it",
-  "value": 1.0000000000000004
+  "detail": "66 % of its shoulder band has a part of its own link beside it",
+  "value": 0.6568956681679301
  },
  {
   "group": "bearing",
   "item": "L knee inner bearing: goes in",
   "status": "PASS",
-  "detail": "5 mm wide; nothing in its way, 0.2 mm or more from what turns against it",
+  "detail": "8 mm wide; nothing in its way, 0.2 mm or more from what turns against it",
   "value": 0
  },
  {
@@ -4013,9 +5133,9 @@
  {
   "group": "pattern",
   "item": "L_hip_yaw actuator (buy) RS03: hub",
-  "status": "FAIL",
-  "detail": "0 of 6 M4 placed: no screws in the spec yet",
-  "value": 0.0
+  "status": "PASS",
+  "detail": "6 of 6 M4 placed",
+  "value": 6.0
  },
  {
   "group": "pattern",
@@ -4023,6 +5143,13 @@
   "status": "FAIL",
   "detail": "0 of 8 M4 placed: no screws in the spec yet",
   "value": 0.0
+ },
+ {
+  "group": "pattern",
+  "item": "L_hip_yaw actuator (buy) RS03: hub screws clear of connector, cable and bumps",
+  "status": "PASS",
+  "detail": "6 checked",
+  "value": -0.0
  },
  {
   "group": "pattern",
@@ -4082,7 +5209,7 @@
  },
  {
   "group": "pattern",
-  "item": "L_knee actuator (buy) RS04: stator_rear screws clear of connector, cable and bumps",
+  "item": "L_knee actuator (buy) RS04: stator_front screws clear of connector, cable and bumps",
   "status": "PASS",
   "detail": "10 checked",
   "value": -0.0
@@ -4174,22 +5301,78 @@
  {
   "group": "access",
   "item": "L knee hub",
-  "status": "FAIL",
-  "detail": "0 of 9 reachable along their axis, 60 mm of key; the rest blocked by L knee inner bearing x9, L knee hub in x9, L knee idler stub x9, L knee idler collar x9, L knee idler cap x9 (build order not considered); 0 of 9 with the covers and hubs off",
-  "value": 0.0
+  "status": "PASS",
+  "detail": "9 of 9 reachable at step 4 of the build order, 60 mm of key",
+  "value": 9.0
+ },
+ {
+  "group": "access",
+  "item": "L knee cheek top",
+  "status": "PASS",
+  "detail": "2 of 2 reachable at step 5 of the build order, 60 mm of key",
+  "value": 2.0
+ },
+ {
+  "group": "access",
+  "item": "L knee cheek",
+  "status": "PASS",
+  "detail": "2 of 2 reachable at step 5 of the build order, 60 mm of key",
+  "value": 2.0
+ },
+ {
+  "group": "access",
+  "item": "L hip yaw hub",
+  "status": "PASS",
+  "detail": "6 of 6 reachable at step 1 of the build order, 60 mm of key",
+  "value": 6.0
+ },
+ {
+  "group": "access",
+  "item": "L thigh collar",
+  "status": "PASS",
+  "detail": "6 of 6 reachable at step 9 of the build order, 60 mm of key",
+  "value": 6.0
  },
  {
   "group": "access",
   "item": "L knee stator",
-  "status": "FAIL",
-  "detail": "0 of 10 reachable along their axis, 60 mm of key; the rest blocked by L knee hub out x10, L knee cheek out x2 (build order not considered); 8 of 10 with the covers and hubs off",
-  "value": 0.08
+  "status": "PASS",
+  "detail": "10 of 10 reachable at step 2 of the build order, 60 mm of key",
+  "value": 10.0
  },
  {
   "group": "access",
-  "item": "L knee idler cap screw",
-  "status": "FAIL",
-  "detail": "0 of 1 reachable along their axis, 60 mm of key; the rest blocked by L_knee flange x1, L_knee actuator (buy) RS04 x1 (build order not considered); 0 of 1 with the covers and hubs off",
-  "value": 0.0
+  "item": "L knee rim",
+  "status": "PASS",
+  "detail": "6 of 6 reachable at step 3 of the build order, 60 mm of key",
+  "value": 6.0
+ },
+ {
+  "group": "access",
+  "item": "L knee post",
+  "status": "PASS",
+  "detail": "4 of 4 reachable at step 5 of the build order, 60 mm of key",
+  "value": 4.0
+ },
+ {
+  "group": "access",
+  "item": "L knee hub in foot",
+  "status": "PASS",
+  "detail": "2 of 2 reachable at step 6 of the build order, 60 mm of key",
+  "value": 2.0
+ },
+ {
+  "group": "access",
+  "item": "L knee hub out foot",
+  "status": "PASS",
+  "detail": "2 of 2 reachable at step 7 of the build order, 60 mm of key",
+  "value": 2.0
+ },
+ {
+  "group": "access",
+  "item": "L shank panel",
+  "status": "PASS",
+  "detail": "7 of 7 reachable at step 8 of the build order, 60 mm of key",
+  "value": 7.0
  }
 ]

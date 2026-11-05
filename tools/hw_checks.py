@@ -6,7 +6,8 @@
   bolted    slip, separation, shear, tension and strip per pattern against strength.py's load cases (formulas: tools/strength.py bolted_rows)
   bearing   catalogue ratings against strength.py's load cases; seat wall and seat land; the ring stopped both ways; clear of what it isn't seated in
   pattern   each motor's stator and hub pattern fully used; no drawn hole over a connector, cable exit or bump; whether the right side's motor can be the same part
-  access    a straight line along each screw's axis from its head: can a key reach, ignoring build order
+  access    a straight line along each screw's axis from its head: can a key reach. A pattern in the build order is asked at its moment: only what's on by then is in the way
+  assembly  the build order (spec/robot.py, HW.step): each part goes in along its path without cutting what's on
 
 Failures here are the design's open items: most of the robot has no screws yet, and each row says so.
 """
@@ -182,7 +183,7 @@ def check_hidden(spec, rep):
     shells = [g for l in spec['links'].values() for g in l['geoms'] if g['role'] == 'shell']
     shells += [dict(G.inner_of(g, C.WALL), name=g['name'], role='knit') for l in spec['links'].values() for g in l['geoms'] if g['role'] == 'knit']
     # a part that shows on purpose hides what's behind it (a cheek's disc in the band, closing the hub's gap)
-    shells += [g for l in spec['links'].values() for g in l['geoms'] if g['role'] in G.RIGID and g.get('exposed')]
+    shells += [g for l in spec['links'].values() for g in l['geoms'] if g['role'] in G.RIGID + ('hardware',) and g.get('exposed')]
     cuts = {}
     for l in spec['links'].values():
         for c in l['geoms']:
@@ -197,6 +198,8 @@ def check_hidden(spec, rep):
                 hit = G.inside(s, p)
                 if s['role'] in ('shell', 'knit'):               # a cut through a cover uncovers; a hole in a part that shows is where the screw is
                     for c in cuts.get(s['name'], []):
+                        if c.get('internal') or c.get('hw', {}).get('pattern') == pat or c['name'].startswith(g['name']):
+                            continue
                         hit &= ~G.inside(c, p)
                 inn |= hit
             f = 1 - inn.mean()
@@ -542,7 +545,67 @@ def check_pattern(spec, S, R, rep):
 
 # ---------------------------------------------------------------- access
 
-def blocked_by(S, spec, h, name, M=None, tool_r=None, covers=True):
+def build_state(spec):
+    """The build order as sets. Returns (steps, later) where later[k] holds names not yet on before step k, and each pattern's step."""
+    steps = spec.get('hardware', {}).get('build', [])
+    pattern_step = {}
+    for k, st in enumerate(steps):
+        for p in st['screws']:
+            pattern_step[p] = k
+    return steps, pattern_step
+
+
+def absent_at(spec, steps, pattern_step, k, driving=None):
+    """Names not yet on the robot while step k is under way: parts of later steps, and screws of patterns driven later (or of this one, except the screw in hand)."""
+    out = set()
+    for m, st in enumerate(steps):
+        if m > k:
+            out |= set(st['parts'])
+    for ln in spec['links']:
+        for g in spec['links'][ln]['geoms']:
+            h = g.get('hw', {})
+            if h.get('type') == 'screw' and h.get('pattern') in pattern_step and pattern_step[h['pattern']] >= k:
+                out.add(g['name'])
+    return out
+
+
+def check_assembly(spec, S, R, rep):
+    """Each step's parts, started off along their path, slide home without passing through what's already on. Their seats are drawn into each other by a hair, so the last millimetre isn't asked."""
+    import checks as C
+    steps, pattern_step = build_state(spec)
+    if not steps:
+        return
+    idx = named(spec)
+    links = {idx[n][0] for st in steps for n in st['parts'] if n in idx}
+    for k, st in enumerate(steps):
+        gone = absent_at(spec, steps, pattern_step, k)
+        moving = [n for n in st['parts'] if n in idx]
+        missing = [n for n in st['parts'] if n not in idx]
+        on = []
+        for ln in links:
+            for i, g in enumerate(spec['links'][ln]['geoms']):
+                if g['role'] in ('struct', 'actuator', 'linkage', 'hardware', 'bearing', 'shell') and g['name'] not in gone and g['name'] not in moving and S.geom.get((ln, i)) is not None:
+                    on.append((g['name'], S.wall.get((ln, i), S.geom[(ln, i)])))
+        d = np.array(st['path'], float) if st['path'] else None
+        worst = (0.0, '', '')
+        if d is not None:
+            for n in moving:
+                m = S.geom[idx[n][:2]]
+                for s in (1.0, 0.75, 0.5, 0.25, max(0.0015 / st['distance'], 0.02)):
+                    x = m.translate((d * st['distance'] * s).tolist())
+                    for nm, b in on:
+                        v = C.overlap(x, b) * 1e9
+                        if v > worst[0]:
+                            worst = (v, n, nm)
+        ok = worst[0] <= TOUCH_MM3 and not missing
+        txt = st['why'] or ', '.join(st['parts'])
+        rep.add('assembly', f"step {k + 1}: {', '.join(st['parts'])[:80]}", ok, (txt + ': clear along its path') if ok else (f"{worst[1]} passes through {worst[2]}, {worst[0]:.0f} mm3, on its way in" if worst[0] > TOUCH_MM3 else f'not in the spec: {missing}'), value=-worst[0])
+    # every moving part named once, and every pattern of this joint driven once
+    all_named = [n for st in steps for n in st['parts']]
+    rep.add('assembly', 'each part goes on once', len(all_named) == len(set(all_named)), '', value=-float(len(all_named) - len(set(all_named))))
+
+
+def blocked_by(S, spec, h, name, M=None, tool_r=None, covers=True, absent=()):
     """Which parts a straight key along this screw's axis meets, from just above its head up KEY_REACH. Rigid parts, covers' walls, other hardware, at the poses M (default zero). The knit comes off, so it isn't counted."""
     import checks as C
     pos = np.array(h['pos'], float)
@@ -557,6 +620,8 @@ def blocked_by(S, spec, h, name, M=None, tool_r=None, covers=True):
                 continue
             if g['role'] == 'shell' and not covers:
                 continue
+            if g['name'] in absent:
+                continue
             body = S.wall.get((ln, i), S.geom[(ln, i)])
             if M is not None:
                 body = C.posed(body, M[ln])
@@ -567,8 +632,23 @@ def blocked_by(S, spec, h, name, M=None, tool_r=None, covers=True):
 
 def check_access(spec, S, R, rep):
     import checks as C
+    steps, pattern_step = build_state(spec)
     for pat, screws in all_patterns(spec).items():
         n = len(screws)
+        if pat in pattern_step:                # asked at its moment in the build order
+            k = pattern_step[pat]
+            gone = absent_at(spec, steps, pattern_step, k)
+            free, blockers = 0, {}
+            for ln, i, g in screws:
+                hits = blocked_by(S, spec, g['hw'], g['name'], absent=gone)
+                if hits:
+                    for x in hits:
+                        blockers[x] = blockers.get(x, 0) + 1
+                else:
+                    free += 1
+            who = ', '.join(f'{a} x{b}' for a, b in sorted(blockers.items(), key=lambda kv: -kv[1])[:5])
+            rep.add('access', pat, free == n, f'{free} of {n} reachable at step {k + 1} of the build order, {KEY_REACH * 1000:.0f} mm of key' + (f'; blocked by {who}' if who else ''), value=float(free))
+            continue
         free, blockers, poses, bare = 0, {}, set(), 0
         for ln, i, g in screws:
             h = g['hw']

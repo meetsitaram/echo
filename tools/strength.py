@@ -63,8 +63,8 @@ CONTACT_MIN_MM2 = 100.0
 # Slip load of that M5 (12.9 into 7075): preload about 10 kN (75 % of proof on 14.2 mm2), friction 0.15, from memory. A path
 # interface passing force V needs ceil(SF_MIN x V / BOLT_SLIP_N) bolts, each with its pad.
 BOLT_SLIP_N = 1500.0
-# The knee's fork since it has real bearings (iteration 40): a force line 14 mm off the leg's centre (what the ankle roll holds at 3,400 N) on supports 76 mm apart puts (38 + 14) / 76 of it on the nearer one.
-KNEE_SPLIT = 0.684
+# The knee's fork since it has real bearings: a force line 14 mm off the leg's centre (what the ankle roll holds at 3,400 N), on supports at y -30.5 and +37.4 (iteration 41), puts (37.4 + 14) / 67.9 of it on the inner one.
+KNEE_SPLIT = 0.757
 # A drawn overlap thinner than this can't be told from a gap once made: general machining tolerance on parts this size is
 # +-0.1 mm (ISO 2768-m). So a 0.02 mm contact counts as none. Exactly coplanar faces (within FLUSH, float32 rounding at 1 m)
 # are a different thing, a drawn face-to-face seat, and count by their shared area.
@@ -142,35 +142,39 @@ SECTIONS = [
         load='leg', cases=BELOW_KNEE, motors=[], rods=['pitch', 'roll']),
     sec('Shank lower plates', LEG, 'L_knee_link', ['L shank plate in', 'L shank plate out'], 'z', ('L ankle fork bridge', 'hi', 0.05),
         load='leg', cases=BELOW_KNEE, motors=[], rods=['pitch', 'roll'], buckle=(0.7, 'L shank plate in'), note='buckling: K 0.7 over the plate length'),
-    sec('Shank upper plates', LEG, 'L_knee_link', ['L shank plate in up', 'L shank plate out up'], 'z', ('L ankle roll pad in', 'hi', 0.012),
+    sec('Shank closed section at the ankle pitch motor, panel on', LEG, 'L_knee_link', ['L shank body', 'L shank back panel'], 'z', 0.30,
+        load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)], rods=['pitch', 'roll'], note='counts the back panel: its 7 M3 hold it (Bolted joints). With the panel off it is an open section, SF about 0.4: the screws are not optional'),
+    sec('Shank closed section at the ankle roll motor, panel on', LEG, 'L_knee_link', ['L shank body', 'L shank back panel'], 'z', 0.3945,
+        load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)], rods=['pitch', 'roll']),
+    sec('Shank waist behind the knee', LEG, 'L_knee_link', ['L shank body'], 'z', ('joint:L_knee', 'c', -0.075),
+        load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)], note='closed; where the back line is scooped for the fold'),
+    sec('Barrel where it meets the waist', LEG, 'L_knee_link', ['L shank body'], 'z', ('joint:L_knee', 'c', -0.058),
         load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)]),
-    sec('Knee hub feet', LEG, 'L_knee_link', ['L knee hub foot in', 'L knee hub foot out'], 'z', ('L knee hub foot in', 'c', 0.0),
-        load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)]),
-    sec('Knee idler arm (inner second support)', LEG, 'L_knee_link', ['L knee idler arm'], 'z', ('L knee idler arm', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee idler stub', 'c', (0, 0, 0)))], note='the nearer support\'s share, on the real CRBT 405 A: see Bearings'),
-    sec('Knee idler stub', LEG, 'L_knee_link', ['L knee idler stub'], 'y', ('L knee idler stub', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee cheek disc in', 'c', (0, 0, 0)))]),
-    sec('Knee stator plate, outer bearing fitted', LEG, 'L_knee_link', ['L knee stator plate'], 'z', ('joint:L_knee', 'c', -0.03),
-        load='leg', cases=('peak', 'walk', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee post', 'c', (0, 0.0035, 0)))],
-        note='the nearer support\'s share, through the post'),
-    sec('Knee stator rim, the motor\'s torque', LEG, 'L_knee_link', ['L knee stator rim'], 'z', ('joint:L_knee', 'c', 0.0),
-        load='leg', cases=('motor',), motors=[('L_knee', 1)], note='net of the hollow; the disc beside it is not counted'),
-    sec('Knee post', LEG, 'L_knee_link', ['L knee post'], 'y', ('L knee cheek disc out', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee cheek disc out', 'c', (0, 0, 0)))]),
-    sec('Knee axle, now a cup', LEG, 'L_hip_yaw_link', ['L knee axle in'], 'y', ('L knee axle in', 'c', 0.0),
-        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee cheek disc in', 'c', (0, 0, 0)))], note='its wall, the motor\'s torque plus the nearer support\'s share'),
-    sec('Knee cheek discs at the bores (net of them)', LEG, 'L_hip_yaw_link', ['L knee cheek disc in', 'L knee cheek disc out'], 'z', ('joint:L_knee', 'c', 0.0),
+    sec('Barrel at the axis (walls, net of the bore)', LEG, 'L_knee_link', ['L shank body'], 'z', ('joint:L_knee', 'c', 0.0),
+        load='leg', cases=('peak', 'walk', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee inner bearing', 'c', (0, 0, 0)))], note='the inner bearing\'s share through the plate and walls, and the motor\'s torque'),
+    sec('Barrel plate round the inner bearing', LEG, 'L_knee_link', ['L shank body'], 'y', ('L knee inner bearing', 'c', 0.003),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee inner bearing', 'c', (0, 0, 0)))]),
+    sec('Knee post at its root', LEG, 'L_knee_link', ['L knee rear cap'], 'y', ('L knee outer bearing', 'c', -0.0042),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee outer bearing', 'c', (0, 0, 0)))], note='the outer support taking the larger share, an upper bound for this side'),
+    sec('Rear cap at the axis', LEG, 'L_knee_link', ['L knee rear cap'], 'z', ('joint:L_knee', 'c', 0.0),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee outer bearing', 'c', (0, 0, 0)))]),
+    sec('Cup neck between bearing and cheek', LEG, 'L_hip_yaw_link', ['L_knee flange'], 'y', ('L knee inner bearing', 'c', -0.0075),
+        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee inner bearing', 'c', (0, 0, 0)))], note='the wall round the M5 heads: the motor\'s torque and the nearer support\'s share'),
+    sec('Fork inner eye, net of its opening', LEG, 'L_hip_yaw_link', ['L thigh fork'], 'z', ('joint:L_knee', 'c', 0.0),
+        load='leg', cases=('peak', 'walk', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee inner bearing', 'c', (0, 0, 0)))]),
+    sec('Outer cheek at its bearing', LEG, 'L_hip_yaw_link', ['L knee outer cheek'], 'z', ('joint:L_knee', 'c', 0.0),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee outer bearing', 'c', (0, 0, 0)))]),
+    sec('Fork cheeks over the barrel, both', LEG, 'L_hip_yaw_link', ['L thigh fork', 'L knee outer cheek'], 'z', ('joint:L_knee', 'c', 0.055),
         load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1)]),
-    sec('Knee cheeks over the discs, both', LEG, 'L_hip_yaw_link', ['L knee cheek in', 'L knee cheek out'], 'z', ('L knee cheek disc in', 'hi', 0.002),
-        load='leg', cases=('peak', 'walk')),
-    sec('Knee inner cheek alone (the only one that takes motor torque)', LEG, 'L_hip_yaw_link', ['L knee cheek in'], 'z', ('L knee cheek disc in', 'hi', 0.002),
-        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee cheek disc in', 'c', (0, 0, 0)))],
-        note='the nearer support\'s share and all of the motor\'s torque'),
-    sec('Knee cheeks out of plane, under the recorded side force', LEG, 'L_hip_yaw_link', ['L knee cheek in', 'L knee cheek out'], 'z', ('L knee cheek disc in', 'hi', 0.002),
-        load='leg', cases=('side',), solo=True, side_local=('joint:L_knee', 'c', (0, 0, 0)), note='upper bound: all of the 1,614 N reaches the knee; 3 mm plates each bending on their thin side'),
-    sec('Knee cheek tops', LEG, 'L_hip_yaw_link', ['L knee cheek in', 'L knee cheek out', 'L knee cheek in top', 'L knee cheek out top'], 'z', ('L knee yoke', 'lo', -0.002),
-        load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1)]),
-    sec('Thigh frame', LEG, 'L_hip_yaw_link', ['L thigh frame'], 'z', ('L thigh frame', 'hi', -0.03),
+    sec('Fork inner cheek alone (the only one that takes motor torque)', LEG, 'L_hip_yaw_link', ['L thigh fork'], 'z', ('joint:L_knee', 'c', 0.055),
+        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee inner bearing', 'c', (0, 0, 0)))]),
+    sec('Fork cheeks out of plane, under the recorded side force', LEG, 'L_hip_yaw_link', ['L thigh fork', 'L knee outer cheek'], 'z', ('joint:L_knee', 'c', 0.055),
+        load='leg', cases=('side',), solo=True, side_local=('joint:L_knee', 'c', (0, 0, 0)), note='upper bound: all of the 1,614 N reaches the knee; each cheek bending on its thin side'),
+    sec('Fork crown', LEG, 'L_hip_yaw_link', ['L thigh fork', 'L knee outer cheek'], 'z', ('joint:L_knee', 'c', 0.09),
+        load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1), ('L_hip_yaw', 1)]),
+    sec('Thigh tube', LEG, 'L_hip_yaw_link', ['L thigh fork'], 'z', ('joint:L_knee', 'c', 0.19),
+        load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1), ('L_hip_yaw', 1)], note='d66 x 2.5; no local buckling in this figure (D / t 26, plain 7075 tube: not close)'),
+    sec('Thigh tube under its collar', LEG, 'L_hip_yaw_link', ['L thigh fork'], 'z', ('L_hip_yaw flange', 'lo', -0.012),
         load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1), ('L_hip_yaw', 1)]),
     sec('Hip crown', LEG, 'L_hip_roll_link', ['L hip crown'], 'x', ('L hip crown', 'c', -0.02),
         load='leg', cases=ABOVE_KNEE, motors=[('L_hip_yaw', 1)]),
@@ -273,16 +277,9 @@ SECTIONS = [
 INTERFACES = [
     (LEG, 'L foot plate', 'L ankle clevis front', 0.5), (LEG, 'L foot plate', 'L ankle clevis back', 0.5),
     (LEG, 'L ankle fork cheek in', 'L shank plate in', 0.5), (LEG, 'L ankle fork cheek out', 'L shank plate out', 0.5),
-    (LEG, 'L shank plate in', 'L shank plate in up', 0.5), (LEG, 'L shank plate out', 'L shank plate out up', 0.5),
-    (LEG, 'L knee hub foot in', 'L shank plate in up', 0.5), (LEG, 'L knee hub foot out', 'L shank plate out up', 0.5),
-    (LEG, 'L knee idler arm', 'L knee hub foot in', 0.5), (LEG, 'L knee idler stub', 'L knee idler arm', 0.5),
-    (LEG, 'L knee stator plate', 'L knee hub foot out', 0.5), (LEG, 'L knee stator plate', 'L knee post', 0.5),
-    (LEG, 'L knee stator rim', 'L_knee actuator (buy) RS04', 1.0), (LEG, 'L knee stator rim', 'L knee stator disc', 1.0), (LEG, 'L knee stator plate', 'L knee stator disc', 1.0),
-    (LEG, 'L knee axle in', 'L_knee flange', 1.0), (LEG, 'L knee cheek disc in', 'L knee axle in', 1.0),
-    (LEG, 'L knee cheek in', 'L knee cheek disc in', 0.5), (LEG, 'L knee cheek out', 'L knee cheek disc out', 0.5),
-    (LEG, 'L knee yoke', 'L knee cheek in', 0.25), (LEG, 'L knee yoke', 'L knee cheek out', 0.25),
-    (LEG, 'L thigh frame', 'L knee cheek in top', 0.25), (LEG, 'L thigh frame', 'L knee cheek out top', 0.25),
-    (LEG, 'L thigh frame', 'L knee yoke', 0.5), (LEG, 'L thigh frame', 'L_hip_yaw flange', 1.0),
+    (LEG, 'L shank plate in', 'L shank body', 0.5), (LEG, 'L shank plate out', 'L shank body', 0.5),
+    (LEG, 'L shank body', 'L shank back panel', 0.1), (LEG, 'L shank body', 'L knee rear cap', KNEE_SPLIT), (LEG, 'L shank body', 'L_knee actuator (buy) RS04', 0.67),
+    (LEG, 'L thigh fork', 'L_knee flange', KNEE_SPLIT), (LEG, 'L thigh fork', 'L knee outer cheek', KNEE_SPLIT), (LEG, 'L thigh fork', 'L_hip_yaw flange', 1.0),
     (LEG, 'L hip crown', 'L_hip_yaw actuator (buy) RS03', 1.0), (LEG, 'L hip tab in', 'L hip crown', 0.5), (LEG, 'L hip tab out', 'L hip crown', 0.5),
     (LEG, 'L hip front plate', 'L hip tab in', 0.5), (LEG, 'L hip front plate', 'L hip tab out', 0.5), (LEG, 'L hip front plate', 'L_hip_roll flange', 1.0),
     (LEG, 'L hip bracket', 'L_hip_roll actuator (buy) RS04', 1.0), (LEG, 'L hip bracket', 'L_hip_pitch flange', 1.0),
@@ -311,13 +308,7 @@ INTERFACES = [
 
 # Rigid parts on no path above, each with its reason. A new part must go in a table: see check_coverage.
 NOT_ON_PATH = {
-    'L knee cheek collar out': 'the seat\'s other half and the race\'s stop: read with the bearing checks',
-    'L knee post collar': 'the race\'s shoulder: read with the bearing checks', 'L knee post cap': 'the race\'s shoulder: read with the bearing checks',
-    'L knee idler collar': 'the race\'s shoulder: read with the bearing checks', 'L knee idler cap': 'the race\'s stop: read with the bearing checks',
     'L ankle fork bridge': 'ties the fork cheeks; the plates land in line with the cheeks, so the path passes beside it',
-    'L shank knee bridge': 'ties the plates under the motor; the hub feet carry the path',
-    'L ankle roll pad in': 'carries the roll motor only: read with the stator check', 'L ankle roll pad out': 'carries the roll motor only: read with the stator check',
-    'L knee yoke': 'sunk inside the thigh frame in x and y: no free section of its own; its contacts are in INTERFACES',
     'neck post': 'sunk inside the shoulder beam along its whole length: no free section of its own',
     'battery': 'a passenger: role struct, but cells are not frame', 'battery lower': 'a passenger: role struct, but cells are not frame',
     'compute': 'a passenger', 'head electronics': 'a passenger',
@@ -436,6 +427,13 @@ def polygon_props(polys):
     return A, cx, cy, Iuu, Ivv, Iuv
 
 
+def _seg_dist(p, poly):
+    a, b = poly, np.roll(poly, -1, axis=0)
+    ab = b - a
+    t = np.clip(((p - a) * ab).sum(1) / np.maximum((ab * ab).sum(1), 1e-12), 0, 1)
+    return float(np.min(np.linalg.norm(a + ab * t[:, None] - p, axis=1)))
+
+
 class Piece:
     """One connected island of a slice."""
 
@@ -455,6 +453,20 @@ class Piece:
         self.J = A ** 4 / (40 * Ip)                              # Saint-Venant: within 2 % for a circle, 10 % for a thin strip
         # distance giving tau = T c / J: 0.5 d on a circle, 0.68 a on a square, t on a thin strip
         self.cJ = self.t * (0.68 + 0.32 * (1 - self.t / self.b))
+        # A closed section (a hole taking a real share of its outline): Saint-Venant's formula is for solid shapes, and read a d66 x 2.5 tube at 470 x its real shear stress (iteration 41). Bredt's: tau = T / (2 Am t), with the
+        # thinnest wall found, J = 4 Am^2 t_mean / perimeter. A small screw hole in a plate isn't this: the plate still twists as a solid.
+        areas = sorted(((abs(0.5 * (np.dot(q[:, 0], np.roll(q[:, 1], -1)) - np.dot(q[:, 1], np.roll(q[:, 0], -1)))), q) for q in polys), key=lambda x: -x[0])
+        if len(areas) >= 2 and areas[1][0] > 0.25 * areas[0][0]:
+            Ao, qo = areas[0]
+            Ai, qi = areas[1]
+            Am = (Ao + Ai) / 2
+            per = lambda q: float(np.linalg.norm(q - np.roll(q, -1, axis=0), axis=1).sum())
+            pm = (per(qo) + per(qi)) / 2
+            tmean = A / pm
+            step = max(len(qi) // 200, 1)
+            tmin = float(min(min(_seg_dist(p, qo) for p in qi[::step]), tmean))
+            self.J = 4 * Am * Am * tmean / pm
+            self.cJ = self.J / (2 * Am * max(tmin, 0.1))
 
 
 def slice_section(man, u, v, n, at):
@@ -771,7 +783,39 @@ def bolted_rows(M):
             ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_MIN and sf['tension'] >= SF_TENSION
             torque = assumed(spec, 'torque_coefficient') * Fp * h['d'] / 1000
             rows.append(dict(name=p['name'], joint=p['joint'], label=label, whatif=label.startswith('what if'), n=n, count=p['count'], thread=h['thread'], r=r * 1000, le=le, Fp=Fp, limit=limit, strip=strip, torque=torque, T=T, V=V, Mt=Mt, Fa=Fa, sf_each=sf, sf=min(sf['slip'], sf['separation'], sf['shear'], sf['strip'], sf['tension'] * SF_MIN / SF_TENSION), ok=ok))
+    # our own screws in our own parts: each group says what it must pass (spec/robot.py, HW.bolt_group)
+    for p in spec['hardware'].get('groups', []):
+        if p['name'].startswith('R '):
+            continue
+        hw = pattern_screws(spec, p['name'])
+        if not hw:
+            rows.append(dict(name=p['name'], joint='', n=0, sf=0.0, why='no screws placed'))
+            continue
+        h, n, ld = hw[0], len(hw), p['load']
+        r = ld.get('r', 0.03)
+        T, V, Mt, Fa = ld.get('T', 0.0), ld.get('V', 0.0), ld.get('Mt', 0.0), ld.get('Fa', 0.0)
+        le = min(engagement(x)[0] for x in hw)
+        Fp, strip, proof, As, limit = screw_load(spec, h, le)
+        Ft = Fa / n + 2 * Mt / (n * r)
+        rm = 1220.0
+        sf = dict(slip=mu * n * Fp / max(V + T / r, 1e-6), separation=Fp / Ft if Ft > 0 else float('inf'), shear=0.6 * rm * As / max(V / n + T / (n * r), 1e-6), tension=proof / (Fp + phi * Ft), strip=strip / (Fp + phi * Ft))
+        ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_MIN and sf['tension'] >= SF_TENSION
+        torque = assumed(spec, 'torque_coefficient') * Fp * h['d'] / 1000
+        rows.append(dict(name=p['name'], joint='', label=p.get('note') or 'its load', whatif=False, n=n, count=p['count'], thread=h['thread'], r=r * 1000, le=le, Fp=Fp, limit=limit, strip=strip, torque=torque, T=T, V=V, Mt=Mt, Fa=Fa, sf_each=sf, sf=min(sf['slip'], sf['separation'], sf['shear'], sf['strip'], sf['tension'] * SF_MIN / SF_TENSION), ok=ok))
     return rows
+
+
+def thermal_rows(M):
+    """The RS04 at the knee: how much metal it conducts into, against the plate its rating was measured on. Areas from the design's numbers, the exposed one from the solids. A hand estimate: no thermal model behind it, and the knit over it is not counted."""
+    bore, length = 120.0, 38.7                                        # the motor's d120 from its front face to its rear step
+    outside = math.pi * bore * length
+    front = math.pi * (60.0 ** 2 - 33.0 ** 2) - 10 * math.pi * 2.25 ** 2     # the plate on the front face, less its holes and the bearing's bore
+    rear = math.pi * (59.8 ** 2 - 48.5 ** 2)                          # the skirt on the rear face, with a gap pad
+    plate_big, plate_small = 345.0 * 345.0, 220.0 * 200.0
+    # what faces out, from the design's numbers: barrel 127 x 58 and its two end faces. The closed body below it counts for less, through 1.7 mm of wall, so it isn't added
+    outward = math.pi * 127.0 * 58.0 + 2 * math.pi * 63.5 ** 2
+    hub_contact = math.pi * (26.5 ** 2 - 23.0 ** 2)              # the post's washer on the outer hub's inner wall
+    return dict(outside=outside, front=front, rear=rear, contact=outside + front + rear, plate_big=plate_big, plate_small=plate_small, outward=outward, hub_contact=hub_contact)
 
 
 def bearing_rows(M):
@@ -830,7 +874,7 @@ def bearing_options(M):
     h = rec.get('L knee outer bearing')
     if h is None:
         return []
-    SLOT, SHAFT, HOUSING = 6.5, 40.0, 100.0     # mm: plate 34.5 to hub 41; post d40 today; the cheek's disc is d100, a race OD can't reach its rim
+    SLOT, SHAFT, HOUSING = 8.5, 50.0, 96.0     # mm: the room iteration 41 made; post d50; the eye is d96, a race OD can't reach its rim
     out = []
     for name, b in HW.bearing_table().items():
         probe = dict(h, designation=name, d=b['d'], D=b['D'], B=b['B'], C=b['C'], C0=b['C0'], kind=b['kind'], source=b['source'], read_via=b['read_via'])
@@ -1094,11 +1138,19 @@ def hardware_report(M):
     opts = bearing_options(M)
     if opts:
         L += ['', '### Every catalogue bearing against the knee\'s slot', '',
-              'The outer support: d40 post, 6.5 mm between the stator disc and the outer hub, 0.2 mm clear each side. Same load as above. Rows from `spec/hardware_catalog.json`; `search_excerpt` rows want a check on the maker\'s page.', '',
+              'The outer support: d50 post, 8.5 mm for the race between its shoulder and its lip, and the eye\'s d96. Same load as above. Rows from `spec/hardware_catalog.json`; `search_excerpt` rows want a check on the maker\'s page.', '',
               '| bearing | d x D x B | C0 (N) | fs at 3,400 N | fs with side | life, M cycles | goes in today | what would have to grow | read |', '|---|---|---|---|---|---|---|---|---|']
         for o in opts:
             b, e = o['b'], o['e']
             L.append(f"| {o['name']} | {b['d']:.0f} x {b['D']:.0f} x {b['B']:.0f} | {b['C0']:.0f} | {e['fs_peak']:.2f} | {e['fs_side']:.2f} | {e['cycles'] / 1e6:.0f} | {'**yes**' if o['fits'] else 'no'} | {o['grow']} | {b['read_via']} |")
+    th = thermal_rows(M)
+    L += ['', '## The knee motor\'s heat path (a hand estimate)', '',
+          'RS04, 40 N m rated on a 345 x 345 mm plate, 35 on 220 x 200 (`spec/actuators.json`). What it conducts into now, with paste in the bore and a gap pad on the skirt, both assumed:', '',
+          '| path | area (cm2) |', '|---|---|',
+          f"| side wall in the barrel's bore, 0.05 mm gap | {th['outside'] / 100:.0f} |", f"| front face on the barrel's plate, bolted | {th['front'] / 100:.0f} |", f"| rear face on the rear cap's skirt | {th['rear'] / 100:.0f} |",
+          f"| **total contact** | **{th['contact'] / 100:.0f}** |", f"| maker's plate, one side: 220 x 200 / 345 x 345 | {th['plate_small'] / 100:.0f} / {th['plate_big'] / 100:.0f} |",
+          f"| of that, the washer on the outer hub cap, the hub's own path | {th['hub_contact'] / 100:.0f} |", f"| outward metal of the barrel and its ends | {th['outward'] / 100:.0f} |", '',
+          f"**Ratio:** contact is {th['contact'] / th['plate_small']:.2f} of the small plate's one side, {th['contact'] / th['plate_big']:.2f} of the big one's. Outward metal is {th['outward'] / (2 * th['plate_small']):.2f} of the small plate's two sides and {th['outward'] / (2 * th['plate_big']):.2f} of the big one's, and it sits under knit, where the plate is in open air. So the rated torque isn't transferred by this: sustained torque under the garment wants a thermal model or test. The hub cap's own path is thin. Not modelled: paste resistance, airflow, the knit."]
     L += ['', '## Assumptions behind the two tables above', '',
           'From `spec/assumptions.json`, one row each: change a value there and run the checks. All status `assumed`. "estimate, from memory" means a hand figure no document here backs.', '',
           '| id | value | basis | source | what it risks | settled by |', '|---|---|---|---|---|---|']

@@ -39,6 +39,7 @@ all move together. echo's first re-proportioning then passed every check first t
 | `ell(name, c, r, ...)` | ellipsoid | spherical cuts, domes |
 | `revolve(name, axis, c, profile, ...)` | solid of revolution, profile `(t, r)` | anything that turns about its own axis |
 | `prism(name, x0, t, pts, color, role)` | convex polygon in the plane x = x0, extruded along +x | marks, swept-volume cuts |
+| `HW.machined(name, tree, color)` | a distance tree (`tools/sdf.py`), blends with real fillets, truly hollow, fill 1 | housings, forks, tubes, caps: `reports/joint_template.md` |
 
 Shaping lofts:
 - `clip=` keeps the part in front of a plane, or of every plane in a list. Helpers: `below(p, q)` and

@@ -100,7 +100,7 @@ def main():
             im, px = section(S, spec, links, n, x * 1000.0, u, v, (HY * 1000, KZ * 1000), scale, W, H, font)
             dr = ImageDraw.Draw(im)
             dr.text((16, 12), f'Left knee, part ID section. {title}. Scale: 7.4 px per mm; inboard to the left. Gold screws, teal bearings.', fill=(30, 30, 34), font=big)
-            for y in (-61.5, -41, -40.5, -35.5, -28.2, -22.2, 17.3, 30.5, 34.5, 35.5, 40.5, 41, 61.5):
+            for y in (-61.5, -43, -37, -34.5, -30.65, -26.5, -24.3, 27.85, 31.65, 33.4, 41.4, 43, 61.5):
                 p = px(((HY * 1000 + y), KZ * 1000 - 78))
                 dr.line([(p[0], p[1]), (p[0], p[1] + 14)], fill=(120, 30, 30), width=1)
                 dr.text((p[0] - 12, p[1] + 16 + (10 if int(abs(y) * 2) % 3 == 0 else 0)), f'{y:g}', fill=(120, 30, 30), font=font)
@@ -114,7 +114,7 @@ def main():
         W, H = 1000, 1000
         scale = 6.6
         sheets = []
-        for title, y in (('Output side: cup floor, hub screws, pin holes', -28.5), ('Motor back: rim, stator screws, cable notch', 24.0), ('Outer bearing, in its collar and disc', 38.0), ('Stator disc, counterbores', 33.0)):
+        for title, y in (('Cup floor and barrel plate: hub screws, pin holes, stator screws', -27.5), ('Rear cap\'s skirt on the motor\'s back, cable notch', 16.0), ('Outer bearing, in its cheek, on the post', 37.4), ('Inner bearing, in the barrel, on the cup', -30.5)):
             u, v, n = np.array([1.0, 0, 0]), np.array([0, 0, 1.0]), np.array([0, -1.0, 0])
             im, px = section(S, spec, links, n, -(HY * 1000 + y), u, v, (0.0, KZ * 1000), scale, W, H, font, label=False)
             ImageDraw.Draw(im).text((16, 12), f'{title}. y = {y:g} from the leg\'s centre. Looking inboard, x forward to the right', fill=(30, 30, 34), font=big)
