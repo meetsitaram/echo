@@ -597,7 +597,7 @@ HIP_SEAM = HZ - 0.073                     # the lobe's underside on the yaw axis
 # (the thigh's top inside a sphere, the lobe's underside 3 mm outside it), so it still never sweeps as the thigh
 # yaws, but no straight line runs along it. It drops 9 mm to the sides and 3.6 cm to the back of the thigh, as
 # Figure's thigh top falls toward the back under its black hip.
-# iteration 25 (side frames against the replica's: black down to 0.80 m at the back, a box behind the thigh, where
+# iteration 25 (side frames against the replica's: black down to 0.82 m at the back, a box behind the thigh, where
 # Figure's grey thigh rises to its black hip, and it was the dome that dropped it): a shallow BOWL about the yaw axis
 # instead: the thigh's top dished to a sphere centred above, the lobe's underside 3 mm inside the same sphere. Round about
 # the yaw axis as the dome was, front 0.852 m, back 0.863 m (it cannot rise further: the roll actuator's underside is
