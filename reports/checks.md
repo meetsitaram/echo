@@ -1,6 +1,6 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-04 21:56, 169 s
+spec: `spec/robot.json`, 2026-11-04 22:00, 170 s
 
 248 checks: 240 pass, 7 warn, **1 fail**
 
@@ -285,9 +285,9 @@ spec: `spec/robot.json`, 2026-11-04 21:56, 169 s
 | PASS | L_shoulder_pitch | 15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used |
 | PASS | R_shoulder_pitch | 15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used |
 | PASS | L_ankle_pitch | 22.1 N m x 1.5 in 'step up a stair' vs peak 90 N m (1 x RS03 x 1.5): 37 % used |
+| PASS | R_ankle_pitch | 11.0 N m in 'walk crouch' vs rated 30 N m (1 x RS03 x 1.5): 37 % used |
 | PASS | L_hip_pitch | 28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used |
 | PASS | R_hip_pitch | 28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used |
-| PASS | R_ankle_pitch | 11.0 N m in 'walk crouch' vs rated 32 N m (1 x RS03 x 1.5): 35 % used |
 | PASS | R_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | L_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | neck_pitch | 0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used |

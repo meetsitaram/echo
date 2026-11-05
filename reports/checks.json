@@ -1393,6 +1393,12 @@
  },
  {
   "group": "torque",
+  "item": "R_ankle_pitch",
+  "status": "PASS",
+  "detail": "11.0 N m in 'walk crouch' vs rated 30 N m (1 x RS03 x 1.5): 37 % used"
+ },
+ {
+  "group": "torque",
   "item": "L_hip_pitch",
   "status": "PASS",
   "detail": "28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
@@ -1402,12 +1408,6 @@
   "item": "R_hip_pitch",
   "status": "PASS",
   "detail": "28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
- },
- {
-  "group": "torque",
-  "item": "R_ankle_pitch",
-  "status": "PASS",
-  "detail": "11.0 N m in 'walk crouch' vs rated 32 N m (1 x RS03 x 1.5): 35 % used"
  },
  {
   "group": "torque",
