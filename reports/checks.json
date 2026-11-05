@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.38 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "57.45 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1209,7 +1209,7 @@
   "group": "poses",
   "item": "deep squat: balance",
   "status": "PASS",
-  "detail": "CoM 11.8 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet"
  },
  {
   "group": "poses",
@@ -1335,7 +1335,7 @@
   "group": "torque",
   "item": "L_knee",
   "status": "PASS",
-  "detail": "134.2 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 84 % used"
+  "detail": "134.4 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 84 % used"
  },
  {
   "group": "torque",
@@ -1383,7 +1383,7 @@
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "68.5 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used"
+  "detail": "68.6 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used"
  },
  {
   "group": "torque",

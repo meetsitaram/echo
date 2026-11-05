@@ -714,6 +714,70 @@
     },
     {
      "kind": "cyl",
+     "name": "L torso shoulder liner",
+     "c": [
+      0,
+      0.1465,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.0625,
+     "h": 0.002,
+     "color": "#BCC0C4",
+     "role": "decal",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "R torso shoulder liner",
+     "c": [
+      0,
+      -0.1465,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.0625,
+     "h": 0.002,
+     "color": "#BCC0C4",
+     "role": "decal",
+     "material": "pa12"
+    },
+    {
+     "kind": "cyl",
+     "name": "L torso liner hole",
+     "c": [
+      0,
+      0.1465,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.042,
+     "h": 0.004,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "L torso shoulder liner"
+     ]
+    },
+    {
+     "kind": "cyl",
+     "name": "R torso liner hole",
+     "c": [
+      0,
+      -0.1465,
+      1.39
+     ],
+     "axis": "y",
+     "r": 0.042,
+     "h": 0.004,
+     "color": "#9EA3A8",
+     "role": "cut",
+     "targets": [
+      "R torso shoulder liner"
+     ]
+    },
+    {
+     "kind": "cyl",
      "name": "waist_yaw flange",
      "c": [
       0,
@@ -1701,7 +1765,7 @@
      "axis": "x",
      "r": 0.011,
      "h": 0.036,
-     "color": "#1B1C1F",
+     "color": "#BCC0C4",
      "role": "struct",
      "exposed": true,
      "material": "al7075"
@@ -1762,6 +1826,64 @@
      "role": "struct",
      "exposed": false,
      "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "L shoulder roll fairing",
+     "sections": [
+      {
+       "z": 1.3259999999999998,
+       "cx": -0.048,
+       "cy": 0.205,
+       "a": 0.007,
+       "b": 0.018,
+       "n": 2.6
+      },
+      {
+       "z": 1.3379999999999999,
+       "cx": -0.056,
+       "cy": 0.205,
+       "a": 0.0125,
+       "b": 0.018,
+       "n": 2.6
+      },
+      {
+       "z": 1.355,
+       "cx": -0.065,
+       "cy": 0.205,
+       "a": 0.0075,
+       "b": 0.018,
+       "n": 3.0
+      },
+      {
+       "z": 1.385,
+       "cx": -0.0665,
+       "cy": 0.205,
+       "a": 0.006,
+       "b": 0.017,
+       "n": 3.0
+      },
+      {
+       "z": 1.402,
+       "cx": -0.0665,
+       "cy": 0.205,
+       "a": 0.006,
+       "b": 0.0155,
+       "n": 3.0
+      },
+      {
+       "z": 1.4089999999999998,
+       "cx": -0.0665,
+       "cy": 0.205,
+       "a": 0.0045,
+       "b": 0.0085,
+       "n": 2.4
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [],
+     "material": "knit_pa12"
     },
     {
      "kind": "cyl",
@@ -1919,7 +2041,7 @@
      "axis": "x",
      "r": 0.011,
      "h": 0.036,
-     "color": "#1B1C1F",
+     "color": "#BCC0C4",
      "role": "struct",
      "exposed": true,
      "material": "al7075"
@@ -1980,6 +2102,64 @@
      "role": "struct",
      "exposed": false,
      "material": "al7075"
+    },
+    {
+     "kind": "loft",
+     "name": "R shoulder roll fairing",
+     "sections": [
+      {
+       "z": 1.3259999999999998,
+       "cx": -0.048,
+       "cy": -0.205,
+       "a": 0.007,
+       "b": 0.018,
+       "n": 2.6
+      },
+      {
+       "z": 1.3379999999999999,
+       "cx": -0.056,
+       "cy": -0.205,
+       "a": 0.0125,
+       "b": 0.018,
+       "n": 2.6
+      },
+      {
+       "z": 1.355,
+       "cx": -0.065,
+       "cy": -0.205,
+       "a": 0.0075,
+       "b": 0.018,
+       "n": 3.0
+      },
+      {
+       "z": 1.385,
+       "cx": -0.0665,
+       "cy": -0.205,
+       "a": 0.006,
+       "b": 0.017,
+       "n": 3.0
+      },
+      {
+       "z": 1.402,
+       "cx": -0.0665,
+       "cy": -0.205,
+       "a": 0.006,
+       "b": 0.0155,
+       "n": 3.0
+      },
+      {
+       "z": 1.4089999999999998,
+       "cx": -0.0665,
+       "cy": -0.205,
+       "a": 0.0045,
+       "b": 0.0085,
+       "n": 2.4
+      }
+     ],
+     "color": "#BCC0C4",
+     "role": "shell",
+     "open": [],
+     "material": "knit_pa12"
     },
     {
      "kind": "cyl",

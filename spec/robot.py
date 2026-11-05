@@ -306,6 +306,12 @@ link('torso', 19.96, [
                                                             (0.1652, 0.0)]), 'torso'),
     cut(revolve('R torso shoulder opening', 'y', (0, 0, SZ), [(-0.1652, 0.0), (-0.165, 0.0615), (-0.1182, 0.0615),
                                                             (-0.118, 0.0)]), 'torso'),
+    # iteration 31: what shows in the 4 mm gap round the cap was the black motor, a dark ring that drew the cap as a circle
+    # (Figure has a sleeve seam): a grey liner behind the gap, so the seam reads as a shadow line, not a band
+    dict(cyl('L torso shoulder liner', (0, 0.1465, SZ), 'y', 0.0625, 0.002, GREY, 'decal'), material='pa12'),
+    dict(cyl('R torso shoulder liner', (0, -0.1465, SZ), 'y', 0.0625, 0.002, GREY, 'decal'), material='pa12'),
+    cut(cyl('L torso liner hole', (0, 0.1465, SZ), 'y', 0.042, 0.004), 'L torso shoulder liner'),
+    cut(cyl('R torso liner hole', (0, -0.1465, SZ), 'y', 0.042, 0.004), 'R torso shoulder liner'),
 ], 'battery 13.1 kg (2.3 kWh, as Figure 03), compute, shoulder pitch and neck yaw actuators')
 
 joint('neck_yaw', 'torso', 'neck_yaw_link', (NX, 0, NZ), 'z', (-1.4, 1.4), 'RS00', out=+1)
@@ -470,10 +476,17 @@ link('L_shoulder_roll_link', 1.0, [
     cut(cyl('L upper arm socket in', (0, 0.17, SZ), 'y', CAP_R + 0.004, 0.07), 'L upper arm'),
     # from the roll flange on the back face: an axle out through the cap's hole, a short lug down behind the cap,
     # a step into the sleeve just under the cap (16 deg clear of the cap's sweep), a foot onto the yaw actuator
-    dict(cyl('L shoulder roll axle', (-0.0465, SY, SZ), 'x', 0.011, 0.036, BLACK), exposed=True),
+    dict(cyl('L shoulder roll axle', (-0.0465, SY, SZ), 'x', 0.011, 0.036, GREY), exposed=True),   # iteration 31: grey, in the gap
     rbox('L shoulder roll lug', (-0.064, SY, SZ - 0.0195), (0.006, 0.02, 0.065), 0.002, BLACK, exposed=True),
     rbox('L shoulder roll step', (-0.0555, SY, SZ - 0.048), (0.023, 0.02, 0.008), 0.002, BLACK, exposed=True),
     rbox('L shoulder roll foot', (-0.0435, SY, SZ - 0.07), (0.013, 0.02, 0.04), 0.002, BLACK),
+    # iteration 31 (a black bracket stood out behind the shoulder in the side and back views; Figure shows only sleeve): a
+    # grey fairing over lug and step, part of the arm's back line. Behind the plane the cap's back turns in, so the
+    # roll never sweeps it
+    loft('L shoulder roll fairing', [(SZ - 0.064, -0.048, SY, 0.007, 0.018, 2.6), (SZ - 0.052, -0.056, SY, 0.0125, 0.018, 2.6),
+                                     (SZ - 0.035, -0.065, SY, 0.0075, 0.018, 3.0), (SZ - 0.005, -0.0665, SY, 0.006, 0.017, 3.0),
+                                     (SZ + 0.012, -0.0665, SY, 0.006, 0.0155, 3.0), (SZ + 0.019, -0.0665, SY, 0.0045, 0.0085, 2.4)],
+         open=()),
 ])
 joint('L_shoulder_yaw', 'L_shoulder_roll_link', 'L_shoulder_yaw_link', (0, SY, SZ - 0.12), 'z', (-2.6, 2.6),
       'RS02', act_c=(0, SY, SZ - 0.09), out=-1, exposed='flange')   # its flange shows in the seam
