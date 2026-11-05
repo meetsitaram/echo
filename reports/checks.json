@@ -1094,8 +1094,8 @@
  {
   "group": "sweep",
   "item": "L_wrist_pitch",
-  "status": "FAIL",
-  "detail": "upper +0.90: blocked at +0.86 rad by L wrist cuff / L wrist housing (across the joint) (0 cm3); lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent)"
+  "status": "WARN",
+  "detail": "[-0.90, +0.90] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent)"
  },
  {
   "group": "sweep",

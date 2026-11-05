@@ -1,8 +1,8 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-05 02:59, 151 s
+spec: `spec/robot.json`, 2026-11-05 03:06, 153 s
 
-249 checks: 241 pass, 6 warn, **2 fail**
+249 checks: 241 pass, 7 warn, **1 fail**
 
 ## targets
 
@@ -225,7 +225,7 @@ spec: `spec/robot.json`, 2026-11-05 02:59, 151 s
 | WARN | L_shoulder_yaw | [-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent) |
 | PASS | L_elbow | [-1.90, +0.00] rad clear |
 | WARN | L_wrist_yaw | [-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent) |
-| FAIL | L_wrist_pitch | upper +0.90: blocked at +0.86 rad by L wrist cuff / L wrist housing (across the joint) (0 cm3); lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent) |
+| WARN | L_wrist_pitch | [-0.90, +0.90] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent) |
 | PASS | L_wrist_roll | [-0.60, +0.60] rad clear |
 | PASS | L_hip_pitch | [-1.65, +0.24] rad clear |
 | WARN | L_hip_roll | [-0.35, +0.60] rad clear; lower: L_foot / R_foot: L sole / R shoe midsole at -0.10 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent) |

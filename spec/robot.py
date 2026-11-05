@@ -576,7 +576,8 @@ joint('L_wrist_pitch', 'L_wrist_yaw_link', 'L_wrist_pitch_link', (0, SY, WZ), 'x
 # faces. Below the pitch motor its sides draw in, so the points that would swing up into the cuff at 0.9 rad stay under it.
 WRIST_HOUSING_R = 0.0325                  # the lower end, round about the roll axis (the palm stays where it is, now 5.5 mm off)
 WRIST_HOUSING = [(WZ + 0.009, 0, SY, 0.0325, 0.0325, 10.0), (WZ - 0.012, 0, SY, 0.0325, 0.0325, 10.0),
-                 (WZ - 0.027, 0, SY + 0.0008, 0.0325, 0.0305, 11.0), (WZ - 0.045, 0, SY + 0.0015, 0.0325, 0.0293, 12.0),
+                 (WZ - 0.02, 0, SY + 0.0003, 0.0325, 0.0300, 11.0), (WZ - 0.025, 0, SY + 0.0008, 0.0325, 0.0285, 12.0),
+                 (WZ - 0.045, 0, SY + 0.0015, 0.0325, 0.0293, 12.0),
                  (WZ - 0.06, 0, SY + 0.0015, 0.0325, 0.0293, 12.0)] + \
                 [(WZ - 0.06 - d, 0, SY + 0.0015, (WRIST_HOUSING_R ** 2 - d ** 2) ** 0.5, 0.0293, 12.0)
                  for d in (0.01, 0.02, 0.026, 0.03, 0.032)]
