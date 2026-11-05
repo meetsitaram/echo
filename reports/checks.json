@@ -33,7 +33,7 @@
   "group": "targets",
   "item": "fingertip_z",
   "status": "PASS",
-  "detail": "0.720 (photo 0.71 +/- 0.03)"
+  "detail": "0.716 (photo 0.71 +/- 0.03)"
  },
  {
   "group": "targets",
@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.33 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "57.38 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1058,8 +1058,8 @@
  {
   "group": "sweep",
   "item": "L_shoulder_pitch",
-  "status": "WARN",
-  "detail": "[-3.00, +1.00] rad clear; upper: L_hand / L_hip_yaw_link: L thumb / L thigh at +0.08 rad (pose-dependent)"
+  "status": "PASS",
+  "detail": "[-3.00, +1.00] rad clear"
  },
  {
   "group": "sweep",
@@ -1071,7 +1071,7 @@
   "group": "sweep",
   "item": "L_shoulder_yaw",
   "status": "WARN",
-  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L thumb / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
  },
  {
   "group": "sweep",
@@ -1083,7 +1083,7 @@
   "group": "sweep",
   "item": "L_wrist_yaw",
   "status": "WARN",
-  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L thumb / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
  },
  {
   "group": "sweep",
@@ -1094,14 +1094,14 @@
  {
   "group": "sweep",
   "item": "L_wrist_roll",
-  "status": "WARN",
-  "detail": "[-0.60, +0.60] rad clear; upper: L_hand / L_hip_yaw_link: L thumb / L thigh at +0.37 rad (pose-dependent)"
+  "status": "PASS",
+  "detail": "[-0.60, +0.60] rad clear"
  },
  {
   "group": "sweep",
   "item": "L_hip_pitch",
-  "status": "WARN",
-  "detail": "[-1.65, +0.24] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L thumb at -0.34 rad (pose-dependent)"
+  "status": "PASS",
+  "detail": "[-1.65, +0.24] rad clear"
  },
  {
   "group": "sweep",
@@ -1209,7 +1209,7 @@
   "group": "poses",
   "item": "deep squat: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.8 cm inside the feet"
  },
  {
   "group": "poses",
@@ -1317,13 +1317,13 @@
   "group": "torque",
   "item": "R_elbow",
   "status": "PASS",
-  "detail": "10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 93 % used"
+  "detail": "10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
  },
  {
   "group": "torque",
   "item": "L_elbow",
   "status": "PASS",
-  "detail": "10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 93 % used"
+  "detail": "10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
  },
  {
   "group": "torque",
@@ -1335,25 +1335,25 @@
   "group": "torque",
   "item": "L_knee",
   "status": "PASS",
-  "detail": "134.1 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 84 % used"
+  "detail": "134.2 N m x 1.5 in 'step up a stair' vs peak 240 N m (1 x RS04 x 2.0): 84 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "58.2 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 73 % used"
+  "detail": "58.3 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 73 % used"
  },
  {
   "group": "torque",
   "item": "R_shoulder_roll",
   "status": "PASS",
-  "detail": "14.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 58 % used"
+  "detail": "14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used"
  },
  {
   "group": "torque",
   "item": "L_shoulder_roll",
   "status": "PASS",
-  "detail": "14.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 58 % used"
+  "detail": "14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used"
  },
  {
   "group": "torque",
@@ -1389,25 +1389,25 @@
   "group": "torque",
   "item": "L_shoulder_pitch",
   "status": "PASS",
-  "detail": "15.6 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used"
+  "detail": "15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used"
  },
  {
   "group": "torque",
   "item": "R_shoulder_pitch",
   "status": "PASS",
-  "detail": "15.6 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used"
+  "detail": "15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "28.5 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
+  "detail": "28.6 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
  },
  {
   "group": "torque",
   "item": "R_hip_pitch",
   "status": "PASS",
-  "detail": "28.5 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
+  "detail": "28.6 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
  },
  {
   "group": "torque",
@@ -1453,12 +1453,6 @@
  },
  {
   "group": "torque",
-  "item": "R_hip_yaw",
-  "status": "PASS",
-  "detail": "0.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used"
- },
- {
-  "group": "torque",
   "item": "R_shoulder_yaw",
   "status": "PASS",
   "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
@@ -1468,6 +1462,12 @@
   "item": "L_shoulder_yaw",
   "status": "PASS",
   "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_hip_yaw",
+  "status": "PASS",
+  "detail": "0.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used"
  },
  {
   "group": "torque",

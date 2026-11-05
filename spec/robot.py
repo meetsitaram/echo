@@ -370,6 +370,12 @@ link('head', 1.95, [
 
 # ---------------------------------------------------------------- left arm (mirrored below)
 
+def finger(name, x, z, r=0.0105):
+    """A relaxed finger below the palm at x, reaching z below the wrist axis: a base and a tip curling toward the palm."""
+    zk = WZ - 0.16 - 0.6 * (z - 0.16)
+    return [cap(name, (x, SY, WZ - 0.16), (x, SY - 0.007, zk), r), cap(name + ' tip', (x, SY - 0.007, zk), (x, SY - 0.022, WZ - z), r)]
+
+
 def oval_pad(name, zc, y, side, w, h, n=2.3, t=0.0075, dome=0.0):
     """An oval pad standing in the side plane at y (w x h half-sizes, t half-thick) centred at height zc, rim black, a
     glossy centre (3/4 size) 1 mm prouder. side = +1 / -1: which way is out. dome: how much it thins toward its top
@@ -564,11 +570,12 @@ link('L_hand', 1.0, [
          material='hand'),
     # from the wrist roll flange down into the palm, outside the roll actuator's length
     rbox('L hand bracket', (0, SY - 0.030, WZ - 0.085), (0.02, 0.006, 0.042), 0.002, BLACK, exposed=True),
-    cap('L index', (0.033, SY, WZ - 0.16), (0.033, SY, WZ - 0.215), 0.0105),
-    cap('L middle', (0.011, SY, WZ - 0.16), (0.011, SY, WZ - 0.225), 0.0105),
-    cap('L ring', (-0.011, SY, WZ - 0.16), (-0.011, SY, WZ - 0.22), 0.0105),
-    cap('L little', (-0.033, SY, WZ - 0.16), (-0.033, SY, WZ - 0.205), 0.0100),
-    cap('L thumb', (0.042, SY - 0.012, WZ - 0.10), (0.058, SY - 0.032, WZ - 0.157), 0.0115),
+    # iteration 30 (Figure's hands hang relaxed: fingers curling toward the palm, the thumb in front; straight capsules
+    # read as a paddle): two capsules a finger, the tip turning in. No joints: the curl stays clear of the thigh by 2 mm
+    *finger('L index', 0.033, 0.219), *finger('L middle', 0.011, 0.229), *finger('L ring', -0.011, 0.224),
+    *finger('L little', -0.033, 0.209, r=0.0098),
+    cap('L thumb', (0.042, SY - 0.012, WZ - 0.105), (0.056, SY - 0.022, WZ - 0.14), 0.0115),
+    cap('L thumb tip', (0.056, SY - 0.022, WZ - 0.14), (0.052, SY - 0.026, WZ - 0.172), 0.0105),
 ], 'dexterous hand placeholder (about 1 kg)')
 
 # The knee (iteration 19, user: "real knees with actuators won't look like this"), a hinge; iteration 26: bent 35 deg
