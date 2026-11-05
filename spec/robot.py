@@ -599,9 +599,14 @@ link('L_hand', 1.0, [
 # outside the drum: cheeks at both ends of the axis, each with a stub axle through a round hole in the drum's end wall
 # to the knuckle inside (a clevis, as Unitree's and Asimov's knees); the pads are domes on the thigh's flat sides.
 # Figure's side frame shows just this: oval domes on a narrow neck under a hem.
-KNEE_R, KNEE_SOCKET = 0.060, 0.064
+# Iteration 33 (DECISIONS 4: the spec's 2:1 linkage cannot work, a 4-bar over this range averages about 1.05:1; X2 at 120
+# N m and G1 drive the knee directly): an RS04 on the axis, inside the drum, its stator on the outer cheek, its output
+# on a plate of the shank that rides on the inner stub axle. So the drum is 6 mm larger in radius (3 mm round the d120
+# motor), the shank's top that much deeper, the thigh's end and the fold plane with it. It FAILS the stair check on
+# purpose (134 N m static against 120): the v5d run decides, and the check stands.
+KNEE_R, KNEE_SOCKET = 0.066, 0.070
 KNEE_W = 0.0615                           # the neck's half width, 2 mm inside the cheeks
-KNEE_FOLD = ((-0.1, KZ + 0.0763 + 0.06494), (0.1, KZ + 0.0763 - 0.06494))
+KNEE_FOLD = ((-0.1, KZ + 0.0834 + 0.06494), (0.1, KZ + 0.0834 - 0.06494))
 
 
 def knee_ray(deg, r=0.1):
@@ -778,31 +783,29 @@ link('L_hip_yaw_link', 3.6, [
     cut(loft('L thigh fold', [(KZ - 0.06, -0.05, HY, 0.1, 0.09, 8.0), (KZ + 0.2, -0.05, HY, 0.1, 0.09, 8.0)],
              clip=[below(*KNEE_FOLD), above(knee_ray(236.8), knee_ray(56.8))]), 'L thigh'),
     # its underside dark, as the elbow's hem
-    loft('L thigh hem', [(KZ + 0.02, -0.002, HY, 0.062, 0.063, 4.0), (KZ + 0.17, -0.008, HY, 0.070, 0.066, 3.0)],
+    loft('L thigh hem', [(KZ + 0.02, -0.002, HY, 0.068, 0.063, 4.0), (KZ + 0.17, -0.008, HY, 0.070, 0.066, 3.0)],
          BLACK, 'decal', open=(), clip=[below(*up(KNEE_FOLD, 0.004)), above(*up(KNEE_FOLD, -0.0005)),
                                         above(knee_ray(236.8), knee_ray(56.8))]),
-    # to the knee drum's crank (inside the drum); it stops 1 cm above the drum
-    dict(cap('L knee pushrod', (0.035, HY, KZ + 0.15), (0.035, HY, KZ + 0.062), 0.008, BLACK, 'struct'),
-         exposed=True),
-    # in front, beside the pushrod (behind it the calf's ankle actuators fold up at deep knee bends); from the
-    # yoke, 1 cm above the drum, up into the hip yaw flange
-    span('L thigh frame', KZ + 0.068, HZ - 0.14, x=0.024, y=HY, sx=0.024, sy=0.08, color=BLACK, exposed=True),
-    rbox('L knee yoke', (0.028, HY, KZ + 0.072), (0.024, 0.127, 0.012), 0.002, BLACK, exposed=True),
-    # the fork: a cheek each side, outside the drum (3 mm 7075, inside the thigh's wall above the hem), and a stub axle through the drum's end wall to the
-    # knuckle
-    rbox('L knee cheek in', (0.006, HY - 0.064, KZ + 0.0275), (0.024, 0.003, 0.095), 0.002, BLACK, exposed=True),
-    rbox('L knee cheek out', (0.006, HY + 0.064, KZ + 0.0275), (0.024, 0.003, 0.095), 0.002, BLACK, exposed=True),
-    dict(cyl('L knee axle in', (0, HY - 0.0488, KZ), 'y', 0.02, 0.0295, BLACK), exposed=True),
-    dict(cyl('L knee axle out', (0, HY + 0.0488, KZ), 'y', 0.02, 0.0295, BLACK), exposed=True),
+    # in front (behind it the calf's ankle actuators fold up at deep knee bends); from the yoke, above the drum, up into the
+    # hip yaw flange. Iteration 33: the frame no longer has a motor to pass through (it did, at x 12-36 mm, y +-40)
+    span('L thigh frame', KZ + 0.074, HZ - 0.14, x=0.024, y=HY, sx=0.024, sy=0.08, color=BLACK, exposed=True),
+    rbox('L knee yoke', (0.028, HY, KZ + 0.078), (0.024, 0.127, 0.012), 0.002, BLACK, exposed=True),
+    # the fork: a cheek each side, outside the drum, inside the thigh's wall above the hem (3 mm 7075, 5.6 cm wide: the motor's
+    # peak 120 N m about 77 MPa as a beam; a hand estimate). Outer: on the stator's back. Inner: a stub axle, the idler for
+    # the shank's output plate, so the joint is held on both sides; each through a round hole in the drum's end wall
+    rbox('L knee cheek in', (0, HY - 0.064, KZ + 0.018), (0.052, 0.003, 0.096), 0.002, BLACK, exposed=True),
+    rbox('L knee cheek out', (0, HY + 0.064, KZ + 0.018), (0.052, 0.003, 0.096), 0.002, BLACK, exposed=True),
+    rbox('L knee cheek in top', (0.02, HY - 0.064, KZ + 0.075), (0.02, 0.003, 0.018), 0.001, BLACK, exposed=True),
+    rbox('L knee cheek out top', (0.02, HY + 0.064, KZ + 0.075), (0.02, 0.003, 0.018), 0.001, BLACK, exposed=True),
+    dict(cyl('L knee axle in', (0, HY - 0.0507, KZ), 'y', 0.02, 0.024, BLACK), exposed=True),
+    dict(cyl('L knee mount out', (0, HY + 0.0452, KZ), 'y', 0.02, 0.036, BLACK), exposed=True),
     # Figure's knees: black pads on both sides of the joint (front video frame 1:50), not a front kneecap; 10 cm wide x
     # 14 cm tall, centred 1 cm above the axis (iteration 14). Iteration 26: domes on the thigh's flat sides, 1.2 cm proud
     *dome_pad('L knee pad in', KZ + 0.01, HY - 0.0665, -1, 0.05, 0.07, 0.012),
     *dome_pad('L knee pad out', KZ + 0.01, HY + 0.0665, +1, 0.05, 0.07, 0.012),
-], 'knee RS04 drives the shank through a 2:1 linkage')
+], 'knee RS04 on the axis, stator on the outer cheek')
 # flexion 2.15 rad (iteration 17: through the knee zone the calf meets the thigh at 2.2; the deep squat uses 2.0)
-joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', act_c=None, remote=True,
-      capacity=dict(model='RS04', count=1, ratio=2.0))
-JOINTS[-1]['act_c'] = [0, HY, KZ + 0.185]
+joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', out=-1)
 SHANK = lambda f: AZ + 0.045 + f * (KZ - AZ - 0.01)      # height at fraction f of the shank skin
 # rods behind the ankle, either side; their foot ends (iteration 17: 3 cm behind, inside the slim lower calf; at
 # 4.5 cm they showed behind it; at 3.7 cm out they showed through the sock)
@@ -847,7 +850,7 @@ link('L_knee_link', 2.08, [
     loft('L shank', [(SHANK(0), 0.0, HY, 0.040, 0.042, 2.2), (SHANK(0.159), -0.006, HY, 0.046, 0.044, 2.2),
                      (SHANK(0.27), -0.010, HY, 0.0500, 0.052, 2.4), (SHANK(0.386), -0.010, HY, 0.0525, 0.056, 2.5),
                      (SHANK(0.49), -0.010, HY, 0.0525, 0.058, 2.5), (SHANK(0.60), -0.010, HY, 0.0525, 0.060, 2.4),
-                     (KZ - 0.075, -0.004, HY, 0.056, KNEE_W, 2.8), (KZ - 0.03, -0.001, HY, 0.0585, KNEE_W, 5.0),
+                     (KZ - 0.075, -0.004, HY, 0.058, KNEE_W, 2.8), (KZ - 0.03, -0.001, HY, 0.0635, KNEE_W, 5.0),
                      (KZ - 0.008, 0.0, HY, KNEE_R - 0.001, KNEE_W, 12.0), (KZ, 0.0, HY, KNEE_R - 0.0005, KNEE_W, 16.0)],
          clip=above(*up(TRIM_HIGH, -0.002))),
     loft('L ankle collar', [(0.11, -0.004, HY, 0.0395, 0.0465, 2.2), (0.15, -0.006, HY, 0.0455, 0.0470, 2.2),
@@ -859,14 +862,15 @@ link('L_knee_link', 2.08, [
          clip=[above(*SOCK_LOW), below(*up(TRIM_LOW, 0.002))]),
     # the upper half of the drum (below it would only be a wall inside the shank); the axles turn in round holes
     cyl('L knee drum', (0, HY, KZ), 'y', KNEE_R, 2 * KNEE_W, GREY, 'shell'),
-    cut(rbox('L knee drum lower', (0, HY, KZ - 0.064), (0.14, 0.14, 0.1), 0.001), 'L knee drum'),
+    cut(rbox('L knee drum lower', (0, HY, KZ - 0.066), (0.15, 0.14, 0.1), 0.001), 'L knee drum'),
     cut(cyl('L shank axle hole in', (0, HY - KNEE_W + 0.002, KZ), 'y', 0.023, 0.012), 'L shank', 'L knee drum'),
     cut(cyl('L shank axle hole out', (0, HY + KNEE_W - 0.002, KZ), 'y', 0.023, 0.012), 'L shank', 'L knee drum'),
-    # the knuckle inside it carries the shank plates and the pushrod's crank
-    cyl('L knee knuckle', (0, HY, KZ), 'y', 0.03, 0.068, BLACK),
+    # the shank plates stop under the motor; a bridge carries them to the plate on the motor's output
+    rbox('L shank knee bridge', (0, HY - 0.00325, KZ - 0.070), (0.04, 0.0705, 0.008), 0.002, BLACK, exposed=True),
+    rbox('L shank output plate', (0, HY - 0.0355, KZ - 0.0225), (0.05, 0.006, 0.103), 0.003, BLACK, exposed=True),
     # clamping the ankle motors between them (iteration 16: the narrower RS06 floated 2.5 mm clear of plates at 29 mm)
-    span('L shank plate in', SHANK(0), KZ - 0.01, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    span('L shank plate out', SHANK(0), KZ - 0.01, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
+    span('L shank plate in', SHANK(0), KZ - 0.066, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
+    span('L shank plate out', SHANK(0), KZ - 0.066, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
     # iteration 17: 5 cm lower, below the knee zone's slanted bottom
     cyl('L ankle actuator A (buy) RS06', (-0.01, HY, SHANK(0.60)), 'y', ACT['RS06']['r'], ACT['RS06']['h'],
         '#3A3D42', 'actuator'),
