@@ -27,14 +27,14 @@ in a concave socket 4 mm clear of the drum. Leave a narrow seam on the outside o
 and an open notch on the inside, where the calf folds up (123°). Covers that stop short of the axis instead show a
 black block in a gap: "real knees with actuators won't look like this".
 
-**Cup (elbow).** Both covers run on round the actuator, hollow round it, side walls kept.
-- The child ends on a line through the axis.
-- The parent closes the outside of the fold down to 6° from where full flexion turns that line.
-- In front, the parent is cut to the child's front face at full flexion, 4 mm clear: the fold's notch, which a
-  rigid cover cannot avoid.
-- Carry the actuator's stator from the sector the child never reaches.
-- Set a disc into a flat side wall, with the other cover's wall wrapping it 3 mm clear. A disc standing off a
-  rounded arm reads as a disc on a post.
+**Hinge with a tangent hem (elbow).** A cup, with both covers running on round the actuator and a recessed sleeve between
+them, passed every check and read as separate parts when bent. Instead:
+- Make the child's top a drum round about the axis, 3 mm round the actuator, narrower than the arm.
+- End the parent in a socket 4 mm clear of the drum, running into one plane tangent to the circle the child's front
+  face rolls on at full flexion, so hem and socket are one line. Darken the hem's underside.
+- Carry the stator from outside, by a cheek under the pad, its mount through a round hole in the drum's wall.
+- Lay a pad on the flat side and dome it in both directions: an edge of full thickness reads as a puck.
+- Judge it at the bends it is used at, from the user's angle, not at the zero pose.
 
 **Socket round a crossing (shoulder roll over pitch).** Give the inner cover a hemisphere about the point where
 the axes cross, and cut the next cover as a socket 4 mm round it. Take the output out on the axis: a round hole on

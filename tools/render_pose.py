@@ -127,7 +127,7 @@ def main():
     if '--views' in sys.argv:
         for v in ('side', '34', 'front', 'back'):
             out = os.path.join(G.ROOT, 'reports', 'compare', f'replica_{v}.png')
-            sc.render({}, v, 800, 600, 1.9, 0.86).save(out)
+            sc.render({}, v, 1600, 1200, 1.9, 0.86).save(out)   # twice the frames' size: the close-up crops stay sharp
             print(out, flush=True)
         with open(os.path.join(G.ROOT, 'reports', 'compare', 'replica_source.txt'), 'w', encoding='utf-8') as fh:
             fh.write('offline render of the spec shapes')    # compare.py's panel label; build.render removes it

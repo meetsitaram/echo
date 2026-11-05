@@ -81,7 +81,7 @@ def panel(path, h_px, targets, title):
 
 
 BANDS = {'head': (1.36, 1.75), 'shoulders': (1.05, 1.55), 'hips': (0.70, 1.20),
-         'knees': (0.30, 0.80),                            # close-ups for review (metres above the floor)
+         'knees': (0.30, 0.80), 'feet': (0.0, 0.26, 0.75),   # close-ups for review (metres above the floor)
          'elbows': (1.03, 1.29, 1.0)}                      # (wider: both elbows in the front view)
 
 

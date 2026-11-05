@@ -376,18 +376,30 @@ def oval_pad(name, zc, y, side, w, h, n=2.3, t=0.0075, dome=0.0):
     return [pad, eye]
 
 
-# Elbow cups (iteration 20, user: "the parts adjacent to the actuators can be like a cup into which the actuator can
-# slide and turn"; Figure's elbow is a black disc on the outer side with the grey covers wrapped round it). Angles
-# about the elbow axis seen from the side: 0 = forward, 90 = up. Both covers run on to the axis, as deep as the arm
-# (ELBOW_A), hollow round the actuator and a grey sleeve on it (ELBOW_SLEEVE, the forearm 3 mm clear of it); their
-# side walls stay. The forearm ends on a line through the axis (12 deg in front, 192 behind); flexing 1.9 rad it
-# turns that line to 121 deg, so the upper arm closes the back down to 186 deg (a 6 deg seam) and the actuator's
-# stator is held by a bracket behind it, in the sector the forearm never reaches. In front the upper arm stops where
-# the forearm's front face reaches at full flexion (FOLD, 4 mm clear): the fold's notch, which a rigid cover cannot
-# avoid (Figure's knit creases there). Figure's disc (about 9 x 12 cm) stands outside the arm on a mount through a
-# hole in the forearm's side wall. Before, both covers stopped short and the elbow showed as a 9 cm black band.
-ELBOW_SLEEVE, ELBOW_A = 0.0475, 0.0535
-FOLD = ((-0.1, EZ + 0.060 - 0.0263), (0.1, EZ + 0.060 + 0.0263))
+def dome_pad(name, zc, y, side, w, h, t):
+    """A domed oval pad on the side plane y (side = +1 / -1: which way is out), w x h half-sizes, t proud at its centre,
+    thinning to nothing at its whole rim (iteration 23: an edge of full thickness left and right, as oval_pad has, reads
+    as a puck from a 3/4 view). One glossy piece, as Figure's."""
+    ds = [h * d for d in (-0.995, -0.97, -0.9, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 0.9, 0.97, 0.995)]
+    k = lambda d: max(1 - (d / h) ** 2, 0.0) ** 0.5
+    return [loft(name, [(zc + d, 0.0, y, w * k(d), t * k(d), 2.0) for d in ds], GLOSS, open=(),
+                 clip=((0.0, y, 0.0), (0.0, float(side), 0.0)))]
+
+
+# Elbow cups (iteration 20) gave way to a hinge (iteration 23, user, circling the elbow bent about 30 deg in the walk:
+# "You see how the elbow joint is not realistic?"; the upper arm ended in a flat wedge over a slab-topped forearm with
+# a mouth between them showing a recessed sleeve, and a round puck stood off the side). Figure's elbow, close-ups of
+# the side frame (arm bent ~35 deg) and front frame: a domed black oval, about 8.6 x 12.3 cm, each side of a narrow grey
+# forearm neck, the upper arm ending above it in a hem. So, as the knee (joint-covers.md, "hinge"): the forearm's top
+# is a DRUM round about the axis (ELBOW_R, 3 mm round the actuator), which maps onto itself at every bend. The upper
+# arm's end is a socket 4 mm clear of it behind the top, and in front one plane tangent to the circle the forearm's
+# front face rolls on at full flexion (FOLD, 3.5 mm clear at 1.9 rad), so hem and socket are one smooth line. The
+# stator is carried from outside (a cheek plate under the pad) rather than from a bracket behind it, the sector the
+# forearm's drum now needs: output on the inner face, stator held on the outer, as a fork holds a hinge.
+up = lambda line, dz: tuple((x, z + dz) for x, z in line)
+ELBOW_R, ELBOW_A = 0.050, 0.054           # drum radius; the upper arm's half depth at the elbow, = the socket's radius
+ELBOW_W = 0.0405                          # the neck's half width, as Figure's narrow neck between the pads
+FOLD = ((-0.1, EZ + 0.0544 - 0.03425), (0.1, EZ + 0.0544 + 0.03425))
 
 
 def elbow_ray(deg, r=0.1):
@@ -443,31 +455,31 @@ link('L_shoulder_roll_link', 1.0, [
 joint('L_shoulder_yaw', 'L_shoulder_roll_link', 'L_shoulder_yaw_link', (0, SY, SZ - 0.12), 'z', (-2.6, 2.6),
       'RS02', act_c=(0, SY, SZ - 0.09), out=-1, exposed='flange')   # its flange shows in the seam
 link('L_shoulder_yaw_link', 1.05, [
-    # iteration 17: ended 6 cm above the elbow axis (a 9 cm black elbow zone); iteration 20: on round the elbow,
-    # down to 186 deg behind, the fold cut out in front (the sector -10..125 deg below FOLD)
-    # squarer at the elbow (n 4): flat sides the disc sits flush on, as Figure's (round, it stood off the arm)
+    # squarer at the elbow (n 4): flat sides under the pad, as Figure's. Iteration 23: ends in a hem and a socket round
+    # the forearm's drum; a plane stops the socket's tail where it would thin to nothing behind the elbow
     loft('L upper arm lower', [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
                                (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.120, 0, SY, 0.053, 0.044, 2.2)],
-         clip=above(elbow_ray(186), elbow_ray(6))),
+         clip=above((-1.0, EZ + 0.02), (1.0, EZ + 0.02))),
+    cut(cyl('L upper arm elbow socket', (0, SY, EZ), 'y', ELBOW_A, 0.12), 'L upper arm lower'),
+    # in front of where the tangent plane meets the socket (91 deg), everything below the plane
     cut(loft('L upper arm fold', [(EZ - 0.06, 0, SY, 0.1, 0.06, 8.0), (EZ + 0.12, 0, SY, 0.1, 0.06, 8.0)],
-             clip=[below(*FOLD), above(elbow_ray(305), elbow_ray(125)), above(elbow_ray(170), elbow_ray(350))]),
-        'L upper arm lower'),
-    # hollow round the actuator, overlapping the sleeve by 2 mm (pieces that only touch fall apart)
-    cut(cyl('L upper arm elbow socket', (0, SY, EZ), 'y', ELBOW_SLEEVE - 0.002, 0.077), 'L upper arm lower'),
-    # a grey sleeve on the actuator: what shows of the elbow in the fold's notch
-    cyl('L elbow sleeve', (0, SY + 0.0025, EZ), 'y', ELBOW_SLEEVE, 0.055, GREY, 'shell'),
-    cut(cyl('L elbow sleeve bore', (0, SY + 0.0025, EZ), 'y', ELBOW_SLEEVE - 0.003, 0.06), 'L elbow sleeve'),
-    # the frame now starts above the forearm's reach (it met the forearm at 113 deg); the actuator hangs from it by a
-    # bracket behind (its top end shows in the shoulder yaw seam)
+             clip=[below(*FOLD), above(elbow_ray(271.4), elbow_ray(91.4))]), 'L upper arm lower'),
     span('L upper arm frame', EZ + 0.066, SZ - 0.115, y=SY, sx=0.03, sy=0.03, exposed=True),
-    # (in the hollow round the actuator, which the skin check counts as outside the covers)
-    rbox('L elbow bracket', (-0.042, SY, EZ + 0.0375), (0.012, 0.04, 0.075), 0.003, BLACK, exposed=True),
-    rbox('L elbow bridge', (-0.024, SY, EZ + 0.071), (0.048, 0.03, 0.014), 0.003),
-    # Figure's disc: round, set into the side wall (the forearm's U round it), 6 mm proud; on a mount from the
-    # actuator's outer face (an oval pad standing off the arm read as a disc on a post, 3/4 view)
-    dict(cyl('L elbow disc mount', (0, SY + 0.031, EZ), 'y', 0.02, 0.015, BLACK), exposed=True),
-    *oval_pad('L elbow disc', EZ, SY + 0.043, +1, w=0.044, h=0.044, n=2.0, t=0.006, dome=0.5),
-    cut(cyl('L upper arm disc hole in', (0, SY - 0.043, EZ), 'y', 0.015, 0.012), 'L upper arm lower'),
+    # the hem's underside dark, as Figure's hem has a shadow line under it, the grey wall's 3 mm edge round it: a light
+    # flat face there read as a cut with a lip
+    loft('L upper arm hem', [(EZ + 0.02, 0, SY, ELBOW_A - 0.003, 0.040, 4.0), (EZ + 0.085, 0, SY, 0.050, 0.040, 4.0)],
+         BLACK, 'decal', open=(), clip=[below(*up(FOLD, 0.004)), above(*up(FOLD, -0.0005)),
+                                        ahead(ELBOW_A * -0.03)]),
+    # the stator hangs from the frame by a bridge inside the hem, then a cheek under the pad (4 mm 7075, 2.4 cm wide: at
+    # the actuator's peak 36 N m about 95 MPa, 7075-T6 yields near 500), its mount through a round hole in the
+    # forearm's outer wall
+    rbox('L elbow bridge', (-0.006, SY + 0.027, EZ + 0.063), (0.012, 0.031, 0.010), 0.002, BLACK, exposed=True),
+    rbox('L elbow cheek', (0, SY + 0.0455, EZ + 0.016), (0.024, 0.004, 0.076), 0.002, BLACK, exposed=True),
+    # (the cheek's top, thicker inward and under the hem, is what meets the bridge: above it the pad is too thin)
+    rbox('L elbow cheek top', (0, SY + 0.0445, EZ + 0.056), (0.024, 0.006, 0.008), 0.001, BLACK, exposed=True),
+    dict(cyl('L elbow mount', (0, SY + 0.0345, EZ), 'y', 0.02, 0.0225, BLACK), exposed=True),
+    # Figure's oval (8.6 x 12.3 cm), a dome on the arm's flat side: 1.1 cm proud at its centre, thinning to its rim
+    *dome_pad('L elbow disc', EZ + 0.007, SY + 0.0435, +1, 0.043, 0.0615, 0.011),
 ])
 # Elbow: RS06 (88 mm), the size of Figure's elbow disc. User decision 2026-10-31: smaller elbows at the cost of
 # holding capacity (RS04 120 mm carried 20 kg short / 10 kg continuous; RS06 carries about 10 kg short / 4 kg
@@ -475,22 +487,21 @@ link('L_shoulder_yaw_link', 1.05, [
 # from outside the elbow is a clean black disc.
 # flexion 129 deg (iteration 11: the deeper oval forearm meets the upper arm at 135); 109 deg (iteration 17: with
 # the covers swept too, the forearm meets the upper arm's frame in the elbow zone at 113)
-joint('L_elbow', 'L_shoulder_yaw_link', 'L_elbow_link', (0, SY, EZ), 'y', (-1.9, 0.0), 'RS06', out=-1,
-      exposed=True)
+joint('L_elbow', 'L_shoulder_yaw_link', 'L_elbow_link', (0, SY, EZ), 'y', (-1.9, 0.0), 'RS06', out=-1)
 link('L_elbow_link', 0.85, [
     # no narrower than 0.085 across: the wrist yaw RS02 (79 mm) sits in the lower forearm
     # iteration 17: ends 6 mm above the lower forearm (a seam at the wrist yaw joint)
-    # iteration 20: flaring to the elbow's depth and on to a line through the axis (12 deg in front, 192 behind),
-    # hollow round the sleeve between its side walls; the outer wall wraps the disc 3 mm clear
-    loft('L forearm', [(EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2), (EZ - 0.07, 0, SY, 0.048, 0.043, 2.2),
-                       (EZ - 0.030, 0, SY, 0.048, 0.043, 2.2), (EZ - 0.010, 0, SY, ELBOW_A, 0.0425, 4.0),
-                       (EZ + 0.020, 0, SY, ELBOW_A, 0.0425, 4.0)],
-         clip=below(elbow_ray(192), elbow_ray(12))),
-    cut(cyl('L forearm socket', (0, SY, EZ), 'y', ELBOW_SLEEVE + 0.003, 0.077), 'L forearm'),
-    cut(cyl('L forearm disc opening', (0, SY + 0.043, EZ), 'y', 0.047, 0.016), 'L forearm'),
-    # a smaller disc on the inner side (Figure's elbow shows black both sides from the front), on the output's plate
-    dict(cyl('L elbow disc in mount', (0, SY - 0.040, EZ), 'y', 0.012, 0.014, BLACK), exposed=True),
-    *oval_pad('L elbow disc in', EZ, SY - 0.050, -1, w=0.03, h=0.03, n=2.0, t=0.004, dome=0.5),
+    # iteration 23: narrowing to the neck under the pads, up to the drum; the wrist yaw RS02 keeps its 3 mm at -0.07
+    loft('L forearm', [(EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2), (EZ - 0.07, 0, SY, 0.048, 0.0428, 2.2),
+                       (EZ - 0.045, 0, SY, 0.048, ELBOW_W + 0.0005, 2.6), (EZ - 0.022, 0, SY, 0.0485, ELBOW_W, 5.0),
+                       (EZ - 0.008, 0, SY, 0.0488, ELBOW_W, 12.0), (EZ, 0, SY, ELBOW_R - 0.0005, ELBOW_W, 16.0)]),   # 0.5 mm inside the drum: no coincident faces
+    # the upper half of the drum (the lower half would only be a wall inside the forearm)
+    cyl('L forearm drum', (0, SY, EZ), 'y', ELBOW_R, 2 * ELBOW_W, GREY, 'shell'),
+    cut(rbox('L forearm drum lower', (0, SY, EZ - 0.056), (0.12, 0.1, 0.1), 0.001), 'L forearm drum'),
+    cut(cyl('L forearm mount hole', (0, SY + ELBOW_W - 0.002, EZ), 'y', 0.023, 0.012), 'L forearm drum', 'L forearm'),
+    # the pad on the inner side: round, as it rides on the forearm and turns with it against the upper arm
+    dict(cyl('L elbow disc in mount', (0, SY - 0.039, EZ), 'y', 0.012, 0.012, BLACK), exposed=True),
+    *dome_pad('L elbow disc in', EZ, SY - 0.0435, -1, 0.043, 0.043, 0.011),
     # side plate from the elbow's output flange (inner face) down onto the wrist yaw actuator
     rbox('L forearm frame', (0, SY - 0.031, EZ - 0.035), (0.04, 0.008, 0.10), 0.003, BLACK, exposed=True),
 ])
@@ -761,7 +772,6 @@ SOCK_LOW = ((-0.10, 0.121), (0.06, 0.084))                # bottom of the sock, 
 TRIM_LOW, TRIM_HIGH = ((-0.04, 0.158), (0.04, 0.118)), ((-0.04, 0.203), (0.04, 0.146))
 # pieces cut apart along a plane overlap by 2 mm, hidden inside the bigger one (pieces that only touch fall apart
 # in the solid union: 'covers mounted' counted 156 slivers)
-up = lambda line, dz: tuple((x, z + dz) for x, z in line)
 # Ankle drive (parallel ankle, as Unitree G1 and Asimov 1): two motors high in the calf (a light lower leg), each
 # turning a crank that pushes a rod down to the heel of the foot plate, one left and one right of the ankle. Both
 # rods the same way: pitch; opposite: roll. Iteration 16 (user: "they look too big for ankles"): 2 x RS06 (88 mm)

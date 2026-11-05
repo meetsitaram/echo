@@ -2,19 +2,19 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 57.26 kg** (Figure 03: 61.0 kg).
+**Total 57.16 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
 | actuator | 22.99 | 40 % |
 | cells | 13.10 | 23 % |
-| al7075 | 8.98 | 16 % |
-| knit_pa12 | 3.86 | 7 % |
+| al7075 | 8.85 | 15 % |
+| knit_pa12 | 3.91 | 7 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
-| pc | 1.37 | 2 % |
+| pc | 1.41 | 2 % |
 | tpu | 1.03 | 2 % |
-| pa12 | 0.92 | 2 % |
+| pa12 | 0.85 | 1 % |
 | eva | 0.47 | 1 % |
 
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
@@ -27,10 +27,10 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_shoulder_pitch_link | 0.88 | 0.99 | +0.000 -0.195 +1.390 | 0.0008 0.0011 0.0013 |
 | L_shoulder_roll_link | 0.59 | 1.00 | -0.008 +0.205 +1.315 | 0.0005 0.0010 0.0011 |
 | R_shoulder_roll_link | 0.59 | 1.00 | -0.008 -0.205 +1.315 | 0.0005 0.0010 0.0011 |
-| L_shoulder_yaw_link | 1.03 | 1.05 | -0.005 +0.208 +1.173 | 0.0010 0.0021 0.0023 |
-| R_shoulder_yaw_link | 1.03 | 1.05 | -0.005 -0.208 +1.173 | 0.0010 0.0021 0.0023 |
-| L_elbow_link | 0.66 | 0.85 | +0.000 +0.196 +1.083 | 0.0005 0.0014 0.0014 |
-| R_elbow_link | 0.66 | 0.85 | +0.000 -0.196 +1.083 | 0.0005 0.0014 0.0014 |
+| L_shoulder_yaw_link | 0.88 | 1.05 | -0.001 +0.209 +1.174 | 0.0008 0.0019 0.0020 |
+| R_shoulder_yaw_link | 0.88 | 1.05 | -0.001 -0.209 +1.174 | 0.0008 0.0019 0.0020 |
+| L_elbow_link | 0.75 | 0.85 | -0.000 +0.197 +1.093 | 0.0008 0.0020 0.0021 |
+| R_elbow_link | 0.75 | 0.85 | +0.000 -0.197 +1.093 | 0.0008 0.0020 0.0021 |
 | L_wrist_yaw_link | 0.49 | 0.60 | +0.000 +0.205 +0.974 | 0.0003 0.0006 0.0006 |
 | R_wrist_yaw_link | 0.49 | 0.60 | -0.000 -0.205 +0.974 | 0.0003 0.0006 0.0006 |
 | L_wrist_pitch_link | 0.37 | 0.45 | +0.005 +0.205 +0.902 | 0.0001 0.0003 0.0003 |
