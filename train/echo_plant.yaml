@@ -1,0 +1,76 @@
+# The plant SuperMimic drives echo with. Keys are substrings of the joint name, first match wins.
+# effort, armature: urdf/echo.xml, itself from spec/actuators.json through tools/make_robot_files.py. Peak torques are retailer
+# numbers; armature and friction are estimates until the datasheets. Change them there, not here.
+# stiffness, damping: ours, a tracking choice and not a property of the design. kp about 1 N m/rad per N m of peak on the
+# legs, as G1's BeyondMimic gains (hip 99 N m/rad on 88 N m), half that at the shoulder pitch, which carries only an arm;
+# kd = 0.06 kp, again as G1's. The light wrists, forearm twist and neck get less: at 0.84 N m s/rad a hand diverged at the 5 ms step. Action scale = 0.25 effort / (armature w^2), the X2's convention.
+name: echo_20261104
+natural_freq_hz: 10.0
+damping_ratio: 2.0
+armature:
+  waist_yaw: 0.0162
+  neck: 0.001
+  shoulder_pitch: 0.0162
+  shoulder_roll: 0.00405
+  shoulder_yaw: 0.0018
+  elbow: 0.00405
+  wrist_yaw: 0.0018
+  wrist: 0.001
+  hip_pitch: 0.0162
+  hip_roll: 0.0162
+  hip_yaw: 0.0081
+  knee: 0.0648
+  ankle_pitch: 0.0081
+  ankle_roll: 0.002916
+effort:
+  waist_yaw: 120
+  neck: 14
+  shoulder_pitch: 120
+  shoulder_roll: 36
+  shoulder_yaw: 17
+  elbow: 36
+  wrist_yaw: 17
+  wrist: 14
+  hip_pitch: 120
+  hip_roll: 120
+  hip_yaw: 60
+  knee: 240
+  ankle_pitch: 72
+  ankle_roll: 43.2
+stiffness:
+  waist_yaw: 120
+  neck: 10
+  shoulder_pitch: 60
+  shoulder_roll: 36
+  shoulder_yaw: 17
+  elbow: 36
+  wrist_yaw: 10
+  wrist: 8
+  hip_pitch: 120
+  hip_roll: 120
+  hip_yaw: 60
+  knee: 240
+  ankle_pitch: 72
+  ankle_roll: 43.2
+damping:
+  waist_yaw: 7.2
+  neck: 0.4
+  shoulder_pitch: 3.6
+  shoulder_roll: 2.16
+  shoulder_yaw: 0.6
+  elbow: 2.16
+  wrist_yaw: 0.4
+  wrist: 0.3
+  hip_pitch: 7.2
+  hip_roll: 7.2
+  hip_yaw: 3.6
+  knee: 14.4
+  ankle_pitch: 4.32
+  ankle_roll: 2.6
+default_joint_pos:
+  hip_pitch: -0.2
+  knee: 0.45
+  ankle_pitch: -0.25
+  L_shoulder_roll: 0.1
+  R_shoulder_roll: -0.1
+  elbow: -0.3
