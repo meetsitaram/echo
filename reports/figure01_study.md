@@ -6,7 +6,7 @@ Our own measurements and descriptions, from one third-party video and one photo.
 
 - **Video:** youtu.be/dO830ROcXVs, 122.8 s, a third-party narrated re-upload of Figure's footage. Played at 1080p, scanned at 0.5 s steps, close-ups read at native pixels.
 - **Photo:** the frontal standing photo the user sent (1170 x 1608 px once rotated). It is the only frame sharp and frontal enough for a whole-body scale.
-- **Patents:** nine documents, assignee Figure AI Inc per Google Patents metadata (see "Patents by area of echo"). The downloaded USPTO PDFs have no text layer, so wording comes from Google Patents' text; verify against the PDFs. **Patents never name a robot. Linking one to Figure 01, 02 or 03 is always my inference.** Patent ranges are embodiments, not the dimensions of a shipped robot.
+- **Patents:** nine documents, assignee Figure AI Inc per Google Patents metadata (see "Patent documents used as technical sources"). The downloaded USPTO PDFs have no text layer, so wording comes from Google Patents' text; verify against the PDFs. **Patents never name a robot. Linking one to Figure 01, 02 or 03 is always my inference.** Patent ranges are embodiments, not the dimensions of a shipped robot.
 - **Sharpening:** the pelvis close-up (46-49 s) has halos around cables and smeared textures, so it looks AI-upscaled or sharpened. The photo has similar halos when enlarged. **Fine features, tiny text and thread shapes in those are unreliable; layout is usable.** Caption overlays hide parts of many shots.
 - **Not possible:** "mm to mm". Best honest accuracy is about ±10 % for large parts and ±15-25 % for small ones. Nothing here is a true dimension.
 - **Unknown:** playback speed, lens, and whether any walking was slowed down.
@@ -195,8 +195,6 @@ Figure's motors are custom; echo's are RobStride (`spec/actuator_interfaces.json
 | Cooling | None | Ribs on motor bodies in open air. STATED: fins on hip and ankle actuators (US12583126, US12649246); torso fans and vents (US12707556) | **Caution:** ribs on Figure 01 are in open air. Under fabric, the motor needs a conduction path or air path. Ribs alone won't transfer | RS motors' housings are fixed |
 | Cabling | None | Bundles near joints, boards near motors | **Don't copy external routing.** No hollow RobStride shaft, so plan service loops under the skin at waist, shoulder, wrist | |
 
-**Read this table with "Patents by area of echo" below.** Some layouts here are close to claimed subject matter, so which to adopt is a question for the user's lawyer, not a design default.
-
 ## Joint list stated in patents
 
 US12611766 (figs. 3A-3F, 9, 35-36, 43, 45-46; table 3), for "robot 1": 62 DoF total, 42 rotary actuators in seven types, height about 1725 mm, arm span about 1800 mm, arm under 20 % shorter than leg, torso about 20 L. Names are stated where I read them; J6, J7, J8, J15 and J16's roles are INFERRED from position. Generation is INFERRED (later than the video's robot).
@@ -244,23 +242,19 @@ None of this is published as fact about Figure 03. State it as inference in any 
 
 Thigh collar's purpose; elbow support on the video's robot; wrist motor arrangement; neck details; any patent-to-robot link; all materials (looks like machined aluminium, unconfirmed); gearbox types (patents list options); true torques; true walk speed.
 
-## Patents by area of echo
+## Patent documents used as technical sources
 
-Raw input for the user's lawyer. **Not a legal opinion: nothing here says whether echo is or isn't covered, or whether a claim is valid.** Claims are my brief summaries, so read the full text; a brief can't show what a claim really covers. Status and dates are from Google Patents metadata on 2026-11-05 and must be checked at the USPTO, including assignment, fees and family members. I did not search other countries' filings or other companies' patents, so this list is not a clearance search; Tesla, Unitree, Apptronik, Agility, Boston Dynamics and others appear in these documents' citation lists. "Echo facts" are design facts only.
+Read for how the mechanisms are arranged. They never name a robot.
 
-| Area | Number, title | Assignee | Status; priority; published or granted | Independent claims, in brief | Echo facts in this area |
-|---|---|---|---|---|---|
-| Waist, hips | US12583126 B2, central region arrangement | Figure AI Inc | Granted, Active; 2023-04-17; 2026-03-24 | 1: articulation member with orthogonal pitch and roll axes, spinal yaw actuator coupled to it, two upper actuators coupled to the torso moving it about both. 18: spinal actuator, rear support frame coupled to left and right hip yaw actuators and the spinal actuator, lower torso width over 67 % of pelvis width | Waist yaw only now. Rod waist under phase-two study. Hip order pitch, roll, yaw |
-| Ankle, shin | US12649246 B1, ankle region | Figure AI Inc | Granted, Active; 2024-02-21; printed 2026-06-09 | 1: flexion and roll actuators on the shin, roll rotor extent below the shin, pitch and roll axes not intersecting and staying orthogonal. 15: flexion actuator partly in the shin's interior cavity, connector rod down through it, foot force sensor between sole and ankle. 21: foot-roll rotor lower extent between shin and foot | Two motors in the shank, separate rods. No foot sensor modelled |
-| Torso, cooling | US12707556 B1, torso | Figure AI Inc | Granted, Active; 2024-03-13; 2026-08-11 | 1: side vent, fan, CPU and GPU heat sinks in the air path, vertically arranged. 6: left and right arm actuators, battery, rear exhaust vent and fan with a gap, intake below an arm actuator. 9: battery, side vent, heat sink between battery and torso's inner surface, fan flow along the side | Battery and compute in chest. No fans or vents yet |
-| Hips, whole-body layout | US12611766 B2, advanced kinematics | Figure AI Inc | Granted, Active; 2024-09-13; 2026-04-28 | 1: hip flex on the pelvis at a downward axis angle, knee axis co-planar with it, knee peak torque above torso twist's, no distinct torso pitch actuator. 16: flex on pelvis, roll on flex with a downward axis, twist on roll, no dedicated torso pitch actuator. 22: flex at a downward angle, roll, twist below both | Flex, roll, twist order. Hip axis horizontal. No torso pitch actuator now. Knee and waist yaw both 120 N-m |
-| Waist, hips | US20250312911 A1, hip assembly and kinematics | Figure AI Inc | Application, Pending; 2024-04-04; 2025-10-09 | 1: waist twist actuator, pelvis frame with lean actuator partly inside it, spine support joining them at a spine angle. 10: parallel leg twist and torso twist, no actuator above twist moving the torso toward the ground. 17: parallel twist axes, no direct structure between them, no rotary actuator co-linear below the torso axis | Waist on a vertical axis; hip twist on a parallel axis |
-| Knee, elbow, soft joints | US20260008178 A1, advanced joint assemblies | Figure AI Inc | Application, Pending; 2024-04-15; 2026-01-08 | 1: actuator above 70 N-m between two assemblies without substantial recesses at full flexion, axis offset from the plane between their midpoints. 10: 70-500 N-m actuator that halts if pinch pressure exceeds 250 N/cm2. 14: joint with attenuation member or cover, compressive force limited to 130 N | Knee and elbow redesign in progress. Knit gaiters. No pinch limit in control |
-| Foot | US20260103253 A1, leg | Figure AI Inc | Application, Pending; 2024-10-10; 2026-04-16 | 1: flex actuator, connecting rod, pedestal, single hinged passive toe biased to its start position. 14: sole with a partial-width slit between front and rear | Rigid foot, no toe |
-| Fabric cover | US20250242500 A1, exterior covering | Figure AI Inc | Application, Pending; 2023-04-17; 2025-07-31 | 1: at least 45 DoF, 65 % upper, flexible cover with different patterns over a joint and away from it, not over every DoF. 10: shoulder attenuation member under a textile torso cover with coupling means. 16: semi-transparent front and opaque rear head shells, textile regions of different patterns on neck and arm | Knit panels per link, foam option at pinch points, head and hood |
-| Fabric cover | US20260061625 A1, exterior covering | Figure AI Inc | Application, Pending; 2023-04-17; 2026-03-05 | 1: torso attenuation member of lattice cells with a torso cover beside it. 15: AI model generating continuous actions, polymer attenuation member deformed at a joint's limit, under a cover | Foam or lattice option in `garment_options.md`, soft stops, learned policy |
-
-**Pending applications may change or lapse. Granted patents may have dependents and continuations not listed.** Numbers are given so the lawyer can pull the originals; no drawings are copied here.
+- US12583126 B2: central region arrangement
+- US12649246 B1: ankle region
+- US12707556 B1: torso
+- US12611766 B2: advanced kinematics
+- US20250312911 A1: hip assembly and kinematics
+- US20260008178 A1: advanced joint assemblies
+- US20260103253 A1: leg
+- US20250242500 A1: exterior covering
+- US20260061625 A1: exterior covering
 
 ## Shot index (video time, s)
 

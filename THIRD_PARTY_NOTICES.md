@@ -40,6 +40,14 @@ included.
 `scenes/living_room/cc0/` holds nine texture photos from Poly Haven (polyhaven.com), released under CC0 1.0 (public
 domain). No conditions apply; they are listed with their sources in `scenes/living_room/cc0/SOURCES.md`.
 
+## Training and retargeting: not included
+
+| what | used for | licence | what it asks |
+|---|---|---|---|
+| BONES-SEED motion capture, Bones Studio (bones.studio) | the clips echo's walking policy trains on, and the motions in its videos | BONES-SEED Dataset License Agreement (bones.studio/info/seed-license) | Credit wherever results are shown: **Motion Data by Bones Studio**, linking to https://bones.studio/. If a trained model is shared, its README says: "Training data includes Motion Data by Bones Studio. Use of the underlying dataset is subject to the BONES Motion Capture Dataset License Agreement." Raw data and retargeted clips stay out of this repository |
+| soma-retargeter, the author's fork (github.com/meetsitaram/soma-retargeter) | retargeting the clips to echo | Apache-2.0, with its dependencies' licences in its `licenses/` folder | Keep its licence with any copy |
+| GR00T-WholeBodyControl, the author's fork (github.com/meetsitaram/GR00T-WholeBodyControl) | the SuperMimic training code | Source code Apache-2.0; NVIDIA's model weights under the NVIDIA Open Model License | Keep its licence with any copy. No NVIDIA weights are used in echo's policy, which is trained here |
+
 ## Used as tools, not included
 
 | tool | used for | licence |
@@ -57,6 +65,8 @@ their licences place no conditions on it.
 | Asimov 1, github.com/menloresearch/asimov-1 | the internal layout: one actuator per joint, hip pitch-roll-yaw, yaw-only waist, parallel ankle; joint orders and ranges read from its URDF | hardware CERN-OHL-S-2.0, software GPL-2.0 |
 | Unitree G1, H1-2, H2 URDFs, github.com/unitreerobotics/unitree_ros | joint orders, offsets and ranges, for comparison | BSD-3-Clause |
 | AgiBot A3, github.com/AgibotTech/A3-A3U-robot-model; AgiBot X2, github.com/AgibotTech/agibot_x2_urdf | joint orders, offsets and ranges, for comparison | Mulan PSL v2 |
+| RobStride manuals and STEP models, github.com/RobStride/Product_Information | hole patterns and sizes in `spec/actuator_interfaces.json`; motor outlines measured into `spec/actuator_outlines.json`. The maker's files are not in this repository | no licence stated in the files we read |
+| Figure 01 footage and photos, Figure's patent documents | how the mechanisms are arranged, in `reports/figure01_study.md`: our own measurements and descriptions. No frames or drawings are in this repository | their owners' copyright |
 
 ## Trademarks and the reference robot
 
