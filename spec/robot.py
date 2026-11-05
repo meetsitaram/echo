@@ -396,6 +396,10 @@ def dome_pad(name, zc, y, side, w, h, t):
 # front face rolls on at full flexion (FOLD, 3.5 mm clear at 1.9 rad), so hem and socket are one smooth line. The
 # stator is carried from outside (a cheek plate under the pad) rather than from a bracket behind it, the sector the
 # forearm's drum now needs: output on the inner face, stator held on the outer, as a fork holds a hinge.
+# the arm's yaw seams (iteration 24): spheres on the yaw axes, their tops 3.7 mm under each yaw actuator
+ARM_YAW_R, WRIST_YAW_R = 0.08, 0.07
+ARM_YAW_C = (0, SY, SZ - 0.1165 - ARM_YAW_R)
+WRIST_YAW_C = (0, SY, EZ - 0.1215 - WRIST_YAW_R)
 up = lambda line, dz: tuple((x, z + dz) for x, z in line)
 ELBOW_R, ELBOW_A = 0.050, 0.054           # drum radius; the upper arm's half depth at the elbow, = the socket's radius
 ELBOW_W = 0.0405                          # the neck's half width, as Figure's narrow neck between the pads
@@ -439,11 +443,17 @@ joint('L_shoulder_roll', 'L_shoulder_pitch_link', 'L_shoulder_roll_link', (0, SY
 link('L_shoulder_roll_link', 1.0, [
     # flaring at the top into the shoulder cap (the deltoid), under the cap's outer end
     # iteration 17: ends 6 mm above the lower upper arm (they overlapped), a seam at the shoulder yaw joint
-    loft('L upper arm', [(SZ - 0.114, 0, SY, 0.053, 0.044, 2.2), (SZ - 0.075, 0, SY, 0.055, 0.045, 2.2),
+    # iteration 24 (round the elbow's lesson, bends seen from the same angle): a flat 6 mm seam here and at the wrist yaw
+    # let the background through in level views and read as a separate ring. The seam is now 3 mm, curved about the
+    # yaw axis: the lower arm's top a closed dome inside a sphere, this cover's end 3 mm outside it (a sphere on the
+    # axis maps onto itself as the arm yaws, and no straight line runs through a curved gap into a closed dome)
+    loft('L upper arm', [(SZ - 0.142, 0, SY, 0.053, 0.044, 2.2), (SZ - 0.114, 0, SY, 0.053, 0.044, 2.2),
+                         (SZ - 0.075, 0, SY, 0.055, 0.045, 2.2),
                          (SZ - 0.035, 0, SY, 0.0545, 0.047, 2.2), (SZ - 0.008, 0, SY, 0.0505, 0.052, 2.3)]),
     # iteration 18: its top is a socket round the cap, 4 mm clear of it: a sphere about the shoulder centre under
     # the hemispherical end, a cylinder about the pitch axis under the rest
     cut(ell('L upper arm socket', (0, SY, SZ), (CAP_R + 0.004,) * 3), 'L upper arm'),
+    cut(ell('L upper arm seam', ARM_YAW_C, (ARM_YAW_R + 0.003,) * 3), 'L upper arm'),
     cut(cyl('L upper arm socket in', (0, 0.17, SZ), 'y', CAP_R + 0.004, 0.07), 'L upper arm'),
     # from the roll flange on the back face: an axle out through the cap's hole, a short lug down behind the cap,
     # a step into the sleeve just under the cap (16 deg clear of the cap's sweep), a foot onto the yaw actuator
@@ -458,8 +468,8 @@ link('L_shoulder_yaw_link', 1.05, [
     # squarer at the elbow (n 4): flat sides under the pad, as Figure's. Iteration 23: ends in a hem and a socket round
     # the forearm's drum; a plane stops the socket's tail where it would thin to nothing behind the elbow
     loft('L upper arm lower', [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
-                               (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.120, 0, SY, 0.053, 0.044, 2.2)],
-         clip=above((-1.0, EZ + 0.02), (1.0, EZ + 0.02))),
+                               (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.110, 0, SY, 0.053, 0.044, 2.2)],
+         open=('bottom',), clip=above((-1.0, EZ + 0.02), (1.0, EZ + 0.02)), keep=(ARM_YAW_C, ARM_YAW_R)),
     cut(cyl('L upper arm elbow socket', (0, SY, EZ), 'y', ELBOW_A, 0.12), 'L upper arm lower'),
     # in front of where the tangent plane meets the socket (91 deg), everything below the plane
     cut(loft('L upper arm fold', [(EZ - 0.06, 0, SY, 0.1, 0.06, 8.0), (EZ + 0.12, 0, SY, 0.1, 0.06, 8.0)],
@@ -492,9 +502,11 @@ link('L_elbow_link', 0.85, [
     # no narrower than 0.085 across: the wrist yaw RS02 (79 mm) sits in the lower forearm
     # iteration 17: ends 6 mm above the lower forearm (a seam at the wrist yaw joint)
     # iteration 23: narrowing to the neck under the pads, up to the drum; the wrist yaw RS02 keeps its 3 mm at -0.07
-    loft('L forearm', [(EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2), (EZ - 0.07, 0, SY, 0.048, 0.0428, 2.2),
+    loft('L forearm', [(EZ - 0.146, 0, SY, 0.0445, 0.0415, 2.2), (EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2),
+                       (EZ - 0.07, 0, SY, 0.048, 0.0428, 2.2),
                        (EZ - 0.045, 0, SY, 0.048, ELBOW_W + 0.0005, 2.6), (EZ - 0.022, 0, SY, 0.0485, ELBOW_W, 5.0),
                        (EZ - 0.008, 0, SY, 0.0488, ELBOW_W, 12.0), (EZ, 0, SY, ELBOW_R - 0.0005, ELBOW_W, 16.0)]),   # 0.5 mm inside the drum: no coincident faces
+    cut(ell('L forearm seam', WRIST_YAW_C, (WRIST_YAW_R + 0.003,) * 3), 'L forearm'),   # iteration 24: as the upper arm's
     # the upper half of the drum (the lower half would only be a wall inside the forearm)
     cyl('L forearm drum', (0, SY, EZ), 'y', ELBOW_R, 2 * ELBOW_W, GREY, 'shell'),
     cut(rbox('L forearm drum lower', (0, SY, EZ - 0.056), (0.12, 0.1, 0.1), 0.001), 'L forearm drum'),
@@ -509,7 +521,8 @@ joint('L_wrist_yaw', 'L_elbow_link', 'L_wrist_yaw_link', (0, SY, EZ - 0.125), 'z
       act_c=(0, SY, EZ - 0.095), out=-1, exposed='flange')   # its flange shows in the seam
 link('L_wrist_yaw_link', 0.6, [
     loft('L forearm lower', [(WZ + 0.025, 0, SY, 0.034, 0.032, 2.2), (WZ + 0.045, 0, SY, 0.037, 0.034, 2.2),
-                             (EZ - 0.125, 0, SY, 0.044, 0.041, 2.2)]),
+                             (EZ - 0.125, 0, SY, 0.044, 0.041, 2.2), (EZ - 0.112, 0, SY, 0.044, 0.041, 2.2)],
+         open=('bottom',), keep=(WRIST_YAW_C, WRIST_YAW_R)),
     # from just over the wrist pitch actuator up into the wrist yaw flange (clear of the yaw actuator)
     span('L forearm lower frame', WZ + 0.027, EZ - 0.1185, y=SY, sx=0.03, sy=0.03, exposed=True),
     # Figure's black wrist cuff, over the wrist pitch actuator (iteration 4)

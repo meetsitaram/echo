@@ -1371,7 +1371,7 @@
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "68.1 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used"
+  "detail": "68.2 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used"
  },
  {
   "group": "torque",

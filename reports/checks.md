@@ -1,6 +1,6 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-04 20:36, 131 s
+spec: `spec/robot.json`, 2026-11-04 20:42, 140 s
 
 248 checks: 238 pass, 10 warn, **0 fail**
 
@@ -281,7 +281,7 @@ spec: `spec/robot.json`, 2026-11-04 20:36, 131 s
 | PASS | L_shoulder_roll | 13.7 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 57 % used |
 | PASS | L_ankle_pitch | 10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used |
 | PASS | R_ankle_pitch | 10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used |
-| PASS | R_knee | 68.1 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used |
+| PASS | R_knee | 68.2 N m x 1.5 in 'deep squat' vs peak 240 N m (1 x RS04 x 2.0): 43 % used |
 | PASS | R_wrist_roll | 4.0 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 42 % used |
 | PASS | L_wrist_roll | 4.0 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 42 % used |
 | PASS | L_shoulder_pitch | 15.4 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 38 % used |
