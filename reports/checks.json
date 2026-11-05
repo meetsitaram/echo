@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "58.48 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "59.51 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -278,8 +278,8 @@
  {
   "group": "connect",
   "item": "torso covers mounted",
-  "status": "PASS",
-  "detail": ""
+  "status": "FAIL",
+  "detail": "2 separate pieces"
  },
  {
   "group": "connect",
@@ -937,19 +937,19 @@
  },
  {
   "group": "skin",
-  "item": "L_elbow actuator (buy) RS06",
-  "status": "PASS",
-  "detail": "0.00 % outside the skin"
- },
- {
-  "group": "skin",
-  "item": "R_elbow actuator (buy) RS06",
-  "status": "PASS",
-  "detail": "0.00 % outside the skin"
- },
- {
-  "group": "skin",
   "item": "L_elbow flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "R_elbow flange",
+  "status": "PASS",
+  "detail": "0.00 % outside the skin"
+ },
+ {
+  "group": "skin",
+  "item": "L_elbow actuator (buy) RS06",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
@@ -961,7 +961,7 @@
  },
  {
   "group": "skin",
-  "item": "R_elbow flange",
+  "item": "R_elbow actuator (buy) RS06",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
@@ -1179,7 +1179,7 @@
   "group": "poses",
   "item": "carry 3 kg at the chest: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.8 cm inside the feet"
  },
  {
   "group": "poses",
@@ -1323,49 +1323,49 @@
   "group": "torque",
   "item": "L_knee",
   "status": "FAIL",
-  "detail": "135.8 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 170 % used"
+  "detail": "138.2 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 173 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_yaw",
   "status": "PASS",
-  "detail": "38.6 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 96 % used"
+  "detail": "39.1 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 98 % used"
  },
  {
   "group": "torque",
   "item": "R_elbow",
   "status": "PASS",
-  "detail": "10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
+  "detail": "10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
  },
  {
   "group": "torque",
   "item": "L_elbow",
   "status": "PASS",
-  "detail": "10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
+  "detail": "10.4 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used"
  },
  {
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "67.2 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 84 % used"
+  "detail": "68.6 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 86 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "59.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 75 % used"
- },
- {
-  "group": "torque",
-  "item": "R_shoulder_roll",
-  "status": "PASS",
-  "detail": "14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used"
+  "detail": "60.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 76 % used"
  },
  {
   "group": "torque",
   "item": "L_shoulder_roll",
   "status": "PASS",
-  "detail": "14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used"
+  "detail": "15.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 62 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_shoulder_roll",
+  "status": "PASS",
+  "detail": "15.0 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 62 % used"
  },
  {
   "group": "torque",
@@ -1383,37 +1383,37 @@
   "group": "torque",
   "item": "L_shoulder_pitch",
   "status": "PASS",
-  "detail": "15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used"
+  "detail": "16.1 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 40 % used"
  },
  {
   "group": "torque",
   "item": "R_shoulder_pitch",
   "status": "PASS",
-  "detail": "15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used"
+  "detail": "16.1 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 40 % used"
  },
  {
   "group": "torque",
   "item": "R_ankle_pitch",
   "status": "PASS",
-  "detail": "11.3 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 38 % used"
+  "detail": "11.6 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used"
  },
  {
   "group": "torque",
   "item": "L_ankle_pitch",
   "status": "PASS",
-  "detail": "11.3 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 38 % used"
+  "detail": "11.6 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "28.4 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
+  "detail": "28.9 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
  },
  {
   "group": "torque",
   "item": "R_hip_pitch",
   "status": "PASS",
-  "detail": "28.4 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
+  "detail": "28.9 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used"
  },
  {
   "group": "torque",
@@ -1479,7 +1479,7 @@
   "group": "torque",
   "item": "R_ankle_roll",
   "status": "PASS",
-  "detail": "0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used"
+  "detail": "0.2 N m in 'stand' vs rated 15 N m (1 x RS06 x 1.3): 1 % used"
  },
  {
   "group": "torque",
