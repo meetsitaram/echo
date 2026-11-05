@@ -22,6 +22,13 @@ shows which check fails.
 | stator | a motor is held by its side wall and not by an end face |
 | sweep | a joint cannot reach its limit: each joint alone, minimum to maximum, rigid parts and the covers' 3 mm walls, across the joint too |
 | poses | in each task pose: static torque against rated (continuous tasks) and peak / 1.5 (short ones), centre of mass over the feet with a margin, joints inside their limits after balancing, collisions |
+| motorfit | a motor at its STEP outline (`spec/actuator_outlines.json`) is inside any part, its own link's too, deeper than a seat |
+| fastener | thread engaged under the rule (2 x d); the tip past its blind hole; a screw in anything but what it threads into, or through the joints beside it; a screw showing through the skin |
+| holes | a hole's edge distance or ligament is short, read from a slice of the part with every hole cut |
+| bolted | slip, separation, screw shear, tension or thread strip per pattern, against `tools/strength.py`'s load cases |
+| bearing | catalogue ratings against the load cases (static, life); seat wall and land; a race not stopped both ways; a bearing that doesn't fit its slot |
+| pattern | a motor's stator or hub pattern isn't fully used; a screw over a connector, cable exit or bump; warns where the right side's motor can't be the same part as a mirror |
+| access | a straight key along a screw's axis from its head meets something, build order not considered |
 
 Outside `checks.py`:
 - `tools/sim_stand.py`: the MuJoCo model stands, squats to 90° knees and returns, every joint limited to its peak
@@ -58,8 +65,15 @@ A check that has never failed may not work. Each check has a `--bad` case in `br
 | norods | all ankle cranks and rods deleted | linkage, loadpath |
 | nostator | knee motor's plate and post off its back | stator |
 | thinpin | a pin that touches both links, d2 under 3,400 N | pivot |
+| motorinto | a plate run into the knee motor | motorfit |
+| shortthread, longscrew, protrude | hub screws 3.5 shorter or 4 longer; a block in their way | fastener |
+| edge, ligament | stator rim down to r 54.5; a hub hole moved beside its neighbour | holes |
+| fewscrews | 6 of the hub's 9 screws gone | bolted |
+| smallbearing, thinseat, noshoulder | a third of the rating; a seat's wall at 1 mm; a race's collar gone | bearing |
+| missingscrew, ontab | one screw gone; one at the cable tab's angle | pattern |
+| blockkey | a block between a screw head and its key | access |
 
-Those compare with the unbroken spec (a row newly fails or gets worse), because today's design already fails these groups. `--good pin`, `link`, `stator` and `frame` make one fix and show the row turn to PASS.
+Those compare with the unbroken spec (a row newly fails or gets worse), because today's design already fails these groups. `--good pin`, `link`, `stator`, `frame`, `deepthread`, `bigbearing` and `keyclear` make one fix and show the row turn to PASS.
 
 `python -I tools/motion_collisions.py --bad collide` checks the walk replay the same way.
 

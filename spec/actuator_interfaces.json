@@ -1,0 +1,1461 @@
+{
+ "_about": "Mechanical interfaces of the RobStride actuators, for modelling real screws, holes and bearings. Units mm, degrees. Each value carries its source and a confidence: drawing (maker manual section 1.1 or 2.3), step (measured from the maker's STEP), retailer (none used). null = not published and not measurable, never an estimate. Angles are counter-clockwise about STEP +Z from STEP +X, in each file's own frame; where the output faces -Z they read clockwise when you look at the output.",
+ "_method": "STEP read by a small parser written for this job (CARTESIAN_POINT, CIRCLE, CYLINDRICAL_SURFACE, ADVANCED_FACE), run with python -I, with depths from rays cast along the axis through the faces. Not trimesh, cadquery or OCP: trimesh alone cannot read STEP and the other two are not installed. Threads are not modelled, so thread size comes from the drawing and the STEP bore equals the tap drill. All five models are Creo shrink-wraps: interiors are removed, and a flat-floored hole may be cut short where the wrap meets a part behind it. Drawings read from rendered manual pages (pypdfium2 in a scratch folder).",
+ "_conflicts": {
+  "RS02 hub M4 depth": "drawing 7 min, STEP 6.0",
+  "RS04 hub M5 depth": "drawing 6.5 min, STEP 3.5",
+  "RS06 hub M4 depth": "drawing 6, STEP 4.7"
+ },
+ "_missing_all": [
+  "output bearing type",
+  "bearing axial, radial and moment ratings",
+  "screw grade and tightening torque",
+  "thread class",
+  "mounting-face flatness and hub run-out"
+ ],
+ "_sources": "github.com/RobStride/Product_Information, Product Literature/CAN2.0/<model>/. RS04 Chinese manual 261009 checked: same drawing as the English. The Chinese file in the RS06 folder is really the RS10P manual, so it was not used.",
+ "RS00": {
+  "frame": {
+   "axis": "STEP Z",
+   "output_faces": "-Z",
+   "origin": "on axis; z=0 is an internal datum",
+   "faces_z_mm": {
+    "value": {
+     "output_hub": -6.0,
+     "stator_front": -5.0,
+     "rear_cover": 46.1
+    },
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step"
+   }
+  },
+  "stator_mounting": [
+   {
+    "thread": {
+     "value": "M3",
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 6,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 50,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.1"
+    },
+    "thread_depth_mm": {
+     "value": 5.0,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step",
+     "note": "no depth on the drawing for this pattern"
+    },
+    "step_depth_mm": {
+     "value": 5.0,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 2.5,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      0.0,
+      60.0,
+      120.0,
+      180.0,
+      240.0,
+      300.0
+     ],
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 0.0,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from connector opening at +X (0 deg)"
+    },
+    "clock_reference": "connector opening at +X (0 deg)",
+    "face": "front flange around the hub, z=-5"
+   },
+   {
+    "thread": {
+     "value": "M3",
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 4,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 38,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.1"
+    },
+    "thread_depth_mm": {
+     "value": 4,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "step_depth_mm": {
+     "value": 3.9,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 2.5,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      45.0,
+      135.0,
+      225.0,
+      315.0
+     ],
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 45.0,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from connector opening at +X (0 deg)"
+    },
+    "clock_reference": "connector opening at +X (0 deg)",
+    "face": "rear cover, z=46.1"
+   }
+  ],
+  "stator_locating": [
+   {
+    "type": "dowel hole",
+    "dia_mm": {
+     "value": 3,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+0.04/+0.02"
+    },
+    "count": 2,
+    "bolt_circle_mm": {
+     "value": 50,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    },
+    "depth_mm": {
+     "value": 5,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "angles_step_deg": {
+     "value": [
+      15,
+      195
+     ],
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    }
+   }
+  ],
+  "output_flange": {
+   "thread": {
+    "value": "M3",
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "count": {
+    "value": 6,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bolt_circle_mm": {
+    "value": 27,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.1"
+   },
+   "thread_depth_mm": {
+    "value": 5,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "blind"
+   },
+   "step_depth_mm": {
+    "value": 6.0,
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step"
+   },
+   "step_hole_dia_mm": {
+    "value": 2.5,
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step",
+    "note": "plain tap-drill bore: threads are not modelled"
+   },
+   "angles_step_deg": {
+    "value": [
+     30.0,
+     90.0,
+     150.0,
+     210.0,
+     270.0,
+     330.0
+    ],
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step"
+   },
+   "clock_deg_rel_feature": {
+    "value": 30.0,
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step",
+    "note": "first hole counter-clockwise about STEP +Z from connector opening at +X (0 deg)"
+   },
+   "clock_reference": "connector opening at +X (0 deg)",
+   "face": "hub, z=-6",
+   "locating": {
+    "type": "pin hole",
+    "dia_mm": {
+     "value": 3,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": 3,
+    "bolt_circle_mm": {
+     "value": 24.46,
+     "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.1"
+    },
+    "depth_mm": {
+     "value": 3.8,
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step",
+     "note": "no depth on the drawing"
+    },
+    "angles_step_deg": {
+     "value": [
+      0.0,
+      120.0,
+      240.0
+     ],
+     "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+     "confidence": "step"
+    }
+   },
+   "pilot_dia_mm": {
+    "value": 35,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "pilot_height_mm": {
+    "value": 1,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "hub stands 1 mm proud of the stator face"
+   }
+  },
+  "envelope": {
+   "round_dia_mm": {
+    "value": 57,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bbox_mm": {
+    "value": [
+     57.0,
+     57.0,
+     52.1
+    ],
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step"
+   },
+   "length_mm": {
+    "value": 51,
+    "source": "RS00User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-1, excludes the 1 mm hub; STEP total 52.1"
+   },
+   "ears": {
+    "value": "none: plain cylinder",
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step"
+   }
+  },
+  "cable_exit": {
+   "connector": {
+    "value": "XT30PB(2+2)-M.G.B board end, XT30(2+2)-F.G.B line end",
+    "source": "RS00User Manual260713.pdf section 2.3 (printed p11)",
+    "confidence": "drawing"
+   },
+   "position": {
+    "value": "radial, two openings at 0 and 180 deg, recessed inside the 57 mm diameter: x=+-27.1, y about -7.8..+7.8, z 36.64..42.94 (centre z 39.8, 45.8 mm behind the hub face)",
+    "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+    "confidence": "step"
+   }
+  },
+  "hollow_shaft": {
+   "value": false,
+   "source": "measured from RS00.stp (same size as RS00-20261030.stp)",
+   "confidence": "step",
+   "note": "axis ray hits solid z -2.5..24 and 44..46.1; only a 9.5 mm blind recess, 3.5 deep, in the hub"
+  },
+  "output_bearing": {
+   "type": null,
+   "axial_rating_N": null,
+   "radial_rating_N": null,
+   "moment_rating_Nm": null,
+   "source": "not published in RS00User Manual260713.pdf, the Chinese RS04 manual, the RS spec book or a web search; the STEP is a shrink-wrap with no bearing modelled",
+   "confidence": null
+  },
+  "screws": {
+   "grade": null,
+   "torque_Nm": null,
+   "source": "not published. RS00User Manual260713.pdf section 1.1 says only: the screw depth should not exceed the depth of the casing thread",
+   "confidence": null
+  }
+ },
+ "RS02": {
+  "frame": {
+   "axis": "STEP Z",
+   "output_faces": "-Z",
+   "origin": "model is off-origin: axis at x=54.084, y=40.164; angles and bbox are about the axis",
+   "faces_z_mm": {
+    "value": {
+     "output_hub": -27.5,
+     "hub_rim": -27.0,
+     "stator_front": -23.5,
+     "body_rear": 4.5,
+     "rear_cover": 18.0
+    },
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "stator_mounting": [
+   {
+    "thread": {
+     "value": "M3",
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 9,
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 73,
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.2"
+    },
+    "thread_depth_mm": {
+     "value": 8,
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "step_depth_mm": {
+     "value": 20.0,
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 2.5,
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      33.94,
+      73.94,
+      113.94,
+      153.94,
+      193.94,
+      233.94,
+      273.94,
+      313.94,
+      353.94
+     ],
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 19.64,
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from connector opening at 14.3 deg"
+    },
+    "clock_reference": "connector opening at 14.3 deg",
+    "face": "front flange, z=-23.5",
+    "note": "STEP: 3 holes (33.94, 193.94, 353.94) are 20 deep; the other 6 run 26.5 mm to a 3.2 mm bore open at the rear, z=4.5. Rear use is not on the drawing: ask."
+   }
+  ],
+  "stator_locating": [
+   {
+    "type": "tooling hole (labelled a process hole on the drawing)",
+    "dia_mm": {
+     "value": 3,
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+0.1/0"
+    },
+    "count": 3,
+    "bolt_circle_mm": {
+     "value": 73,
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step"
+    },
+    "depth_mm": {
+     "value": 5.0,
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step"
+    },
+    "angles_step_deg": {
+     "value": [
+      93.94,
+      213.94,
+      333.94
+     ],
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step"
+    }
+   }
+  ],
+  "output_flange": {
+   "thread": {
+    "value": "M4",
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "count": {
+    "value": 6,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bolt_circle_mm": {
+    "value": 24,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.2"
+   },
+   "thread_depth_mm": {
+    "value": 7,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "7 MIN"
+   },
+   "step_depth_mm": {
+    "value": 6.0,
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step"
+   },
+   "step_hole_dia_mm": {
+    "value": 3.3,
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step",
+    "note": "plain tap-drill bore: threads are not modelled"
+   },
+   "angles_step_deg": {
+    "value": [
+     43.94,
+     103.94,
+     163.94,
+     223.94,
+     283.94,
+     343.94
+    ],
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step"
+   },
+   "clock_deg_rel_feature": {
+    "value": 29.64,
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step",
+    "note": "first hole counter-clockwise about STEP +Z from connector opening at 14.3 deg"
+   },
+   "clock_reference": "connector opening at 14.3 deg",
+   "face": "hub, z=-27.5",
+   "conflict": "drawing 7 min, STEP bore 6.0 with a flat floor. Design to 6.0 until RobStride confirms.",
+   "locating": {
+    "type": "pin hole",
+    "dia_mm": {
+     "value": 4,
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+0.1/0"
+    },
+    "count": 3,
+    "bolt_circle_mm": {
+     "value": 24,
+     "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "depth_mm": {
+     "value": 5.5,
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step",
+     "note": "no depth on the drawing"
+    },
+    "angles_step_deg": {
+     "value": [
+      73.94,
+      193.94,
+      313.94
+     ],
+     "source": "measured from RS02-20261030.stp",
+     "confidence": "step"
+    }
+   },
+   "pilot_dia_mm": {
+    "value": 43,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "0/-0.1"
+   },
+   "pilot_height_mm": {
+    "value": 3.5,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "0/-0.3, plus a 0.5 inner step"
+   }
+  },
+  "envelope": {
+   "round_dia_mm": {
+    "value": 78.5,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bbox_mm": {
+    "value": [
+     78.5,
+     78.5,
+     45.5
+    ],
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step"
+   },
+   "length_mm": {
+    "value": 41.5,
+    "source": "RS02User Manual260713.pdf p8 (printed 7), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "excludes the 4 mm hub; body 28, rear cover 65 mm diameter"
+   },
+   "ears": {
+    "value": "none: round flange",
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "cable_exit": {
+   "connector": {
+    "value": "XT30PB(2+2)-M.G.B board end, XT30(2+2)-F.G.B line end",
+    "source": "RS02User Manual260713.pdf section 2.3",
+    "confidence": "drawing"
+   },
+   "position": {
+    "value": "radial on the rear cover, two openings at 14.3 and 194.3 deg, on flats at r about 35: tangential width 13.9, z 7.3..12.5 (centre z 9.9, 37.4 mm behind the hub face)",
+    "source": "measured from RS02-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "hollow_shaft": {
+   "value": false,
+   "source": "measured from RS02-20261030.stp",
+   "confidence": "step",
+   "note": "axis ray hits solid z -17.9..18; 12.5 mm blind recess in the hub"
+  },
+  "output_bearing": {
+   "type": null,
+   "axial_rating_N": null,
+   "radial_rating_N": null,
+   "moment_rating_Nm": null,
+   "source": "not published in RS02User Manual260713.pdf, the Chinese RS04 manual, the RS spec book or a web search; the STEP is a shrink-wrap with no bearing modelled",
+   "confidence": null
+  },
+  "screws": {
+   "grade": null,
+   "torque_Nm": null,
+   "source": "not published. RS02User Manual260713.pdf section 1.1 says only: the screw depth should not exceed the depth of the casing thread",
+   "confidence": null
+  }
+ },
+ "RS03": {
+  "frame": {
+   "axis": "STEP Z",
+   "output_faces": "-Z",
+   "origin": "on axis; z=0 is the hub face",
+   "faces_z_mm": {
+    "value": {
+     "output_hub": 0.0,
+     "stator_front": 2.5,
+     "ear_rear": 42.0,
+     "rear_cover": 56.6
+    },
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "stator_mounting": [
+   {
+    "thread": {
+     "value": "M4",
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 8,
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 98,
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.2"
+    },
+    "thread_depth_mm": {
+     "value": 8,
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "step_depth_mm": {
+     "value": 11.0,
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 3.3,
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      22.5,
+      67.5,
+      112.5,
+      157.5,
+      202.5,
+      247.5,
+      292.5,
+      337.5
+     ],
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 22.5,
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from connector side at +X (0 deg)"
+    },
+    "clock_reference": "connector side at +X (0 deg)",
+    "face": "front of ears, z=2.5"
+   },
+   {
+    "thread": {
+     "value": "M4 (inferred from the 3.3 mm bore)",
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    },
+    "count": {
+     "value": 4,
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    },
+    "bolt_circle_mm": {
+     "value": 98,
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    },
+    "step_depth_mm": {
+     "value": 11.0,
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step",
+     "note": "z 28.5..39.5, behind a 4.2 mm lead-in z 39.5..42"
+    },
+    "angles_step_deg": {
+     "value": [
+      22.5,
+      157.5,
+      202.5,
+      337.5
+     ],
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    },
+    "face": "rear of ears, z=42",
+    "note": "Not on the drawing; the other 4 ears carry case screw heads (7 mm diameter, to z 46). Ask before using."
+   }
+  ],
+  "output_flange": {
+   "thread": {
+    "value": "M4",
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "count": {
+    "value": 6,
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bolt_circle_mm": {
+    "value": 30.36,
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.2"
+   },
+   "thread_depth_mm": {
+    "value": 6,
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "blind"
+   },
+   "step_depth_mm": {
+    "value": 9.0,
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step"
+   },
+   "step_hole_dia_mm": {
+    "value": 3.3,
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step",
+    "note": "plain tap-drill bore: threads are not modelled"
+   },
+   "angles_step_deg": {
+    "value": [
+     0.0,
+     60.0,
+     120.0,
+     180.0,
+     240.0,
+     300.0
+    ],
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step"
+   },
+   "clock_deg_rel_feature": {
+    "value": 0.0,
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step",
+    "note": "first hole counter-clockwise about STEP +Z from connector side at +X (0 deg)"
+   },
+   "clock_reference": "connector side at +X (0 deg)",
+   "face": "hub, z=0",
+   "locating": {
+    "type": "pin hole",
+    "dia_mm": {
+     "value": 4,
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+0.1/0"
+    },
+    "count": 3,
+    "bolt_circle_mm": {
+     "value": 30.36,
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "depth_mm": {
+     "value": 7,
+     "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "blind"
+    },
+    "angles_step_deg": {
+     "value": [
+      30,
+      150,
+      270
+     ],
+     "source": "measured from RS03-20261030.stp",
+     "confidence": "step"
+    }
+   },
+   "pilot_dia_mm": {
+    "value": 70,
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "0/-0.1"
+   },
+   "pilot_height_mm": {
+    "value": 2.5,
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   }
+  },
+  "envelope": {
+   "round_dia_mm": {
+    "value": 106,
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step",
+    "note": "over the ears; the drawing gives only bolt circle 98"
+   },
+   "bbox_mm": {
+    "value": [
+     98.54,
+     100.27,
+     56.6
+    ],
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step"
+   },
+   "length_mm": {
+    "value": 54.1,
+    "source": "RS03User Manual261013.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "excludes the 2.5 mm hub; body 39.5; rear cover 79.5 mm diameter"
+   },
+   "ears": {
+    "value": "8 ears at r up to 53; 12.5 mm wide bump at +Y (90 deg) to y=51, z 8..38.8, function not stated",
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "cable_exit": {
+   "connector": {
+    "value": "XT30APW-M + GH1.25-2PWT board end; XT30UW-F + GH1.25-T line end",
+    "source": "RS03User Manual261013.pdf section 2.3",
+    "confidence": "drawing"
+   },
+   "position": {
+    "value": "radial through the rear cover flats at x=+-38, sides 0 and 180 deg: power at y 1.3..11.9, z 50.45..55.45; second smaller connector at y about -9.8..-4.1. Rear cover z 50.6..56.6",
+    "source": "measured from RS03-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "hollow_shaft": {
+   "value": false,
+   "source": "measured from RS03-20261030.stp",
+   "confidence": "step",
+   "note": "axis ray hits solid z 7.48..53.7; stepped blind recess, 20.2 mm diameter, in the hub"
+  },
+  "output_bearing": {
+   "type": null,
+   "axial_rating_N": null,
+   "radial_rating_N": null,
+   "moment_rating_Nm": null,
+   "source": "not published in RS03User Manual261013.pdf, the Chinese RS04 manual, the RS spec book or a web search; the STEP is a shrink-wrap with no bearing modelled",
+   "confidence": null
+  },
+  "screws": {
+   "grade": null,
+   "torque_Nm": null,
+   "source": "not published. RS03User Manual261013.pdf section 1.1 says only: the screw depth should not exceed the depth of the casing thread",
+   "confidence": null
+  }
+ },
+ "RS04": {
+  "frame": {
+   "axis": "STEP Z",
+   "output_faces": "+Z (opposite sense to RS00, RS02, RS03, RS06)",
+   "origin": "on axis; z=0 is an internal datum",
+   "faces_z_mm": {
+    "value": {
+     "pin_tips": 28.5,
+     "output_hub": 25.5,
+     "stator_front": 25.0,
+     "stator_rear": -14.0,
+     "rear_cover": -27.2
+    },
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "stator_mounting": [
+   {
+    "thread": {
+     "value": "M4",
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 10,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 106,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.1"
+    },
+    "thread_depth_mm": {
+     "value": 5,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "blind, 5 MIN"
+    },
+    "step_depth_mm": {
+     "value": 7.0,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 3.3,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      21.0,
+      57.0,
+      93.0,
+      129.0,
+      165.0,
+      201.0,
+      237.0,
+      273.0,
+      309.0,
+      345.0
+     ],
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 18.0,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from cable outlet tab at 75 deg"
+    },
+    "clock_reference": "cable outlet tab at 75 deg",
+    "face": "output side, z=25"
+   },
+   {
+    "thread": {
+     "value": "M4",
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 10,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 106,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.1"
+    },
+    "thread_depth_mm": {
+     "value": 6,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "step_depth_mm": {
+     "value": 6.0,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 3.3,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      21.0,
+      57.0,
+      93.0,
+      129.0,
+      165.0,
+      201.0,
+      237.0,
+      273.0,
+      309.0,
+      345.0
+     ],
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 18.0,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from cable outlet tab at 75 deg"
+    },
+    "clock_reference": "cable outlet tab at 75 deg",
+    "face": "rear side, z=-14"
+   }
+  ],
+  "stator_locating": [
+   {
+    "type": "locating diameter (the drawing tolerance reads as a pin, the STEP models a hole)",
+    "dia_mm": {
+     "value": 5,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "0/-0.01"
+    },
+    "count": 2,
+    "bolt_circle_mm": {
+     "value": 106,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    },
+    "depth_mm": {
+     "value": 4.5,
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step",
+     "note": "then a 3 mm bore to z=18"
+    },
+    "angles_step_deg": {
+     "value": [
+      3,
+      183
+     ],
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    },
+    "note": "Hole or pin? Ask RobStride."
+   }
+  ],
+  "output_flange": {
+   "thread": {
+    "value": "M5",
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "count": {
+    "value": 9,
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bolt_circle_mm": {
+    "value": 36,
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.1"
+   },
+   "thread_depth_mm": {
+    "value": 6.5,
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "6.5 MIN"
+   },
+   "step_depth_mm": {
+    "value": 3.5,
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step"
+   },
+   "step_hole_dia_mm": {
+    "value": 4.2,
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step",
+    "note": "plain tap-drill bore: threads are not modelled"
+   },
+   "angles_step_deg": {
+    "value": [
+     45,
+     75,
+     105,
+     165,
+     195,
+     225,
+     285,
+     315,
+     345
+    ],
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step"
+   },
+   "clock_deg_rel_feature": {
+    "value": 0,
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step",
+    "note": "first hole counter-clockwise about STEP +Z from cable outlet tab at 75 deg"
+   },
+   "clock_reference": "cable outlet tab at 75 deg",
+   "face": "hub, z=25.5",
+   "conflict": "drawing 6.5 min, STEP bore only 3.5 with a flat floor. Largest disagreement in the set; design to 3.5 until RobStride confirms.",
+   "locating": {
+    "type": "3 protruding pins (STEP models them as bosses)",
+    "dia_mm": {
+     "value": 6,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "0/-0.01"
+    },
+    "count": 3,
+    "bolt_circle_mm": {
+     "value": 35.86,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.025"
+    },
+    "height_mm": {
+     "value": 3,
+     "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.25 above the hub"
+    },
+    "angles_step_deg": {
+     "value": [
+      15,
+      135,
+      255
+     ],
+     "source": "measured from RS04-20261030.stp",
+     "confidence": "step"
+    }
+   },
+   "pilot_dia_mm": {
+    "value": 50,
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step",
+    "note": "hub outer diameter, not on the drawing"
+   },
+   "pilot_height_mm": {
+    "value": 0.5,
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.3"
+   }
+  },
+  "envelope": {
+   "round_dia_mm": {
+    "value": 120,
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bbox_mm": {
+    "value": [
+     120.0,
+     120.0,
+     55.7
+    ],
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step"
+   },
+   "length_mm": {
+    "value": null,
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "no overall length on the drawing. Stacks given: rear cover 13.2 +-0.2, body 39 +-0.15, hub 0.5 +-0.3, pins 3 +-0.25. STEP total 55.7"
+   },
+   "ears": {
+    "value": "none: round flange; rear cover 94 mm diameter, z -26.2..-14",
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "cable_exit": {
+   "connector": {
+    "value": "XT30APW-M + GH1.25-2PWT board end; XT30UW-F + GH1.25-T line end",
+    "source": "RS04User Manual260713.pdf section 2.3",
+    "confidence": "drawing"
+   },
+   "position": {
+    "value": "7.3 mm round stub leaves along 75 deg through a tab in the rear cover, r up to 58, z -23.9..-16.7 (centre -20.3). Connector detail sits at about 240-250 deg, r about 35-42, z about -26..-22, behind a cover flat at r 46.9",
+    "source": "measured from RS04-20261030.stp",
+    "confidence": "step"
+   },
+   "seal_notes": {
+    "value": "drawing notes: seal the wire outlet with silicone; seal the wire-clamp cover with silicone. The clamp cover slot sits at 150 deg on the outer wall, z -13.5..20 (STEP)",
+    "source": "RS04User Manual260713.pdf p10 (printed 9), section 1.1 drawing",
+    "confidence": "drawing"
+   }
+  },
+  "hollow_shaft": {
+   "value": false,
+   "source": "measured from RS04-20261030.stp",
+   "confidence": "step",
+   "note": "axis ray hits solid z -19.3..22; centre recesses 25 and 16 mm diameter are blind"
+  },
+  "output_bearing": {
+   "type": null,
+   "axial_rating_N": null,
+   "radial_rating_N": null,
+   "moment_rating_Nm": null,
+   "source": "not published in RS04User Manual260713.pdf, the Chinese RS04 manual, the RS spec book or a web search; the STEP is a shrink-wrap with no bearing modelled",
+   "confidence": null
+  },
+  "screws": {
+   "grade": null,
+   "torque_Nm": null,
+   "source": "not published. RS04User Manual260713.pdf section 1.1 says only: the screw depth should not exceed the depth of the casing thread",
+   "confidence": null
+  }
+ },
+ "RS06": {
+  "frame": {
+   "axis": "STEP Z",
+   "output_faces": "-Z",
+   "origin": "on axis; z=0 is the stator front",
+   "faces_z_mm": {
+    "value": {
+     "output_hub": -1.5,
+     "stator_front": 0.0,
+     "ear_rear": 33.0,
+     "rear_cover": 49.0
+    },
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "stator_mounting": [
+   {
+    "thread": {
+     "value": "M3",
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "count": {
+     "value": 8,
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "bolt_circle_mm": {
+     "value": 82,
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+-0.2"
+    },
+    "thread_depth_mm": {
+     "value": 8.5,
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "step_depth_mm": {
+     "value": 8.5,
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    },
+    "step_hole_dia_mm": {
+     "value": 2.5,
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step",
+     "note": "plain tap-drill bore: threads are not modelled"
+    },
+    "angles_step_deg": {
+     "value": [
+      22.5,
+      67.5,
+      112.5,
+      157.5,
+      202.5,
+      247.5,
+      292.5,
+      337.5
+     ],
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    },
+    "clock_deg_rel_feature": {
+     "value": 22.5,
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step",
+     "note": "first hole counter-clockwise about STEP +Z from connector opening at +Y (90 deg)"
+    },
+    "clock_reference": "connector opening at +Y (90 deg)",
+    "face": "front of ears, z=0"
+   },
+   {
+    "thread": {
+     "value": "M3 (inferred from the 2.5 mm bore)",
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    },
+    "count": {
+     "value": 4,
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    },
+    "bolt_circle_mm": {
+     "value": 82,
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    },
+    "step_depth_mm": {
+     "value": 8.0,
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step",
+     "note": "z 22.5..30.5, behind a 3.2 mm lead-in z 31..33"
+    },
+    "angles_step_deg": {
+     "value": [
+      67.5,
+      112.5,
+      247.5,
+      292.5
+     ],
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    },
+    "face": "rear of ears, z=33",
+    "note": "Not on the drawing; the other 4 ears carry case screw heads to z 35.8. Ask before using."
+   }
+  ],
+  "output_flange": {
+   "thread": {
+    "value": "M4",
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "count": {
+    "value": 6,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "bolt_circle_mm": {
+    "value": 24,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.1"
+   },
+   "thread_depth_mm": {
+    "value": 6,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing"
+   },
+   "step_depth_mm": {
+    "value": 4.7,
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step"
+   },
+   "step_hole_dia_mm": {
+    "value": 3.3,
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step",
+    "note": "plain tap-drill bore: threads are not modelled"
+   },
+   "angles_step_deg": {
+    "value": [
+     30.0,
+     90.0,
+     150.0,
+     210.0,
+     270.0,
+     330.0
+    ],
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step"
+   },
+   "clock_deg_rel_feature": {
+    "value": 0.0,
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step",
+    "note": "first hole counter-clockwise about STEP +Z from connector opening at +Y (90 deg)"
+   },
+   "clock_reference": "connector opening at +Y (90 deg)",
+   "face": "hub, z=-1.5",
+   "conflict": "drawing 6, STEP bore 4.7 with a flat floor. Design to 4.7 until RobStride confirms.",
+   "locating": {
+    "type": "pin hole",
+    "dia_mm": {
+     "value": 4,
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "+0.05/0"
+    },
+    "count": 3,
+    "bolt_circle_mm": {
+     "value": 24,
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing"
+    },
+    "depth_mm": {
+     "value": 4,
+     "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+     "confidence": "drawing",
+     "note": "STEP 4.5"
+    },
+    "angles_step_deg": {
+     "value": [
+      0.0,
+      120.0,
+      240.0
+     ],
+     "source": "measured from RS06-20261030.stp",
+     "confidence": "step"
+    }
+   },
+   "pilot_dia_mm": {
+    "value": 52,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "0/-0.05; second register 37 0/-0.05 inside it; centre recess 14 +0.05/0 x 3 +-0.1, then 10 +-0.1"
+   },
+   "pilot_height_mm": {
+    "value": 1.5,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.1"
+   }
+  },
+  "envelope": {
+   "round_dia_mm": {
+    "value": 88,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "reference dimension, in brackets on the drawing"
+   },
+   "bbox_mm": {
+    "value": [
+     84.5,
+     82.0,
+     50.5
+    ],
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step"
+   },
+   "length_mm": {
+    "value": 49,
+    "source": "RS06User Manual260713.pdf p9 (printed 8), section 1.1 drawing",
+    "confidence": "drawing",
+    "note": "+-0.5, excludes the 1.5 mm hub; body 33 +-0.5; rear cover 70 mm diameter"
+   },
+   "ears": {
+    "value": "8 ears at r up to 44; bump at 180 deg to x=-43.5, z 0..33, function not stated",
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "cable_exit": {
+   "connector": {
+    "value": "XT30PB(2+2)-M.G.B board end, XT30(2+2)-F.G.B line end",
+    "source": "RS06User Manual260713.pdf section 2.3",
+    "confidence": "drawing"
+   },
+   "position": {
+    "value": "radial on rear cover flats at y=+-33.1, sides 90 and 270 deg: x about -7..+6.9, z 36.33..41.53 (centre z 38.9, 40.4 mm behind the hub face)",
+    "source": "measured from RS06-20261030.stp",
+    "confidence": "step"
+   }
+  },
+  "hollow_shaft": {
+   "value": false,
+   "source": "measured from RS06-20261030.stp",
+   "confidence": "step",
+   "note": "axis ray hits solid z 3.2..49; blind recess only"
+  },
+  "output_bearing": {
+   "type": null,
+   "axial_rating_N": null,
+   "radial_rating_N": null,
+   "moment_rating_Nm": null,
+   "source": "not published in RS06User Manual260713.pdf, the Chinese RS04 manual, the RS spec book or a web search; the STEP is a shrink-wrap with no bearing modelled",
+   "confidence": null
+  },
+  "screws": {
+   "grade": null,
+   "torque_Nm": null,
+   "source": "not published. RS06User Manual260713.pdf section 1.1 says only: the screw depth should not exceed the depth of the casing thread",
+   "confidence": null
+  }
+ }
+}

@@ -1,0 +1,171 @@
+{
+ "_about": "Standard parts likely for echo's real connections. Units mm, N, kN, g as named. Data from makers' catalogues, standards extracts and engineering reference tables; no shopping links and no retailer figures. null = no citable value found, never an estimate. 'read_via' is 'document' when the table itself was read, 'search_excerpt' when only a search excerpt of the page could be read (recheck before relying on it).",
+ "_sources": {
+  "ee_4762": "engineersedge.com/iso_socket_head_screw.htm (ISO 4762 table)",
+  "ee_10642": "engineersedge.com/hardware/bs_en_iso_10642_14583.htm (BS EN ISO 10642 table)",
+  "ee_8734": "engineersedge.com/hardware/iso_metric_dowel_pins_13805.htm (DIN EN ISO 8734 table)",
+  "iso_7380": "ISO 7380-1:2011 extract (dk max, range M3 and up); k and s from fastenerdata.co.uk ISO 7380 data table. ISO 7380-1:2022 changed dw,min; check the current edition",
+  "jc_7089": "jcfasteners.com ISO 7089 washer data sheet B6iD02 (M2-M5 ranges); westfieldfasteners.co.uk/Standards ISO 7089 data sheet (nominals)",
+  "optimas": "optimas.com/technical-resources/tapping-sizes (ISO metric coarse tapping and clearance table)",
+  "wuerth": "wuerth.de/web/media/downloads/pdf/diniso/Zusammenfassung_ISO_898-1_und_3506-1.pdf: p3 ISO 898-1 loads, p6 ISO 3506-1 loads",
+  "skf": "skf.com product pages, deep groove ball bearings, productid-<designation>",
+  "iko": "IKO catalogue CAT-57166 Crossed Roller Bearings, June 2008: Super Slim table p6 (file page), features table p2",
+  "tappex": "tappex.co.uk Tappex Brochure 2016",
+  "ruthex": "ruthex.de/en/pages/cad-daten; part designations give insert length",
+  "3dpeople": "3D People threaded inserts guide (felix-manley-n4jm.squarespace.com, 2023-06-12), PA12 design table",
+  "bossard": "Bossard technical sheet F.044, file f-039-en.pdf on media.bossard.com",
+  "helicoil": "The Manual of Fastening (scribd copy), citing DIN 8140"
+ },
+ "screws": {
+  "iso4762_socket_head": {
+   "source": "ee_4762", "read_via": "document",
+   "columns": ["pitch", "head_dia", "head_height", "socket_width_listed"],
+   "M2": [0.4, 3.8, 2.0, 1.56],
+   "M2.5": [0.45, 4.5, 2.5, 2.06],
+   "M3": [0.5, 5.5, 3.0, 2.58],
+   "M4": [0.7, 7.0, 4.0, 3.08],
+   "M5": [0.8, 8.5, 5.0, 4.095],
+   "M6": [1.0, 10.0, 6.0, 5.14]
+  },
+  "iso7380_button_head": {
+   "source": "iso_7380", "read_via": "search_excerpt",
+   "columns": ["head_dia_max", "head_height_max", "socket_nominal"],
+   "M2": null, "M2.5": null,
+   "M3": [5.7, 1.65, 2.0],
+   "M4": [7.6, 2.2, 2.5],
+   "M5": [9.5, 2.75, 3.0],
+   "M6": [10.5, 3.3, 4.0],
+   "note": "Reduced loadability by the standard's own title. ISO 7380-1 covers M3 and up."
+  },
+  "iso10642_countersunk": {
+   "source": "ee_10642", "read_via": "document",
+   "columns": ["head_dia_theoretical_max", "head_dia_actual_min", "head_height_max", "socket_nominal"],
+   "M2": null, "M2.5": null,
+   "M3": [6.72, 5.54, 1.86, 2],
+   "M4": [8.96, 7.53, 2.48, 2.5],
+   "M5": [11.2, 9.43, 3.1, 3],
+   "M6": [13.44, 11.34, 3.72, 4],
+   "note": "Reduced loadability by the standard's own title. The table starts at M3."
+  }
+ },
+ "washers_iso7089": {
+  "source": "jc_7089", "read_via": "search_excerpt",
+  "columns": ["inner_min", "inner_max", "outer_min", "outer_max", "thick_min", "thick_max"],
+  "M2": [2.2, 2.34, 4.7, 5.0, 0.25, 0.35],
+  "M2.5": [2.7, 2.84, 5.7, 6.0, 0.45, 0.55],
+  "M3": [3.2, 3.38, 6.64, 7.0, 0.45, 0.55],
+  "M4": [4.3, 4.48, 8.64, 9.0, 0.7, 0.9],
+  "M5": [5.3, 5.45, 9.64, 10.0, 0.9, 1.1],
+  "M6_nominal_inner_outer_thick": [6.4, 12.0, 1.6],
+  "note": "One other standards page gives M5 inner max 5.48."
+ },
+ "holes": {
+  "source": "optimas", "read_via": "document",
+  "columns": ["pitch", "tap_drill", "clearance_close", "clearance_medium", "clearance_free"],
+  "M2": [0.4, 1.6, 2.2, 2.4, 2.6],
+  "M2.5": [0.45, 2.05, 2.7, 2.9, 3.1],
+  "M3": [0.5, 2.5, 3.2, 3.4, 3.6],
+  "M4": [0.7, 3.3, 4.3, 4.5, 4.8],
+  "M5": [0.8, 4.2, 5.3, 5.5, 5.8],
+  "M6": [1.0, 5.0, 6.4, 6.6, 7.0],
+  "note": "Clearance series as in ISO 273 (close/fine, medium, free/coarse). The actuator STEP bores equal these tap drills."
+ },
+ "dowel_pins_iso8734_m6": {
+  "source": "ee_8734", "read_via": "document",
+  "columns": ["dia_lower_dev", "dia_upper_dev"],
+  "2": [0.002, 0.009],
+  "3": [0.002, 0.009],
+  "4": [0.004, 0.012],
+  "5": [0.004, 0.012],
+  "6": [0.004, 0.012],
+  "note": "Hardened, tolerance m6. Lengths not captured: null. The RS04 hub carries its own 6 mm pins; RS00, RS02, RS03 and RS06 hubs have pin holes for 3 or 4 mm."
+ },
+ "heat_set_inserts": {
+  "tappex_hole_dia_range": {
+   "source": "tappex", "read_via": "search_excerpt",
+   "M2": [3.0, 3.3], "M2.5": null, "M3": [3.7, 4.0], "M4": [5.4, 5.9], "M5": [6.0, 6.5], "M6": [7.7, 8.2],
+   "note": "Through-hole types. Hole size depends on the insert family: use the table for the insert chosen."
+  },
+  "ruthex_length": {
+   "source": "ruthex", "read_via": "search_excerpt",
+   "M2": 4.0, "M2.5": 5.7, "M3": 5.7, "M4": 8.1, "M5": 9.5, "M6": 12.7,
+   "hole_dia": null,
+   "note": "Hole diameter by size not found on a maker page; take it from the CAD data."
+  },
+  "pa12_design_values": {
+   "source": "3dpeople", "read_via": "search_excerpt",
+   "columns": ["hole_dia", "hole_depth", "through_hole_dia"],
+   "M2": [3.3, 4.2, 2.0],
+   "M3": [4.1, 5.9, 3.0],
+   "M2.5": null, "M4": null, "M5": null, "M6": null,
+   "pull_strength_M3_N": 1304,
+   "pull_strength_note": "Average from the same vendor; material and test conditions not stated in what could be read. Not a PA12 design allowable."
+  },
+  "unread_datasheets": "PEM SI data (pemnet.com sidata.pdf), Spirol design guide, Kerb-Konus ds.30 and Boellhoff AMTEC hold full tables, but they could not be read here. Read them before fixing an insert family."
+ },
+ "thin_section_bearings": {
+  "fit_rule": "bore 25-45, width up to 8, for the knee and elbow idlers",
+  "deep_groove_618": {
+   "source": "skf", "read_via": "search_excerpt",
+   "columns": ["bore", "od", "width", "C_kN", "C0_kN", "mass_g"],
+   "61805": [25, 37, 7, 4.36, 2.6, null],
+   "61806": [30, 42, 7, 4.1, 2.9, 22.4],
+   "61807": [35, 47, 7, 4.75, 3.2, 29.3],
+   "61808": null,
+   "61808-2RZ": [40, 52, 7, 5.07, 3.65, 31.8],
+   "W 61808-2RS1 (stainless)": [40, 52, 7, 3.9, 3.75, 32],
+   "61809": [45, 58, 7, 5.4, 4.0, 38],
+   "note": "SKF pages render empty to the fetch tool, so these come from excerpts. 61809 was converted from 1214 lbf, 899 lbf, 0.084 lb. Non-SKF listings differ for 61806 and 61809 (for example 6.63 kN for 61809). Confirm on the SKF product page. Open 61808 was not found."
+  },
+  "crossed_roller_iko": {
+   "source": "iko", "read_via": "document",
+   "columns": ["bore", "od", "width", "C_N", "C0_N", "mass_g"],
+   "CRBT 305 A": [30, 41, 5, 1770, 1970, 20.7],
+   "CRBT 405 A": [40, 51, 5, 2000, 2520, 26.5],
+   "moment_rating_Nm": null,
+   "shoulders_da_Da": {"CRBT 205 A": [22.5, 27], "CRBT 305 A": [32.5, 37], "CRBT 405 A": [42.5, 47], "CRBT 505 A": [52.5, 57]},
+   "just_outside_the_fit_rule": {
+    "CRBT 205 A (bore too small)": [20, 31, 5, 1400, 1290, 14.8],
+    "CRBT 505 A (bore too large)": [50, 61, 5, 2280, 3200, 32.3],
+    "CRBS 508 (bore too large)": [50, 66, 8, 4900, 6170, 84],
+    "CRBH 208 A (bore too small)": [20, 36, 8, 2910, 2430, 40],
+    "CRBH 3010 A and 4010 A": "width 10: too wide; ratings not captured"
+   },
+   "note": "Catalogue dated 2008; check the current IKO range. Roller bearings take radial, axial and moment load in a single bearing. The 25-45 bore, 8 wide slot has no entry here: the choice is 5 wide CRBT or another maker."
+  }
+ },
+ "thread_engagement": {
+  "aluminium": {
+   "rule": "2.0 x d minimum for a steel screw tapped directly into aluminium",
+   "basis": "Project rule set at the top of the cited range, not a standard's statement. Bossard F.044: about 1.4 to 2.0 x d for cast aluminium, by screw class and thread type. Manual of Fastening: 2 x d in aluminium without an insert, 1.5 x d with one.",
+   "source": ["bossard", "helicoil"], "read_via": "search_excerpt",
+   "check": "Run the Bossard thread engagement calculator for the alloy chosen. Full preload of a 12.9 screw is not available if the actuator's own thread is shallower than this: see spec/actuator_interfaces.json."
+  },
+  "pa12": {
+   "rule": null,
+   "basis": "No citable engagement rule found for screws tapped directly into PA12. Use heat-set inserts, with the hole and depth values above, and pull-test a coupon.",
+   "read_via": "search_excerpt"
+  }
+ },
+ "screw_capacity_N": {
+  "class_12_9_steel_iso898_1": {
+   "source": "wuerth p3", "read_via": "document",
+   "columns": ["stress_area_mm2", "proof_load_N", "min_breaking_load_N"],
+   "M2": null, "M2.5": null,
+   "M3": [5.03, 4880, 6140],
+   "M4": [8.78, 8520, 10700],
+   "M5": [14.2, 13800, 17300],
+   "M6": [20.1, 19500, 24500],
+   "note": "The table starts at M3. M2 and M2.5 need another source."
+  },
+  "stainless_iso3506_1": {
+   "source": "wuerth p6", "read_via": "document",
+   "note": "No stainless screw is a 12.9 equivalent. The nearest are below. Values are force at 0.2 % proof (Fpf) and minimum breaking load (Fmf). No M2 or M2.5 row in this table.",
+   "columns": ["Fpf_N", "Fmf_N"],
+   "austenitic_duplex_70": {"M3": [2270, 3530], "M4": [3960, 6150], "M5": [6390, 9930], "M6": [9060, 14090]},
+   "austenitic_duplex_80": {"M3": [3020, 4030], "M4": [5270, 7030], "M5": [8510, 11350], "M6": [12080, 16100]},
+   "austenitic_duplex_100": {"M3": [4030, 5040], "M4": [7030, 8780], "M5": [11350, 14190], "M6": [16100, 20130]},
+   "martensitic_110_hardened": {"M3": [4130, 5540], "M4": [7200, 9660], "M5": [11630, 15610], "M6": [16510, 22140]}
+  }
+ }
+}

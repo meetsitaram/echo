@@ -64,9 +64,15 @@ uncovers as showing.
 | `actuator` | a bought actuator's stator, added automatically from the joint | rigid |
 | `linkage` | rods and cranks that move with a linkage, not with either link | drawn, kept out of the collision checks |
 | `cut` | removed from its targets | no body of its own |
+| `hardware` | a bought screw, pin, insert or retainer, placed by `spec/hardware.py` | out of the collision checks; read by groups fastener, holes, bolted, pattern, access |
+| `bearing` | a catalogue bearing, placed by `spec/hardware.py` | read by groups bearing, pivot |
 
 Mark a part that is meant to show with `exposed=True` (or `dict(cyl(...), exposed=True)`). For a joint whose
 actuator shows black in a seam, use `exposed=True` on the joint; `exposed='flange'` exposes only its flange.
+
+## Real connections (`spec/hardware.py`)
+
+One call per connection, after the links and joints: `HW.pattern(name, joint, which, link, seat_t, length, clamps=..., counterbore_to=...)` reads a motor's pattern from `spec/actuator_interfaces.json`, puts a screw on every hole by the motor's clock, and cuts clearance holes and counterbores in the real parts. Also `fastener`, `pin_holes`, `dowel`, `register`, `insert`, `bearing`, `axle`, `retainer`; `python -I spec/hardware.py` self-tests all of them. Masses come from the catalogue (`spec/hardware_catalog.json`), or geometry times density. Anything unconfirmed is a row in `spec/assumptions.json`, read by id and printed in the reports. A motor's geom holds its clock through `motor()` and draws at the outline measured from the maker's STEP (`tools/motor_outlines.py`).
 
 ## Links and joints
 

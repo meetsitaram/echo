@@ -63,6 +63,8 @@ CONTACT_MIN_MM2 = 100.0
 # Slip load of that M5 (12.9 into 7075): preload about 10 kN (75 % of proof on 14.2 mm2), friction 0.15, from memory. A path
 # interface passing force V needs ceil(SF_MIN x V / BOLT_SLIP_N) bolts, each with its pad.
 BOLT_SLIP_N = 1500.0
+# The knee's fork since it has real bearings (iteration 40): a force line 14 mm off the leg's centre (what the ankle roll holds at 3,400 N) on supports 76 mm apart puts (38 + 14) / 76 of it on the nearer one.
+KNEE_SPLIT = 0.684
 # A drawn overlap thinner than this can't be told from a gap once made: general machining tolerance on parts this size is
 # +-0.1 mm (ISO 2768-m). So a 0.02 mm contact counts as none. Exactly coplanar faces (within FLUSH, float32 rounding at 1 m)
 # are a different thing, a drawn face-to-face seat, and count by their shared area.
@@ -144,26 +146,26 @@ SECTIONS = [
         load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)]),
     sec('Knee hub feet', LEG, 'L_knee_link', ['L knee hub foot in', 'L knee hub foot out'], 'z', ('L knee hub foot in', 'c', 0.0),
         load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)]),
-    sec('Knee idler arm (inner second support), bearing fitted', LEG, 'L_knee_link', ['L knee idler arm'], 'z', ('L knee idler arm', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(0.5, ('L knee idler stub', 'c', (0, 0, 0)))], note='half the load, if the bearing round the stub existed'),
+    sec('Knee idler arm (inner second support)', LEG, 'L_knee_link', ['L knee idler arm'], 'z', ('L knee idler arm', 'c', 0.0),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee idler stub', 'c', (0, 0, 0)))], note='the nearer support\'s share, on the real CRBT 405 A: see Bearings'),
     sec('Knee idler stub', LEG, 'L_knee_link', ['L knee idler stub'], 'y', ('L knee idler stub', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(0.5, ('L knee cheek disc in', 'c', (0, 0, 0)))]),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee cheek disc in', 'c', (0, 0, 0)))]),
     sec('Knee stator plate, outer bearing fitted', LEG, 'L_knee_link', ['L knee stator plate'], 'z', ('joint:L_knee', 'c', -0.03),
-        load='leg', cases=('peak', 'walk', 'motor'), motors=[('L_knee', 1)], local=[(0.5, ('L knee post', 'c', (0, 0.0035, 0)))],
-        note='half the load, through the post, if the bearing round it existed'),
-    sec('Knee stator plate, as drawn: no bearing, all load through the motor', LEG, 'L_knee_link', ['L knee stator plate'], 'z', ('joint:L_knee', 'c', -0.03),
-        load='leg', cases=('peak', 'walk'), local=[(1.0, ('L_knee flange', 'c', (0, 0, 0)))], note='what the spec draws today: 2.5 mm of air at the post, 1.5 mm at the stub'),
+        load='leg', cases=('peak', 'walk', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee post', 'c', (0, 0.0035, 0)))],
+        note='the nearer support\'s share, through the post'),
+    sec('Knee stator rim, the motor\'s torque', LEG, 'L_knee_link', ['L knee stator rim'], 'z', ('joint:L_knee', 'c', 0.0),
+        load='leg', cases=('motor',), motors=[('L_knee', 1)], note='net of the hollow; the disc beside it is not counted'),
     sec('Knee post', LEG, 'L_knee_link', ['L knee post'], 'y', ('L knee cheek disc out', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(0.5, ('L knee cheek disc out', 'c', (0, 0, 0)))]),
-    sec('Knee axle', LEG, 'L_hip_yaw_link', ['L knee axle in'], 'y', ('L knee axle in', 'c', 0.0),
-        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(1.0, ('L_knee flange', 'c', (0, 0, 0)))], note='all of it, as drawn'),
+        load='leg', cases=('peak', 'walk'), local=[(KNEE_SPLIT, ('L knee cheek disc out', 'c', (0, 0, 0)))]),
+    sec('Knee axle, now a cup', LEG, 'L_hip_yaw_link', ['L knee axle in'], 'y', ('L knee axle in', 'c', 0.0),
+        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee cheek disc in', 'c', (0, 0, 0)))], note='its wall, the motor\'s torque plus the nearer support\'s share'),
     sec('Knee cheek discs at the bores (net of them)', LEG, 'L_hip_yaw_link', ['L knee cheek disc in', 'L knee cheek disc out'], 'z', ('joint:L_knee', 'c', 0.0),
         load='leg', cases=ABOVE_KNEE, motors=[('L_knee', 1)]),
     sec('Knee cheeks over the discs, both', LEG, 'L_hip_yaw_link', ['L knee cheek in', 'L knee cheek out'], 'z', ('L knee cheek disc in', 'hi', 0.002),
         load='leg', cases=('peak', 'walk')),
     sec('Knee inner cheek alone (the only one that takes motor torque)', LEG, 'L_hip_yaw_link', ['L knee cheek in'], 'z', ('L knee cheek disc in', 'hi', 0.002),
-        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(1.0, ('L knee cheek disc in', 'c', (0, 0, 0)))],
-        note='all of the foot load as drawn: the outer cheek has air at its bearing'),
+        load='leg', cases=('peak', 'motor'), motors=[('L_knee', 1)], local=[(KNEE_SPLIT, ('L knee cheek disc in', 'c', (0, 0, 0)))],
+        note='the nearer support\'s share and all of the motor\'s torque'),
     sec('Knee cheeks out of plane, under the recorded side force', LEG, 'L_hip_yaw_link', ['L knee cheek in', 'L knee cheek out'], 'z', ('L knee cheek disc in', 'hi', 0.002),
         load='leg', cases=('side',), solo=True, side_local=('joint:L_knee', 'c', (0, 0, 0)), note='upper bound: all of the 1,614 N reaches the knee; 3 mm plates each bending on their thin side'),
     sec('Knee cheek tops', LEG, 'L_hip_yaw_link', ['L knee cheek in', 'L knee cheek out', 'L knee cheek in top', 'L knee cheek out top'], 'z', ('L knee yoke', 'lo', -0.002),
@@ -275,7 +277,8 @@ INTERFACES = [
     (LEG, 'L knee hub foot in', 'L shank plate in up', 0.5), (LEG, 'L knee hub foot out', 'L shank plate out up', 0.5),
     (LEG, 'L knee idler arm', 'L knee hub foot in', 0.5), (LEG, 'L knee idler stub', 'L knee idler arm', 0.5),
     (LEG, 'L knee stator plate', 'L knee hub foot out', 0.5), (LEG, 'L knee stator plate', 'L knee post', 0.5),
-    (LEG, 'L knee stator plate', 'L_knee actuator (buy) RS04', 1.0), (LEG, 'L knee axle in', 'L_knee flange', 1.0), (LEG, 'L knee cheek disc in', 'L knee axle in', 1.0),
+    (LEG, 'L knee stator rim', 'L_knee actuator (buy) RS04', 1.0), (LEG, 'L knee stator rim', 'L knee stator disc', 1.0), (LEG, 'L knee stator plate', 'L knee stator disc', 1.0),
+    (LEG, 'L knee axle in', 'L_knee flange', 1.0), (LEG, 'L knee cheek disc in', 'L knee axle in', 1.0),
     (LEG, 'L knee cheek in', 'L knee cheek disc in', 0.5), (LEG, 'L knee cheek out', 'L knee cheek disc out', 0.5),
     (LEG, 'L knee yoke', 'L knee cheek in', 0.25), (LEG, 'L knee yoke', 'L knee cheek out', 0.25),
     (LEG, 'L thigh frame', 'L knee cheek in top', 0.25), (LEG, 'L thigh frame', 'L knee cheek out top', 0.25),
@@ -308,6 +311,9 @@ INTERFACES = [
 
 # Rigid parts on no path above, each with its reason. A new part must go in a table: see check_coverage.
 NOT_ON_PATH = {
+    'L knee cheek collar out': 'the seat\'s other half and the race\'s stop: read with the bearing checks',
+    'L knee post collar': 'the race\'s shoulder: read with the bearing checks', 'L knee post cap': 'the race\'s shoulder: read with the bearing checks',
+    'L knee idler collar': 'the race\'s shoulder: read with the bearing checks', 'L knee idler cap': 'the race\'s stop: read with the bearing checks',
     'L ankle fork bridge': 'ties the fork cheeks; the plates land in line with the cheeks, so the path passes beside it',
     'L shank knee bridge': 'ties the plates under the motor; the hub feet carry the path',
     'L ankle roll pad in': 'carries the roll motor only: read with the stator check', 'L ankle roll pad out': 'carries the roll motor only: read with the stator check',
@@ -701,6 +707,145 @@ def stress(pieces, elems, u, v, n, at, solo=False):
     return dict(vm=vm, sigma=worst, tau=tau, s_axial=s_axial, s_bend=s_bend, N=Nf, V=V, Mb=Mb / 1000.0, T=T / 1000.0)
 
 
+# ---------------------------------------------------------------- real screws and bearings (tools/hw_checks.py reads these tables; assumptions: spec/assumptions.json)
+
+# Screw tension at the top of its load. Preload alone is 0.75 of proof, so the ceiling is 1.33: asking for more than 1.1 would only forbid preloading. It's proof, not break, so it does yield margin of its own.
+SF_TENSION = 1.1
+
+
+def assumed(spec, key):
+    return next(r['value'] for r in spec['hardware']['assumptions'] if r['id'] == key)
+
+
+def screw_load(spec, h, le):
+    """(preload N, strip force N, proof N, stress area mm2, what limits the preload). Preload: the smaller of the assumed fraction of proof, and the thread's strip force over its factor."""
+    sys.path.insert(0, os.path.join(ROOT, 'spec'))
+    import hardware as HW
+    data = HW.screw_data(h['thread'], h['head'])
+    tau = assumed(spec, 'shear_al_motor') if str(h['into']).startswith('motor:') else assumed(spec, 'shear_al_part')
+    strip = HW.strip_area(h['d'], data['pitch'], max(le, 0.0)) * tau
+    p_proof = assumed(spec, 'preload_fraction') * data['proof']
+    p_strip = strip / assumed(spec, 'strip_factor')
+    return min(p_proof, p_strip), strip, data['proof'], data['As'], 'thread strip' if p_strip < p_proof else f"{assumed(spec, 'preload_fraction'):.2f} x proof"
+
+
+def engagement(h):
+    """Thread engaged and the hole's depth, mm, from the record: the tip's distance past the face it enters."""
+    tip = np.array(h['pos'], float) + np.array(h['dir'], float) * h['length'] / 1000
+    return float((tip - np.array(h['face'], float)) @ np.array(h['dir'], float) * 1000), h['hole_depth']
+
+
+def pattern_screws(spec, name):
+    return [g['hw'] for l in spec['links'].values() for g in l['geoms'] if g.get('hw', {}).get('type') == 'screw' and g['hw'].get('pattern') == name]
+
+
+def bolted_rows(M):
+    """One row per screw pattern on the left side and centre: T the motor's peak; V the force across the joint; Mt the tilting moment. Formulas, per pattern of n screws on radius r:
+        slip        SF = mu n Fp / (V + T / r)              the joint holds by friction: mu, Fp from the assumptions
+        separation  SF = Fp / (Fa / n + 2 Mt / (n r))       the most loaded screw's share against its preload (2 M / (n r): a circle of screws)
+        shear       SF = 0.6 Rm As / (V / n + T / (n r))    if it slipped, each screw in shear: 0.6 x its breaking stress (from memory, an estimate), with the threads in the plane. Pins not counted
+        tension     SF = proof / (Fp + phi Ft)              phi the joint stiffness factor
+        strip       SF = F_strip / (Fp + phi Ft)            the thread in the aluminium"""
+    spec = M.spec
+    mu, phi = assumed(spec, 'friction_joint'), assumed(spec, 'joint_stiffness_factor')
+    rows = []
+    for p in spec['hardware']['patterns']:
+        if p['name'].startswith('R '):
+            continue
+        hw = pattern_screws(spec, p['name'])
+        if not hw:
+            rows.append(dict(name=p['name'], joint=p['joint'], n=0, sf=0.0, why='no screws placed'))
+            continue
+        h = hw[0]
+        n = len(hw)
+        r = p['r_bc'] / 1000
+        T = M.cap(p['joint'])
+        # The design: the two supports take the force, so the screws take the motor's torque (assumptions.json support_shared_by_levers). The what-if: nothing else takes it, the wrench of 'Output bearings' below.
+        wrench_row = next((b for b in bearing_table(M) if b['joint'] == p['joint'] and b['case'] == 'peak'), None)
+        for label, V, Mt, Fa in (('the design, the supports take the force', 0.0, 0.0, 0.0), ('what if the motor carried it all', wrench_row['Fr'] if wrench_row else F_PEAK, wrench_row['Mt'] if wrench_row else 0.0, F_SIDE)):
+            le = min(engagement(x)[0] for x in hw)
+            Fp, strip, proof, As, limit = screw_load(spec, h, le)
+            Ft = Fa / n + 2 * Mt / (n * r)
+            rm = 1220.0                    # 12.9: nominal breaking stress (ISO 898-1)
+            sf = dict(slip=mu * n * Fp / (V + T / r), separation=Fp / Ft if Ft > 0 else float('inf'), shear=0.6 * rm * As / (V / n + T / (n * r)), tension=proof / (Fp + phi * Ft), strip=strip / (Fp + phi * Ft))
+            ok = min(sf['slip'], sf['separation'], sf['shear'], sf['strip']) >= SF_MIN and sf['tension'] >= SF_TENSION
+            torque = assumed(spec, 'torque_coefficient') * Fp * h['d'] / 1000
+            rows.append(dict(name=p['name'], joint=p['joint'], label=label, whatif=label.startswith('what if'), n=n, count=p['count'], thread=h['thread'], r=r * 1000, le=le, Fp=Fp, limit=limit, strip=strip, torque=torque, T=T, V=V, Mt=Mt, Fa=Fa, sf_each=sf, sf=min(sf['slip'], sf['separation'], sf['shear'], sf['strip'], sf['tension'] * SF_MIN / SF_TENSION), ok=ok))
+    return rows
+
+
+def bearing_rows(M):
+    """Each support bearing against the load cases, with its partner. A straight bar on two supports at the bearings' centres; the force line at each corner the ankle motors allow, worst kept.
+    Static: P0r = Fr + 2 M / Dpw + 0.44 Fa, fs = C0 / P0r (IKO CAT-57166 eq. 5, 6), for roller; for a deep groove ball bearing P0 = max(Fr, 0.6 Fr + 0.5 Fa) (ISO 76, from memory, an estimate), s0 = C0 / P0.
+    Dynamic: 810 N with the lever the ankle's rated torque allows; P = fw (Fr + 0.45 Fa); cycles = (90 / theta) (C / P)^e x 1e6, e 10/3 for rollers and 3 for balls; invalid over P = C / 2 (IKO eq. 1, 3, 4; same form for balls).
+    No tilting moment on a single bearing: the pair takes it as this couple, which is why the lever rule and not a bearing's moment rating is what's read."""
+    spec = M.spec
+    rows = []
+    ox = np.array(M.joint['L_ankle_pitch']['origin'], float)
+    bears = {g['name']: g['hw'] for l in spec['links'].values() for g in l['geoms'] if g.get('hw', {}).get('type') == 'bearing'}
+    for name, h in bears.items():
+        if name.startswith('R '):
+            continue
+        rows.append(bearing_eval(M, name, h, bears.get(h.get('partner'))))
+    return rows
+
+
+def bearing_eval(M, name, h, partner):
+    spec = M.spec
+    a = G.AXIS[h['axis']]
+    c = np.array(h['pos'], float)
+    k = 'xyz'.index(h['axis'])
+    other = np.array(partner['pos'], float) if partner else c
+    span = abs((other - c) @ a)
+    hip_y = M.joint['L_knee']['origin'][1]
+    fs_min = assumed(spec, 'bearing_static_min')
+
+    def share(line_y):                                     # the lever rule; alone, it takes everything
+        return abs(line_y - other[k]) / span if span > 0 else 1.0
+    dy_peak = min(M.cap('L_ankle_roll') / F_PEAK, SOLE_Y)
+    Fr_peak = F_PEAK * max(share(hip_y + dy_peak), share(hip_y - dy_peak))
+    Fa_side = F_SIDE
+    rated = spec['actuators']['RS06']['rated_nm'] * M.joint['L_ankle_roll']['capacity']['ratio']
+    dy_walk = min(rated / F_WALK, SOLE_Y)
+    Fr_walk = F_WALK * max(share(hip_y + dy_walk), share(hip_y - dy_walk))
+    C, C0 = h['C'], h['C0']
+    roller = h['kind'] == 'roller'
+    P0 = (lambda fr, fa: fr + 0.44 * fa) if roller else (lambda fr, fa: max(fr, 0.6 * fr + 0.5 * fa))
+    fs_peak, fs_side = C0 / P0(Fr_peak, 0.0), C0 / P0(Fr_peak, Fa_side)
+    fw = assumed(spec, 'bearing_load_factor')
+    P = fw * Fr_walk
+    e = 10 / 3 if roller else 3.0
+    theta = assumed(spec, 'knee_oscillation') / 2
+    cycles = 90 / theta * (C / P) ** e * 1e6
+    need = assumed(spec, 'service_cycles')
+    return dict(name=name, designation=h['designation'], d=h['d'], D=h['D'], B=h['B'], C=C, C0=C0, kind=h['kind'], source=h['source'], read_via=h['read_via'], Fr_peak=Fr_peak, Fa_side=Fa_side, fs_peak=fs_peak, fs_side=fs_side, fs_min=fs_min,
+                Fr_walk=Fr_walk, P=P, cycles=cycles, need=need, life_valid=P <= C / 2, span=span * 1000)
+
+
+def bearing_options(M):
+    """Every catalogue bearing against the slot at the knee: which go in today, what each would rate, and what would have to grow. The slot: the d40 post and the 6.5 mm between stator disc and outer hub."""
+    sys.path.insert(0, os.path.join(ROOT, 'spec'))
+    import hardware as HW
+    rec = {g['name']: g['hw'] for l in M.spec['links'].values() for g in l['geoms'] if g.get('hw', {}).get('type') == 'bearing'}
+    h = rec.get('L knee outer bearing')
+    if h is None:
+        return []
+    SLOT, SHAFT, HOUSING = 6.5, 40.0, 100.0     # mm: plate 34.5 to hub 41; post d40 today; the cheek's disc is d100, a race OD can't reach its rim
+    out = []
+    for name, b in HW.bearing_table().items():
+        probe = dict(h, designation=name, d=b['d'], D=b['D'], B=b['B'], C=b['C'], C0=b['C0'], kind=b['kind'], source=b['source'], read_via=b['read_via'])
+        e = bearing_eval(M, name, probe, rec.get(h['partner']))
+        grow = []
+        if b['B'] + 2 * assumed(M.spec, 'machining_clearance') > SLOT:
+            grow.append(f"band +{b['B'] + 2 * assumed(M.spec, 'machining_clearance') - SLOT:.1f} mm")
+        if b['d'] > SHAFT:
+            grow.append(f"post d{b['d']:.0f}")
+        if b['d'] < SHAFT:
+            grow.append(f"post down to d{b['d']:.0f} (fits; weaker post)")
+        out.append(dict(name=name, b=b, e=e, fits=b['B'] + 2 * assumed(M.spec, 'machining_clearance') <= SLOT and b['d'] == SHAFT and b['D'] < HOUSING, grow='; '.join(grow) or 'nothing'))
+    return sorted(out, key=lambda x: -x['e']['fs_peak'])
+
+
 def verdict(sf):
     return 'FAIL' if sf < 1 else ('MARGINAL' if sf < SF_MIN else 'pass')
 
@@ -923,6 +1068,45 @@ def fmt_sf(x):
     return 'inf' if x == float('inf') else ('%.0f' % x if x >= 100 else ('%.1f' % x if x >= 10 else '%.2f' % x))
 
 
+def hardware_report(M):
+    """The screw and bearing tables, and the assumptions they rest on."""
+    if not M.spec.get('hardware'):
+        return []
+    spec = M.spec
+    L = ['', '## Bolted joints (hand estimates, not VDI 2230)', '',
+         '12.9 screws (assumed), real patterns from the maker\'s drawing, placed by `spec/hardware.py`. Fp: preload, the smaller of 0.75 x proof and strip force / 2. Formulas per pattern of n screws on radius r: slip SF = mu n Fp / (V + T / r); '
+         'separation SF = Fp / (Fa / n + 2 Mt / (n r)); shear if slipped SF = 0.6 Rm As / (V / n + T / (n r)); tension SF = proof / (Fp + phi Ft); strip SF = F_strip / (Fp + phi Ft). T: the motor\'s peak. V, Fa: below. Required: SF 2 except tension 1.1 (preload alone uses 0.75 of proof). '
+         'Pins not counted in shear. Not modelled: fatigue, embedding, flange flex.', '',
+         '| pattern | load | screws | thread, engaged mm | Fp kN (limit) | torque N m (estimate) | T, V, Fa, Mt | slip | separation | shear | tension | strip |', '|---|---|---|---|---|---|---|---|---|---|---|---|']
+    for r in bolted_rows(M):
+        if r.get('why'):
+            L.append(f"| {r['name']} | {r['why']} | 0 | | | | | | | | | |")
+            continue
+        sf = r['sf_each']
+        f = lambda x: 'inf' if x == float('inf') else f'{x:.1f}'
+        L.append(f"| {r['name']} | {r['label']} | {r['n']} of {r['count']} on d{2 * r['r']:.0f} | {r['thread']}, {r['le']:.1f} | {r['Fp'] / 1000:.1f} ({r['limit']}) | {r['torque']:.1f} | {r['T']:.0f} N m, {r['V']:.0f} N, {r['Fa']:.0f} N, {r['Mt']:.0f} N m | {f(sf['slip'])} | {f(sf['separation'])} | {f(sf['shear'])} | {f(sf['tension'])} | {f(sf['strip'])} |")
+    L += ['', '## Bearings (catalogue ratings, hand estimates of load)', '',
+          'Two supports at the knee, on the lever rule, the motor\'s own bearing taking nothing (assumed: its rating is unpublished). Static: fs = C0 / (Fr + 0.44 Fa) (IKO CAT-57166), needs 1.5 (its Table 4, normal operation). "With side" adds the recorded 1,614 N as axial, an upper bound as in the load cases. '
+          'Dynamic: 810 N, the lever limited by the ankle\'s rated torque, fw 1.5; life in oscillating cycles of 60 deg; a hand figure for service life.', '',
+          '| bearing | catalogue | d x D x B | C, C0 (N) | peak Fr (N) | fs at 3,400 N | fs with side | walk P (N) | life, millions of cycles | needs |', '|---|---|---|---|---|---|---|---|---|---|']
+    for r in bearing_rows(M):
+        L.append(f"| {r['name']} | {r['designation']} ({r['source']}, {r['read_via']}) | {r['d']:.0f} x {r['D']:.0f} x {r['B']:.0f} | {r['C']:.0f}, {r['C0']:.0f} | {r['Fr_peak']:.0f} | **{r['fs_peak']:.2f}** | {r['fs_side']:.2f} | {r['P']:.0f} | {r['cycles'] / 1e6:.0f}{'' if r['life_valid'] else ' (over C / 2: formula invalid)'} | {r['need'] / 1e6:.1f} |")
+    opts = bearing_options(M)
+    if opts:
+        L += ['', '### Every catalogue bearing against the knee\'s slot', '',
+              'The outer support: d40 post, 6.5 mm between the stator disc and the outer hub, 0.2 mm clear each side. Same load as above. Rows from `spec/hardware_catalog.json`; `search_excerpt` rows want a check on the maker\'s page.', '',
+              '| bearing | d x D x B | C0 (N) | fs at 3,400 N | fs with side | life, M cycles | goes in today | what would have to grow | read |', '|---|---|---|---|---|---|---|---|---|']
+        for o in opts:
+            b, e = o['b'], o['e']
+            L.append(f"| {o['name']} | {b['d']:.0f} x {b['D']:.0f} x {b['B']:.0f} | {b['C0']:.0f} | {e['fs_peak']:.2f} | {e['fs_side']:.2f} | {e['cycles'] / 1e6:.0f} | {'**yes**' if o['fits'] else 'no'} | {o['grow']} | {b['read_via']} |")
+    L += ['', '## Assumptions behind the two tables above', '',
+          'From `spec/assumptions.json`, one row each: change a value there and run the checks. All status `assumed`. "estimate, from memory" means a hand figure no document here backs.', '',
+          '| id | value | basis | source | what it risks | settled by |', '|---|---|---|---|---|---|']
+    for r in spec['hardware']['assumptions']:
+        L.append(f"| {r['id']} | {r['value']} {r['unit']} | {r['basis']} | {r['source']} | {r['risk']} | {r['settled_by']} |")
+    return L
+
+
 def report(M, rows, irows, brows, path):
     ranked = sorted(rows, key=lambda r: r['sf'])
     n_fail = sum(r['sf'] < 1 for r in rows)
@@ -962,7 +1146,7 @@ def report(M, rows, irows, brows, path):
         L.append(f"| {i} | {mark} | {r['name']} | {r['path']} | {r['material']} ({r['yield']:.0f}) | {r['size']} | {r['area']:.0f} | {CASE_LABEL[r['case']]} | {abs(g['N']):.0f}, {g['V']:.0f} | {g['Mb']:.0f}, {abs(g['T']):.0f} | {g['vm']:.0f} | **{fmt_sf(r['sf'])}**{extra} | {fmt_sf(r['sf_hollow'])} | {oth} | {r['note']} |")
     L += ['', '## Interfaces (hand estimates)', '',
           f'Contact area between two rigid parts: overlap volume over its thinnest dimension, or the shared area of exactly coplanar faces. Required: {CONTACT_MIN_MM2:.0f} mm2 (the pad of one M5) x the bolts needed to pass the force at factor {SF_MIN:.0f} (slip load {BOLT_SLIP_N:.0f} N a bolt, from memory). '
-          'This only asks whether a joint has room to exist: no fastener is in the spec.', '',
+          'This only asks whether a joint has room to exist. Screws are read in their own table below, at the knee so far.', '',
           '| verdict | interface | path | force (N) | area (mm2) | required | kind | depth (mm) |', '|---|---|---|---|---|---|---|---|']
     for r in sorted(irows, key=lambda r: (r['ok'], r['area'] / max(r['need'], 1))):
         gap = '' if r['kind'] != 'gap' or r['gap'] is None else f" ({r['gap']:.2f} mm of air)"
@@ -973,14 +1157,16 @@ def report(M, rows, irows, brows, path):
           '| joint | motor | case | axial (N) | radial (N) | tilting moment (N m) | equivalent (kN) |', '|---|---|---|---|---|---|---|']
     for r in sorted(brows, key=lambda r: -r['eq']):
         L.append(f"| {r['joint']} | {r['model']} | {CASE_LABEL[r['case']]} | {r['Fa']:.0f} | {r['Fr']:.0f} | {r['Mt']:.0f} | {r['eq'] / 1000:.1f} |")
+    hw = hardware_report(M)
+    L += hw
     mb, mp = M.geom_man('shoulder beam'), M.geom_man('battery')
     gap_pack = contact(mp, mb) if mb is not None and mp is not None else None
     pack_txt = '' if gap_pack is None or gap_pack['kind'] != 'gap' else f" The upper pack does not touch the beam ({gap_pack['gap']:.1f} mm of air): the shoulders reach the pack only through the compute box's 1 mm overlap."
     L += ['', '## What this cannot assess, and what would settle it', '',
           'Nothing here waits on hardware: nothing is being bought soon, and the design has to stand up in a pitch and in sim. So each row names the analysis that could settle it now, and says plainly where only a physical test can. Any number in this section is a hand estimate too.', '',
           '| item | what is open | settles it now | only a test can settle |', '|---|---|---|---|',
-          '| Fasteners | None in the spec; contact area is a stand-in for room. As of 2026-11-05 the hip bracket and front plate touch their flanges only outside the d36 output bolt circle (a retailer figure), so neither can bolt there as drawn. The bolt slip load used above is from memory | Read the bolt circles from the RobStride STEP files already on hand; put fasteners in the spec; VDI 2230 calculation per joint; FEA with preload on the worst few | Thread and preload scatter, if a margin ends up thin |',
-          "| Output bearings | Required loads are above; I found no rating. Hip roll is the one to ask about | Maker data: ask RobStride for the rating or the bearing's part number, then read the bearing maker's catalogue | If the maker gives neither: a moment-to-failure test on one module |",
+          '| Fasteners | Real screws at the knee only (tables above); every other joint is still contact area standing in for room. As of 2026-11-05 the hip bracket and front plate touch their flanges only outside the d36 output bolt circle, so neither can bolt there as drawn. The bolt slip load in Interfaces is from memory | Place the remaining patterns with `spec/hardware.py`; VDI 2230 calculation per joint; FEA with preload on the worst few | Thread and preload scatter, if a margin ends up thin |',
+          "| Output bearings | Required loads are above; I found no rating. Hip roll is the one to ask about. The knee no longer rests on its motor's bearing by intention, but only stiffness decides what that bearing really takes | Maker data: ask RobStride for the rating or the bearing's part number, then read the bearing maker's catalogue | If the maker gives neither: a moment-to-failure test on one module |",
           '| Motor housings as structure | Several rows pass load face to face through a motor | Maker data for an allowed load. Failing that, route frame past the motor so the question goes away, or FEA of the housing from the STEP with an assumed alloy (an estimate: the casting is unknown) | The housing\'s true strength, if the design keeps relying on it |',
           f"| Battery case | Undefined. No frame between spine and beam, and the pack is not counted as frame: its row has zero section.{pack_txt} | Design the case or rails, then FEA; cell limits from the cell maker's data sheet | Abuse and crush behaviour of the pack in a fall |",
           '| Thin-wall hollow sections | Solid is the best case. "SF hollow" keeps the outline at the mass model\'s fill; walls, pockets and corner radii are not drawn | Draw the walls; FEA with linear buckling | Nothing at this stage |',

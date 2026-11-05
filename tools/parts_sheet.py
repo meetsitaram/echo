@@ -20,7 +20,7 @@ import checks as C  # noqa: E402
 import geom as G  # noqa: E402
 
 BG = (0.89, 0.89, 0.90, 1.0)
-GROUPS = [('knit', 'Garment'), ('shell', 'Covers'), ('actuator', 'Actuators (bought)'), ('struct', 'Structure'), ('linkage', 'Linkages')]
+GROUPS = [('knit', 'Garment'), ('shell', 'Covers'), ('actuator', 'Actuators (bought)'), ('struct', 'Structure'), ('linkage', 'Linkages'), ('bearing', 'Bearings (bought)'), ('hardware', 'Screws and pins (bought)')]
 SPEC_GLOSS = {'#08090B'}
 
 
@@ -99,7 +99,7 @@ def main():
             x += w + pad
             shelf = max(shelf, h)
         y -= shelf + pad
-    foot = 0.075
+    foot = 0.11
     H = -y + foot
     ms.worldbody.add_geom(type=mujoco.mjtGeom.mjGEOM_PLANE, size=[9, 9, 0.1], rgba=BG, contype=0, conaffinity=0)
     ms.visual.global_.fovy = H * 1.02
@@ -125,10 +125,24 @@ def main():
     for title, wy, n in rows:
         dr.text((u(0), w_(wy)), f'{title}: {n}', fill=(40, 40, 44), font=big)
     t = y - 0.012
-    dr.text((u(0), w_(t)), 'Fasteners: 0     Bearings: 0     Wiring: 0     (none of these are in the spec yet)', fill=(180, 40, 30), font=big)
+    # what's really there: the count of each, named; screws per thread and length, as a parts list would
+    kinds = Counter()
+    for l in spec['links'].values():
+        for g in l['geoms']:
+            h = g.get('hw', {})
+            if h.get('type') == 'screw':
+                kinds[f"{h['thread']} x {h['length']:.0f} {h['head']}"] += 1
+            elif h.get('type') == 'bearing':
+                kinds[h['designation']] += 1
+    motors = totals.get('Actuators (bought)', 0)
+    placed = sum(1 for l in spec['links'].values() for g in l['geoms'] if g.get('hw', {}).get('type') == 'screw' and g['hw'].get('which'))
+    n_screws = totals.get('Screws and pins (bought)', 0)
+    dr.text((u(0), w_(t)), f"Screws and pins: {n_screws}     Bearings: {totals.get('Bearings (bought)', 0)}     Wiring: 0     Knees only: {motors - 2} motors have no screws yet", fill=(180, 40, 30), font=big)
+    dr.text((u(0), w_(t - 0.03)), '   '.join(f'{v} x {k}' for k, v in sorted(kinds.items())), fill=(70, 70, 75), font=small)
+    t -= 0.024
     dr.text((u(0), w_(t - 0.04)), f'{sum(totals.values())} shapes from the spec at one scale. Most structure is still a placeholder block, not a designed, makeable part.', fill=(70, 70, 75), font=small)
     img.save(a.out)
-    print(a.out, img.size, totals, 'skipped', dict(skipped))
+    print(a.out, img.size, totals, 'skipped', dict(skipped), dict(kinds))
 
 
 if __name__ == '__main__':

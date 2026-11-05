@@ -5,9 +5,10 @@
                                             loadpath contact pivot linkage stator)
   python -I tools/checks.py --bad torque    break the design on purpose and show the matching check FAILs
                                             (cases: torque collide offaxis floating mass poke; and for the load checks hipshrink
-                                            spineshrink norods token tokenedge pa12 rolebad newpart nostator thinpin)
+                                            spineshrink norods token tokenedge pa12 rolebad newpart nostator thinpin; for hardware: motorinto shortthread
+                                            longscrew protrude edge ligament fewscrews smallbearing thinseat noshoulder missingscrew ontab blockkey)
   python -I tools/checks.py --good pin      fix one thing on purpose and show the matching row goes to PASS: a check that can never
-                                            pass proves as little as one that can never fail (cases: pin link stator frame)
+                                            pass proves as little as one that can never fail (cases: pin link stator frame; hardware: deepthread bigbearing keyclear)
 
 What each group guards against (the CDX-3R lesson it carries over in brackets):
   targets  size and proportions match Figure 03 (published specs + photo estimates)
@@ -31,6 +32,7 @@ What each group guards against (the CDX-3R lesson it carries over in brackets):
   skin     internal parts stay inside the skin, except parts meant to show (exposed actuators)
   sweep    each joint swept through its limits: limits are reachable without collisions (motion sweep)
   poses    task poses: static joint torques vs actuator ratings, centre of mass over the feet, no collisions
+  motorfit fastener holes bolted bearing pattern access: real standard parts (tools/hw_checks.py, thresholds and reasons there). What rests on assumptions is in spec/assumptions.json, printed at the end of the report
 """
 import argparse
 import copy
@@ -45,6 +47,7 @@ import manifold3d as mf
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import geom as G  # noqa: E402
+import hw_checks as HC  # noqa: E402
 import mass_model as MM  # noqa: E402
 
 ROOT = G.ROOT
@@ -58,6 +61,7 @@ ARM_KEYS, LEG_KEYS = ('shoulder', 'elbow', 'wrist', 'hand'), ('hip', 'knee', 'an
 class Report:
     def __init__(self):
         self.rows = []
+        self.assumptions = []
 
     def add(self, group, item, ok, detail='', warn=False, value=None):
         """value: a number where higher is better, so --bad can tell a row that got worse from one that was already failing."""
@@ -76,6 +80,10 @@ class Report:
             rows = [r for r in self.rows if r['group'] == grp]
             lines += [f'## {grp}', '', '| status | item | detail |', '|---|---|---|']
             lines += [f"| {r['status']} | {r['item']} | {r['detail']} |" for r in rows]
+            lines.append('')
+        if self.assumptions:
+            lines += ['## What the hardware checks assume', '', 'From `spec/assumptions.json`: change one there and run the checks. All status `assumed`.', '', '| id | value | basis | source | what it risks |', '|---|---|---|---|---|']
+            lines += [f"| {r['id']} | {r['value']} {r['unit']} | {r['basis']} | {r['source']} | {r['risk']} |" for r in self.assumptions]
             lines.append('')
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, 'w', encoding='utf-8') as f:
@@ -155,7 +163,8 @@ class Solids:
         for ln, l in spec['links'].items():
             idx = range(len(l['geoms']))
             role = lambda i: l['geoms'][i]['role']
-            self.all[ln] = union([self.geom[(ln, i)] for i in idx])
+            # bought screws and bearings aren't part of the link's own connected body: a screw through a gap mustn't read as a bracket (they have their own checks, tools/hw_checks.py)
+            self.all[ln] = union([self.geom[(ln, i)] for i in idx if role(i) not in ('hardware', 'bearing')])
             self.shell[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in ('shell', 'knit')])
             self.rigid[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in G.RIGID])
             self.hard[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in G.RIGID] +
@@ -319,7 +328,8 @@ def check_connect(spec, S, rep):
     under a cover is still missing, 2026-10-31 calibration), and every cover must be mounted on it."""
     # pieces under 0.01 cm3 are slivers the boolean union leaves where cut pieces meet, not parts (2026-10-31: a
     # zero-volume sliver where the right shoe's toe and heel pieces overlap)
-    pieces = lambda m: len([p for p in m.decompose() if abs(p.volume()) > 1e-8])
+    # 2026-11-05: decompose hands back a sealed cavity as a piece of negative volume (the real RS00's steps under the wrist cuff closed two). A hole inside a part isn't a loose part
+    pieces = lambda m: len([p for p in m.decompose() if p.volume() > 1e-8])
     for ln in spec['links']:
         if S.rigid[ln] is not None:
             n = pieces(S.rigid[ln])
@@ -448,6 +458,21 @@ def pivot_row(spec, S, rep, M, j, c, label):
     import strength as ST
     a = G.AXIS[j['axis']]
     c = np.asarray(c, float)
+    # a catalogue bearing here, its races touching the parts of both links: the row is that fact; its rating is read in group 'bearing'
+    for ln in (j['parent'], j['child']):
+        for i, g in enumerate(spec['links'][ln]['geoms']):
+            h = g.get('hw', {})
+            if h.get('type') == 'bearing' and h['axis'] == j['axis']:
+                d = np.array(h['pos'], float) - c
+                if np.linalg.norm(d - (d @ a) * a) < 5e-4 and abs(d @ a) < 0.012:
+                    idx = {x['name']: (l2, k) for l2 in (j['parent'], j['child']) for k, x in enumerate(spec['links'][l2]['geoms'])}
+                    m = S.geom[(ln, i)]
+                    gaps = [m.min_gap(S.geom[idx[p]], 0.05) for p in h['inner_parts'] + h['outer_parts'] if p in idx]
+                    inner = min(m.min_gap(S.geom[idx[p]], 0.05) for p in h['inner_parts'] if p in idx) if any(p in idx for p in h['inner_parts']) else 1.0
+                    outer = min(m.min_gap(S.geom[idx[p]], 0.05) for p in h['outer_parts'] if p in idx) if any(p in idx for p in h['outer_parts']) else 1.0
+                    ok = max(inner, outer) <= PIVOT_GAP
+                    rep.add('pivot', label, ok, f"{h['designation']}: inner race on {h['inner_parts'][0]}, outer in {h['outer_parts'][0]}" + ('; rating in group bearing' if ok else f"; {max(inner, outer) * 1000:.2f} mm of air at a race"), value=-max(inner, outer))
+                    return
     zone = to_manifold(G.mesh_of(dict(kind='cyl', c=list(c), axis=j['axis'], r=0.03, h=0.02 if 'seat' in label else 0.07)))
     pins, near = [], {}
     for side in ('parent', 'child'):
@@ -966,6 +991,70 @@ def break_spec(spec, case):
         for g in s['links']['L_knee_link']['geoms']:
             if g['name'] in ('L knee stator plate', 'L knee post'):
                 g['c'][1] += 0.02
+    elif case == 'motorinto':         # a plate run into the knee motor's side
+        s['links']['L_knee_link']['geoms'].append(dict(kind='rbox', name='L plate into motor', c=[0.0, J['L_knee']['origin'][1], J['L_knee']['origin'][2] - 0.05], size=[0.03, 0.01, 0.03], fillet=0.001, color='#000000', role='struct', material='al7075', exposed=True))
+        s['links']['L_knee_link']['geoms'][-1]['_bad'] = True
+    elif case in ('shortthread', 'longscrew', 'fewscrews', 'missingscrew', 'ontab', 'protrude', 'blockkey'):
+        link = next(l for l in s['links'].values() if any(g.get('hw', {}).get('pattern') == 'L knee hub' for g in l['geoms']))
+        if case in ('shortthread', 'longscrew'):
+            for g in link['geoms']:
+                if g.get('hw', {}).get('pattern') == 'L knee hub' and g['hw']['type'] == 'screw':
+                    dL = -3.5 if case == 'shortthread' else 4.0
+                    g['hw']['length'] += dL
+                    sg = 1 if g['profile'][-1][0] > 0 else -1
+                    tip = (g['profile'][0] if sg < 0 else g['profile'][-1])[0]
+                    new = tip + sg * dL / 1000
+                    g['profile'] = [[new if p[0] == tip else p[0], p[1]] for p in g['profile']]
+        elif case == 'fewscrews':     # 6 of the hub's 9 screws gone
+            drop = [g for g in link['geoms'] if g.get('hw', {}).get('pattern') == 'L knee hub' and g['hw']['type'] == 'screw'][3:]
+            link['geoms'] = [g for g in link['geoms'] if g not in drop]
+        elif case == 'missingscrew':  # one gone: the pattern isn't fully used
+            drop = next(g for g in link['geoms'] if g.get('hw', {}).get('pattern') == 'L knee hub' and g['hw']['type'] == 'screw')
+            link['geoms'] = [g for g in link['geoms'] if g is not drop]
+        elif case == 'ontab':         # a stator screw claimed at the cable tab's angle
+            stator = next(l for l in s['links'].values() if any(g.get('hw', {}).get('pattern') == 'L knee stator' for g in l['geoms']))
+            next(g for g in stator['geoms'] if g.get('hw', {}).get('pattern') == 'L knee stator' and g['hw']['type'] == 'screw')['hw']['angle'] = 75.0
+        elif case == 'protrude':      # a block in the way of a screw's tip, beyond the hole: the M5 runs into it
+            h = next(g for g in link['geoms'] if g.get('hw', {}).get('pattern') == 'L knee hub' and g['hw']['type'] == 'screw')['hw']
+            s['links']['L_knee_link']['geoms'].append(dict(kind='rbox', name='L block on the screw', c=[h['pos'][0], h['pos'][1], h['pos'][2]], size=[0.012, 0.004, 0.012], fillet=0.0005, color='#000000', role='struct', material='al7075', exposed=True))
+        else:                         # a plate between a stator screw's head and the key
+            stator = next(l for l in s['links'].values() if any(g.get('hw', {}).get('pattern') == 'L knee stator' for g in l['geoms']))
+            hs = [g['hw'] for g in stator['geoms'] if g.get('hw', {}).get('pattern') == 'L knee stator' and g['hw']['type'] == 'screw']
+            free = [h for h in hs if abs(h['pos'][2] - J['L_knee']['origin'][2]) < 0.03][0]
+            s['links']['pelvis']['geoms'].append(dict(kind='rbox', name='block over a screw', c=[free['pos'][0], free['pos'][1] - free['dir'][1] * 0.02, free['pos'][2]], size=[0.02, 0.004, 0.02], fillet=0.0005, color='#000000', role='struct', material='al7075', exposed=True))
+    elif case == 'edge':              # the stator rim down to r 55: its holes on r 53 too near its edge
+        g = next(x for x in s['links']['L_knee_link']['geoms'] if x['name'] == 'L knee stator rim')
+        g['r'] = 0.0545
+    elif case == 'ligament':          # one hub hole turned next to its neighbour
+        l = next(l for l in s['links'].values() if any(g.get('hw', {}).get('pattern') == 'L knee hub' for g in l['geoms']))
+        cuts = [g for g in l['geoms'] if g['role'] == 'cut' and g.get('hw', {}).get('pattern') == 'L knee hub']
+        a, b = cuts[0], cuts[1]
+        for g in (a,):
+            g['c'][0] += 0.65 * (b['c'][0] - a['c'][0])
+            g['c'][2] += 0.65 * (b['c'][2] - a['c'][2])
+            g['hw']['pos'] = list(g['c'])
+    elif case == 'smallbearing':      # the same seat, a bearing with a third of the rating
+        g = next(x for x in s['links']['L_hip_yaw_link']['geoms'] if x['name'] == 'L knee outer bearing')
+        g['hw']['C0'], g['hw']['C'] = 800.0, 600.0
+    elif case == 'thinseat':          # the cup's wall down to 1 mm round the race, and the collar too
+        for n in ('L knee axle in', 'L knee cheek disc in'):
+            g = next(x for x in s['links']['L_hip_yaw_link']['geoms'] if x['name'] == n)
+            g['r'] = 0.0265
+    elif case == 'noshoulder':        # the post's collar gone: the outer bearing's inner race has no stop
+        s['links']['L_knee_link']['geoms'] = [g for g in s['links']['L_knee_link']['geoms'] if g['name'] != 'L knee post collar']
+    elif case == 'deepthread':        # --good: if the hub's hole were deep enough, and the screw long enough
+        l = next(l for l in s['links'].values() if any(g.get('hw', {}).get('pattern') == 'L knee hub' for g in l['geoms']))
+        for g in l['geoms']:
+            if g.get('hw', {}).get('pattern') == 'L knee hub' and g['hw']['type'] == 'screw':
+                g['hw']['length'] += 4.5
+                g['hw']['hole_depth'] = 12.0
+    elif case == 'keyclear':          # --good: with the outer hub and cheek gone, a key reaches every stator screw
+        s['links']['L_knee_link']['geoms'] = [g for g in s['links']['L_knee_link']['geoms'] if g['name'] != 'L knee hub out']
+        s['links']['L_hip_yaw_link']['geoms'] = [g for g in s['links']['L_hip_yaw_link']['geoms'] if g['name'] not in ('L knee cheek out', 'L knee cheek out top')]
+    elif case == 'bigbearing':        # --good: a CRBS 508's rating in the seat
+        for n in ('L knee outer bearing', 'L knee inner bearing'):
+            g = next(x for x in s['links']['L_hip_yaw_link']['geoms'] if x['name'] == n)
+            g['hw']['C0'], g['hw']['C'] = 6170.0, 4900.0
     elif case == 'thinpin':           # the pins of --good pin, one far too small for the load, though it touches both links
         s = break_spec(spec, 'pin')
         next(g for g in s['links']['L_ankle_pitch_link']['geoms'] if g['name'] == 'L ankle pitch pin')['r'] = 0.001
@@ -1003,10 +1092,12 @@ EXPECT = {'torque': 'torque', 'collide': 'static', 'offaxis': 'axis', 'floating'
 # The load checks already fail on today's design, so "a row fails" would prove nothing for them. These cases compare with the unbroken
 # spec: caught means a row newly fails, or an already failing row got worse.
 EXPECT_LOAD = {'hipshrink': ['loadpath', 'contact'], 'spineshrink': ['loadpath'], 'norods': ['linkage', 'loadpath'], 'token': ['contact'], 'tokenedge': ['contact'],
-               'pa12': ['loadpath'], 'rolebad': ['loadpath'], 'newpart': ['loadpath'], 'nostator': ['stator'], 'thinpin': ['pivot']}
+               'pa12': ['loadpath'], 'rolebad': ['loadpath'], 'newpart': ['loadpath'], 'nostator': ['stator'], 'thinpin': ['pivot'],
+               'motorinto': ['motorfit'], 'shortthread': ['fastener'], 'longscrew': ['fastener'], 'protrude': ['fastener'], 'edge': ['holes'], 'ligament': ['holes'], 'fewscrews': ['bolted'],
+               'smallbearing': ['bearing'], 'thinseat': ['bearing'], 'noshoulder': ['bearing'], 'missingscrew': ['pattern'], 'ontab': ['pattern'], 'blockkey': ['access']}
 BASE_FOR = {'thinpin': 'pin'}     # today's design has no pin to make too thin: compare with the one that has
 # And the reverse: the fix must turn its row to PASS.
-EXPECT_GOOD = {'pin': ['pivot'], 'link': ['linkage'], 'stator': ['stator'], 'frame': ['loadpath', 'contact']}
+EXPECT_GOOD = {'pin': ['pivot'], 'link': ['linkage'], 'stator': ['stator'], 'frame': ['loadpath', 'contact'], 'deepthread': ['fastener'], 'bigbearing': ['bearing'], 'keyclear': ['access']}
 GROUPS = {'targets': lambda spec, S, R, rep: check_targets(spec, S, rep),
           'mass': lambda spec, S, R, rep: check_mass(spec, S, rep),
           'axis': lambda spec, S, R, rep: check_axis(spec, rep),
@@ -1021,7 +1112,8 @@ GROUPS = {'targets': lambda spec, S, R, rep: check_targets(spec, S, rep),
           'contact': lambda spec, S, R, rep: check_contact(spec, S, rep),
           'pivot': lambda spec, S, R, rep: check_pivot(spec, S, rep),
           'linkage': lambda spec, S, R, rep: check_linkage(spec, S, rep),
-          'stator': lambda spec, S, R, rep: check_stator(spec, S, rep)}
+          'stator': lambda spec, S, R, rep: check_stator(spec, S, rep),
+          'motorfit': HC.check_motorfit, 'fastener': HC.check_fastener, 'holes': HC.check_holes, 'bolted': HC.check_bolted, 'bearing': HC.check_bearing, 'pattern': HC.check_pattern, 'access': HC.check_access}
 
 
 def run_groups(spec, groups):
@@ -1073,11 +1165,12 @@ def main():
     if a.bad:
         spec = break_spec(spec, a.bad)
         a.only = a.only or [EXPECT[a.bad]]
-    groups = a.only or ['targets', 'mass', 'axis', 'static', 'covers', 'connect', 'loadpath', 'contact', 'pivot', 'linkage', 'stator', 'skin', 'sweep', 'poses']
+    groups = a.only or ['targets', 'mass', 'axis', 'static', 'covers', 'connect', 'loadpath', 'contact', 'pivot', 'linkage', 'stator', 'skin', 'sweep', 'poses', 'motorfit', 'fastener', 'holes', 'bolted', 'bearing', 'pattern', 'access']
     R = G.Robot(spec)
     t0 = time.time()
     S = Solids(spec)
     rep = Report()
+    rep.assumptions = spec.get('hardware', {}).get('assumptions', [])
     for grp in groups:
         t = time.time()
         GROUPS[grp](spec, S, R, rep)

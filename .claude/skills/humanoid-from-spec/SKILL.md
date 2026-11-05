@@ -203,7 +203,7 @@ panels made from them, raw motion captures or anyone's trademark.
 Checks that pass mean only what they test. Collision and fit checks say nothing about whether a part can be made, or holds. Say so to the user, and before a design counts as ready, have these:
 
 - **Bought parts at their real shape:** sections of the maker's CAD, not a bounding box.
-- **Every fastener in the spec:** size, length, position, direction. Parts held by nothing show up.
+- **Every fastener in the spec:** size, length, position, direction, what it clamps and threads into, placed by `spec/hardware.py`. Parts held by nothing show up. (On echo: the knee only, so far.)
 - **The build order as data**, with paths: each part goes in without cutting what's on; a key reaches each fastener at that moment; the thread bites something; the head clamps something.
 - **Per made part, not per link:** one piece without bought parts in it; walls at the process's minimum; fits the machine; exported with its holes, hollow where it is hollow.
 - **A load estimate through each section on the load path**, at a landing's load, against the material's weak direction. A hand estimate finds weak parts; it doesn't replace FEA or a test.

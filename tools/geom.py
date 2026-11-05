@@ -26,6 +26,94 @@ def load(path=None):
     return json.load(open(path or os.path.join(ROOT, 'spec', 'robot.json'), encoding='utf-8'))
 
 
+# ---------------------------------------------------------------- bought motors at their real outline
+
+_OUTLINES = {}
+_MOTOR_LOCAL = {}
+
+
+def outline_data(model):
+    """spec/actuator_outlines.json (tools/motor_outlines.py, measured from the maker's STEP): bands of radius per angle along the axis."""
+    if not _OUTLINES:
+        _OUTLINES.update(json.load(open(os.path.join(ROOT, 'spec', 'actuator_outlines.json'), encoding='utf-8')))
+    return _OUTLINES[model]
+
+
+def _star(rad):
+    n = len(rad)
+    th = (np.arange(n) + 0.5) * 2 * np.pi / n
+    r = np.maximum(np.asarray(rad, float), 0.5)
+    return np.column_stack([r * np.cos(th), r * np.sin(th)])
+
+
+def _motor_local(model):
+    """The motor as one manifold in its own frame, metres: STEP x, STEP y, t toward the output."""
+    import manifold3d as mf
+    if model in _MOTOR_LOCAL:
+        return _MOTOR_LOCAL[model]
+    d = outline_data(model)
+    ms = []
+    for k, (t0, t1, rad) in enumerate(d['bands']):
+        # a hair of overlap along the axis, so the stack unions into one body (hidden inside the bigger band)
+        lo, hi = t0 - (0.01 if k else 0.0), t1
+        ms.append(mf.CrossSection([_star(rad)]).extrude(hi - lo).translate((0.0, 0.0, lo)))
+    p = d.get('pins')
+    if p:
+        for a in p['angles']:
+            x, y = p['bc'] / 2 * np.cos(np.radians(a)), p['bc'] / 2 * np.sin(np.radians(a))
+            ms.append(mf.Manifold.cylinder(p['height'] + 0.01, p['d'] / 2, p['d'] / 2, 32).translate((float(x), float(y), d['t_hub_face'] - 0.01)))
+    u = mf.Manifold.batch_boolean(ms, mf.OpType.Add).scale((0.001, 0.001, 0.001))
+    _MOTOR_LOCAL[model] = u
+    return u
+
+
+def motor_axes(g):
+    """Unit vectors (STEP x, STEP y, output) in the world, from a motor geom's 'outline' frame."""
+    o = g['outline']
+    return np.array(o['x'], float), np.array(o['y'], float), np.array(o['out'], float)
+
+
+def motor_point(g, r_mm, ang_deg, t_mm):
+    """World point on the motor: radius and angle in the STEP's own polar frame, and t along the output from the middle of h."""
+    ex, ey, eo = motor_axes(g)
+    a = np.radians(ang_deg)
+    return np.asarray(g['c'], float) + (r_mm * np.cos(a) * ex + r_mm * np.sin(a) * ey + t_mm * eo) / 1000.0
+
+
+def motor_mesh(g):
+    ex, ey, eo = motor_axes(g)
+    k = g['r'] / g['outline']['r0']                   # a motor enlarged in a --bad case grows across its axis, as the plain cylinder did
+    T = np.column_stack([k * ex, k * ey, eo, np.asarray(g['c'], float)])
+    m = _motor_local(g['outline']['model']).transform(T.astype(np.float64)).to_mesh()
+    return trimesh.Trimesh(np.asarray(m.vert_properties[:, :3], float), np.asarray(m.tri_verts, int))
+
+
+def motor_inside(g, p):
+    d = outline_data(g['outline']['model'])
+    ex, ey, eo = motor_axes(g)
+    k = g['r'] / g['outline']['r0']
+    q = np.atleast_2d(p) - np.asarray(g['c'], float)
+    x, y, t = q @ ex * 1000 / k, q @ ey * 1000 / k, q @ eo * 1000
+    r = np.hypot(x, y)
+    ang = np.arctan2(y, x) % (2 * np.pi)
+    ok = np.zeros(len(q), bool)
+    for t0, t1, rad in d['bands']:
+        n = len(rad)
+        sel = (t >= t0) & (t <= t1)
+        if sel.any():
+            f = ang[sel] / (2 * np.pi) * n - 0.5
+            i0 = np.floor(f).astype(int) % n
+            w = f - np.floor(f)
+            rad = np.asarray(rad, float)
+            ok[sel] = r[sel] <= rad[i0] * (1 - w) + rad[(i0 + 1) % n] * w
+    pin = d.get('pins')
+    if pin:
+        for a in pin['angles']:
+            px, py = pin['bc'] / 2 * np.cos(np.radians(a)), pin['bc'] / 2 * np.sin(np.radians(a))
+            ok |= (np.hypot(x - px, y - py) <= pin['d'] / 2) & (t >= d['t_hub_face']) & (t <= d['t_hub_face'] + pin['height'])
+    return ok
+
+
 # ---------------------------------------------------------------- lofts
 
 def _loft_params(g):
@@ -135,6 +223,8 @@ def _revolve_r(g, t):
 
 def mesh_of(g):
     k = g['kind']
+    if g.get('outline'):
+        return motor_mesh(g)
     if k == 'loft':
         return clipped(g, loft_mesh(g))
     if k == 'revolve':
@@ -241,6 +331,8 @@ def inside(g, p):
     """Exact point-in-solid test for the primitive g, for an (N, 3) array of points."""
     p = np.atleast_2d(np.asarray(p, float))
     k = g['kind']
+    if g.get('outline'):
+        return motor_inside(g, p)
     if k == 'loft':
         ok = loft_inside(g, p)
         for c in clips(g):

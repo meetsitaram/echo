@@ -18,17 +18,19 @@ import geom as G  # noqa: E402
 from render_motion import XML, rgba  # noqa: E402
 
 ALU, MOTOR, STEEL = '#C4C7CB', '#303236', '#8E9298'
+HARDWARE, BEARING = '#D9A520', '#2AA79B'    # for reading: real screws are black, but these are what the picture is for
 ELECTRONICS = {'battery', 'battery lower', 'compute'}
 BG = [0.93, 0.92, 0.90]
 BEND = {'L_hip_pitch': -0.35, 'L_knee': 0.75, 'L_ankle_pitch': -0.35, 'R_hip_pitch': 0.1, 'R_knee': 0.1,
         'L_shoulder_pitch': 0.25, 'R_shoulder_pitch': -0.25, 'L_elbow': -0.5, 'R_elbow': -0.5}
 VIEWS = [('Front right', 45, -6, 2.3, 0.84), ('Side', 90, -2, 2.3, 0.84), ('Back', 215, -6, 2.3, 0.84), ('Legs', 40, -4, 1.5, 0.5)]
+ROLES = ('struct', 'actuator', 'linkage', 'hardware', 'bearing')
 
 
 def colour(g):
     if g['name'] in ELECTRONICS:
         return g['color']
-    return {'actuator': MOTOR, 'linkage': STEEL}.get(g['role'], ALU)
+    return {'actuator': MOTOR, 'linkage': STEEL, 'hardware': HARDWARE, 'bearing': BEARING}.get(g['role'], ALU)
 
 
 def main():
@@ -51,7 +53,7 @@ def main():
     ms.visual.headlight.specular = [0.1, 0.1, 0.1]
     ms.add_material(name='metal', specular=0.35, shininess=0.5)
     ms.add_texture(name='sky', type=mujoco.mjtTexture.mjTEXTURE_SKYBOX, builtin=mujoco.mjtBuiltin.mjBUILTIN_FLAT, rgb1=BG, rgb2=BG, width=64, height=384)
-    n = {'struct': 0, 'actuator': 0, 'linkage': 0}
+    n = {r: 0 for r in ROLES}
     for (ln, i), m in S.geom.items():
         g = spec['links'][ln]['geoms'][i]
         if m is None or g.get('role') not in n:
@@ -87,7 +89,7 @@ def main():
         ImageDraw.Draw(im).text((30, 24), title, fill=(50, 50, 55), font=font)
         sheet.paste(im, (k * W, 0))
     r.close()
-    ImageDraw.Draw(sheet).text((30, H + 24), f'Cover off, from the spec: {n["actuator"]} motors, {n["struct"]} structure shapes, {n["linkage"]} rods and cranks. Fasteners, bearings and wiring not modelled yet; most structure is still placeholder. Colours for reading: not finishes.', fill=(150, 40, 30), font=small)
+    ImageDraw.Draw(sheet).text((30, H + 24), f'Cover off, from the spec: {n["actuator"]} motors at their STEP outline, {n["struct"]} structure shapes, {n["linkage"]} rods and cranks, {n["hardware"]} screws (gold), {n["bearing"]} bearings (teal), knees only so far. Wiring not modelled; most structure is still placeholder. Colours for reading: not finishes.', fill=(150, 40, 30), font=small)
     sheet.save(a.out)
     print(a.out, sheet.size, n)
 

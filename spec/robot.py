@@ -24,9 +24,13 @@ Geometry roles:
 import copy
 import json
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)                                  # python -I leaves the script's folder off the path
+import hardware as HW  # noqa: E402
 ACT = json.load(open(os.path.join(HERE, 'actuators.json'), encoding='utf-8'))
+OUTLINES = json.load(open(os.path.join(HERE, 'actuator_outlines.json'), encoding='utf-8'))   # measured from the maker's STEP (tools/motor_outlines.py)
 
 # WHITE (iteration 37): the shoe's upper and the sock; Figure's upper is a light grey, not white (side and 3/4 frames)
 GREY, BLACK, GLOSS, WHITE, SOLE = '#BCC0C4', '#1B1C1F', '#08090B', '#CFD2D6', '#2B2B2E'
@@ -51,6 +55,8 @@ MATERIALS = {
     'garment': dict(density=1110, note='the grey skin, per m2 as the 3 mm PA12 and knit cover it replaced (3.3 kg/m2): knit about 0.5, foam about 0.3, and about 2.5 '
                                        'held for the inner frames, which are not designed. An estimate carried over so the masses do not fall on a guess'),
     'hand': dict(density=1500, note="the hand's motors, tendons and palm: explicit mass"),
+    'steel': dict(density=7850, note='screws, pins and bearings: role hardware or bearing, explicit mass from spec/hardware.py (catalogue, or geometry times density)'),
+    'brass': dict(density=8500, note='heat-set inserts: explicit mass from spec/hardware.py'),
 }
 
 
@@ -184,6 +190,33 @@ def tri_mark(name, sections, zc, w, color):
     return [prism(name, front_x(sections, 0, zc) + 0.0006 - 0.004, 0.004, pts, color)]
 
 
+def motor_frame(model, axis, out, clock, r0):
+    """How a bought motor sits: where its STEP's +X and +Y point in the world. out: +1 or -1, its output along +axis or -axis. clock: degrees about the
+    STEP's own +Z. At clock 0 STEP +X points along the world's reference for that axis (+x for a y or z axis, +z for an x axis)."""
+    import numpy as np
+    a = np.array({'x': (1.0, 0, 0), 'y': (0, 1.0, 0), 'z': (0, 0, 1.0)}[axis]) * out
+    z = a * OUTLINES[model]['step_output_sign']
+    ref = np.array((0, 0, 1.0) if axis == 'x' else (1.0, 0, 0))
+    y0 = np.cross(z, ref)
+    t = np.radians(clock)
+    x = np.cos(t) * ref + np.sin(t) * y0
+    y = np.cross(z, x)
+    return dict(model=model, clock=clock, r0=r0, x=x.round(9).tolist(), y=y.round(9).tolist(), out=a.tolist())
+
+
+def motor(name, model, c, axis, out, clock, color='#3A3D42', r=None):
+    """A bought motor at its real outline: a cylinder's fields (for mass and axis checks) plus the frame geom.py reads the STEP-measured shape through."""
+    r = r if r is not None else ACT[model]['r']
+    return dict(cyl(name, c, axis, r, ACT[model]['h'], color, 'actuator'), outline=motor_frame(model, axis, out, clock, r))
+
+
+# Each motor's turn about its axis (2026-11-05): nothing fixed it while motors were plain cylinders. Scanned every 7.5 deg against every part at the zero pose:
+# most fits don't care. These do: the ankle RS03 (ears up and down, as the maker's drawing allows: 0.13 % outside the calf at the worst turn) and the knee, where a
+# screw must miss the cable: the tab points down and back, along the shank, and two of the stator's holes straddle the hub's tail. The others are the scan's best.
+MOTOR_CLOCK = {'waist_yaw': 15.0, 'neck_yaw': 45.0, 'neck_pitch': 90.0, 'L_shoulder_pitch': 262.5, 'L_shoulder_roll': 0.0, 'L_shoulder_yaw': 75.0, 'L_elbow': 0.0, 'L_wrist_yaw': 90.0,
+               'L_wrist_pitch': 30.0, 'L_wrist_roll': 165.0, 'L_hip_pitch': 15.0, 'L_hip_roll': 60.0, 'L_hip_yaw': 15.0, 'L_knee': 165.0, 'L_ankle_pitch': 90.0, 'L_ankle_roll': 60.0}
+
+
 def link(name, budget, geoms, note=''):
     """budget: the hand estimate of the link's mass (kg), kept for comparison; its real mass, centre of mass and
     inertia come from its parts' materials (tools/mass_model.py)."""
@@ -191,13 +224,14 @@ def link(name, budget, geoms, note=''):
 
 
 def joint(name, parent, child, origin, axis, lim, act=None, act_c=None, out=+1, exposed=False, remote=False,
-          capacity=None, stator_on_child=False):
+          capacity=None, stator_on_child=False, clock=None):
     """act: actuator model whose stator is added to `parent`, centred at act_c (default: the joint origin) and
     aligned with `axis`. out = +1/-1: which end of the actuator faces the child (where its flange goes).
     stator_on_child: the stator rides on the child and the output drives the parent (the knee: the hub turns with the shank).
-    capacity: what drives the joint, {'model', 'count', 'ratio'} (default: one `act`, ratio 1)."""
+    capacity: what drives the joint, {'model', 'count', 'ratio'} (default: one `act`, ratio 1).
+    clock: how far the motor is turned about its axis (motor_frame); default MOTOR_CLOCK."""
     j = dict(name=name, parent=parent, child=child, origin=list(origin), axis=axis, lower=lim[0], upper=lim[1],
-             act=act, act_c=list(act_c or origin), out=out, exposed=exposed, remote=remote, stator_on_child=stator_on_child,
+             act=act, act_c=list(act_c or origin), out=out, exposed=exposed, remote=remote, stator_on_child=stator_on_child, clock=clock if clock is not None else MOTOR_CLOCK.get(name, 0.0),
              capacity=capacity or (dict(model=act, count=1, ratio=1.0) if act else None))
     JOINTS.append(j)
     return j
@@ -661,6 +695,9 @@ KNEE_HEM = 0.07                           # above the axis, where the thigh's fu
 HUB_IN, HUB_OUT = 0.041, 0.0615           # the hub's faces, from the leg's centre plane
 HUB_TOP, HUB_BOT = 0.066, -0.084           # the hub, from the axis (fig_hub.py: 150 long; the front frame's black centred about 1 cm low)
 CHEEK_Y = 0.0385                          # thigh cheeks, 3 mm 7075, between neck and hub
+KNEE_LIP_R, KNEE_COLLAR_R = 0.0235, 0.02125   # CRBT 405 A's shoulders (IKO: Da 47, da 42.5): the housing's and the shaft's. Also the room the M5 heads turn in: d8.5 on the d36 circle reaches r 22.25
+import math as _m                                                      # noqa: E402
+KNEE_TAB = (_m.cos(_m.radians(75 + MOTOR_CLOCK['L_knee'])), _m.sin(_m.radians(75 + MOTOR_CLOCK['L_knee'])))     # the RS04's cable tab, in the side view (x, z)
 KNEE_FOLD_RAD, KNEE_FOLD_D = 2.15, 0.0699   # the fold plane: the calf's back face at this flexion, this far from the axis
 
 
@@ -877,12 +914,17 @@ link('L_hip_yaw_link', 3.6, [
     # iteration 38: their lower ends a disc about the axis: it turns in its own place, and closes the band from the front
     dict(cyl('L knee cheek disc in', (0, HY - CHEEK_Y, KZ), 'y', 0.050, 0.003, BLACK), exposed=True),
     dict(cyl('L knee cheek disc out', (0, HY + CHEEK_Y, KZ), 'y', 0.050, 0.003, BLACK), exposed=True),
-    cut(cyl('L knee cheek bearing bore', (0, HY + CHEEK_Y, KZ), 'y', 0.0225, 0.01), 'L knee cheek disc out'),
+    # iteration 40: the seat of the outer support: CRBT 405 A's 51 mm, disc and collar together (see KNEE_HW below)
+    cut(cyl('L knee cheek bearing bore', (0, HY + 0.03825, KZ), 'y', 0.0255, 0.0055), 'L knee cheek disc out', 'L knee cheek collar out', 'L knee cheek out'),
+    cut(cyl('L knee cheek lip', (0, HY + 0.0352, KZ), 'y', KNEE_LIP_R, 0.0007), 'L knee cheek collar out'),
+    dict(cyl('L knee cheek collar out', (0, HY + 0.0361, KZ), 'y', 0.031, 0.0022, BLACK), fill=1.0, exposed=True),
     rbox('L knee cheek in top', (0.02, HY - CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
     rbox('L knee cheek out top', (0.02, HY + CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
-    # the axle: from the motor's output through the neck's wall and the inner cheek, into the inner hub on the idler bearing
-    dict(cyl('L knee axle in', (0, HY - 0.0332, KZ), 'y', 0.02, 0.0084, BLACK), exposed=True),
-    cut(cyl('L knee cheek idler bore', (0, HY - CHEEK_Y, KZ), 'y', 0.0135, 0.01), 'L knee cheek disc in'),
+    # iteration 40 (user: real connections). The axle was a d40 bar over the hub's d36 screw circle, its end under the 9 M5 heads: nothing could reach them or hold them. Now a cup, one piece with the flange
+    # and the inner cheek: r 36, hollow round the heads, floor 6 mm thick on the hub (so M5 x 12 stops 0.5 short of the drawn 6.5). The inner support sits in its mouth, in the cheek's disc
+    dict(cyl('L knee axle in', (0, HY - 0.0338, KZ), 'y', 0.036, 0.0077, BLACK), fill=1.0, exposed=True),
+    cut(cyl('L knee output pocket', (0, HY - 0.03185, KZ), 'y', KNEE_LIP_R, 0.0073), 'L knee axle in', 'L_knee flange'),
+    cut(cyl('L knee cheek idler bore', (0, HY - 0.03825, KZ), 'y', 0.0255, 0.0055), 'L knee cheek disc in', 'L knee axle in', 'L knee cheek in'),
 ], 'the knee RS04 output: fork and axle; its stator rides on the shank')
 # flexion 2.15 rad (iteration 17: through the knee zone the calf meets the thigh at 2.2; the deep squat uses 2.0)
 joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', act_c=(0, HY + 0.00265, KZ), out=-1,
@@ -975,7 +1017,11 @@ link('L_knee_link', 2.08, [
     # the hubs. A foot under the motor carries each to the shank's upper plates; the cheeks swing above it
     dict(knee_hub('L knee hub in', -1), material='al7075'),
     dict(knee_hub('L knee hub out', +1), material='al7075'),
-    dict(cyl('L knee idler stub', (0, HY - 0.0415, KZ), 'y', 0.012, 0.007, BLACK), exposed=True),
+    # iteration 40: a d40 stub for the inner race (d24 was never a bearing's size that fits this load), its collar the race's shoulder at IKO's da
+    HW.axle('L knee idler stub', 'L_knee_link', (0, HY - 0.04125, KZ), 'y', 40.0, 11.5),
+    dict(cyl('L knee idler collar', (0, HY - 0.04085, KZ), 'y', KNEE_COLLAR_R, 0.0007, BLACK), fill=1.0, exposed=True),
+    cut(cyl('L knee idler collar screw way', (0, HY - 0.04085, KZ), 'y', 0.00225, 0.002), 'L knee idler collar'),
+    dict(cyl('L knee idler cap', (0, HY - 0.03475, KZ), 'y', KNEE_COLLAR_R, 0.0015, BLACK), fill=1.0, exposed=True),
     rbox('L knee idler arm', (0, HY - 0.0445, KZ - 0.04), (0.012, 0.006, 0.075), 0.001, BLACK, exposed=True),
     rbox('L knee hub foot in', (0, HY - 0.0385, KZ - 0.0735), (0.03, 0.022, 0.024), 0.002, BLACK, exposed=True),
     rbox('L knee hub foot out', (0, HY + 0.0385, KZ - 0.0735), (0.03, 0.022, 0.024), 0.002, BLACK, exposed=True),
@@ -988,7 +1034,15 @@ link('L_knee_link', 2.08, [
       for sd, y in (('in', -1), ('out', +1))],
     # the stator: a plate on the motor's back down to the outer shank plate, and the post on to the outer hub
     rbox('L knee stator plate', (0, HY + 0.0325, KZ - 0.022), (0.08, 0.004, 0.106), 0.002, BLACK, exposed=True),
-    dict(cyl('L knee post', (0, HY + 0.03825, KZ), 'y', 0.02, 0.0155, BLACK), exposed=True),
+    dict(HW.axle('L knee post', 'L_knee_link', (0, HY + 0.03825, KZ), 'y', 40.0, 15.5)),
+    dict(cyl('L knee post collar', (0, HY + 0.0350, KZ), 'y', KNEE_COLLAR_R, 0.0010, BLACK), fill=1.0, exposed=True),
+    dict(cyl('L knee post cap', (0, HY + 0.0408, KZ), 'y', KNEE_COLLAR_R, 0.0006, BLACK), fill=1.0, exposed=True),
+    # iteration 40: the plate only reached 3 of the motor's 10 rear screws, and sat on the rear cover, 13.2 mm behind the face those screws are in. A disc over the whole back, on a rim down to that face,
+    # both inside the motor's own d120, so the knit over it doesn't move. Hollow round the rear cover, notched for the cable tab
+    dict(cyl('L knee stator disc', (0, HY + 0.0325, KZ), 'y', 0.060, 0.004, BLACK), fill=1.0, exposed=True),
+    dict(cyl('L knee stator rim', (0, HY + 0.0239, KZ), 'y', 0.060, 0.0134, BLACK), fill=1.0, exposed=True),
+    cut(cyl('L knee stator rim hollow', (0, HY + 0.0239, KZ), 'y', 0.0475, 0.015), 'L knee stator rim'),
+    cut(cyl('L knee stator rim notch', (0.0505 * KNEE_TAB[0], HY + 0.0235, KZ + 0.0505 * KNEE_TAB[1]), list(KNEE_TAB[:1]) + [0.0] + list(KNEE_TAB[1:]), 0.0075, 0.03), 'L knee stator rim'),
     # under the motor, joining the plates
     rbox('L shank knee bridge', (0, HY, KZ - 0.070), (0.04, 0.0625, 0.008), 0.002, BLACK, exposed=True),
     # iteration 34: the lower plates inside the roll rod's plane (y 29.5), the upper ones clamping the RS03; pads to the RS06
@@ -998,10 +1052,8 @@ link('L_knee_link', 2.08, [
     span('L shank plate out up', PITCH_Z - 0.05, KZ - 0.066, y=HY + 0.030, sy=0.005, f=0.0015, color=BLACK, exposed=True),
     rbox('L ankle roll pad in', (CALF_X, HY - 0.026, ROLL_Z), (0.03, 0.004, 0.04), 0.001, BLACK, exposed=True),
     rbox('L ankle roll pad out', (CALF_X, HY + 0.026, ROLL_Z), (0.03, 0.004, 0.04), 0.001, BLACK, exposed=True),
-    cyl('L ankle pitch actuator (buy) RS03', (CALF_X, HY, PITCH_Z), 'y', ACT['RS03']['depth'] / 2, ACT['RS03']['h'],
-        '#3A3D42', 'actuator'),
-    cyl('L ankle roll actuator (buy) RS06', (CALF_X, HY, ROLL_Z), 'y', ACT['RS06']['depth'] / 2, ACT['RS06']['h'],
-        '#3A3D42', 'actuator'),
+    motor('L ankle pitch actuator (buy) RS03', 'RS03', (CALF_X, HY, PITCH_Z), 'y', -1, MOTOR_CLOCK.get('L_ankle_pitch', 0.0), r=ACT['RS03']['depth'] / 2),
+    motor('L ankle roll actuator (buy) RS06', 'RS06', (CALF_X, HY, ROLL_Z), 'y', +1, MOTOR_CLOCK.get('L_ankle_roll', 0.0), r=ACT['RS06']['depth'] / 2),
     *ankle_drive('L'),
     # 32 mm deep (iteration 12: inside the slimmer ankle sock); iteration 34: outer face at 28.5 mm, inside the roll rod
     rbox('L ankle fork cheek in', (0, HY - 0.0255, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
@@ -1070,13 +1122,38 @@ link('L_foot', 1.1, [
 ])
 
 
+# ---------------------------------------------------------------- real connections (iteration 40, user, 2026-11-05: "start real connections: screws, holes, bearings")
+
+HW.setup(LINKS, JOINTS, ACT, motor_frame)
+
+
+def knee_hardware():
+    """The proof, within the knee as it stands: no hub or skin moved, hidden parts reshaped. Stack along y from the leg's centre (left leg, inboard negative; the motor's centre at +2.65 mm):
+    inner hub -41 | 0.5 gap | CRBT 405 A -40.5..-35.5 in the cheek's disc and the cup | cap | M5 heads -33.2..-28.2 on the cup's floor | flange on the hub, -22.2 | motor | rear face +17.3 | rim | disc to +34.5 |
+    collar | CRBT 405 A 35.5..40.5 in the disc's collar | 0.5 gap | outer hub +41. Both races d40, on the stub and the post. 61808 (7 wide) doesn't go in: the slot is 6.5. What's drawn is the biggest catalogue
+    bearing that does, and it's short on rating: reports/strength.md, group 'bearing'. Dimensions in y are those the hubs and motor fix, not choices."""
+    t = lambda y_mm: 2.65 - y_mm                                 # y from the leg's centre, in mm, to t along the output (out is -y, for this motor at this y)
+    HW.pattern('L knee hub', 'L_knee', 'hub', 'L_hip_yaw_link', t(-28.2), 12, clamps=['L_knee flange'], note='9 M5 through the cup floor into the drawn 6.5 mm')
+    HW.pin_holes('L knee hub pin hole', 'L_knee', 'L_knee flange')
+    HW.pattern('L knee stator', 'L_knee', 'stator_rear', 'L_knee_link', t(28.0), 16, clamps=['L knee stator rim', 'L knee stator disc', 'L knee stator plate'], counterbore_to=t(34.5), note='10 M4 through the rim into the drawn rear 6 mm')
+    HW.bearing('L knee outer bearing', 'CRBT 405 A', (0, HY + 0.038, KZ), 'y', 'L_knee_link', ['L knee post'], 'L_hip_yaw_link', ['L knee cheek disc out', 'L knee cheek collar out'], 'L_knee', partner='L knee inner bearing')
+    HW.bearing('L knee inner bearing', 'CRBT 405 A', (0, HY - 0.038, KZ), 'y', 'L_knee_link', ['L knee idler stub'], 'L_hip_yaw_link', ['L knee cheek disc in', 'L knee axle in'], 'L_knee', partner='L knee outer bearing')
+    # the stub's cap, held by one screw on the axis, its button head turned toward the motor in the cup
+    HW.fastener('L knee idler cap screw', 'L_knee_link', 'M4', 12, 'iso7380', (0, HY - 0.0340, KZ), 'y', -1, clamps=['L knee idler cap'], into='L knee idler stub', clear_len=1.5, note='holds the inner race on its stub')
+
+
+knee_hardware()
+
+
 # ---------------------------------------------------------------- mirror, actuators, flanges
 
 def mirror_geom(g):
     g = copy.deepcopy(g)
     g['name'] = g['name'].replace('L ', 'R ', 1) if g['name'].startswith('L ') else g['name']
     if 'targets' in g:
-        g['targets'] = [t.replace('L ', 'R ', 1) if t.startswith('L ') else t for t in g['targets']]
+        g['targets'] = [mirror_part(t) for t in g['targets']]
+    if 'hw' in g:
+        g['hw'] = mirror_record(g['hw'])
     for k in ('c', 'p0', 'p1'):
         if k in g:
             g[k][1] = -g[k][1]
@@ -1088,6 +1165,9 @@ def mirror_geom(g):
         c['p'][1], c['n'][1] = -c['p'][1], -c['n'][1]
     if g['kind'] == 'cyl' and not isinstance(g['axis'], str):
         g['axis'][1] = -g['axis'][1]
+    if g.get('outline'):                                  # a mirror image of the real shape. Is it buildable? check 'pattern' asks whether the same motor, turned, has it
+        for k in ('x', 'y', 'out'):
+            g['outline'][k][1] = -g['outline'][k][1]
     if g['kind'] == 'revolve' and g['axis'] == 'y':
         g['profile'] = [[-t, r] for t, r in reversed(g['profile'])]
     if g['kind'] == 'prism':
@@ -1100,6 +1180,25 @@ def mirror_geom(g):
 
 def mirror_name(n):
     return 'R_' + n[2:] if n.startswith('L_') else n
+
+
+def mirror_part(n):
+    """'L knee post' and 'L_knee flange' both have a right side; 'motor:L_knee ...' too."""
+    if n.startswith('motor:'):
+        return 'motor:' + mirror_part(n[6:])
+    return 'R ' + n[2:] if n.startswith('L ') else 'R_' + n[2:] if n.startswith('L_') else n
+
+
+def mirror_record(h):
+    h = copy.deepcopy(h)
+    for k, x in h.items():
+        if k in ('pos', 'dir', 'face'):
+            x[1] = -x[1]
+        elif isinstance(x, str):
+            h[k] = mirror_part(x)
+        elif isinstance(x, list) and x and isinstance(x[0], str):
+            h[k] = [mirror_part(p) for p in x]
+    return h
 
 
 def build():
@@ -1135,22 +1234,32 @@ def build():
         a = ACT[j['act']]
         color = BLACK if j['exposed'] is True else '#3A3D42'
         stator, output = (j['child'], j['parent']) if j.get('stator_on_child') else (j['parent'], j['child'])
-        links[stator]['geoms'].append(cyl(f"{j['name']} actuator (buy) {j['act']}", j['act_c'], j['axis'],
-                                               a['r'], a['h'], color, 'actuator'))
+        left = next((x for x in joints if x['name'] == 'L_' + j['name'][2:]), j) if j['name'].startswith('R_') else j
+        m = motor(f"{j['name']} actuator (buy) {j['act']}", j['act'], left['act_c'], j['axis'], left['out'], left['clock'], color)
+        if left is not j:                                 # the right side's motor is the left's, mirrored
+            m = mirror_geom(m)
+        links[stator]['geoms'].append(m)
         if j['remote']:
             continue
         ax = {'x': 0, 'y': 1, 'z': 2}[j['axis']]
         c = list(j['act_c'])
-        c[ax] += j['out'] * (a['h'] / 2 + FLANGE_T / 2 - 0.001)   # 1 mm into the face so they touch
+        # the real hub (RS04's stands 3 mm under its pin tips, so a flange placed from the old cylinder's end floated on the pins): from the hub's face, 0.2 mm in so
+        # they read as seated, to where the flange's outer face always was. Pin holes are cut by the hardware that seats it
+        t_hub = OUTLINES[j['act']]['t_hub_face'] / 1000
+        t_out = a['h'] / 2 + FLANGE_T - 0.001
+        c[ax] += j['out'] * (t_hub - 0.0002 + t_out) / 2
         # iteration 29: the wrists' flanges black (still 7075): bare metal showed as a bright chip in the gaps when bent
-        links[output]['geoms'].append(cyl(f"{j['name']} flange", c, j['axis'], 0.6 * a['r'], FLANGE_T,
+        links[output]['geoms'].append(cyl(f"{j['name']} flange", c, j['axis'], 0.6 * a['r'], t_out - t_hub + 0.0002,
                                               BLACK if 'wrist' in j['name'] else ALU, 'struct'))
     for l in links.values():                              # every part's material (tools/mass_model.py)
         for g in l['geoms']:
             if g['role'] != 'cut':
                 g['material'] = material_of(g)
+    rec = HW.records()
+    for k in ('patterns', 'bearings', 'singles'):         # the right side's, as the geoms are
+        rec[k] = rec[k] + [mirror_record(r) for r in rec[k] if r['name'].startswith('L ')]
     return dict(frame='metres; X forward, Y left, Z up; floor z=0; zero pose standing, arms down, palms in',
-                actuators=ACT, materials=MATERIALS, links=links, joints=joints, root='pelvis')
+                actuators=ACT, materials=MATERIALS, links=links, joints=joints, root='pelvis', hardware=rec)
 
 
 if __name__ == '__main__':
