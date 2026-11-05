@@ -830,6 +830,26 @@ def ankle_drive(s):
             crank('roll', ROLL_Z, ROLL_CRANK), cap(f'{s} ankle roll rod', ROLL_CRANK, ROLL_ROD_END, 0.005, ALU, 'linkage')]
 
 
+def SHANK_FRONT(z):
+    """The shank's front line in the side view: one straight line from the collar to above the motors."""
+    return 0.0455 + 0.045 * (z - PITCH_Z)
+
+
+def SHANK_BACK(z):
+    """The back line: straight from the collar to the RS03, then easing to the drum (it is what folds into the thigh)."""
+    import numpy as np
+    return float(np.interp(z, (PITCH_Z, 0.35, 0.40, KZ - 0.075), (-0.0645, -0.0680, -0.0680, -0.0660))) if z > PITCH_Z else \
+        -0.0645 + 0.121 * (PITCH_Z - z)
+
+
+def shank_section(z):
+    """Loft section from the two lines, the width's straight taper, and one section shape (rounder toward the ankle)."""
+    import numpy as np
+    f, b = SHANK_FRONT(z), SHANK_BACK(z)
+    return (z, (f + b) / 2, HY, (f - b) / 2, min(KNEE_W, 0.0445 + 0.0604 * (z - 0.15)),
+            float(np.interp(z, (0.13, 0.25, 0.30, 0.40, KZ - 0.075), (2.8, 3.6, 3.6, 3.6, 3.0))))
+
+
 # Shoe lines in the side view, (x, z) pairs (iteration 12, user: "feet so off"; Figure's shoe from the reveal frames:
 # a low sneaker whose white upper rises from the toe to the ankle, a thick black outsole, a black stripe rising from
 # the midfoot to the heel, and an angled black collar, high at the back). What turns with the ankle cannot be on the
@@ -851,15 +871,19 @@ link('L_knee_link', 2.08, [
     # thigh's fold plane clears; the ankle motors keep their room below
     # iteration 34: 107 mm deep at the RS03 (Figure about 105), the section squared there (n 4) so its depth reaches the
     # motor's end faces; 110 at the plain section. The motor's ears turned, as the maker's drawing allows (98.5 deep)
-    loft('L shank', [(SHANK(0), 0.0, HY, 0.040, 0.042, 2.2), (SHANK(0.159), -0.006, HY, 0.046, 0.044, 2.2),
-                     (SHANK(0.27), CALF_X, HY, 0.0500, 0.052, 2.4), (0.264, CALF_X, HY, 0.0525, 0.054, 3.2),
-                     (PITCH_Z - 0.02, CALF_X, HY, 0.0535, 0.056, 4.0), (PITCH_Z + 0.02, CALF_X, HY, 0.0535, 0.056, 4.0), (PITCH_Z + 0.05, CALF_X, HY, 0.051, 0.058, 3.2),
-                     (ROLL_Z, CALF_X, HY, 0.049, 0.059, 2.6),
-                     (KZ - 0.075, -0.004, HY, 0.058, KNEE_W, 2.8), (KZ - 0.03, -0.001, HY, 0.0635, KNEE_W, 5.0),
-                     (KZ - 0.008, 0.0, HY, KNEE_R - 0.001, KNEE_W, 12.0), (KZ, 0.0, HY, KNEE_R - 0.0005, KNEE_W, 16.0)],
+    # iteration 35 (user: the iteration 34 shank read curvy and muscular, a bulge at the calf and a pinch above the ankle;
+    # Figure's is long, straight and tapered). Figure's standing leg on the side frame (reports grid, perpendicular to the
+    # knee-ankle line): 94 mm deep at z 0.20, 113 at 0.29, 132 at 0.40; its bent leg 86, 100, 124. So the depth the motors
+    # force is not against Figure's line at all: only at z 0.30 does the RS03 need its 104.5, and its round side falls away
+    # above and below. Now two straight lines from the collar to the motor (SHANK_FRONT, SHANK_BACK), straight on above it
+    # in front, easing into the drum behind, one section shape all the way (the old n 2.2 to 4 to 2.6 was the muscle's
+    # shading). 110 mm at the RS03, 3 mm wall to the corners of its end faces with n 3.6.
+    loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40, KZ - 0.075)] +
+         [(KZ - 0.03, -0.001, HY, 0.0635, KNEE_W, 5.0),
+          (KZ - 0.008, 0.0, HY, KNEE_R - 0.001, KNEE_W, 12.0), (KZ, 0.0, HY, KNEE_R - 0.0005, KNEE_W, 16.0)],
          clip=above(*up(TRIM_HIGH, -0.002))),
-    loft('L ankle collar', [(0.11, -0.004, HY, 0.0395, 0.0465, 2.2), (0.15, -0.006, HY, 0.0455, 0.0470, 2.2),
-                            (0.21, -0.007, HY, 0.0520, 0.0505, 2.2)], BLACK,
+    loft('L ankle collar', [(0.11, -0.004, HY, 0.0395, 0.0465, 2.6), (0.15, -0.006, HY, 0.0455, 0.0470, 3.0),
+                            (0.21, -0.0065, HY, 0.0505, 0.0505, 3.3)], BLACK,
          clip=[above(*TRIM_LOW), below(*TRIM_HIGH)]),
     # flaring into the shoe toward the heel and the sides, where the ankle's range leaves room (not in front)
     loft('L ankle sock', [(0.08, -0.013, HY, 0.048, 0.0470, 2.2), (0.105, -0.010, HY, 0.0455, 0.0460, 2.2),

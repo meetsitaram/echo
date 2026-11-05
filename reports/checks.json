@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.97 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "58.03 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1323,13 +1323,13 @@
   "group": "torque",
   "item": "L_knee",
   "status": "FAIL",
-  "detail": "134.8 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 168 % used"
+  "detail": "134.9 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 169 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_yaw",
   "status": "PASS",
-  "detail": "38.0 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 95 % used"
+  "detail": "38.1 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 95 % used"
  },
  {
   "group": "torque",
@@ -1353,7 +1353,7 @@
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "59.1 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 74 % used"
+  "detail": "59.2 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 74 % used"
  },
  {
   "group": "torque",
@@ -1437,7 +1437,7 @@
   "group": "torque",
   "item": "R_hip_roll",
   "status": "PASS",
-  "detail": "2.5 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
+  "detail": "2.6 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
  },
  {
   "group": "torque",
