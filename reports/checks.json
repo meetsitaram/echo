@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.25 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "57.27 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -1341,7 +1341,7 @@
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "58.1 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 73 % used"
+  "detail": "58.2 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 73 % used"
  },
  {
   "group": "torque",
@@ -1359,13 +1359,13 @@
   "group": "torque",
   "item": "R_ankle_pitch",
   "status": "PASS",
-  "detail": "10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
+  "detail": "11.0 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
  },
  {
   "group": "torque",
   "item": "L_ankle_pitch",
   "status": "PASS",
-  "detail": "10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
+  "detail": "11.0 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
  },
  {
   "group": "torque",
@@ -1425,7 +1425,7 @@
   "group": "torque",
   "item": "neck_pitch",
   "status": "PASS",
-  "detail": "0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used"
+  "detail": "0.6 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 7 % used"
  },
  {
   "group": "torque",

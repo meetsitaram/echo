@@ -323,8 +323,10 @@ joint('neck_pitch', 'neck_yaw_link', 'head', (NX, 0, NP), 'y', (-0.4, 0.45), 'RS
 NECK_R = 0.042
 NECK = [(NP + dz, NX, 0, (NECK_R ** 2 - dz ** 2) ** 0.5, (NECK_R ** 2 - dz ** 2) ** 0.5, 2.0)
         for dz in (-0.0235, -0.018, -0.012, -0.006, 0.0)] + \
-       [(NP + 0.015, NX, 0, NECK_R, NECK_R, 2.0), (1.53, -0.012, 0, 0.045, 0.047, 2.0),
-        (1.575, -0.010, 0, 0.050, 0.048, 2.0)]
+       [(NP + 0.015, NX, 0, NECK_R, NECK_R, 2.0), (1.528, -0.014, 0, 0.051, 0.045, 2.0),
+        (1.55, -0.012, 0, 0.052, 0.047, 2.0), (1.585, -0.006, 0, 0.058, 0.048, 2.0)]
+# iteration 27 (row scan of the side frame: Figure's neck 0.118 deep at 1.50 m, ours 0.08): deeper than wide from just
+# above the collar, where the tilt's 26 deg still leaves it 1 cm over the torso's top
 # Head (figure.ai close-ups and reveal video): a glossy black helmet-like egg, deeper than wide, widest above the
 # middle, the chin narrower and set forward, a round crown; a small camera port on the centre line at the brow and
 # another low on the chin; the white three-block mark glowing in the middle of the face.
@@ -345,8 +347,11 @@ HEAD = [(z, (f + b) / 2, 0, (f - b) / 2, w, 2.1) for z, f, b, w in HEAD_PROFILE]
 # back and crown) with a glossy black VISOR over the front, its rear edge running from the crown down to the jaw.
 # The visor is the head shape 1.5 mm proud, cut by that slanted plane.
 VISOR = [(z, cx, cy, a + 0.0015, b + 0.0015, n) for z, cx, cy, a, b, n in HEAD]
-# through the back of the jaw, leaning back over the crown: only a crescent of hood shows at the back (iteration 7)
-VISOR_EDGE = ((0.0, 0, CHIN + 0.008), (0.915, 0, 0.404))
+# iteration 27 (side frame, measured on the visor's corners: chin tip, rear low corner, rear top): two edges, not one: a
+# lower edge from the chin rising 29 deg to the back of the head, and a near-vertical rear edge there, with a crescent
+# of hood behind it. One plane from the crown to the jaw (iterations 6, 7) kept black under the back of the head, where
+# Figure's grey neck flows up into the hood
+VISOR_EDGE = [above((0.07, CHIN + 0.004), (-0.08, CHIN + 0.088)), ahead(-0.078)]
 link('head', 1.95, [
     loft('head', HEAD, GREY, open=()),
     loft('visor', VISOR, GLOSS, 'decal', open=(), clip=VISOR_EDGE),
