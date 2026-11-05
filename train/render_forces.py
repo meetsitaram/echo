@@ -112,6 +112,7 @@ def main():
     ap.add_argument('--dur', type=float, default=None)
     ap.add_argument('--title', default='')
     ap.add_argument('--view', default='hero')
+    ap.add_argument('--tag', default='', help='a small line at the foot of the picture')
     ap.add_argument('--dist', type=float, default=None, help='camera distance')
     ap.add_argument('--portrait', action='store_true', help='1080 x 1920, for a phone: a closer camera, large type, the chart below')
     a = ap.parse_args()
@@ -137,8 +138,26 @@ def main():
     cam = mujoco.MjvCamera()
     cam.type = mujoco.mjtCamera.mjCAMERA_FREE
     cam.elevation, cam.distance = el, a.dist or (2.75 if a.portrait else 3.3)
-    # Aim at the middle of the body whatever its height: standing, crouched or on the floor.
-    aim = np.clip(0.58 + 0.71 * (smooth_track(d['root_pos'][:, 2:], 0.4 * src)[:, 0] - 0.52), 0.3, 0.85)
+    # Frame the whole body in every frame, standing, crouched or flung across the floor: a first pass over the recording
+    # takes each frame's bodies, then a window over it holds the distance before the body needs the room.
+    centre, need = np.zeros((len(t), 3)), np.zeros(len(t))
+    tan_v = math.tan(math.radians(m.vis.global_.fovy / 2))
+    for k in range(len(t)):
+        data.qpos[:3], data.qpos[3:7] = d['root_pos'][k], qw[k]
+        data.qpos[adr] = q[k]
+        mujoco.mj_kinematics(m, data)
+        x = data.xpos[1:]
+        ang = math.radians(math.degrees(heading[k]) + az)
+        side = x[:, 0] * -math.sin(ang) + x[:, 1] * math.cos(ang)
+        centre[k] = (x.min(0) + x.max(0)) / 2
+        top = x[:, 2].max() + 0.3  # body origins: the head's is at the neck, its crown about 30 cm above
+        low = max(0.0, min(x[:, 2].min(), d['root_pos'][k, 2] - 0.1) - 0.1)
+        centre[k, 2] = (low + top) / 2 + 0.05  # a little high: the captions take the top of the picture
+        need[k] = max((top - low + 0.3) / (2 * tan_v), (side.max() - side.min() + 0.45) / (2 * tan_v * W_ / H_))
+    win = int(0.5 * src)
+    need = np.array([need[max(0, k - win):k + win + 1].max() for k in range(len(t))])
+    need = smooth_track(np.maximum(need, a.dist or 0)[:, None], 0.4 * src)[:, 0]
+    centre = smooth_track(centre, 0.25 * src)
     r = mujoco.Renderer(m, H_, W_)
     w = imageio.get_writer(a.out, fps=fps, codec='libx264', quality=7, pixelformat='yuv420p', macro_block_size=8, ffmpeg_params=['-movflags', '+faststart'])
     for i in frames:
@@ -147,7 +166,8 @@ def main():
         data.qpos[adr] = q[i]
         mujoco.mj_kinematics(m, data)
         mujoco.mj_camlight(m, data)
-        cam.lookat[:] = [track[i, 0], track[i, 1], aim[i]]
+        cam.lookat[:] = centre[i]
+        cam.distance = need[i]
         cam.azimuth = math.degrees(heading[i]) + az
         r.update_scene(data, cam)
         for p, f in zip(d['contact_pos'][i], d['contact_force'][i]):  # as MuJoCo's viewer shows them: each contact point and its force
@@ -170,7 +190,7 @@ def main():
                 f = back[hit[-1]]
                 neck_n = float(np.linalg.norm(f))
                 tip = d['shove_point'][i]
-                arrow(r.scene, tip - f / neck_n * (0.25 + neck_n / 700.0), tip - f / neck_n * 0.05, (0.1, 0.45, 1.0, 1.0), 0.05)
+                arrow(r.scene, tip - f / neck_n * (0.2 + neck_n / 1000.0), tip - f / neck_n * 0.04, (0.1, 0.45, 1.0, 1.0), 0.028)
         img = Image.fromarray(r.render())
         if a.portrait:
             dr = ImageDraw.Draw(img)
@@ -178,6 +198,8 @@ def main():
             dr.text((40, 40), a.title, fill=(255, 255, 255), font=big)
             dr.text((40, 100), 'Physics sim: every step simulated', fill=(215, 225, 235), font=small)
             dr.text((40, 140), 'Red arrows: contact forces from the solver', fill=(215, 225, 235), font=small)
+            if a.tag:
+                dr.text((40, H_ - 60), a.tag, fill=(255, 225, 140), font=small)
             if neck_n:
                 dr.text((40, 190), f'SHOVE {neck_n:.0f} N at the neck', fill=(120, 190, 255), font=big)
             strip = chart_portrait(t, F[..., 2], weight, i, W_, STRIP_, other=d['other_n'])
