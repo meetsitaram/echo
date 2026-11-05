@@ -595,8 +595,14 @@ HIP_SEAM = HZ - 0.073                     # the lobe's underside on the yaw axis
 # (the thigh's top inside a sphere, the lobe's underside 3 mm outside it), so it still never sweeps as the thigh
 # yaws, but no straight line runs along it. It drops 9 mm to the sides and 3.6 cm to the back of the thigh, as
 # Figure's thigh top falls toward the back under its black hip.
-HIP_DOME_R = 0.28
-HIP_DOME_C = (0, HY, HIP_SEAM - 0.003 - HIP_DOME_R)
+# iteration 25 (side frames against the replica's: black down to 0.80 m at the back, a box behind the thigh, where
+# Figure's grey thigh rises to its black hip, and it was the dome that dropped it): a shallow BOWL about the yaw axis
+# instead: the thigh's top dished to a sphere centred above, the lobe's underside 3 mm inside the same sphere. Round about
+# the yaw axis as the dome was, front 0.852 m, back 0.863 m (it cannot rise further: the roll actuator's underside is
+# 0.87 m, 8 mm above). Radius 0.7: across the thigh's 14 cm width the seam rises 3.5 mm against its 3 mm gap, so no
+# level line runs through it (lesson: a flat seam shows light in a level side view), checked on green.
+HIP_DOME_R = 0.70
+HIP_DOME_C = (0, HY, HIP_SEAM - 0.007 + 0.003 + HIP_DOME_R + 0.0)
 HIP_LOBE_CLIP = [((0, 0.088, 0), (0, 1, 0))]
 # the bevel: over the pelvis block's length the outward roll (0.6 rad) tips the lobe's top inward toward the block, so
 # above the axis the lobe stays outboard of a slanted plane (3 mm clear at the full roll); behind the block it stays
@@ -688,15 +694,14 @@ link('L_hip_roll_link', 2.0, [
                         (HZ + 0.005, -0.035, 0.105, 0.103, 0.058, 3.2),
                         (HZ + 0.035, -0.040, 0.1025, 0.100, 0.0565, 3.4),
                         (HZ + 0.065, -0.045, 0.100, 0.085, 0.050, 2.6),
-                        (HZ + 0.080, -0.050, 0.100, 0.055, 0.036, 2.4)], GLOSS, open=(), clip=HIP_LOBE_CLIP),
+                        (HZ + 0.080, -0.050, 0.100, 0.055, 0.036, 2.4)], GLOSS, open=(), clip=HIP_LOBE_CLIP,
+         keep=(HIP_DOME_C, HIP_DOME_R)),
     # iteration 22: the roll actuator stood out of the lobe's slim back (its rim showed in a slot, and the slot's
     # 3 mm behind it let the light through): a cap round it, on the outer side, flush with the lobe's back
     loft('L hip roll cap', [(HZ + dz, -0.1045, HY, 0.0325, (0.066 ** 2 - dz ** 2) ** 0.5, 6.0)
                             for dz in (-0.064, -0.055, -0.04, -0.02, 0.0, 0.02, 0.04, 0.055, 0.064)], GLOSS, open=(),
-         clip=HIP_LOBE_CLIP),
+         clip=HIP_LOBE_CLIP, keep=(HIP_DOME_C, HIP_DOME_R)),
     cut(prism('L hip lobe bevel', -0.075, 0.14, HIP_BEVEL, BLACK), 'L hip lobe'),
-    # the underside: 3 mm outside the thigh's domed top
-    cut(ell('L hip lobe seam', HIP_DOME_C, (HIP_DOME_R + 0.003,) * 3), 'L hip lobe', 'L hip roll cap'),
     # hollow round the pitch actuator (pelvis) and its flange, and round the bracket, as the roll turns them
     *pitch_sweep('L hip lobe pitch sweep'),
     cut(roll_sweep('L hip lobe bracket sweep', [(0.023, 0.036, 0.025, 0.040)], -0.093, 0.003), 'L hip lobe'),
@@ -724,10 +729,12 @@ link('L_hip_yaw_link', 3.6, [
     loft('L thigh', [(KZ - 0.04, 0.0, HY, 0.066, 0.066, 2.3), (KZ + 0.03, 0.0, HY, 0.066, 0.066, 2.3),
                      (KZ + 0.10, -0.003, HY, 0.070, 0.068, 2.3),
                      (KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
-                     (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4)],
+                     (HZ - 0.095, -0.036, HY, 0.099, 0.070, 2.4), (HIP_SEAM + 0.004, -0.041, HY, 0.095, 0.070, 2.4),
+                     (HIP_SEAM + 0.022, -0.041, HY, 0.095, 0.070, 2.4)],
          # iteration 19: down to the knee axis in front, a notch behind, a socket round the knee drum
-         # iteration 21: up to 3 mm under the hip lobe (the yaw turns it under the lobe); iteration 22: domed
-         clip=THIGH_KNEE, keep=(HIP_DOME_C, HIP_DOME_R)),
+         # iteration 21: up to 3 mm under the hip lobe (the yaw turns it under the lobe); iteration 25: dished
+         clip=THIGH_KNEE, open=('bottom',)),
+    cut(ell('L thigh bowl', HIP_DOME_C, (HIP_DOME_R + 0.003,) * 3), 'L thigh'),
     # round the hip yaw actuator and the crown on it (they turn in it), 3 mm clear
     cut(cyl('L thigh top opening', (0, HY, HIP_SEAM - 0.006), 'z', 0.056, 0.032), 'L thigh'),
     cut(cyl('L thigh knee socket', (0, HY, KZ), 'y', KNEE_SOCKET, 0.075), 'L thigh'),

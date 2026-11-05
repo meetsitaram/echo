@@ -191,8 +191,7 @@ def measure(spec, S):
         'wrist_z': J['L_wrist_pitch']['origin'][2],
         'fingertip_z': lo['L_hand'][2],
         'knee_z': J['L_knee']['origin'][2],
-        # the black hips' lower edge in the front and side views: the lobe's underside in its front half (behind,
-        # it drops with the thigh's domed top, iteration 22)
+        # the black hips' lower edge in the front and side views: the lobe's underside in its front half
         'hips_black_bottom_z': float(min(v[2] for v in lobe.to_mesh().vert_properties[:, :3] if v[0] >= -0.02)),
         # where the grey torso ends and the black waist begins
         'pelvis_band_top_z': G.mesh_of([g for g in spec['links']['torso']['geoms'] if g['name'] == 'torso'][0])
