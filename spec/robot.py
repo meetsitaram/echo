@@ -531,24 +531,36 @@ link('L_wrist_yaw_link', 0.6, [
                              (EZ - 0.125, 0, SY, 0.044, 0.041, 2.2), (EZ - 0.112, 0, SY, 0.044, 0.041, 2.2)],
          open=('bottom',), keep=(WRIST_YAW_C, WRIST_YAW_R)),
     # from just over the wrist pitch actuator up into the wrist yaw flange (clear of the yaw actuator)
-    span('L forearm lower frame', WZ + 0.027, EZ - 0.1185, y=SY, sx=0.03, sy=0.03, exposed=True),
+    span('L forearm lower frame', WZ + 0.027, EZ - 0.1185, y=SY, sx=0.03, sy=0.024, exposed=True),   # 24 wide: clear of the wrist housing at 0.9 rad
     # Figure's black wrist cuff, over the wrist pitch actuator (iteration 4)
     # iteration 17: wider (clear of the wrist cheek) and above the pitch axis (clear of the wrist roll actuator as
-    # the hand pitches 0.9 rad); the wrist pitch actuator's lower half shows black below it
-    loft('L wrist cuff', [(WZ + 0.002, 0, SY, 0.043, 0.043, 2.0), (WZ + 0.040, 0, SY, 0.043, 0.043, 2.0)], BLACK,
-         open=('bottom',)),                       # open below: the wrist cheek's corners rise into it
+    # the hand pitches 0.9 rad); iteration 29: squarer, as Figure's block, its inner corners clear of the housing's as
+    # the housing's rim rises into it (only the pitch moves one against the other: the yaw turns both)
+    loft('L wrist cuff', [(WZ + 0.008, 0, SY, 0.046, 0.043, 4.0), (WZ + 0.040, 0, SY, 0.046, 0.043, 4.0)], BLACK,
+         open=('bottom',)),
 ])
 joint('L_wrist_pitch', 'L_wrist_yaw_link', 'L_wrist_pitch_link', (0, SY, WZ), 'x', (-0.9, 0.9), 'RS00',
       out=+1, exposed=True)
+# iteration 29 (same family as the elbow: bent, the wrist showed a bare actuator drum, a cheek plate and a hand on a
+# post, with daylight through them; Figure's reads as a block, a round black wrist and the palm): one black housing on the
+# pitch link round both actuators. Its top is open and low (+9 mm), rising inside the cuff as the pitch turns it, clear
+# of the frame that carries the pitch stator; its lower end is round about the roll axis (the palm's top 3 mm clear),
+# and on the hand's side a round opening 3 mm round the roll actuator, where the output leaves for the hand's bracket
+WRIST_HOUSING = [(WZ + 0.009, 0, SY, 0.034, 0.033, 8.0), (WZ - 0.03, 0, SY, 0.034, 0.033, 8.0),
+                 (WZ - 0.045, 0, SY + 0.00325, 0.034, 0.02975, 8.0), (WZ - 0.06, 0, SY + 0.00325, 0.034, 0.02975, 8.0)] + \
+                [(WZ - 0.06 - d, 0, SY + 0.00325, (0.035 ** 2 - d ** 2) ** 0.5, 0.02975, 8.0)
+                 for d in (0.01, 0.02, 0.028, 0.032, 0.0345)]
 link('L_wrist_pitch_link', 0.45, [
     rbox('L wrist cheek', (0.0285, SY, WZ - 0.0275), (0.006, 0.04, 0.055), 0.002, BLACK, exposed=True),
+    loft('L wrist housing', WRIST_HOUSING, BLACK, open=('top',)),
+    cut(cyl('L wrist housing opening', (0, SY - 0.025, WZ - 0.06), 'y', 0.0315, 0.006), 'L wrist housing'),
 ])
 joint('L_wrist_roll', 'L_wrist_pitch_link', 'L_hand', (0, SY, WZ - 0.06), 'y', (-0.6, 0.6), 'RS00', out=-1,
       exposed=True)
 link('L_hand', 1.0, [
-    # iteration 17: its top 5 mm below the wrist roll actuator, 34 mm from the roll axis (round about it)
+    # iteration 29: its top 38 mm from the roll axis, 3 mm clear of the wrist housing's round end (no change to the axes)
     # the hand's motors, tendons and palm: about 0.85 kg in the palm, the rest in the fingers' covers and bracket
-    rbox('L palm', (0, SY - 0.005, WZ - 0.1295), (0.092, 0.06, 0.071), 0.018, BLACK, 'shell', mass=0.85,
+    rbox('L palm', (0, SY - 0.005, WZ - 0.1315), (0.092, 0.06, 0.067), 0.018, BLACK, 'shell', mass=0.85,
          material='hand'),
     # from the wrist roll flange down into the palm, outside the roll actuator's length
     rbox('L hand bracket', (0, SY - 0.030, WZ - 0.085), (0.02, 0.006, 0.042), 0.002, BLACK, exposed=True),
@@ -977,8 +989,9 @@ def build():
         ax = {'x': 0, 'y': 1, 'z': 2}[j['axis']]
         c = list(j['act_c'])
         c[ax] += j['out'] * (a['h'] / 2 + FLANGE_T / 2 - 0.001)   # 1 mm into the face so they touch
-        links[j['child']]['geoms'].append(cyl(f"{j['name']} flange", c, j['axis'], 0.6 * a['r'], FLANGE_T, ALU,
-                                              'struct'))
+        # iteration 29: the wrists' flanges black (still 7075): bare metal showed as a bright chip in the gaps when bent
+        links[j['child']]['geoms'].append(cyl(f"{j['name']} flange", c, j['axis'], 0.6 * a['r'], FLANGE_T,
+                                              BLACK if 'wrist' in j['name'] else ALU, 'struct'))
     for l in links.values():                              # every part's material (tools/mass_model.py)
         for g in l['geoms']:
             if g['role'] != 'cut':
