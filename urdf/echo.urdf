@@ -44,14 +44,14 @@
     <collision><geometry><mesh filename="meshes/R_shoulder_pitch_link.stl"/></geometry></collision>
   </link>
   <link name="L_hip_roll_link">
-    <inertial><origin xyz="-0.0184005 0.00557986 -0.0800133" rpy="0 0 0"/><mass value="1.4478"/>
-      <inertia ixx="0.00457223" ixy="0.000255884" ixz="0.00170839" iyy="0.0063672" iyz="-0.00056886" izz="0.00421022"/></inertial>
+    <inertial><origin xyz="-0.0181654 0.00549933 -0.0803977" rpy="0 0 0"/><mass value="1.4690"/>
+      <inertia ixx="0.00461287" ixy="0.000257783" ixz="0.00172091" iyy="0.00641516" iyz="-0.000571965" izz="0.00424842"/></inertial>
     <visual><geometry><mesh filename="meshes/L_hip_roll_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_hip_roll_link.stl"/></geometry></collision>
   </link>
   <link name="R_hip_roll_link">
-    <inertial><origin xyz="-0.0184005 -0.0055798 -0.0800134" rpy="0 0 0"/><mass value="1.4478"/>
-      <inertia ixx="0.00457222" ixy="-0.000255878" ixz="0.00170838" iyy="0.00636718" iyz="0.000568853" izz="0.00421021"/></inertial>
+    <inertial><origin xyz="-0.0181654 -0.00549927 -0.0803978" rpy="0 0 0"/><mass value="1.4690"/>
+      <inertia ixx="0.00461286" ixy="-0.000257777" ixz="0.0017209" iyy="0.00641514" iyz="0.000571958" izz="0.00424841"/></inertial>
     <visual><geometry><mesh filename="meshes/R_hip_roll_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_hip_roll_link.stl"/></geometry></collision>
   </link>
@@ -62,14 +62,14 @@
     <collision><geometry><mesh filename="meshes/head.stl"/></geometry></collision>
   </link>
   <link name="L_shoulder_roll_link">
-    <inertial><origin xyz="-0.00815252 0.000404454 -0.0753509" rpy="0 0 0"/><mass value="0.5889"/>
-      <inertia ixx="0.000845932" ixy="-1.94014e-06" ixz="0.00023974" iyy="0.00106752" iyz="-6.81684e-06" izz="0.000692917"/></inertial>
+    <inertial><origin xyz="-0.00842176 0.000423512 -0.0748424" rpy="0 0 0"/><mass value="0.5624"/>
+      <inertia ixx="0.000820702" ixy="-2.00427e-06" ixz="0.000234104" iyy="0.00103853" iyz="-6.69572e-06" izz="0.000669639"/></inertial>
     <visual><geometry><mesh filename="meshes/L_shoulder_roll_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_shoulder_roll_link.stl"/></geometry></collision>
   </link>
   <link name="R_shoulder_roll_link">
-    <inertial><origin xyz="-0.00815257 -0.000404454 -0.0753509" rpy="0 0 0"/><mass value="0.5889"/>
-      <inertia ixx="0.000845932" ixy="1.94327e-06" ixz="0.000239741" iyy="0.00106751" iyz="6.81684e-06" izz="0.000692916"/></inertial>
+    <inertial><origin xyz="-0.00842181 -0.000423512 -0.0748424" rpy="0 0 0"/><mass value="0.5624"/>
+      <inertia ixx="0.000820702" ixy="2.0074e-06" ixz="0.000234105" iyy="0.00103853" iyz="6.69572e-06" izz="0.000669638"/></inertial>
     <visual><geometry><mesh filename="meshes/R_shoulder_roll_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_shoulder_roll_link.stl"/></geometry></collision>
   </link>
@@ -110,14 +110,14 @@
     <collision><geometry><mesh filename="meshes/R_knee_link.stl"/></geometry></collision>
   </link>
   <link name="L_elbow_link">
-    <inertial><origin xyz="0.000316945 -0.00898374 -0.0715219" rpy="0 0 0"/><mass value="0.6646"/>
-      <inertia ixx="0.00137381" ixy="-9.88624e-07" ixz="-1.50707e-05" iyy="0.00128114" iyz="0.000318987" izz="0.000666068"/></inertial>
+    <inertial><origin xyz="0.000330107 -0.0092851 -0.0707173" rpy="0 0 0"/><mass value="0.6381"/>
+      <inertia ixx="0.00133799" ixy="-1.0521e-06" ixz="-1.49012e-05" iyy="0.00124792" iyz="0.000311994" izz="0.000643813"/></inertial>
     <visual><geometry><mesh filename="meshes/L_elbow_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/L_elbow_link.stl"/></geometry></collision>
   </link>
   <link name="R_elbow_link">
-    <inertial><origin xyz="0.00031668 0.00898374 -0.0715219" rpy="0 0 0"/><mass value="0.6646"/>
-      <inertia ixx="0.00137381" ixy="9.92997e-07" ixz="-1.50618e-05" iyy="0.00128114" iyz="-0.000318987" izz="0.000666069"/></inertial>
+    <inertial><origin xyz="0.000329831 0.0092851 -0.0707173" rpy="0 0 0"/><mass value="0.6381"/>
+      <inertia ixx="0.00133799" ixy="1.05642e-06" ixz="-1.48924e-05" iyy="0.00124792" iyz="-0.000311994" izz="0.000643813"/></inertial>
     <visual><geometry><mesh filename="meshes/R_elbow_link.stl"/></geometry></visual>
     <collision><geometry><mesh filename="meshes/R_elbow_link.stl"/></geometry></collision>
   </link>
@@ -185,203 +185,203 @@
     <parent link="pelvis"/><child link="torso"/>
     <origin xyz="0 0 0.09" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-2.6" upper="2.6" effort="120.0" velocity="21.00"/>
+    <limit lower="-2.6" upper="2.6" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="neck_yaw" type="revolute">
     <parent link="torso"/><child link="neck_yaw_link"/>
     <origin xyz="-0.012 0 0.4305" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-1.4" upper="1.4" effort="14.0" velocity="32.00"/>
+    <limit lower="-1.4" upper="1.4" effort="14.0" velocity="33.00"/>
     <dynamics damping="0.02" friction="0.3"/>
   </joint>
   <joint name="neck_pitch" type="revolute">
     <parent link="neck_yaw_link"/><child link="head"/>
     <origin xyz="0 0 0.0755" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.4" upper="0.45" effort="14.0" velocity="32.00"/>
+    <limit lower="-0.4" upper="0.45" effort="14.0" velocity="33.00"/>
     <dynamics damping="0.02" friction="0.3"/>
   </joint>
   <joint name="L_shoulder_pitch" type="revolute">
     <parent link="torso"/><child link="L_shoulder_pitch_link"/>
     <origin xyz="0 0.115 0.4" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-3.0" upper="1.0" effort="120.0" velocity="21.00"/>
+    <limit lower="-3.0" upper="1.0" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="R_shoulder_pitch" type="revolute">
     <parent link="torso"/><child link="R_shoulder_pitch_link"/>
     <origin xyz="0 -0.115 0.4" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-3.0" upper="1.0" effort="120.0" velocity="21.00"/>
+    <limit lower="-3.0" upper="1.0" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="L_shoulder_roll" type="revolute">
     <parent link="L_shoulder_pitch_link"/><child link="L_shoulder_roll_link"/>
     <origin xyz="0 0.09 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.05" upper="2.6" effort="36.0" velocity="50.00"/>
+    <limit lower="-0.05" upper="2.6" effort="36.0" velocity="50.30"/>
     <dynamics damping="0.08" friction="0.7"/>
   </joint>
   <joint name="R_shoulder_roll" type="revolute">
     <parent link="R_shoulder_pitch_link"/><child link="R_shoulder_roll_link"/>
     <origin xyz="0 -0.09 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-2.6" upper="0.05" effort="36.0" velocity="50.00"/>
+    <limit lower="-2.6" upper="0.05" effort="36.0" velocity="50.30"/>
     <dynamics damping="0.08" friction="0.7"/>
   </joint>
   <joint name="L_shoulder_yaw" type="revolute">
     <parent link="L_shoulder_roll_link"/><child link="L_shoulder_yaw_link"/>
     <origin xyz="0 0 -0.12" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="41.00"/>
+    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="42.90"/>
     <dynamics damping="0.03" friction="0.4"/>
   </joint>
   <joint name="R_shoulder_yaw" type="revolute">
     <parent link="R_shoulder_roll_link"/><child link="R_shoulder_yaw_link"/>
     <origin xyz="0 0 -0.12" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="41.00"/>
+    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="42.90"/>
     <dynamics damping="0.03" friction="0.4"/>
   </joint>
   <joint name="L_elbow" type="revolute">
     <parent link="L_shoulder_yaw_link"/><child link="L_elbow_link"/>
     <origin xyz="0 0 -0.115" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-1.9" upper="0.0" effort="36.0" velocity="50.00"/>
+    <limit lower="-1.9" upper="0.0" effort="36.0" velocity="50.30"/>
     <dynamics damping="0.08" friction="0.7"/>
   </joint>
   <joint name="R_elbow" type="revolute">
     <parent link="R_shoulder_yaw_link"/><child link="R_elbow_link"/>
     <origin xyz="0 0 -0.115" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-1.9" upper="0.0" effort="36.0" velocity="50.00"/>
+    <limit lower="-1.9" upper="0.0" effort="36.0" velocity="50.30"/>
     <dynamics damping="0.08" friction="0.7"/>
   </joint>
   <joint name="L_wrist_yaw" type="revolute">
     <parent link="L_elbow_link"/><child link="L_wrist_yaw_link"/>
     <origin xyz="0 0 -0.125" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="41.00"/>
+    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="42.90"/>
     <dynamics damping="0.03" friction="0.4"/>
   </joint>
   <joint name="R_wrist_yaw" type="revolute">
     <parent link="R_elbow_link"/><child link="R_wrist_yaw_link"/>
     <origin xyz="0 0 -0.125" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="41.00"/>
+    <limit lower="-2.6" upper="2.6" effort="17.0" velocity="42.90"/>
     <dynamics damping="0.03" friction="0.4"/>
   </joint>
   <joint name="L_wrist_pitch" type="revolute">
     <parent link="L_wrist_yaw_link"/><child link="L_wrist_pitch_link"/>
     <origin xyz="0 0 -0.075" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.9" upper="0.9" effort="14.0" velocity="32.00"/>
+    <limit lower="-0.9" upper="0.9" effort="14.0" velocity="33.00"/>
     <dynamics damping="0.02" friction="0.3"/>
   </joint>
   <joint name="R_wrist_pitch" type="revolute">
     <parent link="R_wrist_yaw_link"/><child link="R_wrist_pitch_link"/>
     <origin xyz="0 0 -0.075" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.9" upper="0.9" effort="14.0" velocity="32.00"/>
+    <limit lower="-0.9" upper="0.9" effort="14.0" velocity="33.00"/>
     <dynamics damping="0.02" friction="0.3"/>
   </joint>
   <joint name="L_wrist_roll" type="revolute">
     <parent link="L_wrist_pitch_link"/><child link="L_hand"/>
     <origin xyz="0 0 -0.06" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.6" upper="0.6" effort="14.0" velocity="32.00"/>
+    <limit lower="-0.6" upper="0.6" effort="14.0" velocity="33.00"/>
     <dynamics damping="0.02" friction="0.3"/>
   </joint>
   <joint name="R_wrist_roll" type="revolute">
     <parent link="R_wrist_pitch_link"/><child link="R_hand"/>
     <origin xyz="0 0 -0.06" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.6" upper="0.6" effort="14.0" velocity="32.00"/>
+    <limit lower="-0.6" upper="0.6" effort="14.0" velocity="33.00"/>
     <dynamics damping="0.02" friction="0.3"/>
   </joint>
   <joint name="L_hip_pitch" type="revolute">
     <parent link="pelvis"/><child link="L_hip_pitch_link"/>
     <origin xyz="0 0.1 0.03" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-1.65" upper="0.24" effort="120.0" velocity="21.00"/>
+    <limit lower="-1.65" upper="0.24" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="R_hip_pitch" type="revolute">
     <parent link="pelvis"/><child link="R_hip_pitch_link"/>
     <origin xyz="0 -0.1 0.03" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-1.65" upper="0.24" effort="120.0" velocity="21.00"/>
+    <limit lower="-1.65" upper="0.24" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="L_hip_roll" type="revolute">
     <parent link="L_hip_pitch_link"/><child link="L_hip_roll_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.35" upper="0.6" effort="120.0" velocity="21.00"/>
+    <limit lower="-0.35" upper="0.6" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="R_hip_roll" type="revolute">
     <parent link="R_hip_pitch_link"/><child link="R_hip_roll_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.6" upper="0.35" effort="120.0" velocity="21.00"/>
+    <limit lower="-0.6" upper="0.35" effort="120.0" velocity="20.90"/>
     <dynamics damping="0.2" friction="1.5"/>
   </joint>
   <joint name="L_hip_yaw" type="revolute">
     <parent link="L_hip_roll_link"/><child link="L_hip_yaw_link"/>
     <origin xyz="0 0 -0.11" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-1.2" upper="1.2" effort="60.0" velocity="20.00"/>
+    <limit lower="-1.2" upper="1.2" effort="60.0" velocity="20.40"/>
     <dynamics damping="0.12" friction="1"/>
   </joint>
   <joint name="R_hip_yaw" type="revolute">
     <parent link="R_hip_roll_link"/><child link="R_hip_yaw_link"/>
     <origin xyz="0 0 -0.11" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-1.2" upper="1.2" effort="60.0" velocity="20.00"/>
+    <limit lower="-1.2" upper="1.2" effort="60.0" velocity="20.40"/>
     <dynamics damping="0.12" friction="1"/>
   </joint>
   <joint name="L_knee" type="revolute">
     <parent link="L_hip_yaw_link"/><child link="L_knee_link"/>
     <origin xyz="0 0 -0.285" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="0.0" upper="2.15" effort="240.0" velocity="10.50"/>
+    <limit lower="0.0" upper="2.15" effort="240.0" velocity="10.45"/>
     <dynamics damping="0.8" friction="3"/>
   </joint>
   <joint name="R_knee" type="revolute">
     <parent link="R_hip_yaw_link"/><child link="R_knee_link"/>
     <origin xyz="0 0 -0.285" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="0.0" upper="2.15" effort="240.0" velocity="10.50"/>
+    <limit lower="0.0" upper="2.15" effort="240.0" velocity="10.45"/>
     <dynamics damping="0.8" friction="3"/>
   </joint>
   <joint name="L_ankle_pitch" type="revolute">
     <parent link="L_knee_link"/><child link="L_ankle_pitch_link"/>
     <origin xyz="0 0 -0.45" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.8" upper="0.55" effort="72.0" velocity="50.00"/>
+    <limit lower="-0.8" upper="0.55" effort="72.0" velocity="50.30"/>
     <dynamics damping="0.16" friction="1.4"/>
   </joint>
   <joint name="R_ankle_pitch" type="revolute">
     <parent link="R_knee_link"/><child link="R_ankle_pitch_link"/>
     <origin xyz="0 0 -0.45" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.8" upper="0.55" effort="72.0" velocity="50.00"/>
+    <limit lower="-0.8" upper="0.55" effort="72.0" velocity="50.30"/>
     <dynamics damping="0.16" friction="1.4"/>
   </joint>
   <joint name="L_ankle_roll" type="revolute">
     <parent link="L_ankle_pitch_link"/><child link="L_foot"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.3" upper="0.3" effort="43.2" velocity="83.33"/>
+    <limit lower="-0.3" upper="0.3" effort="43.2" velocity="83.83"/>
     <dynamics damping="0.0576" friction="0.84"/>
   </joint>
   <joint name="R_ankle_roll" type="revolute">
     <parent link="R_ankle_pitch_link"/><child link="R_foot"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-0.3" upper="0.3" effort="43.2" velocity="83.33"/>
+    <limit lower="-0.3" upper="0.3" effort="43.2" velocity="83.83"/>
     <dynamics damping="0.0576" friction="0.84"/>
   </joint>
 </robot>

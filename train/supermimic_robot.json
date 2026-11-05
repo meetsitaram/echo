@@ -1,0 +1,17 @@
+{
+  "mjcf": "../urdf/echo.xml",
+  "plant": "echo_plant.yaml",
+  "num_joints": 29,
+  "tracked_bodies": ["pelvis", "L_hip_roll_link", "L_knee_link", "L_foot", "R_hip_roll_link", "R_knee_link", "R_foot", "torso",
+                     "L_shoulder_roll_link", "L_elbow_link", "L_wrist_yaw_link", "R_shoulder_roll_link", "R_elbow_link", "R_wrist_yaw_link"],
+  "lowest_origin": 0.085,
+  "torso": "torso",
+  "mass_bodies": ["torso", "L_wrist_yaw_link", "R_wrist_yaw_link"],
+  "mass_scale": [0.85, 1.25],
+  "armature_scale": [0.5, 2.0],
+  "friction_scale": [0.5, 1.5],
+  "torque_speed_knee": 0.5,
+  "noload_rads": {"waist_yaw": 20.9, "neck": 33.0, "shoulder_pitch": 20.9, "shoulder_roll": 50.3, "shoulder_yaw": 42.9, "elbow": 50.3,
+                  "wrist_yaw": 42.9, "wrist": 33.0, "hip_pitch": 20.9, "hip_roll": 20.9, "hip_yaw": 20.4, "knee": 10.45,
+                  "ankle_pitch": 50.3, "ankle_roll": 83.8}
+}

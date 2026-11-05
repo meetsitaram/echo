@@ -16,6 +16,8 @@ import sys
 
 import numpy as np
 import trimesh
+from scipy.cluster.vq import kmeans2
+from scipy.spatial import ConvexHull
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import checks as C  # noqa: E402
@@ -101,6 +103,40 @@ def fmt(v):
     return ' '.join(f'{x:.6g}' for x in v)
 
 
+# Arm against pelvis and upper leg: only these collide with each other (bit 4, apart from the floor's bit 1 and the
+# terrain's bit 2), so the policy can't pass its hands through its hips (2026-11-04: a soles-only sim let it, 65 cm3).
+# Spheres fitted to each link's hull: boxes and capsules from the mesh bounds overlapped at the zero pose (15 contacts)
+# and read 10 cm deep where the meshes overlap by a few cm. supermimic's reward reads the same spheres by name.
+SELF_ARM = {'elbow_link': 3, 'wrist_yaw_link': 3, 'wrist_pitch_link': 2, 'hand': 5}
+SELF_BODY = {'hip_pitch_link': 4, 'hip_roll_link': 8, 'hip_yaw_link': 8}
+SELF_PELVIS = 6
+SELF_BIT = 4
+
+
+def fit_spheres(m, k, seed=1):
+    """k spheres over the mesh's convex hull: k-means of points filling the hull, each sphere reaching most (80 %) of
+    its cluster, so it covers the link without standing far proud of it. [(centre, radius)] in the mesh's frame."""
+    rng = np.random.default_rng(seed)
+    hull = ConvexHull(m.vertices)
+    lo, hi = m.bounds
+    pts = rng.uniform(lo, hi, (60000, 3))
+    pts = pts[(hull.equations[:, :3] @ pts.T + hull.equations[:, 3:]).max(0) <= 0][:8000]
+    c, lab = kmeans2(pts, k, seed=seed, minit='++')
+    return [(c[i], float(np.percentile(np.linalg.norm(pts[lab == i] - c[i], axis=1), 80))) for i in range(k) if (lab == i).any()]
+
+
+def self_collision_geoms(ln, m, ind):
+    """Named selfcol_arm_<link>_<i> / selfcol_body_<link>_<i>."""
+    if ln[2:] in SELF_ARM:
+        kind, k, attr = 'arm', SELF_ARM[ln[2:]], f'contype="{SELF_BIT}" conaffinity="0" condim="1"'
+    elif ln == 'pelvis' or ln[2:] in SELF_BODY:
+        kind, k, attr = 'body', SELF_PELVIS if ln == 'pelvis' else SELF_BODY[ln[2:]], f'contype="0" conaffinity="{SELF_BIT}" condim="1"'
+    else:
+        return []
+    return [f'{ind}<geom name="selfcol_{kind}_{ln}_{i}" type="sphere" pos="{fmt(c)}" size="{r:.4f}" {attr} group="3"/>'
+            for i, (c, r) in enumerate(fit_spheres(m, k))]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--fusion', default=os.path.join(OUT, 'meshes', 'fusion'))
@@ -111,12 +147,13 @@ def main():
     frames = link_frames(R)
     mesh_dir = os.path.join(OUT, 'meshes')
     os.makedirs(mesh_dir, exist_ok=True)
-    src = {}
+    src, meshes = {}, {}
     inert = {ln: v[:3] for ln, v in MM.link_inertials(spec, S).items()}   # from the materials
     for ln in spec['links']:
         m, src[ln] = link_mesh(spec, S, ln, a.fusion)
         m.apply_translation(-frames[ln])                 # mesh in the link frame
         m.export(os.path.join(mesh_dir, f'{ln}.stl'))
+        meshes[ln] = m
 
     # ---------------- URDF
     u = [f'<?xml version="1.0"?>', f'<robot name="{NAME}">',
@@ -192,6 +229,7 @@ def main():
             out.append(f'{s}  <geom name="{ln}_sole" type="box" pos="{fmt(np.array(sole["c"]) - frames[ln])}" '
                        f'size="{fmt(np.array(sole["size"]) / 2)}" contype="1" conaffinity="1" group="0" '
                        f'friction="1.0 0.02 0.001" rgba="0.2 0.2 0.2 1"/>')
+        out += self_collision_geoms(ln, meshes[ln], s + '  ')
         for j in kids.get(ln, []):
             out += body(j['child'], frames[ln], ind + 1)
         out.append(f'{s}</body>')

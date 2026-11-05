@@ -29,7 +29,9 @@ XML = ROOT / 'urdf' / 'echo.xml'
 PARENTS = [-1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21]
 GLOSSY = ('#08090B', '#0A1420')
 VIEWS = {'34': (150.0, -12.0, 3.2), 'side': (90.0, -6.0, 2.8), 'front': (180.0, -6.0, 3.0),
-         'follow': (90.0, -4.0, 3.1)}   # azimuth (follow: from the heading), elevation, distance
+         'follow': (90.0, -4.0, 3.1),   # azimuth (follow, hero: from the heading), elevation, distance
+         'hero': (135.0, -6.0, 3.0)}   # tracks the heading from the robot's front right, half past one on a clock with its nose at 12, wide enough for raised hands
+TRACKS_HEADING = ('follow', 'hero')
 
 
 def rgba(hex_color):
@@ -161,7 +163,7 @@ def play_viewer(take_path, skeleton=True):
                 time.sleep(max(0.0, dt - (time.time() - t0)))
 
 
-def render(take_path, out, view='34', start=0.0, dur=None, fps=25, w=1024, h=576, skeleton=True, title=''):
+def render(take_path, out, view='34', start=0.0, dur=None, fps=25, w=1024, h=576, skeleton=True, title='', note='kinematic playback: joint angles set, no physics'):
     d = np.load(take_path)
     t, q = d['t'], d['q']
     src_fps = round(1 / (t[1] - t[0]))
@@ -174,7 +176,7 @@ def render(take_path, out, view='34', start=0.0, dur=None, fps=25, w=1024, h=576
     frames = np.arange(i0, i1, max(1, round(src_fps / fps)))
     track = smooth_track(d['root_pos'][:, :2], 0.6 * src_fps)    # the camera follows the pelvis, smoothly
     az, el, dist = VIEWS[view]
-    if view == 'follow':                                          # from the robot's side as it turns (heading, 1 s)
+    if view in TRACKS_HEADING:                                    # stays at the same place around the robot as it turns (heading, 1 s)
         qw = d['root_quat_wxyz']
         yaw = np.unwrap(np.arctan2(2 * (qw[:, 0] * qw[:, 3] + qw[:, 1] * qw[:, 2]), 1 - 2 * (qw[:, 2] ** 2 + qw[:, 3] ** 2)))
         heading = smooth_track(yaw[:, None], 1.0 * src_fps)[:, 0]
@@ -191,8 +193,8 @@ def render(take_path, out, view='34', start=0.0, dur=None, fps=25, w=1024, h=576
         data.qpos[adr] = q[i]
         mujoco.mj_kinematics(m, data)
         mujoco.mj_camlight(m, data)               # light directions too (kinematics alone left the sun dark)
-        cam.lookat[:] = [track[i, 0], track[i, 1], 0.85]
-        if view == 'follow':
+        cam.lookat[:] = [track[i, 0], track[i, 1], 1.0 if view == 'hero' else 0.85]
+        if view in TRACKS_HEADING:
             cam.azimuth = math.degrees(heading[i]) + az
             right = np.array([math.sin(math.radians(cam.azimuth)), -math.cos(math.radians(cam.azimuth)), 0.0])
         r.update_scene(data, cam, opt)
@@ -202,7 +204,7 @@ def render(take_path, out, view='34', start=0.0, dur=None, fps=25, w=1024, h=576
             skeleton_geoms(r.scene, J)
         img = Image.fromarray(r.render())
         caption(img, (12, 10), title)
-        caption(img, (12, h - 24), f't {t[i]:5.1f} s   1x   kinematic playback: joint angles set, no physics')
+        caption(img, (12, h - 24), f't {t[i]:5.1f} s   1x   {note}')
         if skeleton:
             caption(img, (w - 262, 10), 'blue: the PICO-captured operator, robot scale', (20, 50, 140))
         writer.append_data(np.asarray(img))
@@ -220,6 +222,7 @@ def main():
     ap.add_argument('--start', type=float, default=0.0)
     ap.add_argument('--dur', type=float, default=None)
     ap.add_argument('--no-skeleton', action='store_true')
+    ap.add_argument('--note', default='kinematic playback: joint angles set, no physics', help='caption: say whether this take came from a physics sim')
     ap.add_argument('--viewer', action='store_true', help="play in MuJoCo's interactive viewer instead")
     ap.add_argument('--title', default='echo walking: PICO full-body capture retargeted (session 2026-08-22 seg30)')
     ap.add_argument('--out', type=Path, default=None)
@@ -227,7 +230,7 @@ def main():
     if a.viewer:
         return play_viewer(a.take, not a.no_skeleton)
     out = a.out or a.take.with_name(f'{a.take.stem}_{a.view}.mp4')
-    render(a.take, str(out), a.view, a.start, a.dur, skeleton=not a.no_skeleton, title=a.title)
+    render(a.take, str(out), a.view, a.start, a.dur, skeleton=not a.no_skeleton, title=a.title, note=a.note)
     print(out)
 
 
