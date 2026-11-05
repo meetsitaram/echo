@@ -2,20 +2,21 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 57.87 kg** (Figure 03: 61.0 kg).
+**Total 58.48 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
-| actuator | 23.49 | 41 % |
-| cells | 13.10 | 23 % |
-| al7075 | 8.78 | 15 % |
-| knit_pa12 | 4.53 | 8 % |
+| actuator | 23.49 | 40 % |
+| cells | 13.10 | 22 % |
+| al7075 | 9.52 | 16 % |
+| knit_pa12 | 4.37 | 7 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
-| pc | 1.39 | 2 % |
+| pc | 1.25 | 2 % |
 | tpu | 1.03 | 2 % |
-| pa12 | 0.54 | 1 % |
+| pa12 | 0.58 | 1 % |
 | eva | 0.47 | 1 % |
+| knit | 0.13 | 0 % |
 
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
 |---|---|---|---|---|
@@ -41,10 +42,10 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_hip_pitch_link | 1.59 | 1.60 | -0.091 -0.103 +0.931 | 0.0025 0.0030 0.0032 |
 | L_hip_roll_link | 1.45 | 2.00 | -0.017 +0.105 +0.850 | 0.0025 0.0060 0.0064 |
 | R_hip_roll_link | 1.45 | 2.00 | -0.017 -0.105 +0.850 | 0.0025 0.0060 0.0064 |
-| L_hip_yaw_link | 2.55 | 3.60 | +0.002 +0.100 +0.596 | 0.0060 0.0269 0.0273 |
-| R_hip_yaw_link | 2.55 | 3.60 | +0.002 -0.100 +0.596 | 0.0060 0.0269 0.0273 |
-| L_knee_link | 3.02 | 2.08 | -0.007 +0.099 +0.346 | 0.0045 0.0387 0.0388 |
-| R_knee_link | 3.02 | 2.08 | -0.007 -0.099 +0.346 | 0.0045 0.0387 0.0388 |
+| L_hip_yaw_link | 1.02 | 3.60 | +0.001 +0.097 +0.680 | 0.0035 0.0108 0.0113 |
+| R_hip_yaw_link | 1.02 | 3.60 | +0.001 -0.097 +0.680 | 0.0035 0.0108 0.0113 |
+| L_knee_link | 4.85 | 2.08 | -0.004 +0.102 +0.416 | 0.0072 0.0809 0.0810 |
+| R_knee_link | 4.85 | 2.08 | -0.004 -0.102 +0.416 | 0.0072 0.0809 0.0810 |
 | L_ankle_pitch_link | 0.03 | 0.25 | -0.005 +0.099 +0.085 | 0.0000 0.0000 0.0000 |
 | R_ankle_pitch_link | 0.03 | 0.25 | -0.005 -0.099 +0.085 | 0.0000 0.0000 0.0000 |
 | L_foot | 1.51 | 1.10 | +0.043 +0.100 +0.029 | 0.0017 0.0078 0.0082 |
