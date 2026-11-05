@@ -1,9 +1,13 @@
 """Physical-validity checks for the replica, run offline on spec/robot.json before anything is built in Fusion.
 
   python -I tools/checks.py                 all checks, report in reports/checks.md, exit 1 on any FAIL
-  python -I tools/checks.py --only sweep    one group (targets mass axis static connect skin sweep poses)
+  python -I tools/checks.py --only sweep    one group (targets mass axis static connect skin sweep poses
+                                            loadpath contact pivot linkage stator)
   python -I tools/checks.py --bad torque    break the design on purpose and show the matching check FAILs
-                                            (cases: torque collide offaxis floating mass poke)
+                                            (cases: torque collide offaxis floating mass poke; and for the load checks hipshrink
+                                            spineshrink norods token tokenedge pa12 rolebad newpart nostator thinpin)
+  python -I tools/checks.py --good pin      fix one thing on purpose and show the matching row goes to PASS: a check that can never
+                                            pass proves as little as one that can never fail (cases: pin link stator frame)
 
 What each group guards against (the CDX-3R lesson it carries over in brackets):
   targets  size and proportions match Figure 03 (published specs + photo estimates)
@@ -15,7 +19,15 @@ What each group guards against (the CDX-3R lesson it carries over in brackets):
            neighbouring one
            (collision_check: every bought part modelled, in every pose)
   connect  each link is one connected solid and each joint axis passes through both links it joins
-           (design_rules 'floating': nothing hangs in thin air)
+           (design_rules 'floating': nothing hangs in thin air). It proves only that shapes touch: a 2.7 x 3.5 mm hip bracket,
+           a 2 x 2 mm spine and deleted ankle rods all passed. Kept for the covers and the axes; the groups below say whether it holds
+  loadpath each named section (tools/strength.py SECTIONS: cut from the real solids) at safety factor 2 to yield under 3,400 N, walking,
+           motor peak and payload; only struct or linkage parts of a material with a strength count; every rigid part is on a path or excused
+  contact  each rigid interface on a path has the area its force needs; each link's frame is one piece at 100 mm2 a contact, with motors
+           and passengers not counting as frame (a part held by a motor's case, or a 0.02 mm touch, is not joined)
+  pivot    every passive joint and every drawn bearing seat has a modelled pin or bearing touching both links, sized for its load
+  linkage  each remote drive really reaches: motor, crank, rod, output; rod ends have pivots; moving parts clear of fixed plates
+  stator   each motor is held through a real mounting face (its end), not by a part overlapping its side wall
   skin     internal parts stay inside the skin, except parts meant to show (exposed actuators)
   sweep    each joint swept through its limits: limits are reachable without collisions (motion sweep)
   poses    task poses: static joint torques vs actuator ratings, centre of mass over the feet, no collisions
@@ -23,6 +35,7 @@ What each group guards against (the CDX-3R lesson it carries over in brackets):
 import argparse
 import copy
 import json
+import math
 import os
 import sys
 import time
@@ -46,9 +59,10 @@ class Report:
     def __init__(self):
         self.rows = []
 
-    def add(self, group, item, ok, detail='', warn=False):
+    def add(self, group, item, ok, detail='', warn=False, value=None):
+        """value: a number where higher is better, so --bad can tell a row that got worse from one that was already failing."""
         status = 'PASS' if ok else ('WARN' if warn else 'FAIL')
-        self.rows.append(dict(group=group, item=item, status=status, detail=detail))
+        self.rows.append(dict(group=group, item=item, status=status, detail=detail, value=value))
         return ok
 
     def failing(self):
@@ -329,6 +343,267 @@ def check_connect(spec, S, rep):
         rep.add('connect', f"{j['name']} axis", ok,
                 '' if ok else f"axis passes through no rigid part of the {' and '.join(miss)} "
                               f"({', '.join(j[s] for s in miss)})")
+
+
+# ---------------------------------------------------------------- does it hold (thresholds and their reasons: tools/strength.py)
+
+def left_links(spec):
+    """Left side and centre: the right is built as their mirror in spec/robot.py, as the sweep assumes."""
+    return [ln for ln in spec['links'] if not ln.startswith('R_')]
+
+
+def carrying_parts(spec, ln):
+    import strength as ST
+    return [(i, g) for i, g in enumerate(spec['links'][ln]['geoms']) if g['role'] != 'cut' and ST.why_not_carrying(g) is None]
+
+
+def frame_components(spec, S, ln):
+    """A link's frame: its carrying parts joined only by contacts a bolt could use. Motors are not frame: a part held only by a
+    motor's case is not joined, as nothing says the case is rated for it. Returns (components as sets of indices, every contact found)."""
+    import strength as ST
+    parts = carrying_parts(spec, ln)
+    par = {i: i for i, _ in parts}
+
+    def find(x):
+        while par[x] != x:
+            par[x] = par[par[x]]
+            x = par[x]
+        return x
+    seen = []
+    for a in range(len(parts)):
+        for b in range(a + 1, len(parts)):
+            i, k = parts[a][0], parts[b][0]
+            ma, mb = S.geom[(ln, i)], S.geom[(ln, k)]
+            (la, ha), (lb, hb) = bbox(ma), bbox(mb)
+            if np.any(la > hb + 1e-3) or np.any(lb > ha + 1e-3):
+                continue
+            c = ST.contact(ma, mb)
+            if c['kind'] == 'gap':
+                continue
+            seen.append((i, k, c))
+            if c['kind'] in ('overlap', 'flush') and c['area'] >= ST.CONTACT_MIN_MM2:
+                par[find(i)] = find(k)
+    comps = {}
+    for i, _ in parts:
+        comps.setdefault(find(i), set()).add(i)
+    return list(comps.values()), seen
+
+
+def check_loadpath(spec, S, rep):
+    import strength as ST
+    M = ST.Model(spec, S)
+    for r in ST.evaluate_all(M):
+        if r['why'] or not r['case']:
+            rep.add('loadpath', r['name'], False, r['why'] or 'nothing to read', value=0.0)
+            continue
+        g = r['results'][r['case']]
+        ok = r['sf'] >= ST.SF_MIN
+        rep.add('loadpath', r['name'], ok, f"SF {r['sf']:.2f} to yield (needs {ST.SF_MIN:.0f}), {ST.CASE_LABEL[r['case']]}: {g['vm']:.0f} MPa on {r['size']} mm {r['material']}; a hand estimate", value=r['sf'])
+        if ok and r['sf_hollow'] is not None and r['sf_hollow'] < ST.SF_MIN:
+            rep.add('loadpath', f"{r['name']}, at the mass model's fill", False, f"SF {r['sf_hollow']:.2f} if as hollow as its mass assumes (fill {r['fill']:.2f}); solid {r['sf']:.2f}", warn=True)
+    # coverage: a rigid part on no path must say why, so a new part can't slip past this check
+    named = {n for x in ST.SECTIONS if x['parts'] != '*' for n in x['parts']} | {n for _, a, b, _ in ST.INTERFACES for n in (a, b)} | set(ST.NOT_ON_PATH)
+    loose = [g['name'] for ln in left_links(spec) for g in spec['links'][ln]['geoms'] if g['role'] in ('struct', 'linkage') and g['name'] not in named]
+    rep.add('loadpath', 'coverage: every rigid part on a path or excused', not loose, 'not in strength.py SECTIONS, INTERFACES or NOT_ON_PATH: ' + ', '.join(loose) if loose else '', value=-float(len(loose)))
+    gone = sorted(n for n in named if n not in M.part)
+    rep.add('loadpath', 'coverage: every named part exists', not gone, 'in strength.py but not in the spec: ' + ', '.join(gone) if gone else '', value=-float(len(gone)))
+    # role against material: metal drawn as a cover counts for nothing here, and that should be a choice
+    for ln in left_links(spec):
+        for g in spec['links'][ln]['geoms']:
+            if g['role'] in ('shell', 'knit') and g.get('material') == 'al7075':
+                rep.add('loadpath', f"role: {g['name']}", False, f"7075 with role {g['role']}: not counted as load-bearing. If it carries load, make it struct", warn=True)
+
+
+def check_contact(spec, S, rep):
+    import strength as ST
+    M = ST.Model(spec, S)
+    for r in ST.evaluate_interfaces(M):
+        extra = f", {r['gap']:.2f} mm of air" if r['kind'] == 'gap' and r['gap'] is not None else ''
+        rep.add('contact', f"{r['a']} / {r['b']}", r['ok'], f"{r['area']:.0f} mm2 ({r['kind']}{extra}, {r['depth']:.2f} deep), needs {r['need']:.0f} to pass {r['v']:.0f} N", value=r['area'] if r['kind'] in ('overlap', 'flush') else 0.0)
+    for ln in left_links(spec):
+        gs = spec['links'][ln]['geoms']
+        comps, seen = frame_components(spec, S, ln)
+        if comps:
+            n = len(comps)
+            names = '; '.join(' + '.join(gs[i]['name'] for i in sorted(c)) for c in comps) if n > 1 else ''
+            weak = [f"{gs[i]['name']} / {gs[k]['name']} {c['area']:.0f} mm2 {c['kind']}" for i, k, c in seen if any(i in x and k not in x for x in comps)]
+            rep.add('contact', f'{ln}: frame in one piece', n == 1, f'{n} pieces: {names}' + (f". Only by: {'; '.join(weak)}" if weak else '. Nothing joins them') if n > 1 else '', value=-float(n))
+        # passengers (a pack, a computer) need a seat on the frame: a seat on another passenger is not one
+        for i, g in enumerate(gs):
+            if g['role'] != 'struct' or ST.why_not_carrying(g) is None:
+                continue
+            best = 0.0
+            for k, _ in carrying_parts(spec, ln):
+                c = ST.contact(S.geom[(ln, i)], S.geom[(ln, k)])
+                if c['kind'] in ('overlap', 'flush'):
+                    best = max(best, c['area'])
+            rep.add('contact', f"{g['name']}: seated on the frame", best >= ST.CONTACT_MIN_MM2, f'{best:.0f} mm2 on carrying parts (needs {ST.CONTACT_MIN_MM2:.0f})', value=best)
+
+
+PIVOT_GAP = 1e-4          # a modelled bearing or pin touches both links: within this, as contact is read elsewhere
+
+
+def pivot_row(spec, S, rep, M, j, c, label):
+    """Is there a pin or bearing at this pivot? A cylinder on the axis, in either link, with the two links' frames touching there."""
+    import strength as ST
+    a = G.AXIS[j['axis']]
+    c = np.asarray(c, float)
+    zone = to_manifold(G.mesh_of(dict(kind='cyl', c=list(c), axis=j['axis'], r=0.03, h=0.02 if 'seat' in label else 0.07)))
+    pins, near = [], {}
+    for side in ('parent', 'child'):
+        ln = j[side]
+        ms = []
+        bored = {t for g in spec['links'][ln]['geoms'] if g['role'] == 'cut' for t in g['targets']}
+        for i, g in carrying_parts(spec, ln):
+            # not the motor's own output (the question here is the other support), nor the rods, which pass by on their own business
+            if g['name'].endswith(' flange') or g['role'] == 'linkage':
+                continue
+            ms.append(S.geom[(ln, i)])
+            # a disc with a bore in it is the seat, not the pin
+            if g['kind'] == 'cyl' and g['axis'] == j['axis'] and g['name'] not in bored:
+                d = np.array(g['c'], float) - c
+                if np.linalg.norm(d - (d @ a) * a) < 5e-4 and abs(d @ a) < 0.05:
+                    pins.append(g)
+        u = union(ms)
+        near[side] = None if u is None else u ^ zone
+    gap = None
+    if near['parent'] is not None and near['child'] is not None and near['parent'].volume() > 0 and near['child'].volume() > 0:
+        gap = near['parent'].min_gap(near['child'], 0.05)
+    touching = gap is not None and gap <= PIVOT_GAP
+    if not pins:
+        rep.add('pivot', label, False, f"no pin or bearing on the axis; {gap * 1000:.2f} mm of air between the links" if gap is not None else 'no pin or bearing on the axis', value=-(gap or 1.0))
+        return
+    if not touching:
+        rep.add('pivot', label, False, f"no bearing modelled: {pins[0]['name']} is on the axis, with {gap * 1000:.2f} mm of air to the other link" if gap is not None else 'no bearing modelled', value=-(gap or 1.0))
+        return
+    # sized for its load, in double shear: the smallest pin that touches
+    force = ST.F_PEAK * (1.0 if 'ankle' in j['name'] else 0.5)
+    if 'knee' not in j['name'] and 'ankle' not in j['name']:
+        force = M.cap(j['name']) / 0.0665
+    r = min(g['r'] for g in pins)
+    sy = min(ST.yield_of(g) for g in pins)
+    tau = force / (2 * math.pi * (r * 1000) ** 2)
+    sf = 0.577 * sy / tau
+    rep.add('pivot', label, sf >= ST.SF_MIN, f"pin d{2000 * r:.0f}, {force:.0f} N in double shear: SF {sf:.1f} to yield (a hand estimate)", value=sf)
+
+
+def check_pivot(spec, S, rep):
+    """Every passive joint needs a modelled pin or bearing, and so does every bearing seat drawn in a part: until one is there, the load
+    has no way across. Rod ends are in 'linkage'."""
+    import strength as ST
+    M = ST.Model(spec, S)
+    for j in spec['joints']:
+        if j['name'].startswith('R_') or j['act']:
+            continue
+        pivot_row(spec, S, rep, M, j, j['origin'], f"{j['name']}: passive joint")
+    for ln in left_links(spec):
+        for g in spec['links'][ln]['geoms']:
+            if g['role'] != 'cut' or ' bore' not in g['name'] or g['kind'] != 'cyl':
+                continue
+            c = np.array(g['c'], float)
+            for j in spec['joints']:
+                if ln not in (j['parent'], j['child']) or j['axis'] != g['axis']:
+                    continue
+                d = c - np.array(j['origin'], float)
+                a = G.AXIS[j['axis']]
+                if np.linalg.norm(d - (d @ a) * a) < 5e-4:
+                    pivot_row(spec, S, rep, M, j, c, f"{g['name']}: bearing seat")
+                    break
+
+
+def check_linkage(spec, S, rep):
+    """A remote joint's drive must reach: motor to crank to rod to the output. Rods and cranks are role linkage, out of the collision
+    checks, so nothing else looks at them: deleted outright, every other check still passed."""
+    import strength as ST
+    for j in spec['joints']:
+        if j['name'].startswith('R_') or not j.get('remote') or j['act']:
+            continue
+        prefix = j['name'].replace('_', ' ')
+        # the drive sits wherever its motor is: the ankle roll's parent is the cross, its motor is up in the calf
+        ln = next((l for l in spec['links'] for g in spec['links'][l]['geoms'] if g['role'] == 'actuator' and g['name'].startswith(prefix)), j['parent'])
+        geoms = spec['links'][ln]['geoms']
+        idx = {g['name']: i for i, g in enumerate(geoms)}
+        motor = next((g for g in geoms if g['role'] == 'actuator' and g['name'].startswith(prefix)), None)
+        crank = next((g for g in geoms if g['role'] == 'linkage' and g['name'] == f'{prefix} crank'), None)
+        rod = next((g for g in geoms if g['role'] == 'linkage' and g['name'] == f'{prefix} rod'), None)
+        name = j['name']
+        rep.add('linkage', f'{name}: has a motor, crank and rod', bool(motor and crank and rod), f"missing: {', '.join(n for n, x in (('motor', motor), ('crank', crank), ('rod', rod)) if not x)}" if not (motor and crank and rod) else '', value=float(bool(motor)) + bool(crank) + bool(rod))
+        if not (motor and crank and rod):
+            continue
+        mm, mc, mr = (S.geom[(ln, idx[g['name']])] for g in (motor, crank, rod))
+        gap = mm.min_gap(mc, 0.05)
+        rep.add('linkage', f'{name}: crank reaches the motor', gap <= ST.CONTACT_MIN_DEPTH, f'{gap * 1000:.2f} mm of air and no shaft between the crank and the motor' if gap > ST.CONTACT_MIN_DEPTH else '', value=-gap)
+        gap = mc.min_gap(mr, 0.05)
+        rep.add('linkage', f'{name}: rod reaches the crank', gap <= ST.CONTACT_MIN_DEPTH, f'{gap * 1000:.2f} mm' if gap > ST.CONTACT_MIN_DEPTH else '', value=-gap)
+        gaps = [(mr.min_gap(S.geom[(l, i)], 0.05), g['name']) for l in G.Robot(spec).subtree(j['child']) for i, g in carrying_parts(spec, l)]
+        best = min(gaps) if gaps else (1.0, 'nothing')
+        rep.add('linkage', f'{name}: rod reaches the output', best[0] <= ST.CONTACT_MIN_DEPTH, f'{best[0] * 1000:.2f} mm to {best[1]}' if best[0] > ST.CONTACT_MIN_DEPTH else f'at {best[1]}', value=-best[0])
+        # a rod's two ends are passive joints: a modelled pin or bearing (a cylinder, by name) at each, as for any other pivot
+        for end, p in (('crank end', rod['p0']), ('output end', rod['p1'])):
+            pts = [g for l in spec['links'].values() for g in l['geoms'] if g['role'] != 'cut' and g['kind'] == 'cyl' and any(w in g['name'] for w in (' pin', ' bearing', ' rod end'))
+                   and np.linalg.norm(np.array(g['c'], float) - np.array(p, float)) < 0.01]
+            rep.add('linkage', f'{name}: rod {end} has a pivot', bool(pts), 'capsules overlapping, no pin or bearing part' if not pts else pts[0]['name'], value=float(bool(pts)))
+        # moving parts through fixed plates: nothing else looks, as linkage is out of the collision checks
+        for g, m in ((crank, mc), (rod, mr)):
+            for i, h in carrying_parts(spec, ln):
+                if h['role'] == 'linkage':
+                    continue
+                v = overlap(m, S.geom[(ln, i)])
+                if v > 1e-8:          # 0.01 cm3, the size the structure check calls a sliver
+                    rep.add('linkage', f"{g['name']} clear of {h['name']}", False, f'moving part inside a fixed one, {v * 1e6:.2f} cm3', value=-v)
+
+
+STATOR_SEAT_DEPTH = 0.002  # a part sunk further than this into a motor is overlapping its body, not seated on its face...
+STATOR_POCKET = 0.30       # ...unless it covers this much of the face: a pocket round the motor's end, which does hold it
+
+
+def check_stator(spec, S, rep):
+    """A motor is held at its end: a bolt circle on its back, or the housing ring round the output. Its side wall has no fixings, whatever a
+    plate overlapping it looks like. Reads each motor's end faces against the frame of the link that carries it; a part on the back that
+    hangs off the motor alone (a post) does not hold the motor to the link. Retailer drawings show the bolt circles: confirm on the maker's."""
+    import strength as ST
+    for ln in left_links(spec):
+        geoms = spec['links'][ln]['geoms']
+        comps, _ = frame_components(spec, S, ln)
+        vol = lambda c: sum(S.geom[(ln, i)].volume() for i in c)
+        main = max(comps, key=vol) if comps else set()
+        for i, g in enumerate(geoms):
+            if g['role'] != 'actuator':
+                continue
+            axis = g['axis']
+            a = G.AXIS[axis]
+            c = np.array(g['c'], float)
+            jn = g['name'].split(' actuator')[0]
+            j = next((x for x in spec['joints'] if x['name'] == jn), None)
+            out = j['out'] if j else 0
+            motor = S.geom[(ln, i)]
+            best, who = 0.0, ''
+            for k in main:
+                part = S.geom[(ln, k)]
+                inside = motor ^ part
+                sunk = 0.0
+                if inside.volume() > 1e-13:
+                    lo, hi = bbox(inside)
+                    sunk = float((hi - lo) @ np.abs(a))
+                for sign in (1, -1):
+                    is_output = out != 0 and sign == out
+                    plane = c + sign * a * g['h'] / 2
+                    zone = to_manifold(G.mesh_of(dict(kind='cyl', c=list(plane), axis=axis, r=g['r'], h=0.001)))
+                    if is_output:         # the output turns: only the housing ring round it can hold anything
+                        zone = zone - to_manifold(G.mesh_of(dict(kind='cyl', c=list(plane), axis=axis, r=0.6 * g['r'], h=0.002)))
+                    x = zone ^ part
+                    v = x.volume()
+                    if v < 1e-13:
+                        continue
+                    lo, hi = bbox(x)
+                    area = v / max(float((hi - lo) @ np.abs(a)), 1e-6) * 1e6
+                    face = math.pi * (g['r'] * 1000) ** 2
+                    if sunk > STATOR_SEAT_DEPTH and (is_output or area < STATOR_POCKET * face):
+                        continue
+                    if area > best:
+                        best, who = area, geoms[k]['name']
+            ok = best >= ST.CONTACT_MIN_MM2
+            rep.add('stator', g['name'], ok, f'held by {who}, {best:.0f} mm2 on its end face' if ok else f'no mounting face: {best:.0f} mm2 on its ends (needs {ST.CONTACT_MIN_MM2:.0f}); what touches it overlaps its side wall', value=best)
 
 
 def check_skin(spec, R, rep):
@@ -659,6 +934,64 @@ def break_spec(spec, case):
         s['links']['L_knee_link']['geoms'].append(dict(kind='loft', name='L calf window', role='cut',
                                                        targets=['L shank'], color='#FFFFFF', open=[],
                                                        sections=[sec(0.40), sec(0.49)]))
+    elif case in ('hipshrink', 'pa12', 'token', 'tokenedge'):
+        for side, k in (('L', 1), ('R', -1)):
+            g = next(x for x in s['links'][f'{side}_hip_pitch_link']['geoms'] if x['name'] == f'{side} hip bracket')
+            if case == 'hipshrink':       # 13 x 15 to 2.7 x 3.5, as the audit's run that check_connect passed
+                g['size'][1], g['size'][2] = 0.0027, 0.0035
+                g['fillet'] = 0.0005
+            elif case == 'pa12':          # same shape, still role struct: printed plastic
+                g['material'] = 'pa12'
+            else:
+                f = next(x for x in s['links'][f'{side}_hip_pitch_link']['geoms'] if x['name'].endswith('hip_pitch flange'))
+                if case == 'token':       # the same face, by 0.02 mm of depth
+                    g['c'][1] = k * (abs(f['c'][1]) + f['h'] / 2 - 0.00002 + g['size'][1] / 2)
+                else:                     # its square edge just grazing the flange's rim
+                    g['fillet'] = 0.0002
+                    g['c'][2] = f['c'][2] + f['r'] - 0.00002 + g['size'][2] / 2
+    elif case == 'spineshrink':
+        g = next(x for x in s['links']['torso']['geoms'] if x['name'] == 'spine')
+        g['size'][0], g['size'][1] = 0.002, 0.002
+        g['fillet'] = 0.0005
+    elif case == 'norods':
+        for ln in ('L_knee_link', 'R_knee_link'):
+            s['links'][ln]['geoms'] = [g for g in s['links'][ln]['geoms'] if g['role'] != 'linkage']
+    elif case == 'rolebad':           # a cover can't carry: the bracket as a shell, the thigh frame as knit
+        next(x for x in s['links']['L_hip_pitch_link']['geoms'] if x['name'] == 'L hip bracket')['role'] = 'shell'
+        next(x for x in s['links']['L_hip_yaw_link']['geoms'] if x['name'] == 'L thigh frame')['role'] = 'knit'
+    elif case == 'newpart':           # a new bracket nobody added to a load path
+        o = J['L_knee']['origin']
+        s['links']['L_hip_yaw_link']['geoms'].append(dict(kind='rbox', name='L new bracket', c=[0.024, o[1], o[2] + 0.15], size=[0.01, 0.01, 0.01], fillet=0.001, color='#000000', role='struct', material='al7075', exposed=True))
+    elif case == 'nostator':          # the knee motor's plate and post off its back, so nothing holds it by its face
+        for g in s['links']['L_knee_link']['geoms']:
+            if g['name'] in ('L knee stator plate', 'L knee post'):
+                g['c'][1] += 0.02
+    elif case == 'thinpin':           # the pins of --good pin, one far too small for the load, though it touches both links
+        s = break_spec(spec, 'pin')
+        next(g for g in s['links']['L_ankle_pitch_link']['geoms'] if g['name'] == 'L ankle pitch pin')['r'] = 0.001
+    # ------- --good: one thing fixed on purpose, to show the matching row can pass
+    elif case == 'pin':
+        o = J['L_ankle_pitch']['origin']
+        s['links']['L_ankle_pitch_link']['geoms'].append(dict(kind='cyl', name='L ankle pitch pin', c=list(o), axis='y', r=0.008, h=0.06, color='#000000', role='struct', material='al7075', exposed=True))
+        s['links']['L_foot']['geoms'].append(dict(kind='cyl', name='L ankle roll pin d', c=list(o), axis='x', r=0.007, h=0.05, color='#000000', role='struct', material='al7075', exposed=True))
+    elif case == 'link':              # cranks run on to the motors' faces
+        for g in s['links']['L_knee_link']['geoms']:
+            if g['role'] == 'linkage' and g['name'].endswith('crank'):
+                m = next(x for x in s['links']['L_knee_link']['geoms'] if x['role'] == 'actuator' and x['name'].startswith(g['name'].rsplit(' ', 1)[0]))
+                sign = 1 if g['p0'][1] > m['c'][1] else -1
+                g['p0'][1] = g['p1'][1] = m['c'][1] + sign * (m['h'] / 2 + g['r'] - 0.001)
+    elif case == 'stator':            # a plate on the hip roll motor's back, joined to the bracket
+        m = next(g for g in s['links']['L_hip_pitch_link']['geoms'] if g['role'] == 'actuator')
+        b = next(g for g in s['links']['L_hip_pitch_link']['geoms'] if g['name'] == 'L hip bracket')
+        back = m['c'][0] - m['h'] / 2
+        s['links']['L_hip_pitch_link']['geoms'] += [
+            dict(kind='cyl', name='L hip roll back plate', c=[back - 0.002, m['c'][1], m['c'][2]], axis='x', r=0.05, h=0.006, color='#000000', role='struct', material='al7075', exposed=True),
+            dict(kind='rbox', name='L hip roll back arm', c=[(back + b['c'][0]) / 2, b['c'][1], b['c'][2]], size=[b['c'][0] - back + 0.004, b['size'][1], b['size'][2]], fillet=0.002, color='#000000', role='struct', material='al7075', exposed=True)]
+    elif case == 'frame':             # two side rails from the hub to the shoulder beam
+        t = {g['name']: g for g in s['links']['torso']['geoms']}
+        z0, z1 = t['waist hub']['c'][2], t['shoulder beam']['c'][2]
+        for y in (0.045, -0.045):
+            s['links']['torso']['geoms'].append(dict(kind='rbox', name=f'rail {y}', c=[-0.005, y, (z0 + z1) / 2], size=[0.04, 0.02, z1 - z0], fillet=0.002, color='#000000', role='struct', material='al7075', exposed=True))
     else:
         raise SystemExit(f'unknown case {case}')
     return s
@@ -667,36 +1000,87 @@ def break_spec(spec, case):
 EXPECT = {'torque': 'torque', 'collide': 'static', 'offaxis': 'axis', 'floating': 'connect', 'mass': 'mass', 'window': 'skin',
           'cover': 'covers',
           'poke': 'skin'}
+# The load checks already fail on today's design, so "a row fails" would prove nothing for them. These cases compare with the unbroken
+# spec: caught means a row newly fails, or an already failing row got worse.
+EXPECT_LOAD = {'hipshrink': ['loadpath', 'contact'], 'spineshrink': ['loadpath'], 'norods': ['linkage', 'loadpath'], 'token': ['contact'], 'tokenedge': ['contact'],
+               'pa12': ['loadpath'], 'rolebad': ['loadpath'], 'newpart': ['loadpath'], 'nostator': ['stator'], 'thinpin': ['pivot']}
+BASE_FOR = {'thinpin': 'pin'}     # today's design has no pin to make too thin: compare with the one that has
+# And the reverse: the fix must turn its row to PASS.
+EXPECT_GOOD = {'pin': ['pivot'], 'link': ['linkage'], 'stator': ['stator'], 'frame': ['loadpath', 'contact']}
+GROUPS = {'targets': lambda spec, S, R, rep: check_targets(spec, S, rep),
+          'mass': lambda spec, S, R, rep: check_mass(spec, S, rep),
+          'axis': lambda spec, S, R, rep: check_axis(spec, rep),
+          'static': lambda spec, S, R, rep: check_static(spec, S, R, rep),
+          'covers': lambda spec, S, R, rep: check_covers(spec, S, R, rep),
+          'connect': lambda spec, S, R, rep: check_connect(spec, S, rep),
+          'skin': lambda spec, S, R, rep: check_skin(spec, R, rep),
+          'sweep': lambda spec, S, R, rep: check_sweep(spec, S, R, rep),
+          'poses': lambda spec, S, R, rep: check_poses(spec, S, R, rep),
+          'torque': lambda spec, S, R, rep: check_poses(spec, S, R, rep, collide=False),
+          'loadpath': lambda spec, S, R, rep: check_loadpath(spec, S, rep),
+          'contact': lambda spec, S, R, rep: check_contact(spec, S, rep),
+          'pivot': lambda spec, S, R, rep: check_pivot(spec, S, rep),
+          'linkage': lambda spec, S, R, rep: check_linkage(spec, S, rep),
+          'stator': lambda spec, S, R, rep: check_stator(spec, S, rep)}
+
+
+def run_groups(spec, groups):
+    R, S, rep = G.Robot(spec), Solids(spec), Report()
+    for grp in groups:
+        t = time.time()
+        GROUPS[grp](spec, S, R, rep)
+        print(f'{grp}: {time.time() - t:.1f} s', file=sys.stderr)
+    return rep
+
+
+def compare(base, spec, case, groups, good):
+    """Run the broken or fixed spec against the unbroken one and print what changed. Returns exit code: 0 if it did what it should."""
+    was = {(r['group'], r['item']): r for r in run_groups(base, groups).rows}
+    rows = run_groups(spec, groups).rows
+    if good:
+        hits = [r for r in rows if r['status'] == 'PASS' and was.get((r['group'], r['item']), {}).get('status') == 'FAIL']
+    else:
+        def worse(r):
+            b = was.get((r['group'], r['item']))
+            if r['status'] != 'FAIL':
+                return False
+            if b is None or b['status'] != 'FAIL':
+                return True
+            return b['value'] is not None and r['value'] is not None and r['value'] < b['value'] - 1e-6 - 0.01 * abs(b['value'])
+        hits = [r for r in rows if worse(r)]
+    label = 'FIXED' if good else 'CAUGHT'
+    print(f"--{'good' if good else 'bad'} {case}: {label if hits else 'NOT ' + label} ({len(hits)} rows changed)")
+    for r in hits[:8]:
+        b = was.get((r['group'], r['item']))
+        print('  ', r['group'], '|', r['item'], '|', r['status'], '|', r['detail'][:150], '| was:', (b['status'] + ' ' + b['detail'][:80]) if b else 'no such row')
+    return 0 if hits else 1
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--only', nargs='*')
     ap.add_argument('--bad')
+    ap.add_argument('--good')
     ap.add_argument('--spec')
     ap.add_argument('--out', default=os.path.join(ROOT, 'reports', 'checks.md'))
     a = ap.parse_args()
     spec = G.load(a.spec)
+    if a.good or a.bad in EXPECT_LOAD:
+        case = a.good or a.bad
+        groups = a.only or (EXPECT_GOOD[case] if a.good else EXPECT_LOAD[case])
+        base = break_spec(spec, BASE_FOR[case]) if case in BASE_FOR else spec
+        return compare(base, break_spec(spec, case), case, groups, bool(a.good))
     if a.bad:
         spec = break_spec(spec, a.bad)
         a.only = a.only or [EXPECT[a.bad]]
-    groups = a.only or ['targets', 'mass', 'axis', 'static', 'covers', 'connect', 'skin', 'sweep', 'poses']
+    groups = a.only or ['targets', 'mass', 'axis', 'static', 'covers', 'connect', 'loadpath', 'contact', 'pivot', 'linkage', 'stator', 'skin', 'sweep', 'poses']
     R = G.Robot(spec)
     t0 = time.time()
     S = Solids(spec)
     rep = Report()
     for grp in groups:
         t = time.time()
-        {'targets': lambda: check_targets(spec, S, rep),
-         'mass': lambda: check_mass(spec, S, rep),
-         'axis': lambda: check_axis(spec, rep),
-         'static': lambda: check_static(spec, S, R, rep),
-         'covers': lambda: check_covers(spec, S, R, rep),
-         'connect': lambda: check_connect(spec, S, rep),
-         'skin': lambda: check_skin(spec, R, rep),
-         'sweep': lambda: check_sweep(spec, S, R, rep),
-         'poses': lambda: check_poses(spec, S, R, rep),
-         'torque': lambda: check_poses(spec, S, R, rep, collide=False)}[grp]()
+        GROUPS[grp](spec, S, R, rep)
         print(f'{grp}: {time.time() - t:.1f} s', file=sys.stderr)
     fails = rep.failing()
     if a.bad:

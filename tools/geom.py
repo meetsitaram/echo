@@ -15,6 +15,13 @@ AXIS = {'x': np.array([1.0, 0, 0]), 'y': np.array([0, 1.0, 0]), 'z': np.array([0
 RIGID = ('struct', 'actuator')
 
 
+def rbox_fillet(g):
+    """An rbox's fillet, never more than half its thinnest side. Past that the corner spheres cross over: 3 x 46 x 45 with a
+    2 mm fillet meshed 5 mm thick while inside() read about 3, so mass and contact used one thickness and the stress notes
+    another (audit item 18, 2026-11-05). A box can't have a fillet bigger than half of itself, so this is the shape meant."""
+    return min(g['fillet'], min(g['size']) / 2)
+
+
 def load(path=None):
     return json.load(open(path or os.path.join(ROOT, 'spec', 'robot.json'), encoding='utf-8'))
 
@@ -166,7 +173,7 @@ def mesh_of(g):
         m.apply_transform(T)
         return m
     if k == 'rbox':
-        f = g['fillet']
+        f = rbox_fillet(g)
         half = np.array(g['size']) / 2 - f
         s = trimesh.creation.icosphere(subdivisions=3, radius=f).vertices
         pts = np.vstack([s + np.array(g['c']) + half * np.array(sg) for sg in
@@ -266,9 +273,10 @@ def inside(g, p):
         rr = np.linalg.norm(d - np.outer(t, a), axis=1)
         return (np.abs(t) <= g['h'] / 2) & (rr <= g['r'])
     if k == 'rbox':
-        half = np.array(g['size']) / 2 - g['fillet']
+        f = rbox_fillet(g)
+        half = np.array(g['size']) / 2 - f
         q = np.maximum(np.abs(p - g['c']) - half, 0)
-        return np.linalg.norm(q, axis=1) <= g['fillet']
+        return np.linalg.norm(q, axis=1) <= f
     if k == 'capsule':
         p0, p1 = np.array(g['p0']), np.array(g['p1'])
         d = p1 - p0

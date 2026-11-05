@@ -3,1602 +3,3304 @@
   "group": "targets",
   "item": "height",
   "status": "PASS",
-  "detail": "1.727 m (Figure 03: 1.727 m, +/- 0.010)"
+  "detail": "1.727 m (Figure 03: 1.727 m, +/- 0.010)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "chin_z",
   "status": "PASS",
-  "detail": "1.522 (photo 1.522 +/- 0.02)"
+  "detail": "1.522 (photo 1.522 +/- 0.02)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "shoulder_top_z",
   "status": "PASS",
-  "detail": "1.449 (photo 1.445 +/- 0.025)"
+  "detail": "1.449 (photo 1.445 +/- 0.025)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "elbow_z",
   "status": "PASS",
-  "detail": "1.155 (photo 1.156 +/- 0.025)"
+  "detail": "1.155 (photo 1.156 +/- 0.025)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "wrist_z",
   "status": "PASS",
-  "detail": "0.955 (photo 0.955 +/- 0.03)"
+  "detail": "0.955 (photo 0.955 +/- 0.03)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "fingertip_z",
   "status": "PASS",
-  "detail": "0.716 (photo 0.71 +/- 0.03)"
+  "detail": "0.716 (photo 0.71 +/- 0.03)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "knee_z",
   "status": "PASS",
-  "detail": "0.535 (photo 0.54 +/- 0.03)"
+  "detail": "0.535 (photo 0.54 +/- 0.03)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "pelvis_band_top_z",
   "status": "PASS",
-  "detail": "1.085 (photo 1.085 +/- 0.02)"
+  "detail": "1.085 (photo 1.085 +/- 0.02)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "hips_black_bottom_z",
   "status": "PASS",
-  "detail": "0.853 (photo 0.86 +/- 0.03)"
+  "detail": "0.853 (photo 0.86 +/- 0.03)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "head_height_m",
   "status": "PASS",
-  "detail": "0.205 (photo 0.205 +/- 0.015)"
+  "detail": "0.205 (photo 0.205 +/- 0.015)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "head_depth_m",
   "status": "PASS",
-  "detail": "0.190 (photo 0.183 +/- 0.015)"
+  "detail": "0.190 (photo 0.183 +/- 0.015)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "head_width_m",
   "status": "PASS",
-  "detail": "0.140 (photo 0.138 +/- 0.012)"
+  "detail": "0.140 (photo 0.138 +/- 0.012)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "chest_depth_m",
   "status": "PASS",
-  "detail": "0.231 (photo 0.235 +/- 0.025)"
+  "detail": "0.231 (photo 0.235 +/- 0.025)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "bideltoid_width_m",
   "status": "PASS",
-  "detail": "0.513 (photo 0.51 +/- 0.04)"
+  "detail": "0.513 (photo 0.51 +/- 0.04)",
+  "value": null
  },
  {
   "group": "targets",
   "item": "foot_length_m",
   "status": "PASS",
-  "detail": "0.289 (photo 0.28 +/- 0.02)"
+  "detail": "0.289 (photo 0.28 +/- 0.02)",
+  "value": null
  },
  {
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "61.46 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "61.32 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)",
+  "value": null
  },
  {
   "group": "axis",
   "item": "waist_yaw",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "neck_yaw",
   "status": "PASS",
-  "detail": "RS00 0.0 mm off the axis"
+  "detail": "RS00 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "neck_pitch",
   "status": "PASS",
-  "detail": "RS00 0.0 mm off the axis"
+  "detail": "RS00 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_shoulder_pitch",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_shoulder_pitch",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_shoulder_roll",
   "status": "PASS",
-  "detail": "RS06 0.0 mm off the axis"
+  "detail": "RS06 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_shoulder_roll",
   "status": "PASS",
-  "detail": "RS06 0.0 mm off the axis"
+  "detail": "RS06 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_shoulder_yaw",
   "status": "PASS",
-  "detail": "RS02 0.0 mm off the axis"
+  "detail": "RS02 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_shoulder_yaw",
   "status": "PASS",
-  "detail": "RS02 0.0 mm off the axis"
+  "detail": "RS02 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_elbow",
   "status": "PASS",
-  "detail": "RS06 0.0 mm off the axis"
+  "detail": "RS06 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_elbow",
   "status": "PASS",
-  "detail": "RS06 0.0 mm off the axis"
+  "detail": "RS06 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_wrist_yaw",
   "status": "PASS",
-  "detail": "RS02 0.0 mm off the axis"
+  "detail": "RS02 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_wrist_yaw",
   "status": "PASS",
-  "detail": "RS02 0.0 mm off the axis"
+  "detail": "RS02 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_wrist_pitch",
   "status": "PASS",
-  "detail": "RS00 0.0 mm off the axis"
+  "detail": "RS00 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_wrist_pitch",
   "status": "PASS",
-  "detail": "RS00 0.0 mm off the axis"
+  "detail": "RS00 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_wrist_roll",
   "status": "PASS",
-  "detail": "RS00 0.0 mm off the axis"
+  "detail": "RS00 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_wrist_roll",
   "status": "PASS",
-  "detail": "RS00 0.0 mm off the axis"
+  "detail": "RS00 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_hip_pitch",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_hip_roll",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_hip_yaw",
   "status": "PASS",
-  "detail": "RS03 0.0 mm off the axis"
+  "detail": "RS03 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_hip_yaw",
   "status": "PASS",
-  "detail": "RS03 0.0 mm off the axis"
+  "detail": "RS03 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "L_knee",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "axis",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "RS04 0.0 mm off the axis"
+  "detail": "RS04 0.0 mm off the axis",
+  "value": null
  },
  {
   "group": "static",
   "item": "zero pose",
   "status": "PASS",
-  "detail": "0 overlaps"
+  "detail": "0 overlaps",
+  "value": null
  },
  {
   "group": "covers",
   "item": "motors clear of the covers",
   "status": "PASS",
-  "detail": "0 cover / motor crossings"
+  "detail": "0 cover / motor crossings",
+  "value": null
  },
  {
   "group": "connect",
   "item": "pelvis structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "pelvis covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "torso structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "torso covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "neck_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "neck_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "head structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "head covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_roll_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_roll_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_roll_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_roll_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_elbow_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_elbow_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_elbow_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_elbow_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hand structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hand covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hand structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hand covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_roll_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_roll_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_roll_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_roll_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_yaw_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_yaw_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_knee_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_knee_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_knee_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_knee_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_ankle_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_ankle_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_ankle_pitch_link structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_ankle_pitch_link covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_foot structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_foot covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_foot structure",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_foot covers mounted",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "waist_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "neck_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "neck_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_shoulder_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_shoulder_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_elbow axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_elbow axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_wrist_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_wrist_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_hip_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_hip_yaw axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_knee axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_knee axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_ankle_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_ankle_pitch axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "L_ankle_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
  },
  {
   "group": "connect",
   "item": "R_ankle_roll axis",
   "status": "PASS",
-  "detail": ""
+  "detail": "",
+  "value": null
+ },
+ {
+  "group": "loadpath",
+  "item": "Foot plate at the ankle (all load at toe or heel)",
+  "status": "PASS",
+  "detail": "SF 3.06 to yield (needs 2), 3,400 N foot: 164 MPa on 70.0 x 16.0 mm al7075; a hand estimate",
+  "value": 3.0584637489029554
+ },
+ {
+  "group": "loadpath",
+  "item": "Clevis plates above the foot plate",
+  "status": "PASS",
+  "detail": "SF 9.70 to yield (needs 2), 3,400 N + 1,614 N side: 52 MPa on 2 x 40.0 x 6.0 mm al7075; a hand estimate",
+  "value": 9.702679374395855
+ },
+ {
+  "group": "loadpath",
+  "item": "Clevis at the pivot height (rear plate net of its hole)",
+  "status": "PASS",
+  "detail": "SF 8.99 to yield (needs 2), 3,400 N + 1,614 N side: 56 MPa on 2 x 10.0 x 6.0 + 40.0 x 6.0 mm al7075; a hand estimate",
+  "value": 8.988471446147058
+ },
+ {
+  "group": "loadpath",
+  "item": "Ankle cross at its middle",
+  "status": "PASS",
+  "detail": "SF 31.97 to yield (needs 2), 3,400 N foot: 16 MPa on 28.0 x 26.0 mm al7075; a hand estimate",
+  "value": 31.968637767898045
+ },
+ {
+  "group": "loadpath",
+  "item": "Cross tail",
+  "status": "PASS",
+  "detail": "SF 2.72 to yield (needs 2), motor peak: 185 MPa on 14.0 x 14.0 mm al7075; a hand estimate",
+  "value": 2.7222099674108233
+ },
+ {
+  "group": "loadpath",
+  "item": "Cross tail, at the mass model's fill",
+  "status": "WARN",
+  "detail": "SF 1.49 if as hollow as its mass assumes (fill 0.50); solid 2.72",
+  "value": null
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork cheeks",
+  "status": "PASS",
+  "detail": "SF 7.43 to yield (needs 2), 3,400 N + 1,614 N side: 68 MPa on 2 x 32.0 x 6.0 mm al7075; a hand estimate",
+  "value": 7.427756368780242
+ },
+ {
+  "group": "loadpath",
+  "item": "Shank lower plates",
+  "status": "PASS",
+  "detail": "SF 6.12 to yield (needs 2), 3,400 N + 1,614 N side: 82 MPa on 2 x 40.0 x 4.0 mm al7075; a hand estimate",
+  "value": 6.117582293374578
+ },
+ {
+  "group": "loadpath",
+  "item": "Shank upper plates",
+  "status": "PASS",
+  "detail": "SF 5.33 to yield (needs 2), 3,400 N + 1,614 N side: 94 MPa on 2 x 40.0 x 5.0 mm al7075; a hand estimate",
+  "value": 5.3311115094363215
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee hub feet",
+  "status": "PASS",
+  "detail": "SF 15.96 to yield (needs 2), 3,400 N + 1,614 N side: 32 MPa on 2 x 30.0 x 22.0 mm al7075; a hand estimate",
+  "value": 15.958525150089702
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee idler arm (inner second support), bearing fitted",
+  "status": "PASS",
+  "detail": "SF 5.18 to yield (needs 2), 3,400 N foot: 97 MPa on 12.0 x 6.0 mm al7075; a hand estimate",
+  "value": 5.184440988301504
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee idler stub",
+  "status": "PASS",
+  "detail": "SF 47.99 to yield (needs 2), 3,400 N foot: 10 MPa on 24.0 x 24.0 mm al7075; a hand estimate",
+  "value": 47.99466678243252
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee stator plate, outer bearing fitted",
+  "status": "PASS",
+  "detail": "SF 6.24 to yield (needs 2), 3,400 N foot: 81 MPa on 80.0 x 4.0 mm al7075; a hand estimate",
+  "value": 6.2370371455066005
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee stator plate, as drawn: no bearing, all load through the motor",
+  "status": "FAIL",
+  "detail": "SF 0.51 to yield (needs 2), 3,400 N foot: 982 MPa on 80.0 x 4.0 mm al7075; a hand estimate",
+  "value": 0.5120041495318285
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee post",
+  "status": "PASS",
+  "detail": "SF 142.88 to yield (needs 2), 3,400 N foot: 4 MPa on 40.0 x 40.0 mm al7075; a hand estimate",
+  "value": 142.88250489820777
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee axle",
+  "status": "PASS",
+  "detail": "SF 25.42 to yield (needs 2), motor peak: 20 MPa on 40.0 x 40.0 mm al7075; a hand estimate",
+  "value": 25.422536297146763
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee cheek discs at the bores (net of them)",
+  "status": "PASS",
+  "detail": "SF 21.18 to yield (needs 2), 3,400 N foot: 24 MPa on 2 x 27.5 x 3.0 + 2 x 36.5 x 3.0 mm al7075; a hand estimate",
+  "value": 21.182861685395455
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee cheeks over the discs, both",
+  "status": "PASS",
+  "detail": "SF 10.14 to yield (needs 2), 3,400 N foot: 50 MPa on 2 x 52.0 x 3.0 mm al7075; a hand estimate",
+  "value": 10.14131795357648
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee inner cheek alone (the only one that takes motor torque)",
+  "status": "PASS",
+  "detail": "SF 5.46 to yield (needs 2), motor peak: 92 MPa on 52.0 x 3.0 mm al7075; a hand estimate",
+  "value": 5.45822687659406
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee cheeks out of plane, under the recorded side force",
+  "status": "FAIL",
+  "detail": "SF 0.91 to yield (needs 2), 3,400 N + 1,614 N side: 551 MPa on 2 x 52.0 x 3.0 mm al7075; a hand estimate",
+  "value": 0.9122419940491612
+ },
+ {
+  "group": "loadpath",
+  "item": "Knee cheek tops",
+  "status": "PASS",
+  "detail": "SF 13.02 to yield (needs 2), 3,400 N foot: 39 MPa on 2 x 66.0 x 3.0 mm al7075; a hand estimate",
+  "value": 13.02358308781731
+ },
+ {
+  "group": "loadpath",
+  "item": "Thigh frame",
+  "status": "PASS",
+  "detail": "SF 19.15 to yield (needs 2), 3,400 N foot: 26 MPa on 80.0 x 24.0 mm al7075; a hand estimate",
+  "value": 19.15321750601224
+ },
+ {
+  "group": "loadpath",
+  "item": "Hip crown",
+  "status": "PASS",
+  "detail": "SF 6.70 to yield (needs 2), 3,400 N foot: 75 MPa on 80.5 x 13.0 mm al7075; a hand estimate",
+  "value": 6.697476601682265
+ },
+ {
+  "group": "loadpath",
+  "item": "Hip tabs at the crown",
+  "status": "FAIL",
+  "detail": "SF 0.79 to yield (needs 2), 3,400 N foot: 635 MPa on 2 x 10.0 x 10.0 mm al7075; a hand estimate",
+  "value": 0.7926649744861407
+ },
+ {
+  "group": "loadpath",
+  "item": "Hip tabs at the front plate",
+  "status": "FAIL",
+  "detail": "SF 0.51 to yield (needs 2), 3,400 N foot: 991 MPa on 2 x 10.0 x 10.0 mm al7075; a hand estimate",
+  "value": 0.5075908808465176
+ },
+ {
+  "group": "loadpath",
+  "item": "Hip front plate",
+  "status": "FAIL",
+  "detail": "SF 1.31 to yield (needs 2), 3,400 N foot: 385 MPa on 104.0 x 7.0 mm al7075; a hand estimate",
+  "value": 1.3074234756209036
+ },
+ {
+  "group": "loadpath",
+  "item": "Hip bracket at the roll motor",
+  "status": "FAIL",
+  "detail": "SF 0.56 to yield (needs 2), 3,400 N foot: 906 MPa on 15.0 x 13.0 mm al7075; a hand estimate",
+  "value": 0.5552470244462938
+ },
+ {
+  "group": "loadpath",
+  "item": "Hip bracket at the pitch flange",
+  "status": "FAIL",
+  "detail": "SF 0.77 to yield (needs 2), 3,400 N foot: 654 MPa on 15.0 x 13.0 mm al7075; a hand estimate",
+  "value": 0.7693672333678205
+ },
+ {
+  "group": "loadpath",
+  "item": "Pelvis frame beside the hip motor",
+  "status": "PASS",
+  "detail": "SF 97.75 to yield (needs 2), 3,400 N foot: 5 MPa on 70.0 x 70.0 mm al7075; a hand estimate",
+  "value": 97.74716896093524
+ },
+ {
+  "group": "loadpath",
+  "item": "Pelvis frame under the waist motor",
+  "status": "PASS",
+  "detail": "SF 299.67 to yield (needs 2), 3,400 N foot: 2 MPa on 150.0 x 70.0 mm al7075; a hand estimate",
+  "value": 299.6655485049155
+ },
+ {
+  "group": "loadpath",
+  "item": "Waist hub",
+  "status": "PASS",
+  "detail": "SF 293.64 to yield (needs 2), 3,400 N foot: 2 MPa on 98.8 x 98.8 mm al7075; a hand estimate",
+  "value": 293.6368019599664
+ },
+ {
+  "group": "loadpath",
+  "item": "Spine",
+  "status": "PASS",
+  "detail": "SF 69.35 to yield (needs 2), 3,400 N foot: 7 MPa on 60.0 x 60.0 mm al7075; a hand estimate",
+  "value": 69.35008930140688
+ },
+ {
+  "group": "loadpath",
+  "item": "Frame between spine and shoulder beam (the pack is not frame)",
+  "status": "FAIL",
+  "detail": "no carrying material at this plane",
+  "value": 0.0
+ },
+ {
+  "group": "loadpath",
+  "item": "Shoulder beam under the neck",
+  "status": "PASS",
+  "detail": "SF 409.06 to yield (needs 2), motor peak: 1 MPa on 118.0 x 100.0 mm al7075; a hand estimate",
+  "value": 409.055655787783
+ },
+ {
+  "group": "loadpath",
+  "item": "Shoulder beam toward the pitch motor",
+  "status": "PASS",
+  "detail": "SF 455.94 to yield (needs 2), motor peak: 1 MPa on 100.0 x 90.0 mm al7075; a hand estimate",
+  "value": 455.9446851651278
+ },
+ {
+  "group": "loadpath",
+  "item": "Shoulder bracket",
+  "status": "PASS",
+  "detail": "SF 24.80 to yield (needs 2), motor peak: 20 MPa on 36.0 x 36.0 mm al7075; a hand estimate",
+  "value": 24.800461149349303
+ },
+ {
+  "group": "loadpath",
+  "item": "Shoulder roll post (front of the fork)",
+  "status": "PASS",
+  "detail": "SF 7.50 to yield (needs 2), 3,400 N foot: 67 MPa on 24.0 x 24.0 mm al7075; a hand estimate",
+  "value": 7.5019695272049125
+ },
+ {
+  "group": "loadpath",
+  "item": "Shoulder roll axle (back of the fork)",
+  "status": "PASS",
+  "detail": "SF 6.01 to yield (needs 2), 3,400 N foot: 84 MPa on 22.0 x 22.0 mm al7075; a hand estimate",
+  "value": 6.007110324242089
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork plates, upper, solid",
+  "status": "PASS",
+  "detail": "SF 99.92 to yield (needs 2), motor peak: 5 MPa on 2 x 64.0 x 6.0 mm al7075; a hand estimate",
+  "value": 99.91795906206968
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork plates at the roll axis (front net of its bore)",
+  "status": "PASS",
+  "detail": "SF 38.28 to yield (needs 2), motor peak: 13 MPa on 64.0 x 6.0 + 6.0 x 3.5 + 33.5 x 6.0 mm al7075; a hand estimate",
+  "value": 38.27908960529189
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork front plate alone, net of its bore",
+  "status": "PASS",
+  "detail": "SF 8.66 to yield (needs 2), motor peak: 58 MPa on 6.0 x 3.5 + 33.5 x 6.0 mm al7075; a hand estimate",
+  "value": 8.661543767895996
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork plates, lower",
+  "status": "PASS",
+  "detail": "SF 67.51 to yield (needs 2), motor peak: 7 MPa on 2 x 50.0 x 6.0 mm al7075; a hand estimate",
+  "value": 67.50527962714392
+ },
+ {
+  "group": "loadpath",
+  "item": "Fork bridge",
+  "status": "PASS",
+  "detail": "SF 5.56 to yield (needs 2), 3,400 N foot: 90 MPa on 50.0 x 10.0 mm al7075; a hand estimate",
+  "value": 5.559956754724795
+ },
+ {
+  "group": "loadpath",
+  "item": "Upper arm frame",
+  "status": "PASS",
+  "detail": "SF 41.28 to yield (needs 2), 3,400 N foot: 12 MPa on 30.0 x 30.0 mm al7075; a hand estimate",
+  "value": 41.276197761588385
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow bridge beside the frame",
+  "status": "PASS",
+  "detail": "SF 4.16 to yield (needs 2), 3,400 N foot: 121 MPa on 24.0 x 10.0 mm al7075; a hand estimate",
+  "value": 4.164561306305079
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow cheeks over the discs, both",
+  "status": "PASS",
+  "detail": "SF 24.33 to yield (needs 2), 3,400 N foot: 21 MPa on 2 x 46.0 x 3.0 mm al7075; a hand estimate",
+  "value": 24.32952155026664
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow inner cheek alone (the only one that takes motor torque)",
+  "status": "FAIL",
+  "detail": "SF 0.81 to yield (needs 2), 3,400 N foot: 621 MPa on 46.0 x 3.0 mm al7075; a hand estimate",
+  "value": 0.8094207137486061
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow cheek discs at the bores (net of them)",
+  "status": "PASS",
+  "detail": "SF 83.18 to yield (needs 2), motor peak: 6 MPa on 2 x 20.5 x 3.0 + 2 x 28.5 x 3.0 mm al7075; a hand estimate",
+  "value": 83.17955028228812
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow axle",
+  "status": "PASS",
+  "detail": "SF 52.04 to yield (needs 2), motor peak: 10 MPa on 34.0 x 34.0 mm al7075; a hand estimate",
+  "value": 52.04206347360509
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow post",
+  "status": "PASS",
+  "detail": "SF 49.76 to yield (needs 2), 5 kg in the hand: 10 MPa on 34.0 x 34.0 mm al7075; a hand estimate",
+  "value": 49.76002859161838
+ },
+ {
+  "group": "loadpath",
+  "item": "Forearm frame",
+  "status": "PASS",
+  "detail": "SF 3.55 to yield (needs 2), 3,400 N foot: 142 MPa on 40.0 x 5.0 mm al7075; a hand estimate",
+  "value": 3.545443390772375
+ },
+ {
+  "group": "loadpath",
+  "item": "Elbow idler arm",
+  "status": "PASS",
+  "detail": "SF 10.13 to yield (needs 2), 3,400 N foot: 50 MPa on 12.0 x 4.0 mm al7075; a hand estimate",
+  "value": 10.12755073550886
+ },
+ {
+  "group": "loadpath",
+  "item": "Under the elbow motor",
+  "status": "PASS",
+  "detail": "SF 53.77 to yield (needs 2), 3,400 N foot: 9 MPa on 30.0 x 8.0 mm al7075; a hand estimate",
+  "value": 53.77198894416378
+ },
+ {
+  "group": "loadpath",
+  "item": "Forearm lower frame",
+  "status": "PASS",
+  "detail": "SF 71.86 to yield (needs 2), motor peak: 7 MPa on 30.0 x 24.0 mm al7075; a hand estimate",
+  "value": 71.8591936651651
+ },
+ {
+  "group": "loadpath",
+  "item": "Wrist cheek",
+  "status": "PASS",
+  "detail": "SF 8.34 to yield (needs 2), motor peak: 60 MPa on 40.0 x 6.0 mm al7075; a hand estimate",
+  "value": 8.34422589962551
+ },
+ {
+  "group": "loadpath",
+  "item": "Hand bracket",
+  "status": "PASS",
+  "detail": "SF 13.22 to yield (needs 2), motor peak: 38 MPa on 20.0 x 6.0 mm al7075; a hand estimate",
+  "value": 13.223324410385443
+ },
+ {
+  "group": "loadpath",
+  "item": "Neck pitch post",
+  "status": "PASS",
+  "detail": "SF 36.24 to yield (needs 2), motor peak: 14 MPa on 20.0 x 20.0 mm al7075; a hand estimate",
+  "value": 36.23727381490252
+ },
+ {
+  "group": "loadpath",
+  "item": "Head frame",
+  "status": "PASS",
+  "detail": "SF 15.54 to yield (needs 2), 3,400 N foot: 32 MPa on 30.0 x 6.0 mm al7075; a hand estimate",
+  "value": 15.540422120837874
+ },
+ {
+  "group": "loadpath",
+  "item": "Pitch rod",
+  "status": "PASS",
+  "detail": "SF 2.84 to yield (needs 2), motor peak: 34 MPa on 10.0 x 10.0 mm al7075; a hand estimate",
+  "value": 2.839956911033642
+ },
+ {
+  "group": "loadpath",
+  "item": "Roll rod",
+  "status": "PASS",
+  "detail": "SF 2.55 to yield (needs 2), motor peak: 18 MPa on 10.0 x 10.0 mm al7075; a hand estimate",
+  "value": 2.55083352263712
+ },
+ {
+  "group": "loadpath",
+  "item": "Pitch crank at the motor",
+  "status": "PASS",
+  "detail": "SF 3.57 to yield (needs 2), motor peak: 141 MPa on 16.0 x 16.0 mm al7075; a hand estimate",
+  "value": 3.5728369940764524
+ },
+ {
+  "group": "loadpath",
+  "item": "Roll crank at the motor",
+  "status": "PASS",
+  "detail": "SF 5.86 to yield (needs 2), motor peak: 86 MPa on 16.0 x 16.0 mm al7075; a hand estimate",
+  "value": 5.860494269114458
+ },
+ {
+  "group": "loadpath",
+  "item": "Ankle pitch arm",
+  "status": "FAIL",
+  "detail": "SF 1.72 to yield (needs 2), motor peak: 293 MPa on 10.0 x 10.0 mm al7075; a hand estimate",
+  "value": 1.7157335105786036
+ },
+ {
+  "group": "loadpath",
+  "item": "Roll pin block",
+  "status": "PASS",
+  "detail": "SF 13.88 to yield (needs 2), motor peak: 36 MPa on 14.0 x 8.0 mm al7075; a hand estimate",
+  "value": 13.87938045578144
+ },
+ {
+  "group": "loadpath",
+  "item": "coverage: every rigid part on a path or excused",
+  "status": "PASS",
+  "detail": "",
+  "value": -0.0
+ },
+ {
+  "group": "loadpath",
+  "item": "coverage: every named part exists",
+  "status": "PASS",
+  "detail": "",
+  "value": -0.0
+ },
+ {
+  "group": "loadpath",
+  "item": "role: L elbow hub in",
+  "status": "WARN",
+  "detail": "7075 with role shell: not counted as load-bearing. If it carries load, make it struct",
+  "value": null
+ },
+ {
+  "group": "loadpath",
+  "item": "role: L elbow hub out",
+  "status": "WARN",
+  "detail": "7075 with role shell: not counted as load-bearing. If it carries load, make it struct",
+  "value": null
+ },
+ {
+  "group": "loadpath",
+  "item": "role: L knee hub in",
+  "status": "WARN",
+  "detail": "7075 with role shell: not counted as load-bearing. If it carries load, make it struct",
+  "value": null
+ },
+ {
+  "group": "loadpath",
+  "item": "role: L knee hub out",
+  "status": "WARN",
+  "detail": "7075 with role shell: not counted as load-bearing. If it carries load, make it struct",
+  "value": null
+ },
+ {
+  "group": "contact",
+  "item": "L foot plate / L ankle clevis front",
+  "status": "FAIL",
+  "detail": "222 mm2 (overlap, 5.00 deep), needs 300 to pass 1700 N",
+  "value": 221.53365026961058
+ },
+ {
+  "group": "contact",
+  "item": "L foot plate / L ankle clevis back",
+  "status": "FAIL",
+  "detail": "222 mm2 (overlap, 5.00 deep), needs 300 to pass 1700 N",
+  "value": 221.53365026961058
+ },
+ {
+  "group": "contact",
+  "item": "L ankle fork cheek in / L shank plate in",
+  "status": "PASS",
+  "detail": "451 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
+  "value": 450.69996728085766
+ },
+ {
+  "group": "contact",
+  "item": "L ankle fork cheek out / L shank plate out",
+  "status": "PASS",
+  "detail": "451 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
+  "value": 450.6997994628742
+ },
+ {
+  "group": "contact",
+  "item": "L shank plate in / L shank plate in up",
+  "status": "FAIL",
+  "detail": "20 mm2 (overlap, 0.50 deep), needs 300 to pass 1700 N",
+  "value": 19.852634144354735
+ },
+ {
+  "group": "contact",
+  "item": "L shank plate out / L shank plate out up",
+  "status": "FAIL",
+  "detail": "20 mm2 (overlap, 0.50 deep), needs 300 to pass 1700 N",
+  "value": 19.852168205782494
+ },
+ {
+  "group": "contact",
+  "item": "L knee hub foot in / L shank plate in up",
+  "status": "PASS",
+  "detail": "566 mm2 (overlap, 5.00 deep), needs 300 to pass 1700 N",
+  "value": 566.0459540862399
+ },
+ {
+  "group": "contact",
+  "item": "L knee hub foot out / L shank plate out up",
+  "status": "PASS",
+  "detail": "566 mm2 (overlap, 5.00 deep), needs 300 to pass 1700 N",
+  "value": 566.0458375507923
+ },
+ {
+  "group": "contact",
+  "item": "L knee idler arm / L knee hub foot in",
+  "status": "FAIL",
+  "detail": "188 mm2 (overlap, 6.00 deep), needs 300 to pass 1700 N",
+  "value": 188.4735519799147
+ },
+ {
+  "group": "contact",
+  "item": "L knee idler stub / L knee idler arm",
+  "status": "FAIL",
+  "detail": "106 mm2 (overlap, 3.50 deep), needs 300 to pass 1700 N",
+  "value": 105.54614049918212
+ },
+ {
+  "group": "contact",
+  "item": "L knee stator plate / L knee hub foot out",
+  "status": "PASS",
+  "detail": "390 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
+  "value": 390.13669904187424
+ },
+ {
+  "group": "contact",
+  "item": "L knee stator plate / L knee post",
+  "status": "PASS",
+  "detail": "1255 mm2 (overlap, 4.00 deep), needs 300 to pass 1700 N",
+  "value": 1254.619051470035
+ },
+ {
+  "group": "contact",
+  "item": "L knee stator plate / L_knee actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "6523 mm2 (flush, 0.00 deep), needs 500 to pass 3400 N",
+  "value": 6522.830911024104
+ },
+ {
+  "group": "contact",
+  "item": "L knee axle in / L_knee flange",
+  "status": "PASS",
+  "detail": "1255 mm2 (overlap, 1.20 deep), needs 500 to pass 3400 N",
+  "value": 1254.619051470035
+ },
+ {
+  "group": "contact",
+  "item": "L knee cheek disc in / L knee axle in",
+  "status": "PASS",
+  "detail": "683 mm2 (overlap, 0.40 deep), needs 500 to pass 3400 N",
+  "value": 682.983244258751
+ },
+ {
+  "group": "contact",
+  "item": "L knee cheek in / L knee cheek disc in",
+  "status": "PASS",
+  "detail": "1198 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
+  "value": 1197.730464544496
+ },
+ {
+  "group": "contact",
+  "item": "L knee cheek out / L knee cheek disc out",
+  "status": "PASS",
+  "detail": "1198 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
+  "value": 1197.7303751498566
+ },
+ {
+  "group": "contact",
+  "item": "L knee yoke / L knee cheek in",
+  "status": "FAIL",
+  "detail": "106 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
+  "value": 106.26143778932067
+ },
+ {
+  "group": "contact",
+  "item": "L knee yoke / L knee cheek out",
+  "status": "FAIL",
+  "detail": "106 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
+  "value": 106.26148651515123
+ },
+ {
+  "group": "contact",
+  "item": "L thigh frame / L knee cheek in top",
+  "status": "PASS",
+  "detail": "382 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
+  "value": 382.13190940425073
+ },
+ {
+  "group": "contact",
+  "item": "L thigh frame / L knee cheek out top",
+  "status": "PASS",
+  "detail": "382 mm2 (overlap, 3.00 deep), needs 200 to pass 850 N",
+  "value": 382.131984829078
+ },
+ {
+  "group": "contact",
+  "item": "L thigh frame / L knee yoke",
+  "status": "PASS",
+  "detail": "1542 mm2 (overlap, 10.00 deep), needs 300 to pass 1700 N",
+  "value": 1542.1508795125003
+ },
+ {
+  "group": "contact",
+  "item": "L thigh frame / L_hip_yaw flange",
+  "status": "PASS",
+  "detail": "781 mm2 (overlap, 3.30 deep), needs 500 to pass 3400 N",
+  "value": 780.6608464650976
+ },
+ {
+  "group": "contact",
+  "item": "L hip crown / L_hip_yaw actuator (buy) RS03",
+  "status": "PASS",
+  "detail": "6352 mm2 (overlap, 1.30 deep), needs 500 to pass 3400 N",
+  "value": 6351.510670776947
+ },
+ {
+  "group": "contact",
+  "item": "L hip tab in / L hip crown",
+  "status": "FAIL",
+  "detail": "36 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
+  "value": 36.3633206131947
+ },
+ {
+  "group": "contact",
+  "item": "L hip tab out / L hip crown",
+  "status": "FAIL",
+  "detail": "36 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
+  "value": 36.36332801970735
+ },
+ {
+  "group": "contact",
+  "item": "L hip front plate / L hip tab in",
+  "status": "FAIL",
+  "detail": "78 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
+  "value": 77.76253501171047
+ },
+ {
+  "group": "contact",
+  "item": "L hip front plate / L hip tab out",
+  "status": "FAIL",
+  "detail": "78 mm2 (overlap, 3.00 deep), needs 300 to pass 1700 N",
+  "value": 77.76254075576755
+ },
+ {
+  "group": "contact",
+  "item": "L hip front plate / L_hip_roll flange",
+  "status": "PASS",
+  "detail": "653 mm2 (overlap, 2.85 deep), needs 500 to pass 3400 N",
+  "value": 653.4988257773082
+ },
+ {
+  "group": "contact",
+  "item": "L hip bracket / L_hip_roll actuator (buy) RS04",
+  "status": "FAIL",
+  "detail": "250 mm2 (overlap, 13.00 deep), needs 500 to pass 3400 N",
+  "value": 249.9237795212899
+ },
+ {
+  "group": "contact",
+  "item": "L hip bracket / L_hip_pitch flange",
+  "status": "FAIL",
+  "detail": "160 mm2 (overlap, 1.85 deep), needs 500 to pass 3400 N",
+  "value": 159.74010149821225
+ },
+ {
+  "group": "contact",
+  "item": "pelvis frame / L_hip_pitch actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "4050 mm2 (overlap, 10.85 deep), needs 500 to pass 3400 N",
+  "value": 4049.991466395124
+ },
+ {
+  "group": "contact",
+  "item": "pelvis frame / waist_yaw actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "7804 mm2 (overlap, 32.85 deep), needs 300 to pass 1885 N",
+  "value": 7803.594195217411
+ },
+ {
+  "group": "contact",
+  "item": "waist hub / waist_yaw flange",
+  "status": "PASS",
+  "detail": "4065 mm2 (overlap, 2.85 deep), needs 300 to pass 1885 N",
+  "value": 4064.966934770581
+ },
+ {
+  "group": "contact",
+  "item": "waist hub / spine",
+  "status": "PASS",
+  "detail": "3395 mm2 (overlap, 10.00 deep), needs 300 to pass 1885 N",
+  "value": 3394.767049649116
+ },
+ {
+  "group": "contact",
+  "item": "spine / shoulder beam",
+  "status": "FAIL",
+  "detail": "0 mm2 (gap, 235.00 mm of air, 0.00 deep), needs 300 to pass 1885 N",
+  "value": 0.0
+ },
+ {
+  "group": "contact",
+  "item": "shoulder beam / L_shoulder_pitch actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "7401 mm2 (overlap, 1.85 deep), needs 100 to pass 322 N",
+  "value": 7401.297566284031
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder bracket / L_shoulder_pitch flange",
+  "status": "PASS",
+  "detail": "1187 mm2 (overlap, 4.85 deep), needs 100 to pass 322 N",
+  "value": 1187.399299283256
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder bracket / L_shoulder_roll actuator (buy) RS06",
+  "status": "PASS",
+  "detail": "877 mm2 (overlap, 5.00 deep), needs 100 to pass 322 N",
+  "value": 876.5743457430294
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll axle / L_shoulder_roll flange",
+  "status": "PASS",
+  "detail": "380 mm2 (overlap, 3.25 deep), needs 100 to pass 322 N",
+  "value": 379.5222406575146
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll axle / L shoulder roll plate back",
+  "status": "PASS",
+  "detail": "380 mm2 (overlap, 6.00 deep), needs 100 to pass 322 N",
+  "value": 379.52224065751477
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll plate back / L shoulder roll plate back low",
+  "status": "PASS",
+  "detail": "115 mm2 (flush, 0.00 deep), needs 100 to pass 322 N",
+  "value": 115.39776856889947
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll plate front / L shoulder roll plate front low",
+  "status": "PASS",
+  "detail": "115 mm2 (flush, 0.00 deep), needs 100 to pass 322 N",
+  "value": 115.3977685689147
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll plate back low / L shoulder roll bridge",
+  "status": "PASS",
+  "detail": "451 mm2 (overlap, 6.00 deep), needs 100 to pass 322 N",
+  "value": 450.91056755398574
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll plate front low / L shoulder roll bridge",
+  "status": "PASS",
+  "detail": "451 mm2 (overlap, 6.00 deep), needs 100 to pass 322 N",
+  "value": 450.91056755398466
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll plate back low / L_shoulder_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "265 mm2 (overlap, 6.00 deep), needs 100 to pass 322 N",
+  "value": 265.0210479166079
+ },
+ {
+  "group": "contact",
+  "item": "L shoulder roll plate front low / L_shoulder_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "265 mm2 (overlap, 6.00 deep), needs 100 to pass 322 N",
+  "value": 265.0210479166079
+ },
+ {
+  "group": "contact",
+  "item": "L upper arm frame / L_shoulder_yaw flange",
+  "status": "PASS",
+  "detail": "753 mm2 (overlap, 2.75 deep), needs 100 to pass 322 N",
+  "value": 753.4451595957343
+ },
+ {
+  "group": "contact",
+  "item": "L upper arm frame / L elbow bridge",
+  "status": "PASS",
+  "detail": "619 mm2 (overlap, 2.00 deep), needs 100 to pass 322 N",
+  "value": 618.9647442973188
+ },
+ {
+  "group": "contact",
+  "item": "L elbow bridge / L elbow cheek in",
+  "status": "PASS",
+  "detail": "149 mm2 (overlap, 3.00 deep), needs 100 to pass 322 N",
+  "value": 148.57738944328906
+ },
+ {
+  "group": "contact",
+  "item": "L elbow bridge / L elbow cheek out",
+  "status": "PASS",
+  "detail": "149 mm2 (overlap, 3.00 deep), needs 100 to pass 322 N",
+  "value": 148.57705047739836
+ },
+ {
+  "group": "contact",
+  "item": "L elbow cheek in / L elbow cheek disc in",
+  "status": "PASS",
+  "detail": "788 mm2 (overlap, 3.00 deep), needs 100 to pass 322 N",
+  "value": 787.5600639983052
+ },
+ {
+  "group": "contact",
+  "item": "L elbow cheek out / L elbow cheek disc out",
+  "status": "PASS",
+  "detail": "788 mm2 (overlap, 3.00 deep), needs 100 to pass 322 N",
+  "value": 787.5596964812513
+ },
+ {
+  "group": "contact",
+  "item": "L elbow cheek disc in / L elbow axle",
+  "status": "PASS",
+  "detail": "492 mm2 (overlap, 0.20 deep), needs 100 to pass 322 N",
+  "value": 491.653906697238
+ },
+ {
+  "group": "contact",
+  "item": "L elbow axle / L_elbow flange",
+  "status": "PASS",
+  "detail": "906 mm2 (overlap, 0.60 deep), needs 100 to pass 322 N",
+  "value": 906.4624298609779
+ },
+ {
+  "group": "contact",
+  "item": "L elbow post / L forearm frame",
+  "status": "PASS",
+  "detail": "875 mm2 (overlap, 5.00 deep), needs 100 to pass 322 N",
+  "value": 875.3468070252238
+ },
+ {
+  "group": "contact",
+  "item": "L forearm frame / L_elbow actuator (buy) RS06",
+  "status": "PASS",
+  "detail": "1996 mm2 (flush, 0.00 deep), needs 100 to pass 322 N",
+  "value": 1995.950325387368
+ },
+ {
+  "group": "contact",
+  "item": "L elbow idler stub / L elbow idler arm",
+  "status": "FAIL",
+  "detail": "74 mm2 (overlap, 3.50 deep), needs 100 to pass 322 N",
+  "value": 74.37895718793767
+ },
+ {
+  "group": "contact",
+  "item": "L elbow idler arm / L elbow under motor",
+  "status": "FAIL",
+  "detail": "55 mm2 (overlap, 3.00 deep), needs 100 to pass 322 N",
+  "value": 54.57900631825496
+ },
+ {
+  "group": "contact",
+  "item": "L elbow under motor / L forearm frame",
+  "status": "PASS",
+  "detail": "223 mm2 (overlap, 4.50 deep), needs 100 to pass 322 N",
+  "value": 222.97931704708657
+ },
+ {
+  "group": "contact",
+  "item": "L forearm frame / L_wrist_yaw actuator (buy) RS02",
+  "status": "PASS",
+  "detail": "474 mm2 (overlap, 5.00 deep), needs 100 to pass 322 N",
+  "value": 473.65799074968356
+ },
+ {
+  "group": "contact",
+  "item": "L forearm lower frame / L_wrist_yaw flange",
+  "status": "PASS",
+  "detail": "628 mm2 (overlap, 4.25 deep), needs 100 to pass 322 N",
+  "value": 627.6680687992931
+ },
+ {
+  "group": "contact",
+  "item": "L forearm lower frame / L_wrist_pitch actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "307 mm2 (overlap, 1.50 deep), needs 100 to pass 322 N",
+  "value": 307.2233307963184
+ },
+ {
+  "group": "contact",
+  "item": "L wrist cheek / L_wrist_pitch flange",
+  "status": "PASS",
+  "detail": "452 mm2 (overlap, 5.00 deep), needs 100 to pass 322 N",
+  "value": 451.963716552546
+ },
+ {
+  "group": "contact",
+  "item": "L wrist cheek / L_wrist_roll actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "159 mm2 (overlap, 2.54 deep), needs 100 to pass 322 N",
+  "value": 159.04953790940687
+ },
+ {
+  "group": "contact",
+  "item": "L hand bracket / L_wrist_roll flange",
+  "status": "PASS",
+  "detail": "230 mm2 (overlap, 3.50 deep), needs 100 to pass 322 N",
+  "value": 230.04605581133774
+ },
+ {
+  "group": "contact",
+  "item": "neck post / neck_yaw actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "1367 mm2 (overlap, 5.50 deep), needs 100 to pass 75 N",
+  "value": 1367.3056701527469
+ },
+ {
+  "group": "contact",
+  "item": "shoulder beam / neck post",
+  "status": "PASS",
+  "detail": "1729 mm2 (overlap, 40.00 deep), needs 100 to pass 75 N",
+  "value": 1728.7968244173485
+ },
+ {
+  "group": "contact",
+  "item": "neck pitch post / neck_yaw flange",
+  "status": "PASS",
+  "detail": "290 mm2 (overlap, 1.00 deep), needs 100 to pass 75 N",
+  "value": 289.8972227238114
+ },
+ {
+  "group": "contact",
+  "item": "neck pitch post / neck_pitch actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "253 mm2 (overlap, 2.50 deep), needs 100 to pass 75 N",
+  "value": 253.46847511536134
+ },
+ {
+  "group": "contact",
+  "item": "head frame / neck_pitch flange",
+  "status": "PASS",
+  "detail": "523 mm2 (overlap, 0.50 deep), needs 100 to pass 75 N",
+  "value": 523.1536573350775
+ },
+ {
+  "group": "contact",
+  "item": "L ankle cross / L ankle cross tail",
+  "status": "FAIL",
+  "detail": "154 mm2 (flush, 0.00 deep), needs 400 to pass 2649 N",
+  "value": 153.69088440345035
+ },
+ {
+  "group": "contact",
+  "item": "L ankle cross tail / L ankle pitch arm",
+  "status": "FAIL",
+  "detail": "70 mm2 (overlap, 4.98 deep), needs 400 to pass 2649 N",
+  "value": 70.34784060836962
+ },
+ {
+  "group": "contact",
+  "item": "L foot plate / L ankle roll pin",
+  "status": "FAIL",
+  "detail": "38 mm2 (overlap, 3.00 deep), needs 200 to pass 1385 N",
+  "value": 38.012947434425115
+ },
+ {
+  "group": "contact",
+  "item": "pelvis: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "torso: frame in one piece",
+  "status": "FAIL",
+  "detail": "2 pieces: waist hub + spine + waist_yaw flange; shoulder beam + neck post. Nothing joins them",
+  "value": -2.0
+ },
+ {
+  "group": "contact",
+  "item": "battery: seated on the frame",
+  "status": "FAIL",
+  "detail": "0 mm2 on carrying parts (needs 100)",
+  "value": 0.0
+ },
+ {
+  "group": "contact",
+  "item": "battery lower: seated on the frame",
+  "status": "PASS",
+  "detail": "3223 mm2 on carrying parts (needs 100)",
+  "value": 3222.8662790183344
+ },
+ {
+  "group": "contact",
+  "item": "compute: seated on the frame",
+  "status": "PASS",
+  "detail": "1103 mm2 on carrying parts (needs 100)",
+  "value": 1102.6300020425717
+ },
+ {
+  "group": "contact",
+  "item": "neck_yaw_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "head: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "head electronics: seated on the frame",
+  "status": "PASS",
+  "detail": "112 mm2 on carrying parts (needs 100)",
+  "value": 112.14755894136688
+ },
+ {
+  "group": "contact",
+  "item": "L_shoulder_pitch_link: frame in one piece",
+  "status": "FAIL",
+  "detail": "2 pieces: L shoulder bracket + L_shoulder_pitch flange; L shoulder roll post. Nothing joins them",
+  "value": -2.0
+ },
+ {
+  "group": "contact",
+  "item": "L_shoulder_roll_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_shoulder_yaw_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_elbow_link: frame in one piece",
+  "status": "FAIL",
+  "detail": "3 pieces: L elbow idler stub; L elbow idler arm; L elbow post + L elbow under motor + L forearm frame. Only by: L elbow idler stub / L elbow idler arm 74 mm2 overlap; L elbow idler arm / L elbow under motor 55 mm2 overlap",
+  "value": -3.0
+ },
+ {
+  "group": "contact",
+  "item": "L_wrist_yaw_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_wrist_pitch_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_hand: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_hip_pitch_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_hip_roll_link: frame in one piece",
+  "status": "FAIL",
+  "detail": "4 pieces: L hip front plate + L_hip_roll flange; L hip tab in; L hip tab out; L hip crown. Only by: L hip front plate / L hip tab in 78 mm2 overlap; L hip front plate / L hip tab out 78 mm2 overlap; L hip tab in / L hip crown 36 mm2 overlap; L hip tab out / L hip crown 36 mm2 overlap",
+  "value": -4.0
+ },
+ {
+  "group": "contact",
+  "item": "L_hip_yaw_link: frame in one piece",
+  "status": "PASS",
+  "detail": "",
+  "value": -1.0
+ },
+ {
+  "group": "contact",
+  "item": "L_knee_link: frame in one piece",
+  "status": "FAIL",
+  "detail": "5 pieces: L knee idler stub + L knee idler arm + L knee hub foot in + L knee hub foot out + L knee stator plate + L knee post + L shank knee bridge + L shank plate in up + L shank plate out up + L ankle roll pad in + L ankle roll pad out + L ankle roll crank; L shank plate in + L shank plate out + L ankle fork cheek in + L ankle fork cheek out + L ankle fork bridge; L ankle pitch crank; L ankle pitch rod; L ankle roll rod. Only by: L shank plate in / L shank plate in up 20 mm2 overlap; L shank plate out / L shank plate out up 20 mm2 overlap; L shank plate in up / L ankle pitch crank 48 mm2 overlap; L shank plate out up / L ankle roll rod 44 mm2 overlap; L ankle pitch crank / L ankle pitch rod 86 mm2 overlap; L ankle roll crank / L ankle roll rod 84 mm2 overlap",
+  "value": -5.0
+ },
+ {
+  "group": "contact",
+  "item": "L_ankle_pitch_link: frame in one piece",
+  "status": "FAIL",
+  "detail": "2 pieces: L ankle cross + L ankle cross tail; L ankle pitch arm. Only by: L ankle cross tail / L ankle pitch arm 70 mm2 overlap",
+  "value": -2.0
+ },
+ {
+  "group": "contact",
+  "item": "L_foot: frame in one piece",
+  "status": "FAIL",
+  "detail": "2 pieces: L foot plate + L ankle clevis front + L ankle clevis back; L ankle roll pin. Only by: L foot plate / L ankle roll pin 38 mm2 overlap",
+  "value": -2.0
+ },
+ {
+  "group": "pivot",
+  "item": "L_ankle_pitch: passive joint",
+  "status": "FAIL",
+  "detail": "no pin or bearing on the axis; 1.00 mm of air between the links",
+  "value": -0.0010000020265579224
+ },
+ {
+  "group": "pivot",
+  "item": "L_ankle_roll: passive joint",
+  "status": "FAIL",
+  "detail": "no bearing modelled: L ankle cross tail is on the axis, with 2.77 mm of air to the other link",
+  "value": -0.002771654761712489
+ },
+ {
+  "group": "pivot",
+  "item": "L shoulder roll bearing bore: bearing seat",
+  "status": "FAIL",
+  "detail": "no bearing modelled: L shoulder roll post is on the axis, with 1.50 mm of air to the other link",
+  "value": -0.0014981269334993859
+ },
+ {
+  "group": "pivot",
+  "item": "L elbow cheek bearing bore: bearing seat",
+  "status": "FAIL",
+  "detail": "no bearing modelled: L elbow post is on the axis, with 2.50 mm of air to the other link",
+  "value": -0.0024969242230997194
+ },
+ {
+  "group": "pivot",
+  "item": "L elbow cheek idler bore: bearing seat",
+  "status": "FAIL",
+  "detail": "no bearing modelled: L elbow axle is on the axis, with 0.30 mm of air to the other link",
+  "value": -0.000299990177154541
+ },
+ {
+  "group": "pivot",
+  "item": "L knee cheek bearing bore: bearing seat",
+  "status": "FAIL",
+  "detail": "no bearing modelled: L knee post is on the axis, with 2.50 mm of air to the other link",
+  "value": -0.0024969704193938697
+ },
+ {
+  "group": "pivot",
+  "item": "L knee cheek idler bore: bearing seat",
+  "status": "FAIL",
+  "detail": "no bearing modelled: L knee axle in is on the axis, with 0.60 mm of air to the other link",
+  "value": -0.0006000027060508728
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_pitch: has a motor, crank and rod",
+  "status": "PASS",
+  "detail": "",
+  "value": 3.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_pitch: crank reaches the motor",
+  "status": "FAIL",
+  "detail": "3.50 mm of air and no shaft between the crank and the motor",
+  "value": -0.0034999996423721313
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_pitch: rod reaches the crank",
+  "status": "PASS",
+  "detail": "",
+  "value": -0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_pitch: rod reaches the output",
+  "status": "PASS",
+  "detail": "at L ankle pitch arm",
+  "value": -0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_pitch: rod crank end has a pivot",
+  "status": "FAIL",
+  "detail": "capsules overlapping, no pin or bearing part",
+  "value": 0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_pitch: rod output end has a pivot",
+  "status": "FAIL",
+  "detail": "capsules overlapping, no pin or bearing part",
+  "value": 0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L ankle pitch crank clear of L shank plate in up",
+  "status": "FAIL",
+  "detail": "moving part inside a fixed one, 0.03 cm3",
+  "value": -3.332452457389506e-08
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_roll: has a motor, crank and rod",
+  "status": "PASS",
+  "detail": "",
+  "value": 3.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_roll: crank reaches the motor",
+  "status": "FAIL",
+  "detail": "3.55 mm of air and no shaft between the crank and the motor",
+  "value": -0.003550007939338684
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_roll: rod reaches the crank",
+  "status": "PASS",
+  "detail": "",
+  "value": -0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_roll: rod reaches the output",
+  "status": "PASS",
+  "detail": "at L ankle roll pin",
+  "value": -0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_roll: rod crank end has a pivot",
+  "status": "FAIL",
+  "detail": "capsules overlapping, no pin or bearing part",
+  "value": 0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L_ankle_roll: rod output end has a pivot",
+  "status": "FAIL",
+  "detail": "capsules overlapping, no pin or bearing part",
+  "value": 0.0
+ },
+ {
+  "group": "linkage",
+  "item": "L ankle roll crank clear of L shank plate out up",
+  "status": "FAIL",
+  "detail": "moving part inside a fixed one, 0.48 cm3",
+  "value": -4.846154438842522e-07
+ },
+ {
+  "group": "linkage",
+  "item": "L ankle roll rod clear of L shank plate out up",
+  "status": "FAIL",
+  "detail": "moving part inside a fixed one, 0.09 cm3",
+  "value": -8.848497255827238e-08
+ },
+ {
+  "group": "stator",
+  "item": "waist_yaw actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "held by pelvis frame, 7889 mm2 on its end face",
+  "value": 7888.6029422580405
+ },
+ {
+  "group": "stator",
+  "item": "L_hip_pitch actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "held by pelvis frame, 4266 mm2 on its end face",
+  "value": 4266.322686702108
+ },
+ {
+  "group": "stator",
+  "item": "R_hip_pitch actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "held by pelvis frame, 4266 mm2 on its end face",
+  "value": 4266.322686702108
+ },
+ {
+  "group": "stator",
+  "item": "neck_yaw actuator (buy) RS00",
+  "status": "PASS",
+  "detail": "held by shoulder beam, 2548 mm2 on its end face",
+  "value": 2547.66149664847
+ },
+ {
+  "group": "stator",
+  "item": "L_shoulder_pitch actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "held by shoulder beam, 7740 mm2 on its end face",
+  "value": 7740.349906399185
+ },
+ {
+  "group": "stator",
+  "item": "R_shoulder_pitch actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "held by shoulder beam, 7740 mm2 on its end face",
+  "value": 7740.349906399171
+ },
+ {
+  "group": "stator",
+  "item": "neck_pitch actuator (buy) RS00",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_shoulder_roll actuator (buy) RS06",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_shoulder_yaw actuator (buy) RS02",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_elbow actuator (buy) RS06",
+  "status": "PASS",
+  "detail": "held by L forearm frame, 2077 mm2 on its end face",
+  "value": 2077.279224193887
+ },
+ {
+  "group": "stator",
+  "item": "L_wrist_yaw actuator (buy) RS02",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_wrist_pitch actuator (buy) RS00",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_wrist_roll actuator (buy) RS00",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_hip_roll actuator (buy) RS04",
+  "status": "FAIL",
+  "detail": "no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall",
+  "value": 0.0
+ },
+ {
+  "group": "stator",
+  "item": "L_hip_yaw actuator (buy) RS03",
+  "status": "PASS",
+  "detail": "held by L hip crown, 6352 mm2 on its end face",
+  "value": 6351.510670776922
+ },
+ {
+  "group": "stator",
+  "item": "L ankle pitch actuator (buy) RS03",
+  "status": "PASS",
+  "detail": "held by L shank plate out up, 3697 mm2 on its end face",
+  "value": 3696.5705781492716
+ },
+ {
+  "group": "stator",
+  "item": "L ankle roll actuator (buy) RS06",
+  "status": "PASS",
+  "detail": "held by L ankle roll pad out, 1199 mm2 on its end face",
+  "value": 1198.673039178646
+ },
+ {
+  "group": "stator",
+  "item": "L_knee actuator (buy) RS04",
+  "status": "PASS",
+  "detail": "held by L knee stator plate, 6637 mm2 on its end face",
+  "value": 6636.74079941858
  },
  {
   "group": "skin",
   "item": "waist_yaw actuator (buy) RS04",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "waist hub",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "battery",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "battery lower",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "spine",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "shoulder beam",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "neck post",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "compute",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "waist_yaw flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "neck_yaw actuator (buy) RS00",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_shoulder_pitch actuator (buy) RS04",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_shoulder_pitch actuator (buy) RS04",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "neck pitch post",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "neck_yaw flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "neck_pitch actuator (buy) RS00",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "head electronics",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "head frame",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "neck_pitch flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder bracket",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll post",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_shoulder_pitch flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_shoulder_roll actuator (buy) RS06",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder bracket",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll post",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_shoulder_pitch flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_shoulder_roll actuator (buy) RS06",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll axle",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll plate back",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll plate front",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll plate back low",
   "status": "PASS",
-  "detail": "0.02 % outside the skin"
+  "detail": "0.02 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll plate front low",
   "status": "PASS",
-  "detail": "0.02 % outside the skin"
+  "detail": "0.02 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L shoulder roll bridge",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_shoulder_roll flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_shoulder_yaw actuator (buy) RS02",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll axle",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll plate back",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll plate front",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll plate back low",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll plate front low",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R shoulder roll bridge",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_shoulder_roll flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_shoulder_yaw actuator (buy) RS02",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_elbow flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_elbow flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_elbow actuator (buy) RS06",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_wrist_yaw actuator (buy) RS02",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_elbow actuator (buy) RS06",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_wrist_yaw actuator (buy) RS02",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_knee flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_knee flange",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L ankle pitch actuator (buy) RS03",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L ankle roll actuator (buy) RS06",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L_knee actuator (buy) RS04",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R ankle pitch actuator (buy) RS03",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R ankle roll actuator (buy) RS06",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R_knee actuator (buy) RS04",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L foot plate",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "L ankle roll pin",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R foot plate",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "skin",
   "item": "R ankle roll pin",
   "status": "PASS",
-  "detail": "0.00 % outside the skin"
+  "detail": "0.00 % outside the skin",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "waist_yaw",
   "status": "WARN",
-  "detail": "[-2.60, +2.60] rad clear; lower: R_hand / R_hip_yaw_link: R palm / R thigh at -0.11 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+  "detail": "[-2.60, +2.60] rad clear; lower: R_hand / R_hip_yaw_link: R palm / R thigh at -0.11 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "neck_yaw",
   "status": "PASS",
-  "detail": "[-1.40, +1.40] rad clear"
+  "detail": "[-1.40, +1.40] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "neck_pitch",
   "status": "PASS",
-  "detail": "[-0.40, +0.45] rad clear"
+  "detail": "[-0.40, +0.45] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_shoulder_pitch",
   "status": "PASS",
-  "detail": "[-3.00, +1.00] rad clear"
+  "detail": "[-3.00, +1.00] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_shoulder_roll",
   "status": "WARN",
-  "detail": "[-0.05, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.00 rad (pose-dependent)"
+  "detail": "[-0.05, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.00 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_shoulder_yaw",
   "status": "WARN",
-  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_elbow",
   "status": "PASS",
-  "detail": "[-1.90, +0.00] rad clear"
+  "detail": "[-1.90, +0.00] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_wrist_yaw",
   "status": "WARN",
-  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)"
+  "detail": "[-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_wrist_pitch",
   "status": "WARN",
-  "detail": "[-0.90, +0.90] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent)"
+  "detail": "[-0.90, +0.90] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_wrist_roll",
   "status": "PASS",
-  "detail": "[-0.60, +0.60] rad clear"
+  "detail": "[-0.60, +0.60] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "[-1.65, +0.24] rad clear"
+  "detail": "[-1.65, +0.24] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_hip_roll",
   "status": "WARN",
-  "detail": "[-0.35, +0.60] rad clear; lower: L_foot / R_foot: L sole / R shoe midsole at -0.10 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent)"
+  "detail": "[-0.35, +0.60] rad clear; lower: L_foot / R_foot: L sole / R shoe midsole at -0.10 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_hip_yaw",
   "status": "WARN",
-  "detail": "[-1.20, +1.20] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L palm at -0.05 rad (pose-dependent); upper: L_hip_yaw_link / R_hip_yaw_link: L thigh / R thigh at +1.20 rad (pose-dependent)"
+  "detail": "[-1.20, +1.20] rad clear; lower: L_hip_yaw_link / L_hand: L thigh / L palm at -0.05 rad (pose-dependent); upper: L_hip_yaw_link / R_hip_yaw_link: L thigh / R thigh at +1.20 rad (pose-dependent)",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_knee",
   "status": "PASS",
-  "detail": "[+0.00, +2.15] rad clear"
+  "detail": "[+0.00, +2.15] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_ankle_pitch",
   "status": "PASS",
-  "detail": "[-0.80, +0.55] rad clear"
+  "detail": "[-0.80, +0.55] rad clear",
+  "value": null
  },
  {
   "group": "sweep",
   "item": "L_ankle_roll",
   "status": "PASS",
-  "detail": "[-0.30, +0.30] rad clear"
+  "detail": "[-0.30, +0.30] rad clear",
+  "value": null
  },
  {
   "group": "poses",
   "item": "stand: balance",
   "status": "PASS",
-  "detail": "CoM 11.8 cm inside the feet"
+  "detail": "CoM 11.8 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "stand: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "stand: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "walk crouch: balance",
   "status": "PASS",
-  "detail": "CoM 12.0 cm inside the feet"
+  "detail": "CoM 12.0 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "walk crouch: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "walk crouch: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "carry 3 kg at the chest: balance",
   "status": "PASS",
-  "detail": "CoM 11.8 cm inside the feet"
+  "detail": "CoM 11.8 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "carry 3 kg at the chest: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "carry 3 kg at the chest: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "carry 10 kg at the chest: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "carry 10 kg at the chest: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "carry 10 kg at the chest: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "deep squat: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "deep squat: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "deep squat: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "arms straight out, 5 kg: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "arms straight out, 5 kg: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "arms straight out, 5 kg: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "arms out to the sides: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "arms out to the sides: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "arms out to the sides: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "lift 10 kg from a low table: balance",
   "status": "PASS",
-  "detail": "CoM 11.9 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet",
+  "value": null
  },
  {
   "group": "poses",
   "item": "lift 10 kg from a low table: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "lift 10 kg from a low table: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "single-leg stance (walking): balance",
   "status": "PASS",
-  "detail": "CoM 4.9 cm inside the stance foot"
+  "detail": "CoM 4.9 cm inside the stance foot",
+  "value": null
  },
  {
   "group": "poses",
   "item": "single-leg stance (walking): within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "single-leg stance (walking): collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "poses",
   "item": "step up a stair: balance",
   "status": "PASS",
-  "detail": "CoM 4.9 cm inside the stance foot"
+  "detail": "CoM 4.9 cm inside the stance foot",
+  "value": null
  },
  {
   "group": "poses",
   "item": "step up a stair: within limits",
   "status": "PASS",
-  "detail": "yes"
+  "detail": "yes",
+  "value": null
  },
  {
   "group": "poses",
   "item": "step up a stair: collisions",
   "status": "PASS",
-  "detail": "none"
+  "detail": "none",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_knee",
   "status": "FAIL",
-  "detail": "142.4 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 178 % used"
+  "detail": "142.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 178 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_hip_yaw",
   "status": "FAIL",
-  "detail": "40.4 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 101 % used"
+  "detail": "40.3 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 101 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_elbow",
   "status": "PASS",
-  "detail": "10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used"
+  "detail": "10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_elbow",
   "status": "PASS",
-  "detail": "10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used"
+  "detail": "10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "70.4 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 88 % used"
+  "detail": "70.3 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 88 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "62.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 79 % used"
+  "detail": "62.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 78 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_shoulder_roll",
   "status": "PASS",
-  "detail": "15.9 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used"
+  "detail": "15.8 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_shoulder_roll",
   "status": "PASS",
-  "detail": "15.9 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used"
+  "detail": "15.8 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_wrist_roll",
   "status": "PASS",
-  "detail": "4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used"
+  "detail": "4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_wrist_roll",
   "status": "PASS",
-  "detail": "4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used"
+  "detail": "4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_shoulder_pitch",
   "status": "PASS",
-  "detail": "16.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 42 % used"
+  "detail": "16.6 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 42 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_shoulder_pitch",
   "status": "PASS",
-  "detail": "16.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 42 % used"
+  "detail": "16.6 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 42 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_ankle_pitch",
   "status": "PASS",
-  "detail": "12.0 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used"
+  "detail": "11.9 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_ankle_pitch",
   "status": "PASS",
-  "detail": "12.0 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used"
+  "detail": "11.9 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "29.4 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used"
+  "detail": "29.3 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_hip_pitch",
   "status": "PASS",
-  "detail": "29.4 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used"
+  "detail": "29.3 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_wrist_pitch",
   "status": "PASS",
-  "detail": "1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used"
+  "detail": "1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_wrist_pitch",
   "status": "PASS",
-  "detail": "1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used"
+  "detail": "1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "neck_pitch",
   "status": "PASS",
-  "detail": "0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 6 % used"
+  "detail": "0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 6 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_hip_roll",
   "status": "PASS",
-  "detail": "2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 4 % used"
+  "detail": "2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 4 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_wrist_yaw",
   "status": "PASS",
-  "detail": "0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used"
+  "detail": "0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_wrist_yaw",
   "status": "PASS",
-  "detail": "0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used"
+  "detail": "0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_hip_yaw",
   "status": "PASS",
-  "detail": "0.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used"
+  "detail": "0.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_shoulder_yaw",
   "status": "PASS",
-  "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
+  "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_shoulder_yaw",
   "status": "PASS",
-  "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
+  "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "L_ankle_roll",
   "status": "PASS",
-  "detail": "0.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 48 N m (1 x RS06 x 1.3): 1 % used"
+  "detail": "0.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 48 N m (1 x RS06 x 1.3): 1 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "R_ankle_roll",
   "status": "PASS",
-  "detail": "0.1 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used"
+  "detail": "0.1 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "neck_yaw",
   "status": "PASS",
-  "detail": "0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used"
+  "detail": "0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used",
+  "value": null
  },
  {
   "group": "torque",
   "item": "waist_yaw",
   "status": "PASS",
-  "detail": "0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used"
+  "detail": "0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used",
+  "value": null
  }
 ]

@@ -2,13 +2,13 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 61.46 kg** (Figure 03: 61.0 kg).
+**Total 61.32 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
 | actuator | 23.49 | 38 % |
 | cells | 13.10 | 21 % |
-| al7075 | 11.24 | 18 % |
+| al7075 | 11.10 | 18 % |
 | garment | 5.55 | 9 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
@@ -28,10 +28,10 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_shoulder_pitch_link | 0.75 | 0.99 | +0.001 -0.166 +1.390 | 0.0005 0.0008 0.0010 |
 | L_shoulder_roll_link | 0.84 | 1.00 | -0.002 +0.200 +1.323 | 0.0010 0.0018 0.0021 |
 | R_shoulder_roll_link | 0.84 | 1.00 | -0.002 -0.200 +1.323 | 0.0010 0.0018 0.0021 |
-| L_shoulder_yaw_link | 0.42 | 1.05 | +0.000 +0.202 +1.213 | 0.0006 0.0013 0.0014 |
-| R_shoulder_yaw_link | 0.42 | 1.05 | +0.000 -0.202 +1.213 | 0.0006 0.0013 0.0014 |
-| L_elbow_link | 1.87 | 0.85 | -0.000 +0.206 +1.124 | 0.0024 0.0055 0.0060 |
-| R_elbow_link | 1.87 | 0.85 | -0.000 -0.206 +1.124 | 0.0024 0.0055 0.0060 |
+| L_shoulder_yaw_link | 0.40 | 1.05 | +0.000 +0.201 +1.214 | 0.0006 0.0013 0.0013 |
+| R_shoulder_yaw_link | 0.40 | 1.05 | +0.000 -0.201 +1.214 | 0.0006 0.0013 0.0013 |
+| L_elbow_link | 1.85 | 0.85 | -0.000 +0.206 +1.124 | 0.0024 0.0055 0.0060 |
+| R_elbow_link | 1.85 | 0.85 | -0.000 -0.206 +1.124 | 0.0024 0.0055 0.0060 |
 | L_wrist_yaw_link | 0.50 | 0.60 | +0.000 +0.205 +0.977 | 0.0003 0.0007 0.0007 |
 | R_wrist_yaw_link | 0.50 | 0.60 | -0.000 -0.205 +0.977 | 0.0003 0.0007 0.0007 |
 | L_wrist_pitch_link | 0.44 | 0.45 | +0.004 +0.206 +0.904 | 0.0002 0.0004 0.0004 |
@@ -42,8 +42,8 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_hip_pitch_link | 1.59 | 1.60 | -0.091 -0.103 +0.931 | 0.0025 0.0030 0.0032 |
 | L_hip_roll_link | 1.45 | 2.00 | -0.017 +0.105 +0.850 | 0.0025 0.0060 0.0064 |
 | R_hip_roll_link | 1.45 | 2.00 | -0.017 -0.105 +0.850 | 0.0025 0.0060 0.0064 |
-| L_hip_yaw_link | 1.17 | 3.60 | +0.000 +0.098 +0.666 | 0.0039 0.0127 0.0132 |
-| R_hip_yaw_link | 1.17 | 3.60 | +0.000 -0.098 +0.666 | 0.0039 0.0127 0.0132 |
+| L_hip_yaw_link | 1.13 | 3.60 | +0.000 +0.097 +0.669 | 0.0038 0.0124 0.0130 |
+| R_hip_yaw_link | 1.13 | 3.60 | +0.000 -0.097 +0.669 | 0.0038 0.0124 0.0130 |
 | L_knee_link | 5.13 | 2.08 | -0.004 +0.102 +0.422 | 0.0080 0.0846 0.0847 |
 | R_knee_link | 5.13 | 2.08 | -0.004 -0.102 +0.422 | 0.0080 0.0846 0.0847 |
 | L_ankle_pitch_link | 0.03 | 0.25 | -0.005 +0.099 +0.085 | 0.0000 0.0000 0.0000 |
