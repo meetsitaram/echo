@@ -1,8 +1,8 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-05 02:55, 159 s
+spec: `spec/robot.json`, 2026-11-05 02:59, 151 s
 
-249 checks: 241 pass, 7 warn, **1 fail**
+249 checks: 241 pass, 6 warn, **2 fail**
 
 ## targets
 
@@ -28,7 +28,7 @@ spec: `spec/robot.json`, 2026-11-05 02:55, 159 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | total | 57.90 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
+| PASS | total | 57.87 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
 
 ## axis
 
@@ -225,7 +225,7 @@ spec: `spec/robot.json`, 2026-11-05 02:55, 159 s
 | WARN | L_shoulder_yaw | [-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent) |
 | PASS | L_elbow | [-1.90, +0.00] rad clear |
 | WARN | L_wrist_yaw | [-2.60, +2.60] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.33 rad (pose-dependent); upper: L_hand / L_hip_yaw_link: L palm / L thigh at +0.11 rad (pose-dependent) |
-| WARN | L_wrist_pitch | [-0.90, +0.90] rad clear; lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent) |
+| FAIL | L_wrist_pitch | upper +0.90: blocked at +0.86 rad by L wrist cuff / L wrist housing (across the joint) (0 cm3); lower: L_hand / L_hip_yaw_link: L palm / L thigh at -0.04 rad (pose-dependent) |
 | PASS | L_wrist_roll | [-0.60, +0.60] rad clear |
 | PASS | L_hip_pitch | [-1.65, +0.24] rad clear |
 | WARN | L_hip_roll | [-0.35, +0.60] rad clear; lower: L_foot / R_foot: L sole / R shoe midsole at -0.10 rad (pose-dependent); upper: L_hip_yaw_link / L_hand: L thigh / L palm at +0.02 rad (pose-dependent) |
@@ -273,22 +273,22 @@ spec: `spec/robot.json`, 2026-11-05 02:55, 159 s
 
 | status | item | detail |
 |---|---|---|
-| FAIL | L_knee | 134.6 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 168 % used |
+| FAIL | L_knee | 134.5 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 168 % used |
 | PASS | L_hip_yaw | 37.9 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 95 % used |
 | PASS | R_elbow | 10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
 | PASS | L_elbow | 10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
-| PASS | R_knee | 66.8 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 84 % used |
-| PASS | L_hip_roll | 59.1 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 74 % used |
+| PASS | R_knee | 66.8 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 83 % used |
+| PASS | L_hip_roll | 59.0 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 74 % used |
 | PASS | R_shoulder_roll | 14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used |
 | PASS | L_shoulder_roll | 14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used |
 | PASS | R_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
 | PASS | L_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
 | PASS | L_shoulder_pitch | 15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used |
 | PASS | R_shoulder_pitch | 15.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 39 % used |
-| PASS | R_ankle_pitch | 11.3 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 38 % used |
-| PASS | L_ankle_pitch | 11.3 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 38 % used |
-| PASS | L_hip_pitch | 28.6 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
-| PASS | R_hip_pitch | 28.6 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
+| PASS | R_ankle_pitch | 11.2 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 37 % used |
+| PASS | L_ankle_pitch | 11.2 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 37 % used |
+| PASS | L_hip_pitch | 28.5 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
+| PASS | R_hip_pitch | 28.5 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
 | PASS | R_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | L_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | neck_pitch | 0.6 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 7 % used |

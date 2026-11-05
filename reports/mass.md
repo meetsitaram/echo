@@ -2,7 +2,7 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 57.90 kg** (Figure 03: 61.0 kg).
+**Total 57.87 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
@@ -14,7 +14,7 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | hand | 1.70 | 3 % |
 | pc | 1.39 | 2 % |
 | tpu | 1.03 | 2 % |
-| pa12 | 0.56 | 1 % |
+| pa12 | 0.54 | 1 % |
 | eva | 0.47 | 1 % |
 
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
@@ -31,10 +31,10 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | R_shoulder_yaw_link | 0.87 | 1.05 | -0.001 -0.209 +1.172 | 0.0008 0.0018 0.0019 |
 | L_elbow_link | 0.74 | 0.85 | -0.000 +0.197 +1.093 | 0.0008 0.0021 0.0021 |
 | R_elbow_link | 0.74 | 0.85 | -0.000 -0.197 +1.093 | 0.0008 0.0021 0.0021 |
-| L_wrist_yaw_link | 0.47 | 0.60 | +0.000 +0.205 +0.972 | 0.0003 0.0005 0.0005 |
-| R_wrist_yaw_link | 0.47 | 0.60 | -0.000 -0.205 +0.972 | 0.0003 0.0005 0.0005 |
-| L_wrist_pitch_link | 0.45 | 0.45 | +0.004 +0.206 +0.904 | 0.0002 0.0004 0.0004 |
-| R_wrist_pitch_link | 0.45 | 0.45 | +0.004 -0.206 +0.904 | 0.0002 0.0004 0.0004 |
+| L_wrist_yaw_link | 0.46 | 0.60 | +0.000 +0.205 +0.972 | 0.0002 0.0005 0.0005 |
+| R_wrist_yaw_link | 0.46 | 0.60 | -0.000 -0.205 +0.972 | 0.0002 0.0005 0.0005 |
+| L_wrist_pitch_link | 0.44 | 0.45 | +0.004 +0.206 +0.904 | 0.0002 0.0004 0.0004 |
+| R_wrist_pitch_link | 0.44 | 0.45 | +0.004 -0.206 +0.904 | 0.0002 0.0004 0.0004 |
 | L_hand | 1.02 | 1.00 | +0.001 +0.198 +0.824 | 0.0009 0.0011 0.0015 |
 | R_hand | 1.02 | 1.00 | +0.001 -0.198 +0.824 | 0.0009 0.0011 0.0015 |
 | L_hip_pitch_link | 1.59 | 1.60 | -0.091 +0.103 +0.931 | 0.0025 0.0030 0.0032 |

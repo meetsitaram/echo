@@ -559,7 +559,9 @@ link('L_wrist_yaw_link', 0.6, [
     # iteration 17: wider (clear of the wrist cheek) and above the pitch axis (clear of the wrist roll actuator as
     # the hand pitches 0.9 rad); iteration 29: squarer, as Figure's block, its inner corners clear of the housing's as
     # the housing's rim rises into it (only the pitch moves one against the other: the yaw turns both)
-    loft('L wrist cuff', [(WZ + 0.008, 0, SY, 0.046, 0.043, 4.0), (WZ + 0.040, 0, SY, 0.046, 0.043, 4.0)], BLACK,
+    # iteration 35 (user: bulkier than Figure's slim wrist; about 65 mm on the frames): 78 x 78, was 92 x 86. Along x nothing
+    # sweeps it, so it only needs the forearm's end inside it. Across, the housing's rim needs 3 mm as it rises
+    loft('L wrist cuff', [(WZ + 0.008, 0, SY, 0.039, 0.039, 5.0), (WZ + 0.040, 0, SY, 0.039, 0.039, 5.0)], BLACK,
          open=('bottom',)),
 ])
 joint('L_wrist_pitch', 'L_wrist_yaw_link', 'L_wrist_pitch_link', (0, SY, WZ), 'x', (-0.9, 0.9), 'RS00',
@@ -569,10 +571,15 @@ joint('L_wrist_pitch', 'L_wrist_yaw_link', 'L_wrist_pitch_link', (0, SY, WZ), 'x
 # pitch link round both actuators. Its top is open and low (+9 mm), rising inside the cuff as the pitch turns it, clear
 # of the frame that carries the pitch stator; its lower end is round about the roll axis (the palm's top 3 mm clear),
 # and on the hand's side a round opening 3 mm round the roll actuator, where the output leaves for the hand's bracket
-WRIST_HOUSING = [(WZ + 0.009, 0, SY, 0.034, 0.033, 8.0), (WZ - 0.03, 0, SY, 0.034, 0.033, 8.0),
-                 (WZ - 0.045, 0, SY + 0.00325, 0.034, 0.02975, 8.0), (WZ - 0.06, 0, SY + 0.00325, 0.034, 0.02975, 8.0)] + \
-                [(WZ - 0.06 - d, 0, SY + 0.00325, (0.035 ** 2 - d ** 2) ** 0.5, 0.02975, 8.0)
-                 for d in (0.01, 0.02, 0.028, 0.032, 0.0345)]
+# iteration 35: the maker's STEP (2026-10-30): RS00 is round d57, 52.1 long with its hub, as drawn near enough (d57 x 51). So a
+# 3 mm wall allows 63 mm, and the housing is 65 x 65 (it was 68 x 66), its section squarer (n 10) to reach the motors' end
+# faces. Below the pitch motor its sides draw in, so the points that would swing up into the cuff at 0.9 rad stay under it.
+WRIST_HOUSING_R = 0.0325                  # the lower end, round about the roll axis (the palm stays where it is, now 5.5 mm off)
+WRIST_HOUSING = [(WZ + 0.009, 0, SY, 0.0325, 0.0325, 10.0), (WZ - 0.012, 0, SY, 0.0325, 0.0325, 10.0),
+                 (WZ - 0.027, 0, SY + 0.0008, 0.0325, 0.0305, 11.0), (WZ - 0.045, 0, SY + 0.0015, 0.0325, 0.0293, 12.0),
+                 (WZ - 0.06, 0, SY + 0.0015, 0.0325, 0.0293, 12.0)] + \
+                [(WZ - 0.06 - d, 0, SY + 0.0015, (WRIST_HOUSING_R ** 2 - d ** 2) ** 0.5, 0.0293, 12.0)
+                 for d in (0.01, 0.02, 0.026, 0.03, 0.032)]
 link('L_wrist_pitch_link', 0.45, [
     rbox('L wrist cheek', (0.0285, SY, WZ - 0.0275), (0.006, 0.04, 0.055), 0.002, BLACK, exposed=True),
     loft('L wrist housing', WRIST_HOUSING, BLACK, open=('top',)),
