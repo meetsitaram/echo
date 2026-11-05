@@ -635,6 +635,9 @@ HIP_SEAM = HZ - 0.073                     # the lobe's underside on the yaw axis
 # the yaw axis as the dome was, front 0.852 m, back 0.863 m (it cannot rise further: the roll actuator's underside is
 # 0.87 m, 8 mm above). Radius 0.7: across the thigh's 14 cm width the seam rises 3.5 mm against its 3 mm gap, so no
 # level line runs through it (lesson: a flat seam shows light in a level side view), checked on green.
+# Known: a hairline of light remains over the seam's rear 5 cm, in an exact level side view with both hips aligned, where the
+# thigh's chord is too short for the bowl to close it. A lip round about the yaw axis blocked it but stood out as a
+# black tab behind the thigh, worse than the hairline (iteration 32, tried and removed).
 HIP_DOME_R = 0.70
 HIP_DOME_C = (0, HY, HIP_SEAM - 0.007 + 0.003 + HIP_DOME_R + 0.0)
 HIP_LOBE_CLIP = [((0, 0.088, 0), (0, 1, 0))]
