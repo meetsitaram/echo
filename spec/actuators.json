@@ -4,9 +4,9 @@
            "gear": 10.0, "rotor_kgm2": 1.0e-5, "damping_nms": 0.02, "friction_nm": 0.3},
   "RS02": {"r": 0.03925, "h": 0.0455, "mass": 0.38, "rated_nm": 7.0, "peak_nm": 17.0, "noload_rads": 42.9,
            "gear": 7.75, "rotor_kgm2": 3.0e-5, "damping_nms": 0.03, "friction_nm": 0.4},
-  "RS03": {"r": 0.053, "h": 0.056, "mass": 0.9, "rated_nm": 21.0, "peak_nm": 60.0, "noload_rads": 20.4,
+  "RS03": {"r": 0.053, "depth": 0.0985, "h": 0.056, "mass": 0.9, "rated_nm": 21.0, "peak_nm": 60.0, "noload_rads": 20.4,
            "gear": 9.0, "rotor_kgm2": 1.0e-4, "damping_nms": 0.12, "friction_nm": 1.0},
-  "RS06": {"r": 0.044, "h": 0.049, "mass": 0.621, "rated_nm": 11.0, "peak_nm": 36.0, "noload_rads": 50.3,
+  "RS06": {"r": 0.044, "depth": 0.082, "h": 0.049, "mass": 0.621, "rated_nm": 11.0, "peak_nm": 36.0, "noload_rads": 50.3,
            "gear": 9.0, "rotor_kgm2": 5.0e-5, "damping_nms": 0.08, "friction_nm": 0.7},
   "RS04": {"r": 0.060, "h": 0.056, "mass": 1.42, "rated_nm": 40.0, "peak_nm": 120.0, "noload_rads": 20.9,
            "gear": 9.0, "rotor_kgm2": 2.0e-4, "damping_nms": 0.2, "friction_nm": 1.5}

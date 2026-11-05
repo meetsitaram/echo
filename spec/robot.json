@@ -28,6 +28,7 @@
   },
   "RS03": {
    "r": 0.053,
+   "depth": 0.0985,
    "h": 0.056,
    "mass": 0.9,
    "rated_nm": 21.0,
@@ -40,6 +41,7 @@
   },
   "RS06": {
    "r": 0.044,
+   "depth": 0.082,
    "h": 0.049,
    "mass": 0.621,
    "rated_nm": 11.0,
@@ -14607,28 +14609,44 @@
        "n": 2.4
       },
       {
-       "z": 0.29984,
+       "z": 0.264,
        "cx": -0.01,
        "cy": 0.1,
        "a": 0.0525,
+       "b": 0.054,
+       "n": 3.2
+      },
+      {
+       "z": 0.27999999999999997,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.0535,
        "b": 0.056,
-       "n": 2.5
+       "n": 4.0
       },
       {
-       "z": 0.3456,
+       "z": 0.32,
        "cx": -0.01,
        "cy": 0.1,
-       "a": 0.0525,
+       "a": 0.0535,
+       "b": 0.056,
+       "n": 4.0
+      },
+      {
+       "z": 0.35,
+       "cx": -0.01,
+       "cy": 0.1,
+       "a": 0.051,
        "b": 0.058,
-       "n": 2.5
+       "n": 3.2
       },
       {
-       "z": 0.394,
+       "z": 0.3945,
        "cx": -0.01,
        "cy": 0.1,
-       "a": 0.0525,
-       "b": 0.06,
-       "n": 2.4
+       "a": 0.049,
+       "b": 0.059,
+       "n": 2.6
       },
       {
        "z": 0.46,
@@ -14933,12 +14951,12 @@
      "c": [
       0.0,
       0.07400000000000001,
-      0.2995
+      0.191
      ],
      "size": [
       0.04,
       0.004,
-      0.339
+      0.122
      ],
      "fillet": 0.0015,
      "color": "#1B1C1F",
@@ -14952,12 +14970,12 @@
      "c": [
       0.0,
       0.126,
-      0.2995
+      0.191
      ],
      "size": [
       0.04,
       0.004,
-      0.339
+      0.122
      ],
      "fillet": 0.0015,
      "color": "#1B1C1F",
@@ -14966,66 +14984,141 @@
      "material": "al7075"
     },
     {
-     "kind": "cyl",
-     "name": "L ankle actuator A (buy) RS06",
+     "kind": "rbox",
+     "name": "L shank plate in up",
      "c": [
-      -0.01,
-      0.1,
-      0.394
+      0.0,
+      0.07,
+      0.35950000000000004
      ],
-     "axis": "y",
-     "r": 0.044,
-     "h": 0.049,
-     "color": "#3A3D42",
-     "role": "actuator",
-     "material": "actuator"
-    },
-    {
-     "kind": "cyl",
-     "name": "L ankle actuator B (buy) RS06",
-     "c": [
-      -0.01,
-      0.1,
-      0.29984
+     "size": [
+      0.04,
+      0.005,
+      0.21900000000000003
      ],
-     "axis": "y",
-     "r": 0.044,
-     "h": 0.049,
-     "color": "#3A3D42",
-     "role": "actuator",
-     "material": "actuator"
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
     },
     {
      "kind": "rbox",
-     "name": "L ankle crank out",
+     "name": "L shank plate out up",
      "c": [
-      -0.0175,
-      0.1315,
-      0.394
+      0.0,
+      0.13,
+      0.35950000000000004
      ],
      "size": [
-      0.031,
-      0.006,
-      0.016
+      0.04,
+      0.005,
+      0.21900000000000003
      ],
-     "fillet": 0.003,
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle roll pad in",
+     "c": [
+      -0.01,
+      0.07400000000000001,
+      0.3945
+     ],
+     "size": [
+      0.03,
+      0.004,
+      0.04
+     ],
+     "fillet": 0.001,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "L ankle roll pad out",
+     "c": [
+      -0.01,
+      0.126,
+      0.3945
+     ],
+     "size": [
+      0.03,
+      0.004,
+      0.04
+     ],
+     "fillet": 0.001,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L ankle pitch actuator (buy) RS03",
+     "c": [
+      -0.01,
+      0.1,
+      0.3
+     ],
+     "axis": "y",
+     "r": 0.04925,
+     "h": 0.056,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "L ankle roll actuator (buy) RS06",
+     "c": [
+      -0.01,
+      0.1,
+      0.3945
+     ],
+     "axis": "y",
+     "r": 0.041,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "capsule",
+     "name": "L ankle pitch crank",
+     "p0": [
+      -0.01,
+      0.060200000000000004,
+      0.3
+     ],
+     "p1": [
+      -0.032,
+      0.060200000000000004,
+      0.3054
+     ],
+     "r": 0.008,
      "color": "#3A3D42",
      "role": "linkage",
-     "exposed": false,
      "material": "al7075"
     },
     {
      "kind": "capsule",
-     "name": "L ankle rod out",
+     "name": "L ankle pitch rod",
      "p0": [
-      -0.025,
-      0.13,
-      0.394
+      -0.032,
+      0.060200000000000004,
+      0.3054
      ],
      "p1": [
-      -0.025,
-      0.13,
-      0.065
+      -0.0318,
+      0.08800000000000001,
+      0.0937
      ],
      "r": 0.005,
      "color": "#9EA3A8",
@@ -15033,36 +15126,35 @@
      "material": "al7075"
     },
     {
-     "kind": "rbox",
-     "name": "L ankle crank in",
-     "c": [
-      -0.0175,
-      0.0685,
-      0.29984
+     "kind": "capsule",
+     "name": "L ankle roll crank",
+     "p0": [
+      -0.01,
+      0.1368,
+      0.3945
      ],
-     "size": [
-      0.031,
-      0.006,
-      0.016
+     "p1": [
+      -0.036,
+      0.1368,
+      0.3945
      ],
-     "fillet": 0.003,
+     "r": 0.008,
      "color": "#3A3D42",
      "role": "linkage",
-     "exposed": false,
      "material": "al7075"
     },
     {
      "kind": "capsule",
-     "name": "L ankle rod in",
+     "name": "L ankle roll rod",
      "p0": [
-      -0.025,
-      0.07,
-      0.29984
+      -0.036,
+      0.1368,
+      0.3945
      ],
      "p1": [
-      -0.025,
-      0.07,
-      0.065
+      0.0,
+      0.134,
+      0.085
      ],
      "r": 0.005,
      "color": "#9EA3A8",
@@ -15074,7 +15166,7 @@
      "name": "L ankle fork cheek in",
      "c": [
       0,
-      0.067,
+      0.07450000000000001,
       0.11000000000000001
      ],
      "size": [
@@ -15093,7 +15185,7 @@
      "name": "L ankle fork cheek out",
      "c": [
       0,
-      0.133,
+      0.1255,
       0.11000000000000001
      ],
      "size": [
@@ -15117,7 +15209,7 @@
      ],
      "size": [
       0.032,
-      0.072,
+      0.057,
       0.012
      ],
      "fillet": 0.003,
@@ -15142,7 +15234,7 @@
      "material": "al7075"
     }
    ],
-   "note": "two RS06 drive the ankle through cranks and rods (parallel ankle)"
+   "note": "RS03 pitch and RS06 roll in the calf, each with a crank and rod"
   },
   "R_knee_link": {
    "name": "R_knee_link",
@@ -15177,28 +15269,44 @@
        "n": 2.4
       },
       {
-       "z": 0.29984,
+       "z": 0.264,
        "cx": -0.01,
        "cy": -0.1,
        "a": 0.0525,
+       "b": 0.054,
+       "n": 3.2
+      },
+      {
+       "z": 0.27999999999999997,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.0535,
        "b": 0.056,
-       "n": 2.5
+       "n": 4.0
       },
       {
-       "z": 0.3456,
+       "z": 0.32,
        "cx": -0.01,
        "cy": -0.1,
-       "a": 0.0525,
+       "a": 0.0535,
+       "b": 0.056,
+       "n": 4.0
+      },
+      {
+       "z": 0.35,
+       "cx": -0.01,
+       "cy": -0.1,
+       "a": 0.051,
        "b": 0.058,
-       "n": 2.5
+       "n": 3.2
       },
       {
-       "z": 0.394,
+       "z": 0.3945,
        "cx": -0.01,
        "cy": -0.1,
-       "a": 0.0525,
-       "b": 0.06,
-       "n": 2.4
+       "a": 0.049,
+       "b": 0.059,
+       "n": 2.6
       },
       {
        "z": 0.46,
@@ -15503,12 +15611,12 @@
      "c": [
       0.0,
       -0.07400000000000001,
-      0.2995
+      0.191
      ],
      "size": [
       0.04,
       0.004,
-      0.339
+      0.122
      ],
      "fillet": 0.0015,
      "color": "#1B1C1F",
@@ -15522,12 +15630,12 @@
      "c": [
       0.0,
       -0.126,
-      0.2995
+      0.191
      ],
      "size": [
       0.04,
       0.004,
-      0.339
+      0.122
      ],
      "fillet": 0.0015,
      "color": "#1B1C1F",
@@ -15536,66 +15644,141 @@
      "material": "al7075"
     },
     {
-     "kind": "cyl",
-     "name": "R ankle actuator A (buy) RS06",
+     "kind": "rbox",
+     "name": "R shank plate in up",
      "c": [
-      -0.01,
-      -0.1,
-      0.394
+      0.0,
+      -0.07,
+      0.35950000000000004
      ],
-     "axis": "y",
-     "r": 0.044,
-     "h": 0.049,
-     "color": "#3A3D42",
-     "role": "actuator",
-     "material": "actuator"
-    },
-    {
-     "kind": "cyl",
-     "name": "R ankle actuator B (buy) RS06",
-     "c": [
-      -0.01,
-      -0.1,
-      0.29984
+     "size": [
+      0.04,
+      0.005,
+      0.21900000000000003
      ],
-     "axis": "y",
-     "r": 0.044,
-     "h": 0.049,
-     "color": "#3A3D42",
-     "role": "actuator",
-     "material": "actuator"
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
     },
     {
      "kind": "rbox",
-     "name": "R ankle crank out",
+     "name": "R shank plate out up",
      "c": [
-      -0.0175,
-      -0.1315,
-      0.394
+      0.0,
+      -0.13,
+      0.35950000000000004
      ],
      "size": [
-      0.031,
-      0.006,
-      0.016
+      0.04,
+      0.005,
+      0.21900000000000003
      ],
-     "fillet": 0.003,
+     "fillet": 0.0015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle roll pad in",
+     "c": [
+      -0.01,
+      -0.07400000000000001,
+      0.3945
+     ],
+     "size": [
+      0.03,
+      0.004,
+      0.04
+     ],
+     "fillet": 0.001,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "rbox",
+     "name": "R ankle roll pad out",
+     "c": [
+      -0.01,
+      -0.126,
+      0.3945
+     ],
+     "size": [
+      0.03,
+      0.004,
+      0.04
+     ],
+     "fillet": 0.001,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R ankle pitch actuator (buy) RS03",
+     "c": [
+      -0.01,
+      -0.1,
+      0.3
+     ],
+     "axis": "y",
+     "r": 0.04925,
+     "h": 0.056,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "cyl",
+     "name": "R ankle roll actuator (buy) RS06",
+     "c": [
+      -0.01,
+      -0.1,
+      0.3945
+     ],
+     "axis": "y",
+     "r": 0.041,
+     "h": 0.049,
+     "color": "#3A3D42",
+     "role": "actuator",
+     "material": "actuator"
+    },
+    {
+     "kind": "capsule",
+     "name": "R ankle pitch crank",
+     "p0": [
+      -0.01,
+      -0.060200000000000004,
+      0.3
+     ],
+     "p1": [
+      -0.032,
+      -0.060200000000000004,
+      0.3054
+     ],
+     "r": 0.008,
      "color": "#3A3D42",
      "role": "linkage",
-     "exposed": false,
      "material": "al7075"
     },
     {
      "kind": "capsule",
-     "name": "R ankle rod out",
+     "name": "R ankle pitch rod",
      "p0": [
-      -0.025,
-      -0.13,
-      0.394
+      -0.032,
+      -0.060200000000000004,
+      0.3054
      ],
      "p1": [
-      -0.025,
-      -0.13,
-      0.065
+      -0.0318,
+      -0.08800000000000001,
+      0.0937
      ],
      "r": 0.005,
      "color": "#9EA3A8",
@@ -15603,36 +15786,35 @@
      "material": "al7075"
     },
     {
-     "kind": "rbox",
-     "name": "R ankle crank in",
-     "c": [
-      -0.0175,
-      -0.0685,
-      0.29984
+     "kind": "capsule",
+     "name": "R ankle roll crank",
+     "p0": [
+      -0.01,
+      -0.1368,
+      0.3945
      ],
-     "size": [
-      0.031,
-      0.006,
-      0.016
+     "p1": [
+      -0.036,
+      -0.1368,
+      0.3945
      ],
-     "fillet": 0.003,
+     "r": 0.008,
      "color": "#3A3D42",
      "role": "linkage",
-     "exposed": false,
      "material": "al7075"
     },
     {
      "kind": "capsule",
-     "name": "R ankle rod in",
+     "name": "R ankle roll rod",
      "p0": [
-      -0.025,
-      -0.07,
-      0.29984
+      -0.036,
+      -0.1368,
+      0.3945
      ],
      "p1": [
-      -0.025,
-      -0.07,
-      0.065
+      0.0,
+      -0.134,
+      0.085
      ],
      "r": 0.005,
      "color": "#9EA3A8",
@@ -15644,7 +15826,7 @@
      "name": "R ankle fork cheek in",
      "c": [
       0,
-      -0.067,
+      -0.07450000000000001,
       0.11000000000000001
      ],
      "size": [
@@ -15663,7 +15845,7 @@
      "name": "R ankle fork cheek out",
      "c": [
       0,
-      -0.133,
+      -0.1255,
       0.11000000000000001
      ],
      "size": [
@@ -15687,7 +15869,7 @@
      ],
      "size": [
       0.032,
-      0.072,
+      0.057,
       0.012
      ],
      "fillet": 0.003,
@@ -15712,7 +15894,7 @@
      "material": "al7075"
     }
    ],
-   "note": "two RS06 drive the ankle through cranks and rods (parallel ankle)"
+   "note": "RS03 pitch and RS06 roll in the calf, each with a crank and rod"
   },
   "L_ankle_pitch_link": {
    "name": "L_ankle_pitch_link",
@@ -15728,10 +15910,45 @@
      ],
      "size": [
       0.028,
-      0.058,
+      0.043,
       0.026
      ],
      "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "L ankle cross tail",
+     "c": [
+      -0.0215,
+      0.1,
+      0.085
+     ],
+     "axis": "x",
+     "r": 0.007,
+     "h": 0.015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "L ankle pitch arm",
+     "p0": [
+      -0.029,
+      0.1,
+      0.085
+     ],
+     "p1": [
+      -0.0318,
+      0.08800000000000001,
+      0.0937
+     ],
+     "r": 0.005,
      "color": "#1B1C1F",
      "role": "struct",
      "exposed": true,
@@ -15754,10 +15971,45 @@
      ],
      "size": [
       0.028,
-      0.058,
+      0.043,
       0.026
      ],
      "fillet": 0.004,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "cyl",
+     "name": "R ankle cross tail",
+     "c": [
+      -0.0215,
+      -0.1,
+      0.085
+     ],
+     "axis": "x",
+     "r": 0.007,
+     "h": 0.015,
+     "color": "#1B1C1F",
+     "role": "struct",
+     "exposed": true,
+     "material": "al7075"
+    },
+    {
+     "kind": "capsule",
+     "name": "R ankle pitch arm",
+     "p0": [
+      -0.029,
+      -0.1,
+      0.085
+     ],
+     "p1": [
+      -0.0318,
+      -0.08800000000000001,
+      0.0937
+     ],
+     "r": 0.005,
      "color": "#1B1C1F",
      "role": "struct",
      "exposed": true,
@@ -16589,36 +16841,34 @@
      "material": "al7075"
     },
     {
-     "kind": "rbox",
-     "name": "L ankle rod mount out",
+     "kind": "cyl",
+     "name": "L ankle clevis hole",
      "c": [
-      -0.025,
-      0.13,
-      0.0435
+      -0.02,
+      0.1,
+      0.085
      ],
-     "size": [
-      0.014,
-      0.008,
-      0.043000000000000003
-     ],
-     "fillet": 0.003,
+     "axis": "x",
+     "r": 0.01,
+     "h": 0.012,
      "color": "#9EA3A8",
-     "role": "struct",
-     "exposed": false,
-     "material": "al7075"
+     "role": "cut",
+     "targets": [
+      "L ankle clevis back"
+     ]
     },
     {
      "kind": "rbox",
-     "name": "L ankle rod mount in",
+     "name": "L ankle roll pin",
      "c": [
-      -0.025,
-      0.07,
-      0.0435
+      0.0,
+      0.134,
+      0.05550000000000001
      ],
      "size": [
       0.014,
       0.008,
-      0.043000000000000003
+      0.067
      ],
      "fillet": 0.003,
      "color": "#9EA3A8",
@@ -17452,36 +17702,34 @@
      "material": "al7075"
     },
     {
-     "kind": "rbox",
-     "name": "R ankle rod mount out",
+     "kind": "cyl",
+     "name": "R ankle clevis hole",
      "c": [
-      -0.025,
-      -0.13,
-      0.0435
+      -0.02,
+      -0.1,
+      0.085
      ],
-     "size": [
-      0.014,
-      0.008,
-      0.043000000000000003
-     ],
-     "fillet": 0.003,
+     "axis": "x",
+     "r": 0.01,
+     "h": 0.012,
      "color": "#9EA3A8",
-     "role": "struct",
-     "exposed": false,
-     "material": "al7075"
+     "role": "cut",
+     "targets": [
+      "R ankle clevis back"
+     ]
     },
     {
      "kind": "rbox",
-     "name": "R ankle rod mount in",
+     "name": "R ankle roll pin",
      "c": [
-      -0.025,
-      -0.07,
-      0.0435
+      0.0,
+      -0.134,
+      0.05550000000000001
      ],
      "size": [
       0.014,
       0.008,
-      0.043000000000000003
+      0.067
      ],
      "fillet": 0.003,
      "color": "#9EA3A8",
@@ -18191,9 +18439,9 @@
    "exposed": false,
    "remote": true,
    "capacity": {
-    "model": "RS06",
-    "count": 2,
-    "ratio": 1.0
+    "model": "RS03",
+    "count": 1,
+    "ratio": 1.5
    }
   },
   {
@@ -18218,9 +18466,9 @@
    "exposed": false,
    "remote": true,
    "capacity": {
-    "model": "RS06",
-    "count": 2,
-    "ratio": 1.0
+    "model": "RS03",
+    "count": 1,
+    "ratio": 1.5
    }
   },
   {
@@ -18246,8 +18494,8 @@
    "remote": true,
    "capacity": {
     "model": "RS06",
-    "count": 2,
-    "ratio": 0.6
+    "count": 1,
+    "ratio": 1.32
    }
   },
   {
@@ -18273,8 +18521,8 @@
    "remote": true,
    "capacity": {
     "model": "RS06",
-    "count": 2,
-    "ratio": 0.6
+    "count": 1,
+    "ratio": 1.32
    }
   }
  ],

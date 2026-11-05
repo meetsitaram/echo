@@ -807,20 +807,23 @@ link('L_hip_yaw_link', 3.6, [
 # flexion 2.15 rad (iteration 17: through the knee zone the calf meets the thigh at 2.2; the deep squat uses 2.0)
 joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', out=-1)
 SHANK = lambda f: AZ + 0.045 + f * (KZ - AZ - 0.01)      # height at fraction f of the shank skin
-# rods behind the ankle, either side; their foot ends (iteration 17: 3 cm behind, inside the slim lower calf; at
-# 4.5 cm they showed behind it; at 3.7 cm out they showed through the sock)
-ROD_X, ROD_Y, ROD_Z = -0.025, 0.030, 0.065
+# Ankle drive, iteration 34 (DECISIONS 3, 4a; the solved numbers in the paper report of 2026-11-04, paper only: no published
+# example of this exact layout, a warning sign to keep in view). No shared parallel pair: each motor has its own crank and
+# rod. Pitch: RS03 low in the calf, crank 22.7, rod 212, to an arm 32.9 behind the ankle on the cross, on the roll axis' line
+# so roll does not change its length; 1.44:1 at the middle of its range, modelled as 1.5 (a table of ratios is the second pass).
+# Roll: RS06 above it, crank 26, rod 312, to a pin on the foot at y 34 on the pitch axis' line; 1.32:1 at mid range.
+CALF_X = -0.01                            # the motors' axes
+PITCH_Z, ROLL_Z = 0.300, 0.3945
+PITCH_CRANK, PITCH_ROD_END = (-0.0320, HY - 0.0398, 0.3054), (-0.0318, HY - 0.012, 0.0937)
+ROLL_CRANK, ROLL_ROD_END = (-0.0360, HY + 0.0368, ROLL_Z), (0.0, HY + 0.034, AZ)
 
 
-def ankle_drive(s, z, side):
-    """Crank on an ankle motor's output (side +1 outboard, -1 inboard), outside the shank plate its shaft passes
-    through, and its rod down to the foot."""
-    y = HY + side * 0.0315
-    return [rbox(f'{s} ankle crank {"out" if side > 0 else "in"}', ((-0.01 + ROD_X) / 2, y, z),
-                 (abs(ROD_X + 0.01) + 0.016, 0.006, 0.016),
-                 0.003, '#3A3D42', 'linkage'),
-            cap(f'{s} ankle rod {"out" if side > 0 else "in"}', (ROD_X, HY + side * ROD_Y, z),
-                (ROD_X, HY + side * ROD_Y, ROD_Z), 0.005, ALU, 'linkage')]
+def ankle_drive(s):
+    """The cranks and rods, at the zero pose: they move with the linkage, not with the shank or the foot, so they are drawn
+    ('linkage') and kept out of the collision checks."""
+    crank = lambda n, z, c: cap(f'{s} ankle {n} crank', (CALF_X, c[1], z), c, 0.008, '#3A3D42', 'linkage')
+    return [crank('pitch', PITCH_Z, PITCH_CRANK), cap(f'{s} ankle pitch rod', PITCH_CRANK, PITCH_ROD_END, 0.005, ALU, 'linkage'),
+            crank('roll', ROLL_Z, ROLL_CRANK), cap(f'{s} ankle roll rod', ROLL_CRANK, ROLL_ROD_END, 0.005, ALU, 'linkage')]
 
 
 # Shoe lines in the side view, (x, z) pairs (iteration 12, user: "feet so off"; Figure's shoe from the reveal frames:
@@ -836,20 +839,18 @@ SOCK_LOW = ((-0.10, 0.121), (0.06, 0.084))                # bottom of the sock, 
 TRIM_LOW, TRIM_HIGH = ((-0.04, 0.158), (0.04, 0.118)), ((-0.04, 0.203), (0.04, 0.146))
 # pieces cut apart along a plane overlap by 2 mm, hidden inside the bigger one (pieces that only touch fall apart
 # in the solid union: 'covers mounted' counted 156 slivers)
-# Ankle drive (parallel ankle, as Unitree G1 and Asimov 1): two motors high in the calf (a light lower leg), each
-# turning a crank that pushes a rod down to the heel of the foot plate, one left and one right of the ankle. Both
-# rods the same way: pitch; opposite: roll. Iteration 16 (user: "they look too big for ankles"): 2 x RS06 (88 mm)
-# instead of 2 x RS03 (106 mm); the static poses need 23.5 N m (x 1.5 peak margin = 35 of 72), but fast walking
-# push-off (60-90 N m) has less headroom. The 1 kg saved went into the battery.
 link('L_knee_link', 2.08, [
     # iteration 11 (side frame): Figure's calf is ~0.105 deep; ours was 0.135, then 0.121 round the RS03.
     # iteration 16: with RS06, 0.105 like Figure's, 4.5 mm clear of them inside the wall
     # iteration 13: slim above the ankle like Figure's (~8 cm), below the ankle actuators
     # iteration 26: narrowing to the neck under the pads (within the cheeks' reach), up to the drum, inside the depth the
     # thigh's fold plane clears; the ankle motors keep their room below
+    # iteration 34: 107 mm deep at the RS03 (Figure about 105), the section squared there (n 4) so its depth reaches the
+    # motor's end faces; 110 at the plain section. The motor's ears turned, as the maker's drawing allows (98.5 deep)
     loft('L shank', [(SHANK(0), 0.0, HY, 0.040, 0.042, 2.2), (SHANK(0.159), -0.006, HY, 0.046, 0.044, 2.2),
-                     (SHANK(0.27), -0.010, HY, 0.0500, 0.052, 2.4), (SHANK(0.386), -0.010, HY, 0.0525, 0.056, 2.5),
-                     (SHANK(0.49), -0.010, HY, 0.0525, 0.058, 2.5), (SHANK(0.60), -0.010, HY, 0.0525, 0.060, 2.4),
+                     (SHANK(0.27), CALF_X, HY, 0.0500, 0.052, 2.4), (0.264, CALF_X, HY, 0.0525, 0.054, 3.2),
+                     (PITCH_Z - 0.02, CALF_X, HY, 0.0535, 0.056, 4.0), (PITCH_Z + 0.02, CALF_X, HY, 0.0535, 0.056, 4.0), (PITCH_Z + 0.05, CALF_X, HY, 0.051, 0.058, 3.2),
+                     (ROLL_Z, CALF_X, HY, 0.049, 0.059, 2.6),
                      (KZ - 0.075, -0.004, HY, 0.058, KNEE_W, 2.8), (KZ - 0.03, -0.001, HY, 0.0635, KNEE_W, 5.0),
                      (KZ - 0.008, 0.0, HY, KNEE_R - 0.001, KNEE_W, 12.0), (KZ, 0.0, HY, KNEE_R - 0.0005, KNEE_W, 16.0)],
          clip=above(*up(TRIM_HIGH, -0.002))),
@@ -868,32 +869,35 @@ link('L_knee_link', 2.08, [
     # the shank plates stop under the motor; a bridge carries them to the plate on the motor's output
     rbox('L shank knee bridge', (0, HY - 0.00325, KZ - 0.070), (0.04, 0.0705, 0.008), 0.002, BLACK, exposed=True),
     rbox('L shank output plate', (0, HY - 0.0355, KZ - 0.0225), (0.05, 0.006, 0.103), 0.003, BLACK, exposed=True),
-    # clamping the ankle motors between them (iteration 16: the narrower RS06 floated 2.5 mm clear of plates at 29 mm)
-    span('L shank plate in', SHANK(0), KZ - 0.066, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    span('L shank plate out', SHANK(0), KZ - 0.066, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
-    # iteration 17: 5 cm lower, below the knee zone's slanted bottom
-    cyl('L ankle actuator A (buy) RS06', (-0.01, HY, SHANK(0.60)), 'y', ACT['RS06']['r'], ACT['RS06']['h'],
+    # iteration 34: the lower plates inside the roll rod's plane (y 29.5), the upper ones clamping the RS03; pads to the RS06
+    span('L shank plate in', SHANK(0), PITCH_Z - 0.048, y=HY - 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
+    span('L shank plate out', SHANK(0), PITCH_Z - 0.048, y=HY + 0.026, sy=0.004, f=0.0015, color=BLACK, exposed=True),
+    span('L shank plate in up', PITCH_Z - 0.05, KZ - 0.066, y=HY - 0.030, sy=0.005, f=0.0015, color=BLACK, exposed=True),
+    span('L shank plate out up', PITCH_Z - 0.05, KZ - 0.066, y=HY + 0.030, sy=0.005, f=0.0015, color=BLACK, exposed=True),
+    rbox('L ankle roll pad in', (CALF_X, HY - 0.026, ROLL_Z), (0.03, 0.004, 0.04), 0.001, BLACK, exposed=True),
+    rbox('L ankle roll pad out', (CALF_X, HY + 0.026, ROLL_Z), (0.03, 0.004, 0.04), 0.001, BLACK, exposed=True),
+    cyl('L ankle pitch actuator (buy) RS03', (CALF_X, HY, PITCH_Z), 'y', ACT['RS03']['depth'] / 2, ACT['RS03']['h'],
         '#3A3D42', 'actuator'),
-    cyl('L ankle actuator B (buy) RS06', (-0.01, HY, SHANK(0.386)), 'y', ACT['RS06']['r'], ACT['RS06']['h'],
+    cyl('L ankle roll actuator (buy) RS06', (CALF_X, HY, ROLL_Z), 'y', ACT['RS06']['depth'] / 2, ACT['RS06']['h'],
         '#3A3D42', 'actuator'),
-    # cranks on the outputs (A outboard, B inboard) and the rods down to the foot: they move with the linkage, not
-    # with the shank or the foot, so they are drawn ('linkage') but kept out of the collision checks
-    *ankle_drive('L', SHANK(0.60), +1),
-    *ankle_drive('L', SHANK(0.386), -1),
-    # 32 mm deep (iteration 12: inside the slimmer ankle sock)
-    rbox('L ankle fork cheek in', (0, HY - 0.033, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
-    rbox('L ankle fork cheek out', (0, HY + 0.033, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
-    rbox('L ankle fork bridge', (0, HY, AZ + 0.057), (0.032, 0.072, 0.012), 0.003, BLACK, exposed=True),
-], 'two RS06 drive the ankle through cranks and rods (parallel ankle)')
+    *ankle_drive('L'),
+    # 32 mm deep (iteration 12: inside the slimmer ankle sock); iteration 34: outer face at 28.5 mm, inside the roll rod
+    rbox('L ankle fork cheek in', (0, HY - 0.0255, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
+    rbox('L ankle fork cheek out', (0, HY + 0.0255, AZ + 0.025), (0.032, 0.006, 0.07), 0.003, BLACK, exposed=True),
+    rbox('L ankle fork bridge', (0, HY, AZ + 0.057), (0.032, 0.057, 0.012), 0.003, BLACK, exposed=True),
+], 'RS03 pitch and RS06 roll in the calf, each with a crank and rod')
 # dorsiflexion 0.8 rad (iteration 12, was 0.9): the deepest pose uses 0.77 (90 deg squat); the 0.1 rad buys the
 # shoe's instep its height
 joint('L_ankle_pitch', 'L_knee_link', 'L_ankle_pitch_link', (0, HY, AZ), 'y', (-0.8, 0.55), None, remote=True,
-      capacity=dict(model='RS06', count=2, ratio=1.0))
+      capacity=dict(model='RS03', count=1, ratio=1.5))
 link('L_ankle_pitch_link', 0.25, [
-    rbox('L ankle cross', (0, HY, AZ), (0.028, 0.058, 0.026), 0.004, BLACK, exposed=True),
+    # iteration 34: 43 mm across, inside the narrower fork; its tail through the back clevis (a round hole) to the pitch arm
+    rbox('L ankle cross', (0, HY, AZ), (0.028, 0.043, 0.026), 0.004, BLACK, exposed=True),
+    dict(cyl('L ankle cross tail', (-0.0215, HY, AZ), 'x', 0.007, 0.015, BLACK), exposed=True),
+    dict(cap('L ankle pitch arm', (-0.029, HY, AZ), PITCH_ROD_END, 0.005, BLACK, 'struct'), exposed=True),
 ])
 joint('L_ankle_roll', 'L_ankle_pitch_link', 'L_foot', (0, HY, AZ), 'x', (-0.3, 0.3), None, remote=True,
-      capacity=dict(model='RS06', count=2, ratio=0.6))
+      capacity=dict(model='RS06', count=1, ratio=1.32))
 # Foot: the outsole (3 cm black rubber, rounded in plan, rocker toe) and the shoe's lower upper. The upper is one
 # loft cut in two: the toe (in front of x = 0.06, its own top: a low toe box and an instep rising to the ankle) and
 # the heel (behind, its top cut along COLLAR). A black stripe 1.2 mm proud runs from the midfoot sole up to the heel.
@@ -938,10 +942,9 @@ link('L_foot', 1.1, [
     cut(loft('L shoe window in rim', WINDOW_DEEP(-1), WHITE, open=()), 'L shoe midsole'),
     rbox('L ankle clevis front', (0.02, HY, 0.06), (0.006, 0.04, 0.08), 0.002, BLACK, exposed=True),
     rbox('L ankle clevis back', (-0.02, HY, 0.06), (0.006, 0.04, 0.08), 0.002, BLACK, exposed=True),
-    # where the ankle rods push on the foot, either side behind the ankle, on the foot plate (8 mm wide: inside the
-    # shoe's window pockets)
-    rbox('L ankle rod mount out', (ROD_X, HY + ROD_Y, (0.022 + ROD_Z) / 2), (0.014, 0.008, ROD_Z - 0.022), 0.003),
-    rbox('L ankle rod mount in', (ROD_X, HY - ROD_Y, (0.022 + ROD_Z) / 2), (0.014, 0.008, ROD_Z - 0.022), 0.003),
+    cut(cyl('L ankle clevis hole', (-0.02, HY, AZ), 'x', 0.010, 0.012), 'L ankle clevis back'),
+    # iteration 34: where the roll rod pushes, on the pitch axis' line, 34 mm out (8 mm wide: inside the shoe's window pocket)
+    rbox('L ankle roll pin', (ROLL_ROD_END[0], ROLL_ROD_END[1], (0.022 + AZ + 0.004) / 2), (0.014, 0.008, AZ + 0.004 - 0.022), 0.003),
 ])
 
 

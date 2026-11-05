@@ -93,7 +93,7 @@
   "group": "mass",
   "item": "total",
   "status": "PASS",
-  "detail": "57.55 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
+  "detail": "58.26 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5)"
  },
  {
   "group": "axis",
@@ -979,13 +979,13 @@
  },
  {
   "group": "skin",
-  "item": "L ankle actuator A (buy) RS06",
+  "item": "L ankle pitch actuator (buy) RS03",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
  {
   "group": "skin",
-  "item": "L ankle actuator B (buy) RS06",
+  "item": "L ankle roll actuator (buy) RS06",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
@@ -997,13 +997,13 @@
  },
  {
   "group": "skin",
-  "item": "R ankle actuator A (buy) RS06",
+  "item": "R ankle pitch actuator (buy) RS03",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
  {
   "group": "skin",
-  "item": "R ankle actuator B (buy) RS06",
+  "item": "R ankle roll actuator (buy) RS06",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
@@ -1021,13 +1021,7 @@
  },
  {
   "group": "skin",
-  "item": "L ankle rod mount out",
-  "status": "PASS",
-  "detail": "0.00 % outside the skin"
- },
- {
-  "group": "skin",
-  "item": "L ankle rod mount in",
+  "item": "L ankle roll pin",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
@@ -1039,13 +1033,7 @@
  },
  {
   "group": "skin",
-  "item": "R ankle rod mount out",
-  "status": "PASS",
-  "detail": "0.00 % outside the skin"
- },
- {
-  "group": "skin",
-  "item": "R ankle rod mount in",
+  "item": "R ankle roll pin",
   "status": "PASS",
   "detail": "0.00 % outside the skin"
  },
@@ -1221,7 +1209,7 @@
   "group": "poses",
   "item": "deep squat: balance",
   "status": "PASS",
-  "detail": "CoM 11.8 cm inside the feet"
+  "detail": "CoM 11.9 cm inside the feet"
  },
  {
   "group": "poses",
@@ -1329,7 +1317,13 @@
   "group": "torque",
   "item": "L_knee",
   "status": "FAIL",
-  "detail": "134.0 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 168 % used"
+  "detail": "135.5 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 169 % used"
+ },
+ {
+  "group": "torque",
+  "item": "L_hip_yaw",
+  "status": "PASS",
+  "detail": "38.0 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 95 % used"
  },
  {
   "group": "torque",
@@ -1345,21 +1339,15 @@
  },
  {
   "group": "torque",
-  "item": "L_hip_yaw",
-  "status": "PASS",
-  "detail": "37.3 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 93 % used"
- },
- {
-  "group": "torque",
   "item": "R_knee",
   "status": "PASS",
-  "detail": "67.0 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 84 % used"
+  "detail": "67.3 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 84 % used"
  },
  {
   "group": "torque",
   "item": "L_hip_roll",
   "status": "PASS",
-  "detail": "58.6 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 73 % used"
+  "detail": "59.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 74 % used"
  },
  {
   "group": "torque",
@@ -1372,18 +1360,6 @@
   "item": "L_shoulder_roll",
   "status": "PASS",
   "detail": "14.1 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 59 % used"
- },
- {
-  "group": "torque",
-  "item": "R_ankle_pitch",
-  "status": "PASS",
-  "detail": "10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
- },
- {
-  "group": "torque",
-  "item": "L_ankle_pitch",
-  "status": "PASS",
-  "detail": "10.9 N m in 'walk crouch' vs rated 22 N m (2 x RS06): 50 % used"
  },
  {
   "group": "torque",
@@ -1411,15 +1387,27 @@
  },
  {
   "group": "torque",
+  "item": "L_ankle_pitch",
+  "status": "PASS",
+  "detail": "22.1 N m x 1.5 in 'step up a stair' vs peak 90 N m (1 x RS03 x 1.5): 37 % used"
+ },
+ {
+  "group": "torque",
   "item": "L_hip_pitch",
   "status": "PASS",
-  "detail": "28.1 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
+  "detail": "28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
  },
  {
   "group": "torque",
   "item": "R_hip_pitch",
   "status": "PASS",
-  "detail": "28.1 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
+  "detail": "28.0 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 35 % used"
+ },
+ {
+  "group": "torque",
+  "item": "R_ankle_pitch",
+  "status": "PASS",
+  "detail": "11.0 N m in 'walk crouch' vs rated 32 N m (1 x RS03 x 1.5): 35 % used"
  },
  {
   "group": "torque",
@@ -1437,13 +1425,13 @@
   "group": "torque",
   "item": "neck_pitch",
   "status": "PASS",
-  "detail": "0.6 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 7 % used"
+  "detail": "0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used"
  },
  {
   "group": "torque",
   "item": "R_hip_roll",
   "status": "PASS",
-  "detail": "2.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
+  "detail": "2.5 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used"
  },
  {
   "group": "torque",
@@ -1459,6 +1447,12 @@
  },
  {
   "group": "torque",
+  "item": "R_hip_yaw",
+  "status": "PASS",
+  "detail": "0.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used"
+ },
+ {
+  "group": "torque",
   "item": "R_shoulder_yaw",
   "status": "PASS",
   "detail": "0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used"
@@ -1471,21 +1465,15 @@
  },
  {
   "group": "torque",
-  "item": "R_hip_yaw",
-  "status": "PASS",
-  "detail": "0.7 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used"
- },
- {
-  "group": "torque",
   "item": "L_ankle_roll",
   "status": "PASS",
-  "detail": "0.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 43 N m (2 x RS06 x 0.6): 1 % used"
+  "detail": "0.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 48 N m (1 x RS06 x 1.3): 1 % used"
  },
  {
   "group": "torque",
   "item": "R_ankle_roll",
   "status": "PASS",
-  "detail": "0.1 N m in 'walk crouch' vs rated 13 N m (2 x RS06 x 0.6): 0 % used"
+  "detail": "0.1 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 0 % used"
  },
  {
   "group": "torque",
