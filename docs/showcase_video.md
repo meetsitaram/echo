@@ -25,7 +25,7 @@ SuperMimic policy, in CPU MuJoCo.
 | 1 | Face | Close-up; the light behind the face glass fades on at 1 s; slow orbit | ~3 s |
 | 2 | Descent | Camera orbits down the body to the feet while echo does small moves: looks around, arms, folds hands, a small crouch at the legs | ~9 s |
 | 3 | Ascent, covers off | Same path back up in skeleton view | ~5 s |
-| 4 | Exploded view | Dolly out to the walk framing; every rigid part flies out about 1.5 m and back; then the covers fly in the same way until fully covered; force arrows and chart fade in | ~8-10 s |
+| 4 | Exploded view | Dolly out to the walk framing; every rigid part flies out into a cloud spread evenly through a ball (out to about 0.9 m, not all on its rim), with one or two motors drifting close past the camera, large and sharp, and back; then the covers fly in the same way until fully covered; force arrows fade in | ~8-10 s |
 | 5 | Action | Short walk, crouch or low crouch, a small shove it rides out (300 N at the neck), a big one it doesn't (650 N), quick resets, the jog with shoves | ~25-30 s |
 | 6 | End card | 'echo', 'Physics sim · Motion Data by Bones Studio (bones.studio)' | 2 s |
 
@@ -35,7 +35,8 @@ Sections 2, 3 and 5 are physics: every step simulated by the policy. Section 4 i
 
 - On every motion section: 'Physics sim: every step simulated', 'Motion: BONES-SEED', the required credit
   'Motion Data by Bones Studio (bones.studio)', and 'Policy: SuperMimic, trained by us in MuJoCo Warp'.
-- In the action: red arrows for contact forces from the solver, the foot-force chart, the shove in N at the neck.
+- In the action: thick solid red arrows for contact forces from the solver, one per foot at its centre of pressure, depth-tested so the body hides them; the shove as a thick blue arrow with its N at the neck. No chart panel: the picture is full frame, with a small overlay readout of each foot's force (and 'Body on floor' when it happens).
+- Framing in the action: the whole body head to feet with floor margin.
 - Never shown: dataset clip names, Figure footage or drawings.
 
 ## Before rendering
