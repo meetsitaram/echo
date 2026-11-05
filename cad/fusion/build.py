@@ -150,7 +150,7 @@ def show(skins=True, internals=True):
     n = 0
     for o in design().rootComponent.occurrences:
         for b in o.component.bRepBodies:
-            b.isLightBulbOn = skins if role.get(b.name) in ('shell', 'decal') else (internals or b.name in exposed)
+            b.isLightBulbOn = skins if role.get(b.name) in ('shell', 'knit', 'decal') else (internals or b.name in exposed)
             n += 1
     return f'{n} bodies: skins {"on" if skins else "off"}, internals {"on" if internals else "off"}'
 

@@ -20,7 +20,7 @@ import checks as C  # noqa: E402
 import geom as G  # noqa: E402
 
 BG = (0.89, 0.89, 0.90, 1.0)
-GROUPS = [('shell', 'Covers'), ('actuator', 'Actuators (bought)'), ('struct', 'Structure'), ('linkage', 'Linkages')]
+GROUPS = [('knit', 'Garment'), ('shell', 'Covers'), ('actuator', 'Actuators (bought)'), ('struct', 'Structure'), ('linkage', 'Linkages')]
 SPEC_GLOSS = {'#08090B'}
 
 

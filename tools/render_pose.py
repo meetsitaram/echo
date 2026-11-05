@@ -106,7 +106,7 @@ class Scene:
         return Image.fromarray(img)
 
 
-COVERS = ('shell', 'decal')
+COVERS = ('shell', 'knit', 'decal')
 POSES = [
     # (title, angles, view, picture height m, target z m, target y m, roles hidden)
     ('shoulder roll 90 / 149 deg (max), neck nod down 26 deg (max)',

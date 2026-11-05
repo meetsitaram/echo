@@ -62,7 +62,7 @@ def export_glb(spec, out):
             met, rough = finish(g)
             tm.visual = trimesh.visual.TextureVisuals(material=trimesh.visual.material.PBRMaterial(
                 baseColorFactor=rgb + [1.0], metallicFactor=met, roughnessFactor=rough, doubleSided=False))
-            role = 'cover' if g['role'] in ('shell', 'decal') else 'inside'
+            role = 'cover' if g['role'] in ('shell', 'knit', 'decal') else 'inside'
             name = f"{role}|{g['name']}|{ln}|{i}"
             scene.add_geometry(tm, node_name=name, geom_name=name, parent_node_name=ln)
             tris += len(tm.faces)

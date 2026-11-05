@@ -1,8 +1,8 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
+spec: `spec/robot.json`, 2026-11-05 06:16, 170 s
 
-249 checks: 241 pass, 7 warn, **1 fail**
+267 checks: 258 pass, 7 warn, **2 fail**
 
 ## targets
 
@@ -10,7 +10,7 @@ spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
 |---|---|---|
 | PASS | height | 1.727 m (Figure 03: 1.727 m, +/- 0.010) |
 | PASS | chin_z | 1.522 (photo 1.522 +/- 0.02) |
-| PASS | shoulder_top_z | 1.447 (photo 1.445 +/- 0.025) |
+| PASS | shoulder_top_z | 1.449 (photo 1.445 +/- 0.025) |
 | PASS | elbow_z | 1.155 (photo 1.156 +/- 0.025) |
 | PASS | wrist_z | 0.955 (photo 0.955 +/- 0.03) |
 | PASS | fingertip_z | 0.716 (photo 0.71 +/- 0.03) |
@@ -21,14 +21,14 @@ spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
 | PASS | head_depth_m | 0.190 (photo 0.183 +/- 0.015) |
 | PASS | head_width_m | 0.140 (photo 0.138 +/- 0.012) |
 | PASS | chest_depth_m | 0.231 (photo 0.235 +/- 0.025) |
-| PASS | bideltoid_width_m | 0.525 (photo 0.51 +/- 0.04) |
+| PASS | bideltoid_width_m | 0.513 (photo 0.51 +/- 0.04) |
 | PASS | foot_length_m | 0.289 (photo 0.28 +/- 0.02) |
 
 ## mass
 
 | status | item | detail |
 |---|---|---|
-| PASS | total | 60.13 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
+| PASS | total | 61.46 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
 
 ## axis
 
@@ -180,18 +180,36 @@ spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
 | PASS | compute | 0.00 % outside the skin |
 | PASS | waist_yaw flange | 0.00 % outside the skin |
 | PASS | neck_yaw actuator (buy) RS00 | 0.00 % outside the skin |
+| PASS | L_shoulder_pitch actuator (buy) RS04 | 0.00 % outside the skin |
+| PASS | R_shoulder_pitch actuator (buy) RS04 | 0.00 % outside the skin |
 | PASS | neck pitch post | 0.00 % outside the skin |
 | PASS | neck_yaw flange | 0.00 % outside the skin |
 | PASS | neck_pitch actuator (buy) RS00 | 0.00 % outside the skin |
 | PASS | head electronics | 0.00 % outside the skin |
 | PASS | head frame | 0.00 % outside the skin |
 | PASS | neck_pitch flange | 0.00 % outside the skin |
+| PASS | L shoulder bracket | 0.00 % outside the skin |
+| PASS | L shoulder roll post | 0.00 % outside the skin |
+| PASS | L_shoulder_pitch flange | 0.00 % outside the skin |
 | PASS | L_shoulder_roll actuator (buy) RS06 | 0.00 % outside the skin |
+| PASS | R shoulder bracket | 0.00 % outside the skin |
+| PASS | R shoulder roll post | 0.00 % outside the skin |
+| PASS | R_shoulder_pitch flange | 0.00 % outside the skin |
 | PASS | R_shoulder_roll actuator (buy) RS06 | 0.00 % outside the skin |
-| PASS | L shoulder roll foot | 0.00 % outside the skin |
+| PASS | L shoulder roll axle | 0.00 % outside the skin |
+| PASS | L shoulder roll plate back | 0.00 % outside the skin |
+| PASS | L shoulder roll plate front | 0.00 % outside the skin |
+| PASS | L shoulder roll plate back low | 0.02 % outside the skin |
+| PASS | L shoulder roll plate front low | 0.02 % outside the skin |
+| PASS | L shoulder roll bridge | 0.00 % outside the skin |
 | PASS | L_shoulder_roll flange | 0.00 % outside the skin |
 | PASS | L_shoulder_yaw actuator (buy) RS02 | 0.00 % outside the skin |
-| PASS | R shoulder roll foot | 0.00 % outside the skin |
+| PASS | R shoulder roll axle | 0.00 % outside the skin |
+| PASS | R shoulder roll plate back | 0.00 % outside the skin |
+| PASS | R shoulder roll plate front | 0.00 % outside the skin |
+| PASS | R shoulder roll plate back low | 0.00 % outside the skin |
+| PASS | R shoulder roll plate front low | 0.00 % outside the skin |
+| PASS | R shoulder roll bridge | 0.00 % outside the skin |
 | PASS | R_shoulder_roll flange | 0.00 % outside the skin |
 | PASS | R_shoulder_yaw actuator (buy) RS02 | 0.00 % outside the skin |
 | PASS | L_elbow flange | 0.00 % outside the skin |
@@ -256,7 +274,7 @@ spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
 | PASS | arms straight out, 5 kg: balance | CoM 11.9 cm inside the feet |
 | PASS | arms straight out, 5 kg: within limits | yes |
 | PASS | arms straight out, 5 kg: collisions | none |
-| PASS | arms out to the sides: balance | CoM 12.0 cm inside the feet |
+| PASS | arms out to the sides: balance | CoM 11.9 cm inside the feet |
 | PASS | arms out to the sides: within limits | yes |
 | PASS | arms out to the sides: collisions | none |
 | PASS | lift 10 kg from a low table: balance | CoM 11.9 cm inside the feet |
@@ -273,32 +291,32 @@ spec: `spec/robot.json`, 2026-11-05 05:50, 165 s
 
 | status | item | detail |
 |---|---|---|
-| FAIL | L_knee | 139.5 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 174 % used |
-| PASS | L_hip_yaw | 39.6 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 99 % used |
-| PASS | R_elbow | 10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
-| PASS | L_elbow | 10.3 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 94 % used |
-| PASS | R_knee | 69.0 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 86 % used |
-| PASS | L_hip_roll | 61.5 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 77 % used |
-| PASS | R_shoulder_roll | 15.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 63 % used |
-| PASS | L_shoulder_roll | 15.2 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 63 % used |
+| FAIL | L_knee | 142.4 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 178 % used |
+| FAIL | L_hip_yaw | 40.4 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 101 % used |
+| PASS | R_elbow | 10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used |
+| PASS | L_elbow | 10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used |
+| PASS | R_knee | 70.4 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 88 % used |
+| PASS | L_hip_roll | 62.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 79 % used |
+| PASS | R_shoulder_roll | 15.9 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used |
+| PASS | L_shoulder_roll | 15.9 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used |
 | PASS | R_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
 | PASS | L_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
-| PASS | L_shoulder_pitch | 16.2 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used |
-| PASS | R_shoulder_pitch | 16.2 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used |
-| PASS | R_ankle_pitch | 11.7 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used |
-| PASS | L_ankle_pitch | 11.7 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 39 % used |
-| PASS | L_hip_pitch | 28.9 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
-| PASS | R_hip_pitch | 28.9 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 36 % used |
+| PASS | R_shoulder_pitch | 16.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 42 % used |
+| PASS | L_shoulder_pitch | 16.7 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 42 % used |
+| PASS | R_ankle_pitch | 12.0 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used |
+| PASS | L_ankle_pitch | 12.0 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used |
+| PASS | L_hip_pitch | 29.4 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used |
+| PASS | R_hip_pitch | 29.4 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used |
 | PASS | R_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | L_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
-| PASS | neck_pitch | 0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used |
-| PASS | R_hip_roll | 2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used |
+| PASS | neck_pitch | 0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 6 % used |
+| PASS | R_hip_roll | 2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 4 % used |
 | PASS | R_wrist_yaw | 0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used |
 | PASS | L_wrist_yaw | 0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used |
 | PASS | R_hip_yaw | 0.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used |
 | PASS | R_shoulder_yaw | 0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used |
 | PASS | L_shoulder_yaw | 0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used |
 | PASS | L_ankle_roll | 0.4 N m x 1.5 in 'single-leg stance (walking)' vs peak 48 N m (1 x RS06 x 1.3): 1 % used |
-| PASS | R_ankle_roll | 0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used |
-| PASS | waist_yaw | 0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used |
+| PASS | R_ankle_roll | 0.1 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used |
 | PASS | neck_yaw | 0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used |
+| PASS | waist_yaw | 0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used |

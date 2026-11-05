@@ -69,6 +69,8 @@ def parts(spec, S, ln):
         if 'mass' not in g:
             if g['role'] == 'shell':
                 body = S.wall[(ln, i)]
+            elif g['role'] == 'knit':
+                body = S.soft[(ln, i)]
             elif g['role'] == 'decal' and mats[mat].get('layer'):
                 body = solid - C.to_manifold(G.mesh_of(G.inner_of(g, mats[mat]['layer'])))
         vol, com, Iu = _props(body)

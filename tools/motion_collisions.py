@@ -29,8 +29,10 @@ def hits(spec, take, step):
     for i in range(0, len(Q), step):
         M = R.fk(dict(zip(names, Q[i])))
         P = {l: C.posed(S.hard[l], M[l]) for l in spec['links'] if S.hard[l] is not None}
+        B = {l: C.posed(S.bulk[l], M[l]) for l in spec['links'] if S.bulk[l] is not None}
         for a, b in pairs:
-            v = C.overlap(P.get(a), P.get(b))
+            T = B if R.distance(a, b) > C.NEAR else P      # the garment's bulk counts between far links
+            v = C.overlap(T.get(a), T.get(b))
             if v > C.TOUCH:
                 h = out.setdefault((a, b), [0, 0.0, i])
                 h[0] += 1

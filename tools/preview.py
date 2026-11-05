@@ -40,7 +40,7 @@ def main():
     parts = []
     for ln, l in spec['links'].items():
         for g in l['geoms']:
-            visible = g['role'] in ('shell', 'decal') or g['name'] in shown
+            visible = g['role'] in ('shell', 'knit', 'decal') or g['name'] in shown
             if (a.inside and g['role'] not in G.RIGID) or (not a.inside and not visible):
                 continue
             m = G.mesh_of(g)

@@ -14,6 +14,9 @@ and Unitree G1), so those joints are 'remote' (actuator not on the joint axis).
 
 Geometry roles:
   shell     outer cover (fabric / PA12). May overlap the shells and parts of ADJACENT links (it is the skin).
+  knit      the garment (iteration 39; user: "Figure has a fabric cover on the outside", a design rule for all grey). One soft skin over a hidden
+            frame and foam, sewn at seams, open only where hubs, hands, waist and shoes come through. It does not block a joint: the rigid
+            parts under it must clear each other, and fit inside it with an allowance (WALL). Across far links it still has bulk (hand on thigh).
   decal     cosmetic surface detail sunk into a skin (camera ports, logo, light bar). Must touch its link.
   struct    rigid internal part (7075 bracket, fork, battery). Must not overlap rigid parts of any other link.
   actuator  bought actuator, stator side. Rigid. Lives in the joint's PARENT link, centred on the joint axis.
@@ -45,7 +48,8 @@ MATERIALS = {
     'al7075': dict(density=2810, note='7075-T6 frames, brackets, flanges, cranks and rods, with a fill factor'),
     'cells': dict(density=2500, note='battery pack: explicit mass'),
     'electronics': dict(density=1500, note='compute, power board, cameras: explicit masses'),
-    'knit': dict(density=1000, layer=0.002, note='a soft knit panel, stretched over nothing: it folds as the joint closes'),
+    'garment': dict(density=1110, note='the grey skin, per m2 as the 3 mm PA12 and knit cover it replaced (3.3 kg/m2): knit about 0.5, foam about 0.3, and about 2.5 '
+                                       'held for the inner frames, which are not designed. An estimate carried over so the masses do not fall on a guess'),
     'hand': dict(density=1500, note="the hand's motors, tendons and palm: explicit mass"),
 }
 
@@ -57,6 +61,8 @@ def material_of(g):
     role, col = g['role'], g['color']
     if role in ('struct', 'linkage'):
         return 'cells' if col == CELL else 'al7075'
+    if role == 'knit':
+        return 'garment'
     if role == 'decal':
         return 'pc' if col in (GLOSS, LENS) else 'eva' if col == SOLE else 'pa12'
     if role == 'shell':
@@ -270,11 +276,20 @@ TORSO = [(HEM, 0.000, 0, 0.100, 0.124, 3.0),
          # chin stays 2 cm in front of the chest)
          # iteration 28 (row scan of the 3/4 frame at 1.46 m: Figure 0.149 m, ours 0.259; side: 0.13, ours 0.168): the top
          # holds its width only to the shoulder motors' tops (1.45 m), then one slope to the collar: no corner above the cap
+         # iteration 39: one straight line from the collar to the shoulder, about 21 deg (the old note: Figure ~18; the top at 1.445 m as targets.json): y 0.056 at +0.107,
+         # 0.075 at +0.0995, 0.10 at +0.09, 0.14 at +0.0745, 0.19 at +0.055, ending in the yoke below
          (SZ + 0.052, -0.012, 0, 0.090, 0.149, 3.0),
-         (SZ + 0.075, -0.016, 0, 0.070, 0.118, 2.6),
-         (SZ + 0.093, -0.018, 0, 0.061, 0.088, 2.3),
-         (SZ + 0.103, -0.020, 0, 0.056, 0.067, 2.2),
-         (SZ + 0.108, -0.021, 0, 0.051, 0.056, 2.1)]
+         (SZ + 0.0745, -0.016, 0, 0.071, 0.139, 2.6),
+         (SZ + 0.09, -0.018, 0, 0.063, 0.10, 2.3),
+         (SZ + 0.0995, -0.020, 0, 0.058, 0.075, 2.2),
+         (SZ + 0.107, -0.021, 0, 0.051, 0.056, 2.1)]
+# Iteration 39 (user: Figure keeps its actuators further in, ours sit outside the torso; numbers agreed: the RS06 roll spanned y 0.161-0.249 and the torso ended at 0.165). Pitch
+# 30 mm in (0.115 to 0.085), roll axis 30 mm in (0.205 to 0.175), the arm's centre line stays at SY through an offset in the roll link. The motor now lies under the skin.
+PITCH_Y, ROLL_Y = 0.085, 0.175
+# The yoke's outline from the front: its outer edge at each height, on the line above, round into the arm's outside (0.249), its inner edge hidden in the torso; depth from the arm's
+# (Figure about 11 cm) to the top. (z from SZ, outer y, inner y, half depth.) RS06 turns at r 0.051: at rest it has the allowance; turned by pitch the skin must give, not tested
+YOKE = [(-0.072, 0.212, 0.172, 0.02), (-0.06, 0.232, 0.155, 0.042), (-0.03, 0.249, 0.12, 0.062), (0.0, 0.2485, 0.11, 0.066), (0.02, 0.243, 0.11, 0.0645),
+        (0.04, 0.225, 0.11, 0.06), (0.055, 0.19, 0.11, 0.05), (0.0655, 0.16, 0.11, 0.035), (0.0745, 0.14, 0.11, 0.018)]
 BATT_TOP = SZ - 0.065           # level with the shoulder pitch actuators' bottoms (they sit outboard of it)
 link('torso', 19.96, [
     span('waist hub', WY + 0.03, HEM - 0.025, sx=0.10, sy=0.10, f=0.008),
@@ -284,7 +299,7 @@ link('torso', 19.96, [
          open=('bottom',)),
     loft('torso rim', [(HEM - 0.035, 0, 0, 0.080, 0.094, 2.6), (HEM - 0.015, 0, 0, 0.095, 0.116, 2.9),
                        (HEM + 0.005, 0, 0, 0.0985, 0.1225, 3.0)], GLOSS, open=('top',)),
-    loft('torso', TORSO),
+    loft('torso', TORSO, GREY, 'knit'),
     # Figure 03's pack is 2.3 kWh (figure.ai F.03 battery, 5 h at peak); at 175 Wh/kg for a cell pack with BMS and
     # case, 13.1 kg (it was 12.1 kg, 2 kWh: the hand mass budget's balance)
     # iteration 36: 13.1 kg at 2500 kg/m3 is 5.24 L; the box was 3.3 L (3970 kg/m3, denser than a cell). Two boxes, as the
@@ -294,41 +309,27 @@ link('torso', 19.96, [
     span('battery lower', BATT_TOP - 0.235, BATT_TOP - 0.13 + 0.001, x=-0.01, sx=0.14, sy=0.131, f=0.01, color=CELL, mass=4.83),
     # 7075 frame: hub -> spine -> battery (stressed enclosure) -> shoulder beam -> neck post
     span('spine', HEM - 0.035, BATT_TOP - 0.23, sx=0.06, sy=0.06, f=0.006),
-    rbox('shoulder beam', (-0.02, 0, SZ - 0.045), (0.05, 0.20, 0.05), 0.006),
+    # iteration 39: the pitch motors 30 mm in, their back faces at y +-57: the beam now meets those faces, 114 wide, tall and deep enough to take a d120 back
+    rbox('shoulder beam', (-0.005, 0, SZ - 0.015), (0.10, 0.118, 0.09), 0.006, fill=0.12),
     span('neck post', SZ - 0.035, NZ - 0.02, x=NX, f=0.006),
     # compute (a Jetson-class module, carrier and heat sink), iteration 36: 1.6 kg at 1500 kg/m3 is 1.07 L; the box was
     # 0.42 L. In front of the battery, behind the chest: above it the torso's slope and the neck motor leave no room
-    rbox('compute', (0.071, 0, 1.31), (0.054, 0.17, 0.116), 0.004, '#2A2C30', mass=1.6, material='electronics'),
+    # iteration 39: 2.2 cm lower: its top corner met the pitch motors where they moved in (same link, so no check sees it; computed by hand: at x 44 the motor's circle
+    # reaches z 1.349, the box now tops out at 1.346)
+    rbox('compute', (0.071, 0, 1.288), (0.054, 0.17, 0.116), 0.004, '#2A2C30', mass=1.6, material='electronics'),
     rbox('chest light', (front_x(TORSO, 0, SZ - 0.01) + 0.0006 - 0.002, 0, SZ - 0.01), (0.004, 0.04, 0.006),
          0.0015, ACCENT, 'decal'),
     # our mark on the chest, below the light bar (dark grey on the grey knit); not Figure's logo
     *tri_mark('chest mark', TORSO, SZ - 0.055, 0.034, '#34373B'),
-    # clearance (iteration 17): openings the neck and the shoulder caps turn in, 3-5 mm clear of them
-    # iteration 18: the neck opening is 3 mm round the neck tilted through its range (it tilts at its base now),
-    # computed from the swept neck; the ring round the neck is 9 mm at the collar
-    cut(revolve('torso neck opening', 'z', (NX, 0, 0),
-                [(1.4725, 0.0), (1.4727, 0.0386), (1.475, 0.0401), (1.48, 0.0425), (1.485, 0.0449), (1.49, 0.0472),
-                 (1.495, 0.0503), (1.50, 0.0539), (1.505, 0.0576), (1.5052, 0.0)]), 'torso'),
-    cut(revolve('L torso shoulder opening', 'y', (0, 0, SZ), [(0.118, 0.0), (0.1182, 0.0615), (0.165, 0.0615),
-                                                            (0.1652, 0.0)]), 'torso'),
-    cut(revolve('R torso shoulder opening', 'y', (0, 0, SZ), [(-0.1652, 0.0), (-0.165, 0.0615), (-0.1182, 0.0615),
-                                                            (-0.118, 0.0)]), 'torso'),
-    # iteration 31: what shows in the 4 mm gap round the cap was the black motor, a dark ring that drew the cap as a circle
-    # (Figure has a sleeve seam): a grey liner behind the gap, so the seam reads as a shadow line, not a band
-    dict(cyl('L torso shoulder liner', (0, 0.1465, SZ), 'y', 0.0625, 0.002, GREY, 'decal'), material='pa12'),
-    dict(cyl('R torso shoulder liner', (0, -0.1465, SZ), 'y', 0.0625, 0.002, GREY, 'decal'), material='pa12'),
-    *[dict(cyl(f'{p} torso shoulder ring', (0, y * 0.149, SZ), 'y', 0.0585, 0.006, GREY, 'decal'), material='knit', mass=0.005) for p, y in (('L', 1), ('R', -1))],
-    *[cut(cyl(f'{p} torso shoulder ring hole', (0, y * 0.149, SZ), 'y', 0.042, 0.008), f'{p} torso shoulder ring') for p, y in (('L', 1), ('R', -1))],
-    cut(cyl('L torso liner hole', (0, 0.1465, SZ), 'y', 0.042, 0.004), 'L torso shoulder liner'),
-    cut(cyl('R torso liner hole', (0, -0.1465, SZ), 'y', 0.042, 0.004), 'R torso shoulder liner'),
+    # the yokes: where the torso's skin runs out over the shoulder motors. Round about the pitch axis, so the roll motor turns inside them
+    *[loft(f'{p} shoulder yoke', [(SZ + z, -0.005, k * (o + n) / 2, d, (o - n) / 2, 2.25) for z, o, n, d in YOKE], GREY, 'knit', open=()) | dict(mass=0.14) for p, k in (('L', 1), ('R', -1))],
 ], 'battery 13.1 kg (2.3 kWh, as Figure 03), compute, shoulder pitch and neck yaw actuators')
 
 # iteration 37 (close-up audit: Figure's neck runs down in one concave line into the shoulders; ours stood on a shelf in a collar). A knit
 # flare on the torso, from inside its top up round the neck. Role decal: soft, the rigid checks do not see it; the neck turns inside it.
-LINKS['torso']['geoms'].append(dict(loft('neck flare', [
+LINKS['torso']['geoms'].append(loft('neck flare', [
     (SZ + 0.092, -0.019, 0, 0.057, 0.083, 2.3), (SZ + 0.100, -0.020, 0, 0.0555, 0.073, 2.2), (SZ + 0.112, -0.021, 0, 0.0505, 0.060, 2.1),
-    (SZ + 0.125, -0.021, 0, 0.0475, 0.0505, 2.0), (SZ + 0.14, -0.020, 0, 0.046, 0.046, 2.0)], GREY, 'decal', open=()), material='knit'))
-LINKS['torso']['geoms'].append(cut(cyl('neck flare bore', (NX, 0, SZ + 0.12), 'z', 0.036, 0.12), 'neck flare'))   # the neck runs through it
+    (SZ + 0.125, -0.021, 0, 0.0475, 0.0505, 2.0), (SZ + 0.14, -0.020, 0, 0.046, 0.046, 2.0)], GREY, 'knit', open=()))
 joint('neck_yaw', 'torso', 'neck_yaw_link', (NX, 0, NZ), 'z', (-1.4, 1.4), 'RS00', out=+1)
 link('neck_yaw_link', 0.45, [
     # iteration 18: only a post from the yaw flange up 2.5 mm into the pitch actuator; slim, because the neck's
@@ -381,7 +382,7 @@ link('head', 1.95, [
     *camera_port('brow camera', VISOR, CHIN + 0.143, 0.0085),
     *camera_port('chin camera', VISOR, CHIN + 0.025, 0.0075),
     *tri_mark('face mark', VISOR, CHIN + 0.083, 0.03, '#F4F6F8'),
-    loft('neck', NECK),
+    loft('neck', NECK, GREY, 'knit'),
     # cameras, mics, the face display: behind the visor, on the head frame
     rbox('head electronics', (0.035, 0, CHIN + 0.09), (0.07, 0.08, 0.07), 0.006, '#2A2C30', mass=0.3,
          material='electronics'),
@@ -480,89 +481,49 @@ def elbow_ray(deg, r=0.1):
 
 
 # exposed (iteration 17): the actuator's face shows dark in the gap round the cap, in the torso's side opening
-joint('L_shoulder_pitch', 'torso', 'L_shoulder_pitch_link', (0, 0.115, SZ), 'y', (-3.0, 1.0), 'RS04', out=+1,
-      exposed=True)
+joint('L_shoulder_pitch', 'torso', 'L_shoulder_pitch_link', (0, PITCH_Y, SZ), 'y', (-3.0, 1.0), 'RS04', out=+1)
 link('L_shoulder_pitch_link', 0.99, [
-    # iteration 9 (user review): a deltoid, not a ball: round about the pitch axis (so it never sweeps), full from
-    # the torso side, flat on top, rounding off at the outer end; just big enough for the roll actuator inside.
-    # Iteration 10: with the RS06 roll actuator it is only 7 mm proud of the upper arm.
-    # Iteration 11 (still read as a drum): no waist at the inner end (it starts at full radius, hidden in the
-    # torso's side), as deep as the new upper arm, so from the side the arm runs up into it in one line
-    # iteration 17: starts 7 mm past the pitch actuator's face (it overlapped it), in the torso's side opening
-    # iteration 18 (shoulder roll swept with the covers): the outer end is a hemisphere about the shoulder centre,
-    # where the roll axis crosses the pitch axis, so the arm's top can turn round it
-    revolve('L shoulder cap', 'y', (0, 0, SZ),
-            [(0.150, 0.0), (0.1502, 0.054), (0.156, 0.0565), (0.172, 0.0575), (SY, CAP_R)] +
-            [(SY + d, (CAP_R ** 2 - d ** 2) ** 0.5) for d in (0.01, 0.02, 0.03, 0.04, 0.047, 0.052, 0.0555)] +
-            [(SY + CAP_R, 0.0)]),
-    rbox('L shoulder bracket', (0, 0.155, SZ), (0.036, 0.018, 0.036), 0.004, exposed=True),
-    # the roll output's axle leaves through the back of the cap on the roll axis (a hole there never sweeps)
-    cut(cyl('L shoulder cap hole', (-0.0575, SY, SZ), 'x', 0.016, 0.014), 'L shoulder cap'),
+    # iteration 39: no cap: from the pitch flange (y 0.113-0.119) a block to the side of the RS06, which now lies under the yoke; and a post on its front face, for the roll
+    # fork's second bearing
+    rbox('L shoulder bracket', (0, 0.1245, SZ), (0.036, 0.023, 0.036), 0.004),
+    dict(cyl('L shoulder roll post', (0.0325, ROLL_Y, SZ), 'x', 0.012, 0.015, BLACK)),
 ])
 # shoulder roll: RS06 (88 mm) rather than RS03 (106 mm) so the shoulder cap can be small (user, 2026-10-31: smaller
 # actuators at the cost of holding capacity). An arm held straight out sideways is a short move, not a pose to hold.
 # iteration 18: 150 deg up (2.8 swept the arm's outer top into the cap's top at full height; AgiBot A3 stops at 150,
 # Asimov 1 at 90); output on the back face, so the bracket runs behind the cap instead of through it
-joint('L_shoulder_roll', 'L_shoulder_pitch_link', 'L_shoulder_roll_link', (0, SY, SZ), 'x', (-0.05, 2.6), 'RS06',
+joint('L_shoulder_roll', 'L_shoulder_pitch_link', 'L_shoulder_roll_link', (0, ROLL_Y, SZ), 'x', (-0.05, 2.6), 'RS06',
       out=-1)
 # Arms (iteration 11): oval like Figure's, deeper than wide (side frame: upper arm 0.11 deep, elbow disc 0.09;
 # front frame: 0.085 wide). Round 0.096 arms read thin from the side and wide from the front.
 link('L_shoulder_roll_link', 1.0, [
-    # flaring at the top into the shoulder cap (the deltoid), under the cap's outer end
-    # iteration 17: ends 6 mm above the lower upper arm (they overlapped), a seam at the shoulder yaw joint
-    # iteration 24 (round the elbow's lesson, bends seen from the same angle): a flat 6 mm seam here and at the wrist yaw
-    # let the background through in level views and read as a separate ring. The seam is now 3 mm, curved about the
-    # yaw axis: the lower arm's top a closed dome inside a sphere, this cover's end 3 mm outside it (a sphere on the
-    # axis maps onto itself as the arm yaws, and no straight line runs through a curved gap into a closed dome)
-    loft('L upper arm', [(SZ - 0.142, 0, SY, 0.053, 0.044, 2.2), (SZ - 0.114, 0, SY, 0.053, 0.044, 2.2),
-                         (SZ - 0.075, 0, SY, 0.055, 0.045, 2.2),
-                         (SZ - 0.035, 0, SY, 0.0545, 0.047, 2.2), (SZ - 0.008, 0, SY, 0.0505, 0.052, 2.3)]),
-    # iteration 18: its top is a socket round the cap, 4 mm clear of it: a sphere about the shoulder centre under
-    # the hemispherical end, a cylinder about the pitch axis under the rest
-    cut(ell('L upper arm socket', (0, SY, SZ), (CAP_R + 0.004,) * 3), 'L upper arm'),
-    cut(ell('L upper arm seam', ARM_YAW_C, (ARM_YAW_R + 0.003,) * 3), 'L upper arm'),
-    cut(cyl('L upper arm socket in', (0, 0.17, SZ), 'y', CAP_R + 0.004, 0.07), 'L upper arm'),
-    # from the roll flange on the back face: an axle out through the cap's hole, a short lug down behind the cap,
-    # a step into the sleeve just under the cap (16 deg clear of the cap's sweep), a foot onto the yaw actuator
-    dict(cyl('L shoulder roll axle', (-0.0465, SY, SZ), 'x', 0.011, 0.036, GREY), exposed=True),   # iteration 31: grey, in the gap
-    rbox('L shoulder roll lug', (-0.064, SY, SZ - 0.0195), (0.006, 0.02, 0.065), 0.002, BLACK, exposed=True),
-    rbox('L shoulder roll step', (-0.0555, SY, SZ - 0.048), (0.023, 0.02, 0.008), 0.002, BLACK, exposed=True),
-    rbox('L shoulder roll foot', (-0.0435, SY, SZ - 0.07), (0.013, 0.02, 0.04), 0.002, BLACK),
+    # iteration 39: the sleeve. Figure's arm in the side frame about 11 cm deep; this one 11, then it leans in under the yoke toward the roll axis, its head a dome that stays there as
+    # the arm rolls (the skin between them is what stretches). The crease where sleeve and yoke cross is the raglan seam's line.
+    loft('L upper arm', [(SZ - 0.15, 0, SY, 0.053, 0.044, 2.2), (SZ - 0.114, 0, SY, 0.053, 0.044, 2.2), (SZ - 0.075, 0, SY, 0.055, 0.045, 2.2),
+                         (SZ - 0.04, -0.001, SY - 0.001, 0.0555, 0.046, 2.2), (SZ - 0.015, -0.001, SY - 0.006, 0.053, 0.047, 2.2),
+                         (SZ + 0.005, 0, SY - 0.01, 0.04, 0.036, 2.1), (SZ + 0.015, 0, SY - 0.012, 0.015, 0.015, 2.0)],
+         GREY, 'knit', open=()),
+    # the fork round the RS06, a plate each side and a bridge under it: rear on the output flange, front on a bearing round the post. The offset from the roll axis to the arm's line
+    # is in these plates, 75 wide x 95 tall x 6 (a hand estimate is still to do). They carry the yaw motor, which they run onto
+    dict(cyl('L shoulder roll axle', (-0.0325, ROLL_Y, SZ), 'x', 0.011, 0.011, BLACK)),
+    rbox('L shoulder roll plate back', (-0.034, 0.19, SZ - 0.011), (0.006, 0.064, 0.058), 0.002, BLACK),
+    rbox('L shoulder roll plate front', (0.034, 0.19, SZ - 0.011), (0.006, 0.064, 0.058), 0.002, BLACK),
+    rbox('L shoulder roll plate back low', (-0.034, 0.197, SZ - 0.0575), (0.006, 0.05, 0.035), 0.002, BLACK),
+    rbox('L shoulder roll plate front low', (0.034, 0.197, SZ - 0.0575), (0.006, 0.05, 0.035), 0.002, BLACK),
+    cut(cyl('L shoulder roll bearing bore', (0.034, ROLL_Y, SZ), 'x', 0.0135, 0.01), 'L shoulder roll plate front'),
+    rbox('L shoulder roll bridge', (0, 0.2, SZ - 0.055), (0.074, 0.05, 0.01), 0.002, BLACK),
 ])
-# iteration 37 (close-up audit: Figure's shoulder is one knit sleeve, no ball, no ring, no tab; ours showed a ball in a ring with a dark
-# crescent, and the roll fairing as a hook behind it). A knit dome on the arm over all three, into the torso's side.
-# Role decal: soft, the rigid checks do not see it; at high roll the real sleeve must bunch against the torso, untested.
-# Iteration 38 (review: a club, wider than before). Its outside stays on the old cap's (0.2625 from the centre), it grows out of the arm over 11 cm with
-# no ring at its lower end (it starts inside the arm), and its top leans in to the torso's slope.
-LINKS['L_shoulder_roll_link']['geoms'].append(dict(loft('L shoulder sleeve', [
-    (SZ - 0.114, 0.0, SY, 0.052, 0.043, 2.3), (SZ - 0.09, -0.003, SY - 0.003, 0.056, 0.049, 2.35), (SZ - 0.06, -0.0065, SY - 0.007, 0.0605, 0.0555, 2.35),
-    (SZ - 0.03, -0.0065, SY - 0.008, 0.0635, 0.061, 2.35), (SZ, -0.0055, SY - 0.008, 0.066, 0.0655, 2.35), (SZ + 0.025, -0.005, SY - 0.0095, 0.0625, 0.0655, 2.3),
-    (SZ + 0.045, -0.005, SY - 0.02, 0.054, 0.064, 2.15), (SZ + 0.057, -0.005, SY - 0.035, 0.04, 0.060, 2.0), (SZ + 0.065, -0.005, SY - 0.05, 0.018, 0.04, 2.0)],
-    GREY, 'decal', open=()), material='knit'))
 joint('L_shoulder_yaw', 'L_shoulder_roll_link', 'L_shoulder_yaw_link', (0, SY, SZ - 0.12), 'z', (-2.6, 2.6),
       'RS02', act_c=(0, SY, SZ - 0.09), out=-1, exposed='flange')   # its flange shows in the seam
-ARM_LOW = [(EZ - 0.02, 0, SY, ELBOW_A, 0.0425, 4.0), (EZ + 0.05, 0, SY, ELBOW_A, 0.043, 4.0),
-           (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.110, 0, SY, 0.053, 0.044, 2.2)]
+# iteration 39 (garment): the skin narrows smoothly to the hub's inner face and back; no socket, drum, hem or fold plane
+ELBOW_NECK = 0.0377
+ARM_LOW = [(EZ - 0.02, 0, SY, 0.052, ELBOW_NECK, 6.0), (EZ + 0.04, 0, SY, 0.0525, ELBOW_NECK, 5.0), (EZ + 0.059, 0, SY, 0.053, 0.039, 4.0),
+           (EZ + 0.072, 0, SY, 0.0535, 0.0415, 3.0), (EZ + 0.085, 0, SY, 0.053, 0.043, 2.2), (SZ - 0.090, 0, SY, 0.053, 0.044, 2.2)]
 link('L_shoulder_yaw_link', 1.05, [
-    # squarer at the elbow (n 4): flat sides under the pad, as Figure's. Iteration 23: ends in a hem and a socket round
-    # the forearm's drum; a plane stops the socket's tail where it would thin to nothing behind the elbow
-    loft('L upper arm lower', ARM_LOW,
-         open=('bottom',), clip=above((-1.0, EZ + 0.02), (1.0, EZ + 0.02)), keep=(ARM_YAW_C, ARM_YAW_R)),
-    cut(cyl('L upper arm elbow socket', (0, SY, EZ), 'y', ELBOW_A, 2 * (ELBOW_CHEEK_Y + 0.0015)), 'L upper arm lower'),
-    # in front of where the tangent plane meets the socket (91 deg), everything below the plane
+    loft('L upper arm lower', ARM_LOW, GREY, 'knit', open=(), clip=above((-1.0, EZ + 0.003), (1.0, EZ + 0.003))),
     cut(loft('L upper arm fold', [(EZ - 0.06, 0, SY, 0.1, 0.06, 8.0), (EZ + 0.12, 0, SY, 0.1, 0.06, 8.0)],
              clip=[below(*FOLD), above(elbow_ray(271.4), elbow_ray(91.4))]), 'L upper arm lower'),
-    # the sides stop over the hub
-    cut(rbox('L upper arm side in', (0, SY - 0.0615, EZ - 0.0185), (0.2, 0.05, 0.163), 0.0005), 'L upper arm lower', 'L elbow panel'),
-    cut(rbox('L upper arm side out', (0, SY + 0.0615, EZ - 0.0185), (0.2, 0.05, 0.163), 0.0005), 'L upper arm lower', 'L elbow panel'),
-    # knit: the panel closes the fold, the hem wraps the hub's top, both the arm's own surface (role decal: soft, the rigid checks do not see them)
-    dict(loft('L elbow panel', ARM_LOW, GREY, 'decal', open=(),
-              clip=[below(*up(FOLD, 0.003)), above(*up((elbow_ray(271.4), elbow_ray(91.4)), -0.003)), above((-1.0, EZ), (1.0, EZ))], keep=(ARM_YAW_C, ARM_YAW_R)), material='knit'),
-    cut(cyl('L elbow panel drum', (0, SY, EZ), 'y', ELBOW_R - 0.001, 0.12), 'L elbow panel'),
-    dict(loft('L elbow sleeve', ARM_LOW, GREY, 'decal', open=(),
-              clip=[above((-1.0, EZ + 0.018), (1.0, EZ + 0.018)), below((-1.0, EZ + ELBOW_HEM + 0.001), (1.0, EZ + ELBOW_HEM + 0.001))]), material='knit'),
-    cut(hub_clearance('L elbow sleeve hub', EZ, SY, ELBOW_HUB_TOP, ELBOW_HUB_BOT, ELBOW_HUB_HALF, 0.003), 'L elbow sleeve'),
-    cut(cyl('L elbow sleeve neck', (0, SY, EZ), 'y', ELBOW_A, 2 * (ELBOW_CHEEK_Y + 0.002)), 'L elbow sleeve'),
+    loft('L elbow gaiter', ARM_LOW, GREY, 'knit', open=(), clip=[below(*up(FOLD, 0.003)), above(*up((elbow_ray(271.4), elbow_ray(91.4)), -0.003)), above((-1.0, EZ + 0.003), (1.0, EZ + 0.003))]),
     span('L upper arm frame', EZ + 0.066, SZ - 0.115, y=SY, sx=0.03, sy=0.03, exposed=True),
     # the output: a bridge from the frame to a cheek each side, in the band between neck and hub (3 mm 7075, 4.6 cm wide round the bore: at the
     # actuator's peak 36 N m about 127 MPa, a hand estimate, scaling the 4 mm figure; 7075-T6 yields near 500). The inner is bolted to
@@ -573,7 +534,8 @@ link('L_shoulder_yaw_link', 1.05, [
     dict(cyl('L elbow cheek disc in', (0, SY - ELBOW_CHEEK_Y, EZ), 'y', 0.040, 0.003, BLACK), exposed=True),
     dict(cyl('L elbow cheek disc out', (0, SY + ELBOW_CHEEK_Y, EZ), 'y', 0.040, 0.003, BLACK), exposed=True),
     cut(cyl('L elbow cheek bearing bore', (0, SY + ELBOW_CHEEK_Y, EZ), 'y', 0.0195, 0.01), 'L elbow cheek disc out'),
-    dict(cyl('L elbow axle', (0, SY - 0.03575, EZ), 'y', 0.017, 0.0175, BLACK), exposed=True),
+    dict(cyl('L elbow axle', (0, SY - 0.0313, EZ), 'y', 0.017, 0.0048, BLACK), exposed=True),
+    cut(cyl('L elbow cheek idler bore', (0, SY - ELBOW_CHEEK_Y, EZ), 'y', 0.0115, 0.01), 'L elbow cheek disc in'),
 ])
 # Elbow: RS06 (88 mm), the size of Figure's elbow disc. User decision 2026-10-31: smaller elbows at the cost of
 # holding capacity (RS04 120 mm carried 20 kg short / 10 kg continuous; RS06 carries about 10 kg short / 4 kg
@@ -584,28 +546,19 @@ link('L_shoulder_yaw_link', 1.05, [
 joint('L_elbow', 'L_shoulder_yaw_link', 'L_elbow_link', (0, SY, EZ), 'y', (-1.9, 0.0), 'RS06', act_c=(0, SY + 0.00075, EZ), out=-1,
       stator_on_child=True)
 link('L_elbow_link', 0.85, [
-    # no narrower than 0.085 across: the wrist yaw RS02 (79 mm) sits in the lower forearm
-    # iteration 17: ends 6 mm above the lower forearm (a seam at the wrist yaw joint)
-    # iteration 23: narrowing to the neck under the pads, up to the drum; the wrist yaw RS02 keeps its 3 mm at -0.07
-    loft('L forearm', [(EZ - 0.146, 0, SY, 0.0445, 0.0415, 2.2), (EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2),
-                       (EZ - 0.07, 0, SY, 0.048, 0.0428, 2.2),
-                       (EZ - 0.060, 0, SY, 0.048, 0.0405, 3.0), (EZ - 0.051, 0, SY, 0.048, 0.0377, 4.0), (EZ - 0.0425, 0, SY, 0.048, ELBOW_W + 0.0003, 5.0), (EZ - 0.022, 0, SY, 0.0485, ELBOW_W, 5.0),
-                       (EZ - 0.008, 0, SY, 0.0488, ELBOW_W, 12.0), (EZ, 0, SY, ELBOW_R - 0.0005, ELBOW_W, 16.0)]),   # 0.5 mm inside the drum: no coincident faces
-    cut(ell('L forearm seam', WRIST_YAW_C, (WRIST_YAW_R + 0.003,) * 3), 'L forearm'),   # iteration 24: as the upper arm's
-    # the upper half of the drum (the lower half would only be a wall inside the forearm)
-    cyl('L forearm drum', (0, SY, EZ), 'y', ELBOW_R, 2 * ELBOW_W, GREY, 'shell'),
-    cut(rbox('L forearm drum lower', (0, SY, EZ - 0.056), (0.12, 0.1, 0.1), 0.001), 'L forearm drum'),
-    cut(cyl('L forearm axle hole in', (0, SY - ELBOW_W - 0.003, EZ), 'y', 0.02, 0.012), 'L forearm drum', 'L forearm'),
-    cut(cyl('L forearm axle hole out', (0, SY + ELBOW_W + 0.003, EZ), 'y', 0.02, 0.012), 'L forearm drum', 'L forearm'),
+    # iteration 39 (garment): one surface to the hub's inner face; a disc round the axis, so the outside of the bend stays round. The skin overlaps the lower forearm's, no seam line
+    loft('L forearm', [(EZ - 0.16, 0, SY, 0.0445, 0.0415, 2.2), (EZ - 0.119, 0, SY, 0.045, 0.0425, 2.2), (EZ - 0.072, 0, SY, 0.048, 0.0428, 2.2),
+                       (EZ - 0.062, 0, SY, 0.048, 0.0405, 3.0), (EZ - 0.05, 0, SY, 0.0485, 0.0385, 4.0), (EZ - 0.04, 0, SY, 0.0485, ELBOW_NECK, 5.0),
+                       (EZ - 0.022, 0, SY, 0.049, ELBOW_NECK, 6.0), (EZ - 0.008, 0, SY, 0.05, ELBOW_NECK, 12.0), (EZ, 0, SY, 0.051, ELBOW_NECK, 16.0)], GREY, 'knit', open=()),
+    cyl('L forearm disc', (0, SY, EZ), 'y', 0.0515, 2 * ELBOW_NECK, GREY, 'knit'),
     # the hubs: on the outside a cap on the stator's back, by the post; inside the idler, carried from the frame under the motor
     dict(joint_hub('L elbow hub in', -1, EZ, SY, ELBOW_HUB_TOP, ELBOW_HUB_BOT, ELBOW_HUB_HALF, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
     dict(joint_hub('L elbow hub out', +1, EZ, SY, ELBOW_HUB_TOP, ELBOW_HUB_BOT, ELBOW_HUB_HALF, ELBOW_HUB_IN, ELBOW_HUB_OUT), material='al7075'),
-    cut(cyl('L elbow hub idler bore', (0, SY - ELBOW_HUB_IN, EZ), 'y', 0.0185, 0.016), 'L elbow hub in'),
+    dict(cyl('L elbow idler stub', (0, SY - 0.0375, EZ), 'y', 0.010, 0.007, BLACK), exposed=True),
+    rbox('L elbow idler arm', (0, SY - 0.0395, EZ - 0.028), (0.012, 0.004, 0.05), 0.001, BLACK, exposed=True),
     *[g for sd, y in (('in', -1), ('out', +1)) for g in (
         cyl(f'L elbow hub ring {sd}', (0, SY + y * ELBOW_HUB_OUT, EZ), 'y', 0.034, 0.002, '#2A2C30', 'decal'),
         cyl(f'L elbow hub face {sd}', (0, SY + y * (ELBOW_HUB_OUT + 0.0003), EZ), 'y', 0.032, 0.002, GLOSS, 'decal'))],
-    *[dict(cyl(f'L elbow hub seal {sd}', (0, SY + y * 0.0355, EZ), 'y', 0.0405, 0.006, BLACK, 'decal'), material='pa12', mass=0.008) for sd, y in (('in', -1), ('out', +1))],
-    *[cut(cyl(f'L elbow hub seal bore {sd}', (0, SY + y * 0.0355, EZ), 'y', 0.0205, 0.008), f'L elbow hub seal {sd}') for sd, y in (('in', -1), ('out', +1))],
     dict(cyl('L elbow post', (0, SY + 0.03325, EZ), 'y', 0.017, 0.0145, BLACK), exposed=True),
     rbox('L elbow under motor', (0, SY - 0.005, EZ - 0.052), (0.03, 0.071, 0.008), 0.002, BLACK, exposed=True),
     # side plate from the stator's back down onto the wrist yaw actuator
@@ -615,8 +568,8 @@ joint('L_wrist_yaw', 'L_elbow_link', 'L_wrist_yaw_link', (0, SY, EZ - 0.125), 'z
       act_c=(0, SY, EZ - 0.095), out=-1, exposed='flange')   # its flange shows in the seam
 link('L_wrist_yaw_link', 0.6, [
     loft('L forearm lower', [(WZ + 0.025, 0, SY, 0.034, 0.032, 2.2), (WZ + 0.045, 0, SY, 0.037, 0.034, 2.2),
-                             (EZ - 0.125, 0, SY, 0.044, 0.041, 2.2), (EZ - 0.112, 0, SY, 0.044, 0.041, 2.2)],
-         open=('bottom',), keep=(WRIST_YAW_C, WRIST_YAW_R)),
+                             (EZ - 0.125, 0, SY, 0.044, 0.041, 2.2), (EZ - 0.112, 0, SY, 0.0445, 0.042, 2.2)],
+         GREY, 'knit', open=('bottom',)),
     # from just over the wrist pitch actuator up into the wrist yaw flange (clear of the yaw actuator)
     span('L forearm lower frame', WZ + 0.027, EZ - 0.1185, y=SY, sx=0.03, sy=0.024, exposed=True),   # 24 wide: clear of the wrist housing at 0.9 rad
     # Figure's black wrist cuff, over the wrist pitch actuator (iteration 4)
@@ -825,10 +778,11 @@ def pitch_sweep(name):
 # (the rounded hip lobe meets the waist column; walking needs ~0.2): a little range traded for Figure's hip shape
 # iteration 17: extension 0.24 (the hip roll actuator met the pelvis block at 0.257 once the lobe stopped hiding it);
 # the pitch actuator shows black between the pelvis block and the lobe, as on Figure
-THIGH_LOW = [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, 0.0605, 4.0), (KZ + 0.03, 0.0, HY, KNEE_SOCKET, 0.0605, 4.0),
-             # iteration 36: the back line straight down again (it bent in here for the hard thigh's corner); the knit panel
-             # takes the same surface past the fold plane
-             (KZ + 0.10, -0.0051, HY, 0.0721, 0.0625, 3.0), (KZ + 0.125, -0.0060, HY, 0.0735, 0.0645, 2.9),
+# iteration 39 (garment): from the full thigh the skin narrows smoothly to the hub's inner face (82 wide: motor stack, walls, cheeks; Figure's about 66). No socket, fold plane or hem
+KNEE_NECK = 0.0412
+THIGH_LOW = [(KZ - 0.04, 0.0, HY, KNEE_SOCKET, KNEE_NECK, 6.0), (KZ + 0.04, 0.0, HY, KNEE_SOCKET, KNEE_NECK, 5.0), (KZ + 0.052, -0.001, HY, 0.0715, 0.0425, 4.5),
+             (KZ + 0.066, -0.002, HY, 0.072, 0.047, 3.6), (KZ + 0.082, -0.0035, HY, 0.0725, 0.055, 3.2),
+             (KZ + 0.10, -0.0051, HY, 0.0721, 0.0615, 3.0), (KZ + 0.125, -0.0060, HY, 0.0735, 0.0645, 2.9),
              (KZ + 0.16, -0.0071, HY, 0.0756, 0.066, 2.6)]
 # iteration 38: one list, for the thigh and the knit parts cut from the same surface
 THIGH_SECS = THIGH_LOW + [(KZ + 0.19, -0.008, HY, 0.0775, 0.070, 2.4), (HZ - 0.15, -0.024, HY, 0.090, 0.070, 2.4),
@@ -897,32 +851,21 @@ link('L_hip_yaw_link', 3.6, [
     # iteration 35 (user: the thigh's back shows a corner and a notch, from holding 2.15 rad). The fold plane cannot move
     # at this range: it is where the calf's back face lands. What can go is the corner: the back line bends in over its
     # last 7 cm, so the plane meets it at about 30 deg, not 49, and the corner sits 1 cm lower; 13 cm deep there
-    loft('L thigh', THIGH_SECS,
+    loft('L thigh', THIGH_SECS, GREY, 'knit',
          # iteration 21: up to 3 mm under the hip lobe (the yaw turns it under the lobe); iteration 25: dished
          # iteration 26: flat sides at the knee (n 4) for the pads; the socket's tail stops where it would thin out
-         clip=above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), open=('bottom',)),
+         clip=above((-1.0, KZ + 0.003), (1.0, KZ + 0.003)), open=()),
     cut(ell('L thigh bowl', HIP_DOME_C, (HIP_DOME_R + 0.003,) * 3), 'L thigh'),
     # round the hip yaw actuator and the crown on it (they turn in it), 3 mm clear
     cut(cyl('L thigh top opening', (0, HY, HIP_SEAM - 0.006), 'z', 0.056, 0.032), 'L thigh'),
-    # iteration 36: only between the hubs: outside them the thigh's sides stop at KNEE_HEM, the sleeve below that
-    cut(cyl('L thigh knee socket', (0, HY, KZ), 'y', KNEE_SOCKET, 2 * 0.0405), 'L thigh'),
+    # panels, not one jumpsuit (reports/garment_options.md): the thigh's panel stops at the fold plane behind the knee; a small gaiter closes from there to the shank's
     cut(loft('L thigh fold', [(KZ - 0.06, -0.05, HY, 0.1, 0.09, 8.0), (KZ + 0.2, -0.05, HY, 0.1, 0.09, 8.0)],
              clip=[below(*KNEE_FOLD), above(knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG))]), 'L thigh'),
-    # iteration 36: the thigh's sides stop over the hub; the knit panel closes what the fold plane took from the back
-    cut(rbox('L thigh side in', (0, HY - 0.0655, KZ - 0.025), (0.3, 0.05, 2 * 0.095), 0.0005), 'L thigh', 'L knee panel'),
-    cut(rbox('L thigh side out', (0, HY + 0.0655, KZ - 0.025), (0.3, 0.05, 2 * 0.095), 0.0005), 'L thigh', 'L knee panel'),
-    # iteration 38 (the dark sliver over the hub was the outer cheek, read off a part-ID render: seen through a lens between the thigh's fold
-    # cut and a panel on slightly different sections, its clip planes on the same lines). The panel is the thigh's own surface now, its planes
-    # 3 mm past the cut, so they lap
-    dict(loft('L knee panel', THIGH_SECS, GREY, 'decal', open=(),
-              clip=[below(*up(KNEE_FOLD, 0.003)), above(*up((knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG)), -0.003)), above((-1.0, KZ), (1.0, KZ))]),
-         material='knit'),
-    cut(cyl('L knee panel drum', (0, HY, KZ), 'y', KNEE_R - 0.001, 0.16), 'L knee panel'),
-    # the hem, the same surface below the rigid sides, round the hub 3 mm clear
-    dict(loft('L knee sleeve', THIGH_SECS, GREY, 'decal', open=(),
-              clip=[above((-1.0, KZ + 0.02), (1.0, KZ + 0.02)), below((-1.0, KZ + KNEE_HEM + 0.001), (1.0, KZ + KNEE_HEM + 0.001))]), material='knit'),
-    cut(hub_clearance('L knee sleeve hub', KZ, HY, HUB_TOP, HUB_BOT, KNEE_HUB_HALF, 0.003), 'L knee sleeve'),
-    cut(cyl('L knee sleeve neck', (0, HY, KZ), 'y', KNEE_SOCKET, 2 * 0.0405), 'L knee sleeve'),
+    loft('L knee gaiter', THIGH_SECS, GREY, 'knit', open=(), clip=[below(*up(KNEE_FOLD, 0.003)), above(*up((knee_ray(KNEE_FOLD_DEG + 180), knee_ray(KNEE_FOLD_DEG)), -0.003)), above((-1.0, KZ + 0.003), (1.0, KZ + 0.003))]),
+    # the sewn lines (decals): across the knee's front, as Figure's seam; a crease over each hub
+    dict(loft('L knee seam', [(KZ + 0.0125, 0.001, HY, 0.0705, KNEE_NECK + 0.0003, 6.0), (KZ + 0.0145, 0.001, HY, 0.0705, KNEE_NECK + 0.0003, 6.0)], '#8E9297', 'decal', open=(), clip=ahead(0.005)), material='pa12', mass=0.002),
+    *[dict(loft(f'L thigh crease {sd}', [(KZ + dz, -0.004, HY + y * w, 0.0011, 0.0011, 2.0) for dz, w in ((0.068, 0.0478), (0.076, 0.0518), (0.084, 0.0560), (0.094, 0.0598), (0.104, 0.0620))],
+                  '#8E9297', 'decal', open=()), material='pa12', mass=0.001) for sd, y in (('in', -1), ('out', +1))],
     # in front (behind it the calf's ankle actuators fold up at deep knee bends); from the yoke, above the drum, up into the
     # hip yaw flange. Iteration 33: the frame no longer has a motor to pass through (it did, at x 12-36 mm, y +-40)
     span('L thigh frame', KZ + 0.074, HZ - 0.14, x=0.024, y=HY, sx=0.024, sy=0.08, color=BLACK, exposed=True),
@@ -938,7 +881,8 @@ link('L_hip_yaw_link', 3.6, [
     rbox('L knee cheek in top', (0.02, HY - CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
     rbox('L knee cheek out top', (0.02, HY + CHEEK_Y, KZ + 0.075), (0.04, 0.003, 0.036), 0.001, BLACK, exposed=True),
     # the axle: from the motor's output through the neck's wall and the inner cheek, into the inner hub on the idler bearing
-    dict(cyl('L knee axle in', (0, HY - 0.0395, KZ), 'y', 0.02, 0.021, BLACK), exposed=True),
+    dict(cyl('L knee axle in', (0, HY - 0.0332, KZ), 'y', 0.02, 0.0084, BLACK), exposed=True),
+    cut(cyl('L knee cheek idler bore', (0, HY - CHEEK_Y, KZ), 'y', 0.0135, 0.01), 'L knee cheek disc in'),
 ], 'the knee RS04 output: fork and axle; its stator rides on the shank')
 # flexion 2.15 rad (iteration 17: through the knee zone the calf meets the thigh at 2.2; the deep squat uses 2.0)
 joint('L_knee', 'L_hip_yaw_link', 'L_knee_link', (0, HY, KZ), 'y', (0.0, 2.15), 'RS04', act_c=(0, HY + 0.00265, KZ), out=-1,
@@ -1014,11 +958,11 @@ link('L_knee_link', 2.08, [
     # iteration 38 (review: an hourglass, daylight between chin and neck; Figure's front frame: full grey between the hubs, black ending about
     # 4.4 cm under the axis as the shank's side comes round it): full width up beside the chin, which sits in its side; the band closed from
     # there down, the cheeks fill it above
-    loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40, KZ - 0.09)] +
-         [(*shank_section(KZ - 0.072)[:4], 0.050, 3.4), (*shank_section(KZ - 0.061)[:4], 0.0412, 4.0), (*shank_section(KZ - 0.052)[:4], KNEE_W + 0.0003, 5.0),
-          (KZ - 0.03, -0.001, HY, 0.0635, KNEE_W, 5.0),
-          (KZ - 0.008, 0.0, HY, KNEE_R - 0.001, KNEE_W, 12.0), (KZ, 0.0, HY, KNEE_R - 0.0005, KNEE_W, 16.0)],
-         clip=above(*up(TRIM_HIGH, -0.002))),
+    loft('L shank', [shank_section(z) for z in (SHANK(0), 0.175, 0.214, 0.25, PITCH_Z, 0.35, 0.40)] +
+         [(*shank_section(KZ - 0.10)[:4], 0.053, 3.2), (*shank_section(KZ - 0.084)[:4], 0.047, 3.8), (*shank_section(KZ - 0.07)[:4], 0.0425, 4.5), (*shank_section(KZ - 0.055)[:4], KNEE_NECK, 5.0),
+          (KZ - 0.03, -0.001, HY, 0.0645, KNEE_NECK, 6.0),
+          (KZ - 0.008, 0.0, HY, 0.0655, KNEE_NECK, 12.0), (KZ, 0.0, HY, 0.0662, KNEE_NECK, 16.0)],
+         GREY, 'knit', open=(), clip=above(*up(TRIM_HIGH, -0.002))),
     loft('L ankle collar', [(0.11, -0.004, HY, 0.0395, 0.0465, 2.6), (0.15, -0.006, HY, 0.0455, 0.0470, 3.0),
                             (0.21, -0.0065, HY, 0.0505, 0.0505, 3.3)], BLACK,
          clip=[above(*TRIM_LOW), below(*TRIM_HIGH)]),
@@ -1026,15 +970,13 @@ link('L_knee_link', 2.08, [
     loft('L ankle sock', [(0.08, -0.013, HY, 0.048, 0.0470, 2.2), (0.105, -0.010, HY, 0.0455, 0.0460, 2.2),
                           (0.135, -0.005, HY, 0.0410, 0.0445, 2.2), (0.17, -0.004, HY, 0.0405, 0.0445, 2.2)], WHITE,
          clip=[above(*SOCK_LOW), below(*up(TRIM_LOW, 0.002))]),
-    # the upper half of the drum (below it would only be a wall inside the shank); the axles turn in round holes
-    cyl('L knee drum', (0, HY, KZ), 'y', KNEE_R, 2 * KNEE_W, GREY, 'shell'),
-    cut(rbox('L knee drum lower', (0, HY, KZ - 0.066), (0.15, 0.14, 0.1), 0.001), 'L knee drum'),
-    cut(cyl('L shank axle hole in', (0, HY - KNEE_W - 0.003, KZ), 'y', 0.023, 0.012), 'L shank', 'L knee drum'),
-    cut(cyl('L shank axle hole out', (0, HY + KNEE_W + 0.003, KZ), 'y', 0.023, 0.012), 'L shank', 'L knee drum'),
+    # a disc round the axis, so the outside of the bend stays round
+    cyl('L knee disc', (0, HY, KZ), 'y', 0.0665, 2 * KNEE_NECK, GREY, 'knit'),
     # the hubs. A foot under the motor carries each to the shank's upper plates; the cheeks swing above it
     dict(knee_hub('L knee hub in', -1), material='al7075'),
     dict(knee_hub('L knee hub out', +1), material='al7075'),
-    cut(cyl('L knee hub idler bore', (0, HY - HUB_IN, KZ), 'y', 0.0215, 0.02), 'L knee hub in'),
+    dict(cyl('L knee idler stub', (0, HY - 0.0415, KZ), 'y', 0.012, 0.007, BLACK), exposed=True),
+    rbox('L knee idler arm', (0, HY - 0.0445, KZ - 0.04), (0.012, 0.006, 0.075), 0.001, BLACK, exposed=True),
     rbox('L knee hub foot in', (0, HY - 0.0385, KZ - 0.0735), (0.03, 0.022, 0.024), 0.002, BLACK, exposed=True),
     rbox('L knee hub foot out', (0, HY + 0.0385, KZ - 0.0735), (0.03, 0.022, 0.024), 0.002, BLACK, exposed=True),
     *[g for sd, y in (('in', -1), ('out', +1)) for g in (
@@ -1044,11 +986,6 @@ link('L_knee_link', 2.08, [
       for sd, y in (('in', -1), ('out', +1))],
     *[dict(ell(f'L knee hub lip {sd}', (0, HY + y * (HUB_OUT - 0.0066), KZ - 0.0705), (0.030, 0.0048, 0.0115), GLOSS, 'decal'), material='pa12')
       for sd, y in (('in', -1), ('out', +1))],
-    # a soft seal from the neck's wall to the hub: closes the band's 1 mm slots from front and back. Role decal, its mass given (a thin felt, not this solid);
-    # drawn solid across the bearing's bore, because the covers check counts a closed cavity as a loose piece
-    *[dict(cyl(f'L knee hub seal {sd}', (0, HY + y * 0.0385, KZ), 'y', 0.0505, 0.006, BLACK, 'decal'), material='pa12', mass=0.01) for sd, y in (('in', -1), ('out', +1))],
-    dict(cyl('L knee hub seal plug in', (0, HY - 0.0405, KZ), 'y', 0.0237, 0.023, BLACK, 'decal'), material='pa12', mass=0.001),
-    dict(cyl('L knee hub seal plug out', (0, HY + 0.0375, KZ), 'y', 0.0237, 0.016, BLACK, 'decal'), material='pa12', mass=0.001),
     # the stator: a plate on the motor's back down to the outer shank plate, and the post on to the outer hub
     rbox('L knee stator plate', (0, HY + 0.0325, KZ - 0.022), (0.08, 0.004, 0.106), 0.002, BLACK, exposed=True),
     dict(cyl('L knee post', (0, HY + 0.03825, KZ), 'y', 0.02, 0.0155, BLACK), exposed=True),

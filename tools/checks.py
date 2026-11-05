@@ -116,7 +116,7 @@ class Solids:
 
     def __init__(self, spec):
         self.spec = spec
-        self.geom, self.wall = {}, {}
+        self.geom, self.wall, self.soft = {}, {}, {}
         for ln, l in spec['links'].items():
             # 'cut' geoms are not parts: they are removed from their targets (a window through a shoe)
             cuts = {}
@@ -135,15 +135,20 @@ class Solids:
                 if g['role'] == 'shell':
                     cav = G.inner_of(g, WALL)
                     self.wall[(ln, i)] = self.geom[(ln, i)] - to_manifold(G.mesh_of(cav))
-        self.all, self.shell, self.rigid, self.hard = {}, {}, {}, {}
+                if g['role'] == 'knit':       # the garment's bulk (2026-11-05): between far links it still takes up room
+                    self.soft[(ln, i)] = self.geom[(ln, i)] - to_manifold(G.mesh_of(G.inner_of(g, WALL)))
+        self.all, self.shell, self.rigid, self.hard, self.bulk = {}, {}, {}, {}, {}
         for ln, l in spec['links'].items():
             idx = range(len(l['geoms']))
             role = lambda i: l['geoms'][i]['role']
             self.all[ln] = union([self.geom[(ln, i)] for i in idx])
-            self.shell[ln] = union([self.geom[(ln, i)] for i in idx if role(i) == 'shell'])
+            self.shell[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in ('shell', 'knit')])
             self.rigid[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in G.RIGID])
             self.hard[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in G.RIGID] +
                                   [self.wall[(ln, i)] for i in idx if role(i) == 'shell'])
+            self.bulk[ln] = union([self.geom[(ln, i)] for i in idx if role(i) in G.RIGID] +
+                                  [self.wall[(ln, i)] for i in idx if role(i) == 'shell'] +
+                                  [self.soft[(ln, i)] for i in idx if role(i) == 'knit'])
 
 
 def exposed_names(spec):
@@ -186,7 +191,8 @@ def measure(spec, S):
     return {
         'height_m': max(h[2] for h in hi.values()),
         'chin_z': hd[0][2],
-        'shoulder_top_z': hi['L_shoulder_pitch_link'][2],
+        'shoulder_top_z': float(max(v[2] for i, g in enumerate(spec['links']['torso']['geoms']) if g['name'] == 'L shoulder yoke'
+                                    for v in S.geom[('torso', i)].to_mesh().vert_properties[:, :3] if abs(v[1]) > 0.17)),
         'elbow_z': J['L_elbow']['origin'][2],
         'wrist_z': J['L_wrist_pitch']['origin'][2],
         'fingertip_z': lo['L_hand'][2],
@@ -263,7 +269,9 @@ def check_static(spec, S, R, rep):
             a, b = links[x], links[y]
             if R.adjacent(a, b):
                 continue
-            v = overlap(S.hard[a], S.hard[b])
+            # the garment's bulk counts between far links only: near a joint the skin folds
+            sa, sb = (S.bulk, S.bulk) if R.distance(a, b) > NEAR else (S.hard, S.hard)
+            v = overlap(sa[a], sb[b])
             if v > TOUCH:
                 bad += 1
                 rep.add('static', f'{a} / {b}', False, f'non-adjacent links touch (skin wall or rigid) {v * 1e6:.1f} cm3')
@@ -326,7 +334,9 @@ def check_connect(spec, S, rep):
 def check_skin(spec, R, rep):
     """Internal parts must be hidden: inside the skins (any link, zero pose), unless meant to show."""
     rng = np.random.default_rng(1)
+    # the garment's allowance: a part under the knit must fit WALL inside it
     shells = [g for l in spec['links'].values() for g in l['geoms'] if g['role'] == 'shell']
+    shells += [dict(G.inner_of(g, WALL), name=g['name']) for l in spec['links'].values() for g in l['geoms'] if g['role'] == 'knit']
     cuts = {}                                             # shell name -> the cuts through it (they uncover)
     for l in spec['links'].values():
         for c in l['geoms']:
@@ -396,7 +406,8 @@ def check_sweep(spec, S, R, rep, steps=25):
             M = R.fk({j['name']: qv})
             out = []
             for a, b in pairs:
-                v = overlap(posed(S.hard[a], M[a]), S.hard[b])
+                H = S.bulk if R.distance(a, b) > NEAR else S.hard
+                v = overlap(posed(H[a], M[a]), H[b])
                 if v > TOUCH:
                     out.append((v, f'{a} / {b}: {culprit(spec, S, a, M[a], b, M[b])}',
                                 R.distance(a, b) <= NEAR))
@@ -593,7 +604,8 @@ def check_poses(spec, S, R, rep, collide=True):
                     a, b = links[x], links[y]
                     if R.adjacent(a, b):
                         continue
-                    v = overlap(posed(S.hard[a], M[a]), posed(S.hard[b], M[b]))
+                    H = S.bulk if R.distance(a, b) > NEAR else S.hard
+                    v = overlap(posed(H[a], M[a]), posed(H[b], M[b]))
                     if v > TOUCH:
                         hits.append(f'{a} / {b} {v * 1e6:.0f} cm3')
             rep.add('poses', f'{name}: collisions', not hits, '; '.join(hits[:4]) or 'none')
