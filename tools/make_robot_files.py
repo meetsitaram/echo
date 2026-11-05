@@ -111,30 +111,89 @@ SELF_ARM = {'elbow_link': 3, 'wrist_yaw_link': 3, 'wrist_pitch_link': 2, 'hand':
 SELF_BODY = {'hip_pitch_link': 4, 'hip_roll_link': 8, 'hip_yaw_link': 8}
 SELF_PELVIS = 6
 SELF_BIT = 4
+# Penalty only (2026-11-04): spheres the reward measures but the physics never tests, so they cost it nothing. Leg against
+# leg (the hip spheres above count too) and hand and forearm against the torso and shanks. Same fit as above.
+# Leg spheres stand up to 12 mm proud of the hull: the walks' real touches are a few cm3, and spheres kept inside a thigh's flat
+# inner face missed them. The legs stand 44 mm apart, so the zero pose stays clear; a near miss reads as a light touch.
+SELF_LEG = {'hip_yaw_link': 12, 'knee_link': 12, 'foot': 8}
+LEG_PROUD = 0.012
+SELF_TORSO = 24
+# Floor contact for the rest of the body (2026-11-04), so kneeling and falls land on something. Floor-only: bit 8 is set on
+# the floor's contype and is these geoms' only affinity, so they meet nothing else, soles and terrain included. Fitted to the
+# link's hull. Capsules and a sphere give 1-2 contacts each on a plane, a box 4. The knee_link capsule is both knee and shin.
+FLOOR_BIT = 8
+FLOOR_LINKS = {'knee_link': 'capsule', 'elbow_link': 'capsule', 'wrist_yaw_link': 'capsule', 'hand': 'capsule'}
+FLOOR_BODY = {'pelvis': 'capsule', 'torso': 'box', 'head': 'sphere'}
+
+
+def hull_points(m, seed=1):
+    """Up to 8000 points filling the mesh's convex hull."""
+    rng = np.random.default_rng(seed)
+    hull = ConvexHull(m.vertices)
+    lo, hi = m.bounds
+    pts = rng.uniform(lo, hi, (60000, 3))
+    return pts[(hull.equations[:, :3] @ pts.T + hull.equations[:, 3:]).max(0) <= 0][:8000]
 
 
 def fit_spheres(m, k, seed=1):
     """k spheres over the mesh's convex hull: k-means of points filling the hull, each sphere reaching most (80 %) of
     its cluster, so it covers the link without standing far proud of it. [(centre, radius)] in the mesh's frame."""
-    rng = np.random.default_rng(seed)
-    hull = ConvexHull(m.vertices)
-    lo, hi = m.bounds
-    pts = rng.uniform(lo, hi, (60000, 3))
-    pts = pts[(hull.equations[:, :3] @ pts.T + hull.equations[:, 3:]).max(0) <= 0][:8000]
+    pts = hull_points(m, seed)
     c, lab = kmeans2(pts, k, seed=seed, minit='++')
     return [(c[i], float(np.percentile(np.linalg.norm(pts[lab == i] - c[i], axis=1), 80))) for i in range(k) if (lab == i).any()]
 
 
+def fit_spheres_inside(m, k, proud=0.0, seed=1):
+    """fit_spheres, each radius also capped at its centre's distance to the hull plus proud: a broad flat link (the torso, 3 mm
+    from the elbow) would otherwise bulge past its own sides and read as touching at the zero pose."""
+    hull = ConvexHull(m.vertices)
+    return [(c, min(r, proud + float(-(hull.equations[:, :3] @ c + hull.equations[:, 3]).max()))) for c, r in fit_spheres(m, k, seed)]
+
+
+def sphere_geoms(kind, ln, m, k, attr, ind):
+    return [f'{ind}<geom name="selfcol_{kind}_{ln}_{i}" type="sphere" pos="{fmt(c)}" size="{r:.4f}" {attr} group="3"/>'
+            for i, (c, r) in enumerate(fit_spheres_inside(m, k, LEG_PROUD if kind == 'leg' else 0.0))]
+
+
 def self_collision_geoms(ln, m, ind):
-    """Named selfcol_arm_<link>_<i> / selfcol_body_<link>_<i>."""
+    """Named selfcol_<arm, body, leg or torso>_<link>_<i>."""
+    legs = sphere_geoms('leg', ln, m, SELF_LEG[ln[2:]], 'contype="0" conaffinity="0"', ind) if ln[2:] in SELF_LEG else []
+    return legs + trunk_geoms(ln, m, ind)
+
+
+def trunk_geoms(ln, m, ind):
     if ln[2:] in SELF_ARM:
         kind, k, attr = 'arm', SELF_ARM[ln[2:]], f'contype="{SELF_BIT}" conaffinity="0" condim="1"'
     elif ln == 'pelvis' or ln[2:] in SELF_BODY:
         kind, k, attr = 'body', SELF_PELVIS if ln == 'pelvis' else SELF_BODY[ln[2:]], f'contype="0" conaffinity="{SELF_BIT}" condim="1"'
+    elif ln == 'torso':
+        kind, k, attr = 'torso', SELF_TORSO, 'contype="0" conaffinity="0"'
     else:
         return []
-    return [f'{ind}<geom name="selfcol_{kind}_{ln}_{i}" type="sphere" pos="{fmt(c)}" size="{r:.4f}" {attr} group="3"/>'
-            for i, (c, r) in enumerate(fit_spheres(m, k))]
+    return sphere_geoms(kind, ln, m, k, attr, ind)
+
+
+def floor_geoms(ln, m, ind):
+    """One floor-only primitive named floorcol_<link>, fitted to the link's hull, or nothing. A capsule lies along the
+    longest side of the mesh's bounds and reaches 90 % of the hull's points around that line."""
+    shape = FLOOR_BODY.get(ln) or FLOOR_LINKS.get(ln[2:])
+    if not shape:
+        return []
+    attr = f'name="floorcol_{ln}" contype="0" conaffinity="{FLOOR_BIT}" group="3"'
+    lo, hi = m.bounds
+    if shape == 'box':
+        return [f'{ind}<geom {attr} type="box" pos="{fmt((lo + hi) / 2)}" size="{fmt((hi - lo) / 2)}"/>']
+    pts = hull_points(m)
+    c = pts.mean(0)
+    if shape == 'sphere':
+        return [f'{ind}<geom {attr} type="sphere" pos="{fmt(c)}" size="{np.percentile(np.linalg.norm(pts - c, axis=1), 90):.4f}"/>']
+    k = int(np.argmax(hi - lo))
+    off = pts - c
+    off[:, k] = 0.0
+    r = float(np.percentile(np.linalg.norm(off, axis=1), 90))
+    a, b = c.copy(), c.copy()
+    a[k], b[k] = lo[k] + r, hi[k] - r
+    return [f'{ind}<geom {attr} type="capsule" fromto="{fmt(a)} {fmt(b)}" size="{r:.4f}"/>']
 
 
 def main():
@@ -200,7 +259,7 @@ def main():
          '  <asset>']
     x += [f'    <mesh name="{ln}" file="{ln}.stl"/>' for ln in spec['links']]
     x += ['  </asset>', '  <worldbody>',
-          '    <geom name="floor" type="plane" size="5 5 0.1" contype="1" conaffinity="1" group="0" '
+          f'    <geom name="floor" type="plane" size="5 5 0.1" contype="{1 | FLOOR_BIT}" conaffinity="1" group="0" '
           'rgba="0.9 0.9 0.9 1"/>',
           '    <light pos="1 1 3" dir="-0.3 -0.3 -1"/>']
 
@@ -230,6 +289,7 @@ def main():
                        f'size="{fmt(np.array(sole["size"]) / 2)}" contype="1" conaffinity="1" group="0" '
                        f'friction="1.0 0.02 0.001" rgba="0.2 0.2 0.2 1"/>')
         out += self_collision_geoms(ln, meshes[ln], s + '  ')
+        out += floor_geoms(ln, meshes[ln], s + '  ')
         for j in kids.get(ln, []):
             out += body(j['child'], frames[ln], ind + 1)
         out.append(f'{s}</body>')

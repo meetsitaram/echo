@@ -5,8 +5,9 @@
 # torque-speed limit. The X2's 4096 envs and 320k iterations are the paper's; this PC runs the "local" preset for a design check.
 set -u
 NAME=$1; MOTION=$2; shift 2
-ECHO=C:/Users/PC/projects/echo
-cd /c/Users/PC/projects/gwbc-echo
+ECHO=${ECHO:-C:/Users/PC/projects/echo}
+cd "${GWBC:-/c/Users/PC/projects/gwbc-echo}"
+mkdir -p logs_sm
 export PYTHONPATH=. SM_ROBOT_CFG=${SM_ROBOT_CFG:-$ECHO/train/supermimic_robot.json}
 /c/Users/PC/.venvs/sm/Scripts/python.exe -m gear_sonic.supermimic.train --motion "$MOTION" --log-dir logs_sm/$NAME --set \
   num_envs=2048 buffer_steps=500 pi_batch=2048 iterations=8000 lr=0.0002 lr_decay_iters=8000 lr_final_frac=0.03 \

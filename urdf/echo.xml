@@ -37,22 +37,48 @@
     <mesh name="R_foot" file="R_foot.stl"/>
   </asset>
   <worldbody>
-    <geom name="floor" type="plane" size="5 5 0.1" contype="1" conaffinity="1" group="0" rgba="0.9 0.9 0.9 1"/>
+    <geom name="floor" type="plane" size="5 5 0.1" contype="9" conaffinity="1" group="0" rgba="0.9 0.9 0.9 1"/>
     <light pos="1 1 3" dir="-0.3 -0.3 -1"/>
     <body name="pelvis" pos="0 0 0.9">
       <freejoint name="root"/>
       <inertial pos="0.000314279 6.18085e-09 0.0525789" quat="0.504952 0.494999 -0.494999 -0.504952" mass="5.6408" diaginertia="0.0120964 0.033628 0.0358759"/>
       <geom type="mesh" mesh="pelvis"/>
-      <geom name="selfcol_body_pelvis_0" type="sphere" pos="-0.0311632 0.0125945 0.0878187" size="0.0551" contype="0" conaffinity="4" condim="1" group="3"/>
-      <geom name="selfcol_body_pelvis_1" type="sphere" pos="0.00100199 -0.0822341 0.0429584" size="0.0632" contype="0" conaffinity="4" condim="1" group="3"/>
-      <geom name="selfcol_body_pelvis_2" type="sphere" pos="0.00217165 0.0851556 0.036951" size="0.0610" contype="0" conaffinity="4" condim="1" group="3"/>
-      <geom name="selfcol_body_pelvis_3" type="sphere" pos="0.0460125 0.00190187 0.0848488" size="0.0547" contype="0" conaffinity="4" condim="1" group="3"/>
-      <geom name="selfcol_body_pelvis_4" type="sphere" pos="0.0325511 0.000835248 0.0144726" size="0.0508" contype="0" conaffinity="4" condim="1" group="3"/>
-      <geom name="selfcol_body_pelvis_5" type="sphere" pos="-0.0307621 -0.00262615 0.0184006" size="0.0490" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="selfcol_body_pelvis_0" type="sphere" pos="-0.0311632 0.0125945 0.0878187" size="0.0302" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="selfcol_body_pelvis_1" type="sphere" pos="0.00100199 -0.0822341 0.0429584" size="0.0376" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="selfcol_body_pelvis_2" type="sphere" pos="0.00217165 0.0851556 0.036951" size="0.0347" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="selfcol_body_pelvis_3" type="sphere" pos="0.0460125 0.00190187 0.0848488" size="0.0332" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="selfcol_body_pelvis_4" type="sphere" pos="0.0325511 0.000835248 0.0144726" size="0.0251" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="selfcol_body_pelvis_5" type="sphere" pos="-0.0307621 -0.00262615 0.0184006" size="0.0271" contype="0" conaffinity="4" condim="1" group="3"/>
+      <geom name="floorcol_pelvis" contype="0" conaffinity="8" group="3" type="capsule" fromto="0.00276654 -0.0478625 0.0480383 0.00276654 0.0478625 0.0480383" size="0.0720"/>
       <body name="torso" pos="0 0 0.09">
         <joint name="waist_yaw" axis="0 0 1" range="-2.6 2.6" armature="0.0162" damping="0.2" frictionloss="1.5"/>
         <inertial pos="-0.0098407 3.68323e-08 0.259965" quat="2.32464e-07 -0.722565 -9.61711e-07 -0.691303" mass="20.5621" diaginertia="0.132111 0.259272 0.292521"/>
         <geom type="mesh" mesh="torso"/>
+        <geom name="selfcol_torso_torso_0" type="sphere" pos="-0.0530543 0.0873446 0.278539" size="0.0497" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_1" type="sphere" pos="0.0403645 -0.0488835 0.069707" size="0.0391" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_2" type="sphere" pos="-0.0654613 -0.0927856 0.356135" size="0.0400" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_3" type="sphere" pos="-0.0319853 0.0939592 0.146191" size="0.0357" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_4" type="sphere" pos="-0.00489894 -0.0135202 0.347798" size="0.0577" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_5" type="sphere" pos="-0.00366304 -0.102148 0.273606" size="0.0405" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_6" type="sphere" pos="0.0474098 -0.0967426 0.374492" size="0.0452" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_7" type="sphere" pos="0.0594347 0.0831393 0.309829" size="0.0460" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_8" type="sphere" pos="0.0614777 -0.0349845 0.17319" size="0.0445" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_9" type="sphere" pos="-0.024254 -0.0780526 0.444758" size="0.0468" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_10" type="sphere" pos="0.0650951 0.00402767 0.397008" size="0.0346" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_11" type="sphere" pos="-0.0817732 -0.00592978 0.332081" size="0.0341" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_12" type="sphere" pos="-0.00737266 0.0325343 0.0490826" size="0.0421" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_13" type="sphere" pos="0.0244841 0.102531 0.401028" size="0.0451" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_14" type="sphere" pos="0.0555593 0.0511924 0.116359" size="0.0433" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_15" type="sphere" pos="-0.0667118 0.0823037 0.389811" size="0.0427" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_16" type="sphere" pos="0.00402354 0.0109677 0.245585" size="0.0562" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_17" type="sphere" pos="0.0461814 0.0860536 0.20887" size="0.0465" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_18" type="sphere" pos="-0.0751053 -0.0405917 0.224831" size="0.0401" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_19" type="sphere" pos="-0.0295094 0.0299984 0.457734" size="0.0503" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_20" type="sphere" pos="0.00191888 -0.0990516 0.170733" size="0.0350" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_21" type="sphere" pos="0.0780273 -0.0459642 0.271758" size="0.0358" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_22" type="sphere" pos="-0.0627893 0.0172349 0.142534" size="0.0439" contype="0" conaffinity="0" group="3"/>
+        <geom name="selfcol_torso_torso_23" type="sphere" pos="-0.0449934 -0.0618172 0.0979097" size="0.0446" contype="0" conaffinity="0" group="3"/>
+        <geom name="floorcol_torso" contype="0" conaffinity="8" group="3" type="box" pos="-0.000511799 0 0.2575" size="0.115467 0.148007 0.2505"/>
         <body name="neck_yaw_link" pos="-0.012 0 0.4305">
           <joint name="neck_yaw" axis="0 0 1" range="-1.4 1.4" armature="0.001" damping="0.02" frictionloss="0.3"/>
           <inertial pos="-1.21069e-11 1.64071e-21 0.0703306" quat="1.75933e-16 0.707107 1.57009e-16 0.707107" mass="0.3530" diaginertia="0.000134762 0.000198473 0.000202716"/>
@@ -61,6 +87,7 @@
             <joint name="neck_pitch" axis="0 1 0" range="-0.4 0.45" armature="0.001" damping="0.02" frictionloss="0.3"/>
             <inertial pos="0.027098 0.00357872 0.109542" quat="0.515957 -0.402274 0.529738 0.539761" mass="0.9955" diaginertia="0.00325278 0.00460506 0.00524628"/>
             <geom type="mesh" mesh="head"/>
+            <geom name="floorcol_head" contype="0" conaffinity="8" group="3" type="sphere" pos="0.0155383 -0.000228807 0.116631" size="0.1073"/>
           </body>
         </body>
         <body name="L_shoulder_pitch_link" pos="0 0.115 0.4">
@@ -79,31 +106,34 @@
                 <joint name="L_elbow" axis="0 1 0" range="-1.9 0.0" armature="0.00405" damping="0.08" frictionloss="0.7"/>
                 <inertial pos="-6.27096e-10 -0.00771922 -0.0619916" quat="0.0714951 -0.703483 0.0715075 -0.703482" mass="0.7429" diaginertia="0.000808042 0.00207828 0.00209823"/>
                 <geom type="mesh" mesh="L_elbow_link"/>
-                <geom name="selfcol_arm_L_elbow_link_0" type="sphere" pos="-0.00397725 -0.00508334 0.0112198" size="0.0493" contype="4" conaffinity="0" condim="1" group="3"/>
-                <geom name="selfcol_arm_L_elbow_link_1" type="sphere" pos="0.00509068 -0.00259874 -0.0425542" size="0.0496" contype="4" conaffinity="0" condim="1" group="3"/>
-                <geom name="selfcol_arm_L_elbow_link_2" type="sphere" pos="-0.00143562 -0.000145417 -0.101081" size="0.0461" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="selfcol_arm_L_elbow_link_0" type="sphere" pos="-0.00397725 -0.00508334 0.0112198" size="0.0380" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="selfcol_arm_L_elbow_link_1" type="sphere" pos="0.00509068 -0.00259874 -0.0425542" size="0.0437" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="selfcol_arm_L_elbow_link_2" type="sphere" pos="-0.00143562 -0.000145417 -0.101081" size="0.0331" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="floorcol_L_elbow_link" contype="0" conaffinity="8" group="3" type="capsule" fromto="-0.000141608 -0.00271221 -0.0851597 -0.000141608 -0.00271221 0.000981348" size="0.0490"/>
                 <body name="L_wrist_yaw_link" pos="0 0 -0.125">
                   <joint name="L_wrist_yaw" axis="0 0 1" range="-2.6 2.6" armature="0.001802" damping="0.03" frictionloss="0.4"/>
                   <inertial pos="3.84775e-12 -1.36264e-09 -0.0579189" quat="0.500004 0.499996 -0.500004 0.499996" mass="0.4661" diaginertia="0.000270989 0.000535905 0.000547836"/>
                   <geom type="mesh" mesh="L_wrist_yaw_link"/>
-                  <geom name="selfcol_arm_L_wrist_yaw_link_0" type="sphere" pos="0.00981438 0.000877139 -0.0199852" size="0.0379" contype="4" conaffinity="0" condim="1" group="3"/>
-                  <geom name="selfcol_arm_L_wrist_yaw_link_1" type="sphere" pos="0.0139777 -0.00149515 -0.0700936" size="0.0372" contype="4" conaffinity="0" condim="1" group="3"/>
-                  <geom name="selfcol_arm_L_wrist_yaw_link_2" type="sphere" pos="-0.0255703 5.74501e-05 -0.0481088" size="0.0380" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="selfcol_arm_L_wrist_yaw_link_0" type="sphere" pos="0.00981438 0.000877139 -0.0199852" size="0.0282" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="selfcol_arm_L_wrist_yaw_link_1" type="sphere" pos="0.0139777 -0.00149515 -0.0700936" size="0.0264" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="selfcol_arm_L_wrist_yaw_link_2" type="sphere" pos="-0.0255703 5.74501e-05 -0.0481088" size="0.0204" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="floorcol_L_wrist_yaw_link" contype="0" conaffinity="8" group="3" type="capsule" fromto="-0.000259466 -0.000167819 -0.0593332 -0.000259466 -0.000167819 -0.0359168" size="0.0442"/>
                   <body name="L_wrist_pitch_link" pos="0 0 -0.075">
                     <joint name="L_wrist_pitch" axis="1 0 0" range="-0.9 0.9" armature="0.001" damping="0.02" frictionloss="0.3"/>
                     <inertial pos="0.00421029 0.000800889 -0.0509126" quat="0.380566 -0.383147 0.573325 0.616171" mass="0.4453" diaginertia="0.000237053 0.000392723 0.000404526"/>
                     <geom type="mesh" mesh="L_wrist_pitch_link"/>
-                    <geom name="selfcol_arm_L_wrist_pitch_link_0" type="sphere" pos="0.000378766 0.00229184 -0.0633412" size="0.0352" contype="4" conaffinity="0" condim="1" group="3"/>
-                    <geom name="selfcol_arm_L_wrist_pitch_link_1" type="sphere" pos="0.000106167 -0.00028109 -0.0135292" size="0.0366" contype="4" conaffinity="0" condim="1" group="3"/>
+                    <geom name="selfcol_arm_L_wrist_pitch_link_0" type="sphere" pos="0.000378766 0.00229184 -0.0633412" size="0.0307" contype="4" conaffinity="0" condim="1" group="3"/>
+                    <geom name="selfcol_arm_L_wrist_pitch_link_1" type="sphere" pos="0.000106167 -0.00028109 -0.0135292" size="0.0270" contype="4" conaffinity="0" condim="1" group="3"/>
                     <body name="L_hand" pos="0 0 -0.06">
                       <joint name="L_wrist_roll" axis="0 1 0" range="-0.6 0.6" armature="0.001" damping="0.02" frictionloss="0.3"/>
                       <inertial pos="0.00110744 -0.00740593 -0.0708868" quat="0.55826 -0.466472 0.462302 0.506979" mass="1.0181" diaginertia="0.000875107 0.00114164 0.00150166"/>
                       <geom type="mesh" mesh="L_hand"/>
-                      <geom name="selfcol_arm_L_hand_0" type="sphere" pos="-0.0196027 -0.00427214 -0.060045" size="0.0305" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_L_hand_1" type="sphere" pos="0.00922145 -0.0141576 -0.0296065" size="0.0329" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_L_hand_2" type="sphere" pos="-0.0199301 -0.00876377 -0.108057" size="0.0314" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_L_hand_3" type="sphere" pos="0.0134126 -0.0176043 -0.141697" size="0.0326" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_L_hand_4" type="sphere" pos="0.0329129 -0.00974951 -0.084036" size="0.0341" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_L_hand_0" type="sphere" pos="-0.0196027 -0.00427214 -0.060045" size="0.0264" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_L_hand_1" type="sphere" pos="0.00922145 -0.0141576 -0.0296065" size="0.0193" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_L_hand_2" type="sphere" pos="-0.0199301 -0.00876377 -0.108057" size="0.0238" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_L_hand_3" type="sphere" pos="0.0134126 -0.0176043 -0.141697" size="0.0165" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_L_hand_4" type="sphere" pos="0.0329129 -0.00974951 -0.084036" size="0.0233" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="floorcol_L_hand" contype="0" conaffinity="8" group="3" type="capsule" fromto="0.00439334 -0.0106527 -0.134462 0.00439334 -0.0106527 -0.027938" size="0.0450"/>
                     </body>
                   </body>
                 </body>
@@ -127,31 +157,34 @@
                 <joint name="R_elbow" axis="0 1 0" range="-1.9 0.0" armature="0.00405" damping="0.08" frictionloss="0.7"/>
                 <inertial pos="-2.82659e-11 0.00771922 -0.0619916" quat="0.703483 -0.0714948 0.703482 -0.0715077" mass="0.7429" diaginertia="0.000808042 0.00207828 0.00209823"/>
                 <geom type="mesh" mesh="R_elbow_link"/>
-                <geom name="selfcol_arm_R_elbow_link_0" type="sphere" pos="-0.0076159 0.00296347 -0.0436137" size="0.0494" contype="4" conaffinity="0" condim="1" group="3"/>
-                <geom name="selfcol_arm_R_elbow_link_1" type="sphere" pos="0.0030617 0.00440329 0.0104047" size="0.0498" contype="4" conaffinity="0" condim="1" group="3"/>
-                <geom name="selfcol_arm_R_elbow_link_2" type="sphere" pos="0.00363434 -5.89185e-05 -0.100657" size="0.0463" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="selfcol_arm_R_elbow_link_0" type="sphere" pos="-0.0076159 0.00296347 -0.0436137" size="0.0412" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="selfcol_arm_R_elbow_link_1" type="sphere" pos="0.0030617 0.00440329 0.0104047" size="0.0391" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="selfcol_arm_R_elbow_link_2" type="sphere" pos="0.00363434 -5.89185e-05 -0.100657" size="0.0335" contype="4" conaffinity="0" condim="1" group="3"/>
+                <geom name="floorcol_R_elbow_link" contype="0" conaffinity="8" group="3" type="capsule" fromto="-0.000279695 0.0025506 -0.0853084 -0.000279695 0.0025506 0.00113006" size="0.0489"/>
                 <body name="R_wrist_yaw_link" pos="0 0 -0.125">
                   <joint name="R_wrist_yaw" axis="0 0 1" range="-2.6 2.6" armature="0.001802" damping="0.03" frictionloss="0.4"/>
                   <inertial pos="-3.85254e-12 1.36264e-09 -0.0579189" quat="0.500004 0.499996 -0.500004 0.499996" mass="0.4661" diaginertia="0.000270989 0.000535905 0.000547836"/>
                   <geom type="mesh" mesh="R_wrist_yaw_link"/>
-                  <geom name="selfcol_arm_R_wrist_yaw_link_0" type="sphere" pos="0.00981438 0.000877143 -0.0199852" size="0.0379" contype="4" conaffinity="0" condim="1" group="3"/>
-                  <geom name="selfcol_arm_R_wrist_yaw_link_1" type="sphere" pos="0.0139777 -0.00149515 -0.0700936" size="0.0372" contype="4" conaffinity="0" condim="1" group="3"/>
-                  <geom name="selfcol_arm_R_wrist_yaw_link_2" type="sphere" pos="-0.0255703 5.74537e-05 -0.0481088" size="0.0380" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="selfcol_arm_R_wrist_yaw_link_0" type="sphere" pos="0.00981438 0.000877143 -0.0199852" size="0.0282" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="selfcol_arm_R_wrist_yaw_link_1" type="sphere" pos="0.0139777 -0.00149515 -0.0700936" size="0.0264" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="selfcol_arm_R_wrist_yaw_link_2" type="sphere" pos="-0.0255703 5.74537e-05 -0.0481088" size="0.0204" contype="4" conaffinity="0" condim="1" group="3"/>
+                  <geom name="floorcol_R_wrist_yaw_link" contype="0" conaffinity="8" group="3" type="capsule" fromto="-0.000259466 -0.000167815 -0.0593332 -0.000259466 -0.000167815 -0.0359168" size="0.0442"/>
                   <body name="R_wrist_pitch_link" pos="0 0 -0.075">
                     <joint name="R_wrist_pitch" axis="1 0 0" range="-0.9 0.9" armature="0.001" damping="0.02" frictionloss="0.3"/>
                     <inertial pos="0.00421027 -0.000800889 -0.0509126" quat="0.383162 -0.38055 0.616193 0.573301" mass="0.4453" diaginertia="0.000237053 0.000392723 0.000404527"/>
                     <geom type="mesh" mesh="R_wrist_pitch_link"/>
-                    <geom name="selfcol_arm_R_wrist_pitch_link_0" type="sphere" pos="0.000178938 0.000240445 -0.013474" size="0.0366" contype="4" conaffinity="0" condim="1" group="3"/>
-                    <geom name="selfcol_arm_R_wrist_pitch_link_1" type="sphere" pos="0.000156118 -0.00252898 -0.0631584" size="0.0352" contype="4" conaffinity="0" condim="1" group="3"/>
+                    <geom name="selfcol_arm_R_wrist_pitch_link_0" type="sphere" pos="0.000178938 0.000240445 -0.013474" size="0.0269" contype="4" conaffinity="0" condim="1" group="3"/>
+                    <geom name="selfcol_arm_R_wrist_pitch_link_1" type="sphere" pos="0.000156118 -0.00252898 -0.0631584" size="0.0305" contype="4" conaffinity="0" condim="1" group="3"/>
                     <body name="R_hand" pos="0 0 -0.06">
                       <joint name="R_wrist_roll" axis="0 1 0" range="-0.6 0.6" armature="0.001" damping="0.02" frictionloss="0.3"/>
                       <inertial pos="0.00110744 0.00740593 -0.0708868" quat="0.506979 0.462302 -0.466472 0.55826" mass="1.0181" diaginertia="0.000875107 0.00114164 0.00150166"/>
                       <geom type="mesh" mesh="R_hand"/>
-                      <geom name="selfcol_arm_R_hand_0" type="sphere" pos="0.0337239 0.0124278 -0.0993756" size="0.0322" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_R_hand_1" type="sphere" pos="-0.0082454 0.0145132 -0.0287026" size="0.0319" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_R_hand_2" type="sphere" pos="-0.0214141 0.00427942 -0.0843475" size="0.0330" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_R_hand_3" type="sphere" pos="0.0244846 0.00427175 -0.0548382" size="0.0310" contype="4" conaffinity="0" condim="1" group="3"/>
-                      <geom name="selfcol_arm_R_hand_4" type="sphere" pos="0.000640913 0.0163796 -0.139969" size="0.0348" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_R_hand_0" type="sphere" pos="0.0337239 0.0124278 -0.0993756" size="0.0209" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_R_hand_1" type="sphere" pos="-0.0082454 0.0145132 -0.0287026" size="0.0191" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_R_hand_2" type="sphere" pos="-0.0214141 0.00427942 -0.0843475" size="0.0246" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_R_hand_3" type="sphere" pos="0.0244846 0.00427175 -0.0548382" size="0.0248" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="selfcol_arm_R_hand_4" type="sphere" pos="0.000640913 0.0163796 -0.139969" size="0.0174" contype="4" conaffinity="0" condim="1" group="3"/>
+                      <geom name="floorcol_R_hand" contype="0" conaffinity="8" group="3" type="capsule" fromto="0.00437982 0.010127 -0.134873 0.00437982 0.010127 -0.027527" size="0.0446"/>
                     </body>
                   </body>
                 </body>
@@ -164,38 +197,63 @@
         <joint name="L_hip_pitch" axis="0 1 0" range="-1.65 0.24" armature="0.0162" damping="0.2" frictionloss="1.5"/>
         <inertial pos="-0.0908387 0.00255547 0.00102937" quat="0.700366 -0.649657 -0.259204 0.142292" mass="1.5881" diaginertia="0.00252479 0.00301994 0.00320076"/>
         <geom type="mesh" mesh="L_hip_pitch_link"/>
-        <geom name="selfcol_body_L_hip_pitch_link_0" type="sphere" pos="-0.0231437 0.0124784 0.00106206" size="0.0424" contype="0" conaffinity="4" condim="1" group="3"/>
-        <geom name="selfcol_body_L_hip_pitch_link_1" type="sphere" pos="-0.0902428 0.021279 -0.0259685" size="0.0404" contype="0" conaffinity="4" condim="1" group="3"/>
-        <geom name="selfcol_body_L_hip_pitch_link_2" type="sphere" pos="-0.0884001 0.0111418 0.0309057" size="0.0415" contype="0" conaffinity="4" condim="1" group="3"/>
-        <geom name="selfcol_body_L_hip_pitch_link_3" type="sphere" pos="-0.0903943 -0.0315244 -0.00564417" size="0.0416" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_L_hip_pitch_link_0" type="sphere" pos="-0.0231437 0.0124784 0.00106206" size="0.0297" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_L_hip_pitch_link_1" type="sphere" pos="-0.0902428 0.021279 -0.0259685" size="0.0264" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_L_hip_pitch_link_2" type="sphere" pos="-0.0884001 0.0111418 0.0309057" size="0.0271" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_L_hip_pitch_link_3" type="sphere" pos="-0.0903943 -0.0315244 -0.00564417" size="0.0279" contype="0" conaffinity="4" condim="1" group="3"/>
         <body name="L_hip_roll_link" pos="0 0 0">
           <joint name="L_hip_roll" axis="1 0 0" range="-0.35 0.6" armature="0.0162" damping="0.2" frictionloss="1.5"/>
           <inertial pos="-0.0171645 0.00507541 -0.080398" quat="0.276927 0.323924 -0.440409 0.790205" mass="1.4482" diaginertia="0.00248185 0.00595556 0.00644529"/>
           <geom type="mesh" mesh="L_hip_roll_link"/>
-          <geom name="selfcol_body_L_hip_roll_link_0" type="sphere" pos="-0.0116363 0.0342115 -0.0944187" size="0.0481" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_1" type="sphere" pos="-0.0413969 0.0237844 0.0394125" size="0.0442" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_2" type="sphere" pos="-0.0896068 0.0245992 -0.0498204" size="0.0487" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_3" type="sphere" pos="0.0282957 -0.00772715 -0.0807291" size="0.0489" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_4" type="sphere" pos="-0.0403261 -0.0208299 -0.0935359" size="0.0439" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_5" type="sphere" pos="-0.105657 0.0158967 0.0253217" size="0.0463" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_6" type="sphere" pos="0.0221129 0.0207271 -0.00289249" size="0.0490" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_L_hip_roll_link_7" type="sphere" pos="-0.051171 -0.0136102 -0.018684" size="0.0441" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_0" type="sphere" pos="-0.0116363 0.0342115 -0.0944187" size="0.0273" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_1" type="sphere" pos="-0.0413969 0.0237844 0.0394125" size="0.0332" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_2" type="sphere" pos="-0.0896068 0.0245992 -0.0498204" size="0.0385" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_3" type="sphere" pos="0.0282957 -0.00772715 -0.0807291" size="0.0291" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_4" type="sphere" pos="-0.0403261 -0.0208299 -0.0935359" size="0.0296" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_5" type="sphere" pos="-0.105657 0.0158967 0.0253217" size="0.0338" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_6" type="sphere" pos="0.0221129 0.0207271 -0.00289249" size="0.0389" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_L_hip_roll_link_7" type="sphere" pos="-0.051171 -0.0136102 -0.018684" size="0.0316" contype="0" conaffinity="4" condim="1" group="3"/>
           <body name="L_hip_yaw_link" pos="0 0 -0.11">
             <joint name="L_hip_yaw" axis="0 0 1" range="-1.2 1.2" armature="0.0081" damping="0.12" frictionloss="1"/>
             <inertial pos="0.00177919 0.000179312 -0.222978" quat="0.509375 -0.50634 0.492813 0.491215" mass="2.6100" diaginertia="0.0062068 0.0270966 0.0274822"/>
             <geom type="mesh" mesh="L_hip_yaw_link"/>
-            <geom name="selfcol_body_L_hip_yaw_link_0" type="sphere" pos="-0.0725618 -2.24953e-05 -0.00494782" size="0.0646" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_1" type="sphere" pos="0.000470895 0.0355459 -0.28349" size="0.0588" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_2" type="sphere" pos="0.0204157 -0.0282825 -0.129146" size="0.0604" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_3" type="sphere" pos="0.00888066 -0.0374343 -0.275495" size="0.0616" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_4" type="sphere" pos="0.0161251 0.00238325 -0.0252547" size="0.0673" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_5" type="sphere" pos="-0.0447798 -0.0225039 -0.200019" size="0.0574" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_6" type="sphere" pos="-0.0575804 0.0070107 -0.0994151" size="0.0637" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_L_hip_yaw_link_7" type="sphere" pos="0.0104514 0.0366521 -0.17995" size="0.0631" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_0" type="sphere" pos="-0.0816087 -0.00592789 0.00553793" size="0.0472" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_1" type="sphere" pos="-0.00143756 0.0359943 -0.290785" size="0.0541" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_2" type="sphere" pos="0.0189204 -0.0405222 -0.181592" size="0.0446" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_3" type="sphere" pos="0.00425251 -0.0370403 -0.286607" size="0.0532" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_4" type="sphere" pos="0.00771674 -0.0337147 -0.0126665" size="0.0443" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_5" type="sphere" pos="-0.0497367 -0.0170957 -0.210075" size="0.0414" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_6" type="sphere" pos="-0.059273 0.0355777 -0.0456641" size="0.0462" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_7" type="sphere" pos="0.0216201 0.0349494 -0.207209" size="0.0507" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_8" type="sphere" pos="-0.0468741 0.0318068 -0.138156" size="0.0522" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_9" type="sphere" pos="0.030005 0.00149293 -0.100909" size="0.0515" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_10" type="sphere" pos="-0.0546544 -0.0357646 -0.0915961" size="0.0468" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_L_hip_yaw_link_11" type="sphere" pos="0.0126442 0.033881 -0.0127107" size="0.0425" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_0" type="sphere" pos="-0.0725618 -2.24953e-05 -0.00494782" size="0.0452" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_1" type="sphere" pos="0.000470895 0.0355459 -0.28349" size="0.0428" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_2" type="sphere" pos="0.0204157 -0.0282825 -0.129146" size="0.0400" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_3" type="sphere" pos="0.00888066 -0.0374343 -0.275495" size="0.0408" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_4" type="sphere" pos="0.0161251 0.00238325 -0.0252547" size="0.0500" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_5" type="sphere" pos="-0.0447798 -0.0225039 -0.200019" size="0.0355" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_6" type="sphere" pos="-0.0575804 0.0070107 -0.0994151" size="0.0481" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_L_hip_yaw_link_7" type="sphere" pos="0.0104514 0.0366521 -0.17995" size="0.0379" contype="0" conaffinity="4" condim="1" group="3"/>
             <body name="L_knee_link" pos="0 0 -0.285">
               <joint name="L_knee" axis="0 1 0" range="0.0 2.15" armature="0.0162" damping="0.2" frictionloss="1.5"/>
               <inertial pos="-0.00717703 -0.00150056 -0.188641" quat="0.117462 0.692823 0.138123 -0.697941" mass="2.9946" diaginertia="0.00425719 0.038274 0.0383495"/>
               <geom type="mesh" mesh="L_knee_link"/>
+              <geom name="selfcol_leg_L_knee_link_0" type="sphere" pos="-0.0265394 -0.00298684 -0.201166" size="0.0494" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_1" type="sphere" pos="0.0248102 0.0224416 0.027142" size="0.0411" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_2" type="sphere" pos="-0.00557776 0.0112336 -0.420818" size="0.0451" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_3" type="sphere" pos="-0.0257031 -0.0317343 -0.0985369" size="0.0406" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_4" type="sphere" pos="-0.00237528 -0.018568 -0.377906" size="0.0426" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_5" type="sphere" pos="-0.0118913 0.00703209 -0.326423" size="0.0536" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_6" type="sphere" pos="0.0017385 -0.00145601 -0.260489" size="0.0568" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_7" type="sphere" pos="-0.010758 -0.0384752 0.00669829" size="0.0350" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_8" type="sphere" pos="-0.0288131 0.0323326 -0.115073" size="0.0394" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_9" type="sphere" pos="0.028318 -0.000448752 -0.154221" size="0.0394" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_10" type="sphere" pos="-0.0307517 0.0254013 -0.0132577" size="0.0471" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_L_knee_link_11" type="sphere" pos="0.0344507 0.0020843 -0.0580426" size="0.0397" contype="0" conaffinity="0" group="3"/>
+              <geom name="floorcol_L_knee_link" contype="0" conaffinity="8" group="3" type="capsule" fromto="-0.00423639 0.000164056 -0.396536 -0.00423639 0.000164056 0.00253608" size="0.0635"/>
               <body name="L_ankle_pitch_link" pos="0 0 -0.45">
                 <joint name="L_ankle_pitch" axis="0 1 0" range="-0.8 0.55" armature="0.01823" damping="0.27" frictionloss="1.5"/>
                 <inertial pos="-0.00531693 -0.000535052 0.000387912" quat="0.986755 -0.0087049 0.0432179 0.156111" mass="0.0283" diaginertia="4.68267e-06 6.05093e-06 8.12938e-06"/>
@@ -205,6 +263,14 @@
                   <inertial pos="0.0434213 0.000415715 -0.0564629" quat="0.998725 0.0153931 0.0479862 -0.00311141" mass="1.5135" diaginertia="0.00168985 0.0077668 0.00822642"/>
                   <geom type="mesh" mesh="L_foot"/>
                   <geom name="L_foot_sole" type="box" pos="0.04 0 -0.07" size="0.12 0.05 0.015" contype="1" conaffinity="1" group="0" friction="1.0 0.02 0.001" rgba="0.2 0.2 0.2 1"/>
+                  <geom name="selfcol_leg_L_foot_0" type="sphere" pos="-0.0504501 -0.00130579 -0.0527616" size="0.0419" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_1" type="sphere" pos="0.144617 0.00585987 -0.0576718" size="0.0393" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_2" type="sphere" pos="0.00188035 -0.0254757 -0.00861569" size="0.0387" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_3" type="sphere" pos="-0.0458828 0.0125858 0.000748778" size="0.0393" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_4" type="sphere" pos="0.0191921 -0.0302116 -0.0598548" size="0.0371" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_5" type="sphere" pos="0.0189812 0.0330911 -0.0585268" size="0.0359" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_6" type="sphere" pos="0.0882617 -0.0195984 -0.0490004" size="0.0423" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_L_foot_7" type="sphere" pos="0.0546238 0.0254527 -0.0223074" size="0.0375" contype="0" conaffinity="0" group="3"/>
                 </body>
               </body>
             </body>
@@ -215,38 +281,63 @@
         <joint name="R_hip_pitch" axis="0 1 0" range="-1.65 0.24" armature="0.0162" damping="0.2" frictionloss="1.5"/>
         <inertial pos="-0.0908387 -0.00255547 0.00102937" quat="0.649657 -0.700366 0.142292 -0.259204" mass="1.5881" diaginertia="0.00252479 0.00301994 0.00320076"/>
         <geom type="mesh" mesh="R_hip_pitch_link"/>
-        <geom name="selfcol_body_R_hip_pitch_link_0" type="sphere" pos="-0.0214001 -0.0114549 -0.00192696" size="0.0420" contype="0" conaffinity="4" condim="1" group="3"/>
-        <geom name="selfcol_body_R_hip_pitch_link_1" type="sphere" pos="-0.0936941 0.0251867 0.0189868" size="0.0418" contype="0" conaffinity="4" condim="1" group="3"/>
-        <geom name="selfcol_body_R_hip_pitch_link_2" type="sphere" pos="-0.0912102 -0.00165602 -0.0293273" size="0.0439" contype="0" conaffinity="4" condim="1" group="3"/>
-        <geom name="selfcol_body_R_hip_pitch_link_3" type="sphere" pos="-0.0795434 -0.0275938 0.0202876" size="0.0421" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_R_hip_pitch_link_0" type="sphere" pos="-0.0214001 -0.0114549 -0.00192696" size="0.0278" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_R_hip_pitch_link_1" type="sphere" pos="-0.0936941 0.0251867 0.0189868" size="0.0284" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_R_hip_pitch_link_2" type="sphere" pos="-0.0912102 -0.00165602 -0.0293273" size="0.0306" contype="0" conaffinity="4" condim="1" group="3"/>
+        <geom name="selfcol_body_R_hip_pitch_link_3" type="sphere" pos="-0.0795434 -0.0275938 0.0202876" size="0.0257" contype="0" conaffinity="4" condim="1" group="3"/>
         <body name="R_hip_roll_link" pos="0 0 0">
           <joint name="R_hip_roll" axis="1 0 0" range="-0.6 0.35" armature="0.0162" damping="0.2" frictionloss="1.5"/>
           <inertial pos="-0.0171644 -0.00507535 -0.0803981" quat="0.323926 0.276926 -0.790206 0.440408" mass="1.4482" diaginertia="0.00248185 0.00595554 0.00644526"/>
           <geom type="mesh" mesh="R_hip_roll_link"/>
-          <geom name="selfcol_body_R_hip_roll_link_0" type="sphere" pos="-0.102871 -0.0196684 0.0248375" size="0.0477" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_1" type="sphere" pos="0.0312473 -0.0227269 -0.00484239" size="0.0476" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_2" type="sphere" pos="0.0211722 -0.0108855 -0.100587" size="0.0477" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_3" type="sphere" pos="-0.039855 0.0120346 -0.103429" size="0.0450" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_4" type="sphere" pos="-0.0367052 -0.0191502 0.0322771" size="0.0476" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_5" type="sphere" pos="-0.0514335 -0.0419902 -0.0560881" size="0.0472" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_6" type="sphere" pos="-0.00686806 0.015363 -0.0412235" size="0.0436" contype="0" conaffinity="4" condim="1" group="3"/>
-          <geom name="selfcol_body_R_hip_roll_link_7" type="sphere" pos="-0.0921568 0.00256664 -0.0402774" size="0.0479" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_0" type="sphere" pos="-0.102871 -0.0196684 0.0248375" size="0.0363" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_1" type="sphere" pos="0.0312473 -0.0227269 -0.00484239" size="0.0338" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_2" type="sphere" pos="0.0211722 -0.0108855 -0.100587" size="0.0360" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_3" type="sphere" pos="-0.039855 0.0120346 -0.103429" size="0.0330" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_4" type="sphere" pos="-0.0367052 -0.0191502 0.0322771" size="0.0396" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_5" type="sphere" pos="-0.0514335 -0.0419902 -0.0560881" size="0.0248" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_6" type="sphere" pos="-0.00686806 0.015363 -0.0412235" size="0.0275" contype="0" conaffinity="4" condim="1" group="3"/>
+          <geom name="selfcol_body_R_hip_roll_link_7" type="sphere" pos="-0.0921568 0.00256664 -0.0402774" size="0.0311" contype="0" conaffinity="4" condim="1" group="3"/>
           <body name="R_hip_yaw_link" pos="0 0 -0.11">
             <joint name="R_hip_yaw" axis="0 0 1" range="-1.2 1.2" armature="0.0081" damping="0.12" frictionloss="1"/>
             <inertial pos="0.00177919 -0.000179379 -0.222978" quat="0.506397 -0.509318 0.491269 0.492759" mass="2.6100" diaginertia="0.0062068 0.0270966 0.0274822"/>
             <geom type="mesh" mesh="R_hip_yaw_link"/>
-            <geom name="selfcol_body_R_hip_yaw_link_0" type="sphere" pos="-0.0725618 -2.2502e-05 -0.00494782" size="0.0646" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_1" type="sphere" pos="0.000470895 0.0355459 -0.28349" size="0.0588" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_2" type="sphere" pos="0.0204157 -0.0282825 -0.129146" size="0.0604" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_3" type="sphere" pos="0.00888066 -0.0374343 -0.275495" size="0.0616" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_4" type="sphere" pos="0.0161251 0.00238325 -0.0252547" size="0.0673" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_5" type="sphere" pos="-0.0447798 -0.0225039 -0.200019" size="0.0574" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_6" type="sphere" pos="-0.0575804 0.00701069 -0.0994151" size="0.0637" contype="0" conaffinity="4" condim="1" group="3"/>
-            <geom name="selfcol_body_R_hip_yaw_link_7" type="sphere" pos="0.0104514 0.0366521 -0.17995" size="0.0631" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_0" type="sphere" pos="-0.0816087 -0.0059279 0.00553793" size="0.0472" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_1" type="sphere" pos="-0.00143756 0.0359942 -0.290785" size="0.0541" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_2" type="sphere" pos="0.0189204 -0.0405222 -0.181592" size="0.0446" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_3" type="sphere" pos="0.00425251 -0.0370403 -0.286607" size="0.0532" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_4" type="sphere" pos="0.00771674 -0.0337147 -0.0126665" size="0.0443" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_5" type="sphere" pos="-0.0497367 -0.0170957 -0.210075" size="0.0414" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_6" type="sphere" pos="-0.059273 0.0355776 -0.0456641" size="0.0462" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_7" type="sphere" pos="0.0216201 0.0349494 -0.207209" size="0.0507" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_8" type="sphere" pos="-0.0468741 0.0318068 -0.138156" size="0.0522" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_9" type="sphere" pos="0.030005 0.00149292 -0.100909" size="0.0515" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_10" type="sphere" pos="-0.0546544 -0.0357646 -0.0915961" size="0.0468" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_leg_R_hip_yaw_link_11" type="sphere" pos="0.0126442 0.033881 -0.0127107" size="0.0425" contype="0" conaffinity="0" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_0" type="sphere" pos="-0.0725618 -2.2502e-05 -0.00494782" size="0.0452" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_1" type="sphere" pos="0.000470895 0.0355459 -0.28349" size="0.0428" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_2" type="sphere" pos="0.0204157 -0.0282825 -0.129146" size="0.0400" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_3" type="sphere" pos="0.00888066 -0.0374343 -0.275495" size="0.0408" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_4" type="sphere" pos="0.0161251 0.00238325 -0.0252547" size="0.0500" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_5" type="sphere" pos="-0.0447798 -0.0225039 -0.200019" size="0.0355" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_6" type="sphere" pos="-0.0575804 0.00701069 -0.0994151" size="0.0481" contype="0" conaffinity="4" condim="1" group="3"/>
+            <geom name="selfcol_body_R_hip_yaw_link_7" type="sphere" pos="0.0104514 0.0366521 -0.17995" size="0.0379" contype="0" conaffinity="4" condim="1" group="3"/>
             <body name="R_knee_link" pos="0 0 -0.285">
               <joint name="R_knee" axis="0 1 0" range="0.0 2.15" armature="0.0162" damping="0.2" frictionloss="1.5"/>
               <inertial pos="-0.00717703 0.00150051 -0.188641" quat="0.692828 0.117431 0.697947 -0.138092" mass="2.9946" diaginertia="0.00425719 0.038274 0.0383495"/>
               <geom type="mesh" mesh="R_knee_link"/>
+              <geom name="selfcol_leg_R_knee_link_0" type="sphere" pos="-0.0276946 0.0267978 -0.0734438" size="0.0462" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_1" type="sphere" pos="0.0301027 0.0245647 0.0183053" size="0.0427" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_2" type="sphere" pos="-0.0292911 0.0167367 -0.187497" size="0.0468" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_3" type="sphere" pos="-0.00578808 -0.000213965 -0.413088" size="0.0475" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_4" type="sphere" pos="0.0341816 0.00175769 -0.0747351" size="0.0389" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_5" type="sphere" pos="-0.00303918 -0.0394885 0.000625993" size="0.0340" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_6" type="sphere" pos="-0.00145202 0.00350898 -0.342806" size="0.0523" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_7" type="sphere" pos="-0.0315789 0.0206369 0.00830437" size="0.0453" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_8" type="sphere" pos="0.0249071 -0.00823388 -0.157242" size="0.0426" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_9" type="sphere" pos="0.0161582 -0.00626875 -0.245749" size="0.0455" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_10" type="sphere" pos="-0.0312526 -0.00181995 -0.282705" size="0.0427" contype="0" conaffinity="0" group="3"/>
+              <geom name="selfcol_leg_R_knee_link_11" type="sphere" pos="-0.0324753 -0.0283644 -0.114336" size="0.0433" contype="0" conaffinity="0" group="3"/>
+              <geom name="floorcol_R_knee_link" contype="0" conaffinity="8" group="3" type="capsule" fromto="-0.00423706 0.000147985 -0.396534 -0.00423706 0.000147985 0.00253407" size="0.0635"/>
               <body name="R_ankle_pitch_link" pos="0 0 -0.45">
                 <joint name="R_ankle_pitch" axis="0 1 0" range="-0.8 0.55" armature="0.01823" damping="0.27" frictionloss="1.5"/>
                 <inertial pos="-0.00531693 0.000535052 0.000387912" quat="0.986755 0.0087049 0.0432179 -0.156111" mass="0.0283" diaginertia="4.68267e-06 6.05093e-06 8.12938e-06"/>
@@ -256,6 +347,14 @@
                   <inertial pos="0.0434213 -0.000416128 -0.0564629" quat="0.015414 0.998724 0.00311959 -0.047986" mass="1.5135" diaginertia="0.00168985 0.0077668 0.00822642"/>
                   <geom type="mesh" mesh="R_foot"/>
                   <geom name="R_foot_sole" type="box" pos="0.04 0 -0.07" size="0.12 0.05 0.015" contype="1" conaffinity="1" group="0" friction="1.0 0.02 0.001" rgba="0.2 0.2 0.2 1"/>
+                  <geom name="selfcol_leg_R_foot_0" type="sphere" pos="-0.0504501 -0.00130579 -0.0527616" size="0.0419" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_1" type="sphere" pos="0.144617 0.00585988 -0.0576718" size="0.0393" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_2" type="sphere" pos="0.00188035 -0.0254757 -0.00861569" size="0.0387" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_3" type="sphere" pos="-0.0458828 0.0125858 0.000748778" size="0.0393" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_4" type="sphere" pos="0.0191921 -0.0302116 -0.0598548" size="0.0371" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_5" type="sphere" pos="0.0189812 0.0330911 -0.0585268" size="0.0359" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_6" type="sphere" pos="0.0882617 -0.0195984 -0.0490004" size="0.0423" contype="0" conaffinity="0" group="3"/>
+                  <geom name="selfcol_leg_R_foot_7" type="sphere" pos="0.0546238 0.0254527 -0.0223074" size="0.0375" contype="0" conaffinity="0" group="3"/>
                 </body>
               </body>
             </body>

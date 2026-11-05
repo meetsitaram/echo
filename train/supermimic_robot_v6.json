@@ -1,0 +1,132 @@
+{
+  "mjcf": "../urdf/echo.xml",
+  "plant": "echo_plant_v6.yaml",
+  "num_joints": 29,
+  "tracked_bodies": [
+    "pelvis",
+    "L_hip_roll_link",
+    "L_knee_link",
+    "L_foot",
+    "R_hip_roll_link",
+    "R_knee_link",
+    "R_foot",
+    "torso",
+    "L_shoulder_roll_link",
+    "L_elbow_link",
+    "L_wrist_yaw_link",
+    "R_shoulder_roll_link",
+    "R_elbow_link",
+    "R_wrist_yaw_link",
+    "head",
+    "L_hand",
+    "R_hand"
+  ],
+  "lowest_origin": 0.085,
+  "torso": "torso",
+  "mass_bodies": [
+    "torso",
+    "L_wrist_yaw_link",
+    "R_wrist_yaw_link"
+  ],
+  "mass_scale": [
+    0.85,
+    1.25
+  ],
+  "armature_scale": [
+    0.5,
+    2.0
+  ],
+  "friction_scale": [
+    0.5,
+    1.5
+  ],
+  "torque_speed_knee": 0.5,
+  "noload_rads": {
+    "waist_yaw": 20.9,
+    "neck": 33.0,
+    "shoulder_pitch": 20.9,
+    "shoulder_roll": 50.3,
+    "shoulder_yaw": 42.9,
+    "elbow": 50.3,
+    "wrist_yaw": 42.9,
+    "wrist": 33.0,
+    "hip_pitch": 20.9,
+    "hip_roll": 20.9,
+    "hip_yaw": 20.4,
+    "knee": 20.9,
+    "ankle_pitch": 13.6,
+    "ankle_roll": 38.11
+  },
+  "motors": {
+    "waist_yaw": {
+      "model": "RS04",
+      "ratio": 1.0,
+      "rated_nm": 40.0
+    },
+    "neck": {
+      "model": "RS00",
+      "ratio": 1.0,
+      "rated_nm": 5.0
+    },
+    "shoulder_pitch": {
+      "model": "RS04",
+      "ratio": 1.0,
+      "rated_nm": 40.0
+    },
+    "shoulder_roll": {
+      "model": "RS06",
+      "ratio": 1.0,
+      "rated_nm": 11.0
+    },
+    "shoulder_yaw": {
+      "model": "RS02",
+      "ratio": 1.0,
+      "rated_nm": 6.0
+    },
+    "elbow": {
+      "model": "RS06",
+      "ratio": 1.0,
+      "rated_nm": 11.0
+    },
+    "wrist_yaw": {
+      "model": "RS02",
+      "ratio": 1.0,
+      "rated_nm": 6.0
+    },
+    "wrist": {
+      "model": "RS00",
+      "ratio": 1.0,
+      "rated_nm": 5.0
+    },
+    "hip_pitch": {
+      "model": "RS04",
+      "ratio": 1.0,
+      "rated_nm": 40.0
+    },
+    "hip_roll": {
+      "model": "RS04",
+      "ratio": 1.0,
+      "rated_nm": 40.0
+    },
+    "hip_yaw": {
+      "model": "RS03",
+      "ratio": 1.0,
+      "rated_nm": 20.0
+    },
+    "knee": {
+      "model": "RS04",
+      "ratio": 1.0,
+      "rated_nm": 40.0
+    },
+    "ankle_pitch": {
+      "model": "RS03",
+      "ratio": 1.5,
+      "rated_nm": 20.0
+    },
+    "ankle_roll": {
+      "model": "RS06",
+      "ratio": 1.32,
+      "rated_nm": 11.0
+    }
+  }
+}

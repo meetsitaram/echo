@@ -3,8 +3,8 @@ its parts. Sim only: every number below inherits the sim's estimates (armature, 
 
   SM_ROBOT_CFG=train/supermimic_robot.json PYTHONPATH=<gwbc-echo> python train/eval_design.py <ckpt.pt> <motion.pkl> [--out dir] [--clips N]
 
-Writes eval.json and motion/<clip>.npz: per clip whether it finished, tracking error, and per joint RMS and peak torque against
-rated and peak, peak speed against no-load, and time at a limit. Per robot, in the world frame, as each clip is its own test.
+Writes eval.json and motion/<clip>.npz: per clip whether it finished, tracking error, and per joint motor-side RMS against the
+manual's rating, peak torque against the plant's, peak speed against no-load, and time at a limit. Per robot, in the world frame, as each clip is its own test.
 """
 from __future__ import annotations
 
@@ -23,20 +23,28 @@ from gear_sonic.supermimic.kinematics import X2Kinematics
 from gear_sonic.supermimic.mdp import MDP, rot_angle_sq
 from gear_sonic.supermimic.motion import MotionLib
 from gear_sonic.supermimic.networks import Policy
+from gear_sonic.supermimic.robot_cfg import CFG
 from gear_sonic.supermimic.sim import TrackingSim
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def parts(names):
+def parts(names, effort):
+    """Per joint, the robot this policy ran on: peak (N m) from the plant's effort, no-load (rad/s) and motor from the robot
+    config. motor rated (N m) is the manual's, on the big plate of its rating_note (RS03 20, RS06 11, RS04 40). ratio > 1 is a
+    linkage after the motor, so a motor sees joint torque / ratio. A config with no 'motors' (before v6) falls back on
+    spec/robot.json, which may not be the plant it ran."""
     spec = json.loads((ROOT / 'spec' / 'robot.json').read_text(encoding='utf-8'))
     cap = {j['name']: j['capacity'] for j in spec['joints']}
     out = {}
-    for n in names:
-        c = cap[n]
-        a = spec['actuators'][c['model']]
-        k = c['count'] * c['ratio']
-        out[n] = dict(rated=a['rated_nm'] * k, peak=a['peak_nm'] * k, noload=a['noload_rads'] / c['ratio'])
+    for n, e in zip(names, effort):
+        if 'motors' in CFG:
+            c = next(v for k, v in CFG['motors'].items() if k in n)
+            model, ratio, rated = c['model'], c['ratio'], c['rated_nm']
+        else:
+            c = cap[n]
+            model, ratio, rated = c['model'], c['count'] * c['ratio'], spec['actuators'][c['model']]['rated_nm']
+        out[n] = dict(model=model, ratio=ratio, motor_rated=rated, peak=float(e), noload=next(v for k, v in CFG['noload_rads'].items() if k in n))
     return out
 
 
@@ -144,15 +152,20 @@ def main():
             pushes += alive.float()
         for i in torch.nonzero(alive).flatten().tolist():
             rec[i].append(np.concatenate((S[0][i].cpu().numpy(), sim.qpos[i, 3:7].cpu().numpy(), q[i].cpu().numpy(), sim.ctrl[i].cpu().numpy())))
-    P = parts(names)
+    P = parts(names, x2.effort)
     per = {}
     steps_c = steps.clamp(min=1)
     rms = (tq2 / steps_c.unsqueeze(-1)).sqrt()
     rms_lp = (lp2 / steps_c.unsqueeze(-1)).sqrt()
     for i, n in enumerate(names):
         p = P[n]
+        k = p['ratio']
         r, pk, sp, li = rms[:, i], tq_peak[:, i], spd_peak[:, i], lim[:, i] / steps_c
-        per[n] = dict(rated=p['rated'], peak=p['peak'], noload=p['noload'], rms_median=round(float(r.median()), 1), rms_max=round(float(r.max()), 1), rms_over_rated_clips_pct=round(100 * float((r > p['rated']).float().mean()), 1), saturated_pct_median=round(100 * float((sat[:, i] / steps_c).median()), 1), saturated_pct_max=round(100 * float((sat[:, i] / steps_c).max()), 1), rms_lp_median=round(float(rms_lp[:, i].median()), 1), rms_lp_max=round(float(rms_lp[:, i].max()), 1), rms_lp_over_rated_clips_pct=round(100 * float((rms_lp[:, i] > p['rated']).float().mean()), 1),
+        rl = rms_lp[:, i]
+        per[n] = dict(motor=p['model'], ratio=k, motor_rated=p['motor_rated'], joint_rated=round(p['motor_rated'] * k, 1), peak=p['peak'], noload=p['noload'],
+                      rms_median=round(float(r.median()), 1), rms_max=round(float(r.max()), 1), motor_rms_median=round(float(r.median()) / k, 1), motor_rms_max=round(float(r.max()) / k, 1),
+                      rms_over_rated_clips_pct=round(100 * float((r / k > p['motor_rated']).float().mean()), 1), saturated_pct_median=round(100 * float((sat[:, i] / steps_c).median()), 1), saturated_pct_max=round(100 * float((sat[:, i] / steps_c).max()), 1),
+                      rms_lp_median=round(float(rl.median()), 1), rms_lp_max=round(float(rl.max()), 1), motor_rms_lp_median=round(float(rl.median()) / k, 1), motor_rms_lp_max=round(float(rl.max()) / k, 1), rms_lp_over_rated_clips_pct=round(100 * float((rl / k > p['motor_rated']).float().mean()), 1),
                       peak_p95=round(float(pk.quantile(0.95)), 1), peak_max=round(float(pk.max()), 1), speed_p95=round(float(sp.quantile(0.95)), 2), speed_max=round(float(sp.max()), 2), at_limit_pct_median=round(100 * float(li.median()), 1))
     done = (~fell).float()
     per_clip = {k: dict(finished=bool(~fell[i]), strict_pass=bool(~strict[i]), seconds=round(float(steps[i]) * CONTROL_DT, 1), of=round(float(ends[i] - starts[i]) * CONTROL_DT, 1), xy_err_m=round(float(pos_err[i] / steps_c[i]), 3),
@@ -170,9 +183,10 @@ def main():
             r = np.array(rec[i])
             np.savez_compressed(out_dir / 'motion' / f'{k}.npz', t=np.arange(len(r)) * CONTROL_DT, q=r[:, 7:7 + len(names)], ctrl=r[:, 7 + len(names):], joint_names=np.array(names), root_pos=r[:, :3], root_quat_wxyz=r[:, 3:7], clip=k)
     print(json.dumps({k: v for k, v in res.items() if k not in ('joints', 'per_clip')}))
-    print(f"{'joint':18s}{'rated':>7s}{'rms med':>9s}{'rms max':>9s}{'>rated %':>9s}{'lp med':>8s}{'lp max':>8s}{'lp>r %':>8s}{'sat %':>7s}{'peak':>7s}{'p95':>7s}{'max':>7s}{'noload':>8s}{'spd p95':>9s}{'spd max':>9s}{'limit %':>9s}")
+    print('RMS over the clip at the motor (joint torque / ratio) against the manual rating, on the big plate; lp = over 0.2 s. Peak, speed: at the joint.')
+    print(f"{'joint':18s}{'motor':>6s}{'ratio':>6s}{'rated':>7s}{'rms med':>9s}{'rms max':>9s}{'>rated %':>9s}{'lp med':>8s}{'lp max':>8s}{'lp>r %':>8s}{'sat %':>7s}{'peak':>7s}{'p95':>7s}{'max':>7s}{'noload':>8s}{'spd p95':>9s}{'spd max':>9s}{'limit %':>9s}")
     for n, d in per.items():
-        print(f"{n:18s}{d['rated']:7.1f}{d['rms_median']:9.1f}{d['rms_max']:9.1f}{d['rms_over_rated_clips_pct']:9.1f}{d['rms_lp_median']:8.1f}{d['rms_lp_max']:8.1f}{d['rms_lp_over_rated_clips_pct']:8.1f}{d['saturated_pct_median']:7.1f}{d['peak']:7.1f}{d['peak_p95']:7.1f}{d['peak_max']:7.1f}{d['noload']:8.1f}{d['speed_p95']:9.2f}{d['speed_max']:9.2f}{d['at_limit_pct_median']:9.1f}")
+        print(f"{n:18s}{d['motor']:>6s}{d['ratio']:6.2f}{d['motor_rated']:7.1f}{d['motor_rms_median']:9.1f}{d['motor_rms_max']:9.1f}{d['rms_over_rated_clips_pct']:9.1f}{d['motor_rms_lp_median']:8.1f}{d['motor_rms_lp_max']:8.1f}{d['rms_lp_over_rated_clips_pct']:8.1f}{d['saturated_pct_median']:7.1f}{d['peak']:7.1f}{d['peak_p95']:7.1f}{d['peak_max']:7.1f}{d['noload']:8.1f}{d['speed_p95']:9.2f}{d['speed_max']:9.2f}{d['at_limit_pct_median']:9.1f}")
 
 
 if __name__ == '__main__':
