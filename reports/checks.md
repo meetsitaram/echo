@@ -1,8 +1,8 @@
 # Physical checks
 
-spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
+spec: `spec/robot.json`, 2026-11-05 15:00, 550 s
 
-1031 checks: 936 pass, 16 warn, **79 fail**
+1134 checks: 1052 pass, 18 warn, **64 fail**
 
 ## targets
 
@@ -28,7 +28,7 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | total | 62.45 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
+| PASS | total | 62.29 kg bottom-up (Figure 03: 61.0 kg; allowed 54.9 .. 62.5) |
 
 ## axis
 
@@ -170,20 +170,19 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | Foot plate at the ankle (all load at toe or heel) | SF 12.84 on what's required, 810 N walking (needs 1.5); worst of all cases 3.06, 3,400 N foot: 164 MPa on 70.0 x 16.0 mm al7075; a hand estimate |
-| PASS | Clevis plates above the foot plate | SF 20.01 on what's required, 810 N walking (needs 1.5); worst of all cases 9.70, 3,400 N + 1,614 N side: 52 MPa on 2 x 40.0 x 6.0 mm al7075; a hand estimate |
-| PASS | Clevis at the pivot height (rear plate net of its hole) | SF 15.56 on what's required, 810 N walking (needs 1.5); worst of all cases 8.99, 3,400 N + 1,614 N side: 56 MPa on 2 x 10.0 x 6.0 + 40.0 x 6.0 mm al7075; a hand estimate |
-| PASS | Ankle cross at its middle | SF 134.19 on what's required, 810 N walking (needs 1.5); worst of all cases 31.97, 3,400 N foot: 16 MPa on 28.0 x 26.0 mm al7075; a hand estimate |
-| PASS | Cross tail | SF 2.72 on what's required, motor peak (needs 1.5); worst of all cases 2.72, motor peak: 185 MPa on 14.0 x 14.0 mm al7075; a hand estimate |
-| WARN | Cross tail, at the mass model's fill | SF 1.49 if as hollow as its mass assumes (fill 0.50); solid 2.72 |
-| PASS | Fork cheeks | SF 8.77 on what's required, motor peak (needs 1.5); worst of all cases 7.43, 3,400 N + 1,614 N side: 68 MPa on 2 x 32.0 x 6.0 mm al7075; a hand estimate |
-| PASS | Shank lower plates | SF 8.70 on what's required, motor peak (needs 1.5); worst of all cases 6.12, 3,400 N + 1,614 N side: 82 MPa on 2 x 40.0 x 4.0 mm al7075; a hand estimate |
-| PASS | Shank closed section at the ankle pitch motor, panel on | SF 34.77 on what's required, motor peak (needs 1.5); worst of all cases 7.30, 3,400 N + 1,614 N side: 69 MPa on 96.7 x 25.4 + 97.2 x 25.7 mm al7075; a hand estimate |
-| PASS | Shank closed section at the ankle roll motor, panel on | SF 20.44 on what's required, motor peak (needs 1.5); worst of all cases 7.11, 3,400 N + 1,614 N side: 71 MPa on 87.4 x 16.7 + 92.9 x 38.7 mm al7075; a hand estimate |
-| PASS | Shank waist behind the knee | SF 35.79 on what's required, motor peak (needs 1.5); worst of all cases 14.66, 3,400 N + 1,614 N side: 34 MPa on 86.2 x 73.7 mm al7075; a hand estimate |
-| PASS | Barrel where it meets the waist | SF 80.81 on what's required, motor peak (needs 1.5); worst of all cases 11.03, 3,400 N + 1,614 N side: 46 MPa on 79.8 x 60.1 mm al7075; a hand estimate |
+| PASS | Foot frame in front of the ankle (all load at the toe) | SF 8.97 on what's required, 810 N walking (needs 1.5); worst of all cases 2.14, 3,400 N foot: 235 MPa on 67.0 x 14.1 mm al7075; a hand estimate |
+| PASS | Foot frame behind the ankle (all load at the heel) | SF 7.18 on what's required, 810 N walking (needs 1.5); worst of all cases 1.71, 3,400 N foot: 294 MPa on 67.0 x 14.1 mm al7075; a hand estimate |
+| PASS | Clevis plates above the frame | SF 16.23 on what's required, 810 N walking (needs 1.5); worst of all cases 7.66, 3,400 N + 1,614 N side: 66 MPa on 2 x 14.4 x 5.0 + 2 x 14.4 x 6.0 mm al7075; a hand estimate |
+| PASS | Clevis plates at the pivot (net of the bushings) | SF 4.66 on what's required, 810 N walking (needs 1.5); worst of all cases 3.23, 3,400 N foot: 156 MPa on 2 x 5.5 x 5.0 + 2 x 6.0 x 5.5 mm al7075; a hand estimate |
+| PASS | Ankle cross at its middle (net of the shaft's bore) | SF 95.83 on what's required, 810 N walking (needs 1.5); worst of all cases 22.83, 3,400 N foot: 22 MPa on 2 x 30.6 x 6.2 mm al7075; a hand estimate |
+| PASS | Fork cheeks at the bushings' top | SF 5.91 on what's required, motor peak (needs 1.5); worst of all cases 5.14, 3,400 N + 1,614 N side: 98 MPa on 2 x 27.6 x 5.0 mm al7075; a hand estimate |
+| PASS | Shank tube, closed, past the rods | SF 11.68 on what's required, motor peak (needs 1.5); worst of all cases 7.16, 3,400 N + 1,614 N side: 70 MPa on 53.0 x 43.2 mm al7075; a hand estimate |
+| PASS | Shank closed section at the ankle pitch motor, panel on | SF 19.61 on what's required, motor peak (needs 1.5); worst of all cases 6.49, 3,400 N + 1,614 N side: 78 MPa on 97.1 x 20.0 + 9.5 x 4.8 + 97.4 x 23.1 mm al7075; a hand estimate |
+| PASS | Shank closed section at the ankle roll motor, panel on | SF 18.90 on what's required, motor peak (needs 1.5); worst of all cases 6.29, 3,400 N + 1,614 N side: 80 MPa on 82.1 x 15.3 + 92.4 x 29.3 mm al7075; a hand estimate |
+| PASS | Shank waist behind the knee | SF 35.78 on what's required, motor peak (needs 1.5); worst of all cases 14.66, 3,400 N + 1,614 N side: 34 MPa on 86.2 x 73.7 mm al7075; a hand estimate |
+| PASS | Barrel where it meets the waist | SF 80.79 on what's required, motor peak (needs 1.5); worst of all cases 11.02, 3,400 N + 1,614 N side: 46 MPa on 79.8 x 60.1 mm al7075; a hand estimate |
 | PASS | Barrel at the axis (walls, net of the bore) | SF 133.73 on what's required, motor peak (needs 1.5); worst of all cases 57.68, 3,400 N foot: 9 MPa on 2 x 58.3 x 8.3 + 2 x 20.1 x 13.9 mm al7075; a hand estimate |
-| PASS | Barrel plate round the inner bearing | SF 2088.67 on what's required, 810 N walking (needs 1.5); worst of all cases 497.59, 3,400 N foot: 1 MPa on 24.1 x 5.0 + 23.9 x 10.9 + 366.5 x 125.0 mm al7075; a hand estimate |
+| PASS | Barrel plate round the inner bearing | SF 4317.73 on what's required, 810 N walking (needs 1.5); worst of all cases 1028.64, 3,400 N foot: 0 MPa on 7.8 x 3.5 + 6.2 x 0.7 + 16.7 x 6.8 + 16.0 x 0.7 + 65.6 x 40.3 + 368.8 x 125.0 mm al7075; a hand estimate |
 | PASS | Knee post at its root | SF 620.08 on what's required, 810 N walking (needs 1.5); worst of all cases 147.72, 3,400 N foot: 3 MPa on 52.3 x 52.3 mm al7075; a hand estimate |
 | PASS | Rear cap at the axis | SF 193.74 on what's required, 810 N walking (needs 1.5); worst of all cases 46.16, 3,400 N foot: 11 MPa on 127.0 x 26.7 mm al7075; a hand estimate |
 | PASS | Cup neck between bearing and cheek | SF 33.98 on what's required, motor peak (needs 1.5); worst of all cases 33.98, motor peak: 15 MPa on 52.8 x 52.8 mm al7075; a hand estimate |
@@ -203,42 +202,41 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | Roll barrel | SF 83.27 on what's required, 810 N walking (needs 1.5); worst of all cases 31.65, 3,400 N foot: 16 MPa on 130.3 x 125.4 mm al7075; a hand estimate |
 | PASS | Pelvis bar between the hips | SF 20.26 on what's required, 810 N walking (needs 1.5); worst of all cases 8.19, 3,400 N foot: 61 MPa on 2 x 22.1 x 2.0 + 2 x 67.1 x 16.0 + 2 x 5.7 x 4.6 mm al7075; a hand estimate |
 | PASS | Hip barrel on the pelvis | SF 104.96 on what's required, 810 N walking (needs 1.5); worst of all cases 44.31, 3,400 N foot: 11 MPa on 125.4 x 125.4 mm al7075; a hand estimate |
-| PASS | Waist housing on the pelvis | SF 151.66 on what's required, 810 N walking (needs 1.5); worst of all cases 131.18, 3,400 N foot: 4 MPa on 232.6 x 125.4 mm al7075; a hand estimate |
+| PASS | Waist housing on the pelvis | SF 151.60 on what's required, 810 N walking (needs 1.5); worst of all cases 130.99, 3,400 N foot: 4 MPa on 232.6 x 125.4 mm al7075; a hand estimate |
 | PASS | Waist cup neck | SF 16.93 on what's required, motor peak (needs 1.5); worst of all cases 16.93, motor peak: 30 MPa on 52.9 x 52.9 mm al7075; a hand estimate |
 | PASS | Chest rails over the waist | SF 7.33 on what's required, motor peak (needs 1.5); worst of all cases 7.33, motor peak: 69 MPa on 2 x 46.0 x 25.0 mm al7075; a hand estimate |
 | PASS | Frame between waist and shoulder bar (the pack is not frame) | SF 6.69 on what's required, motor peak (needs 1.5); worst of all cases 6.69, motor peak: 75 MPa on 2 x 44.0 x 24.0 mm al7075; a hand estimate |
 | PASS | Chest bar under the neck | SF 95.29 on what's required, motor peak (needs 1.5); worst of all cases 95.29, motor peak: 5 MPa on 12.5 x 3.8 + 2 x 31.6 x 6.7 + 125.4 x 125.4 mm al7075; a hand estimate |
-| PASS | Chest bar at the shoulder motor | SF 185.29 on what's required, motor peak (needs 1.5); worst of all cases 113.02, 3,400 N foot: 4 MPa on 66.0 x 43.8 + 63.9 x 46.3 + 65.2 x 10.0 + 124.2 x 55.5 mm al7075; a hand estimate |
+| PASS | Chest bar at the shoulder motor | SF 185.29 on what's required, motor peak (needs 1.5); worst of all cases 112.72, 3,400 N foot: 4 MPa on 66.0 x 43.8 + 63.9 x 46.3 + 65.2 x 10.0 + 124.2 x 55.5 mm al7075; a hand estimate |
 | PASS | Shoulder bracket | SF 24.80 on what's required, motor peak (needs 1.5); worst of all cases 24.80, motor peak: 20 MPa on 36.0 x 36.0 mm al7075; a hand estimate |
-| PASS | Shoulder roll post (front of the fork) | SF 15.50 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 7.67, 3,400 N foot: 66 MPa on 24.0 x 24.0 mm al7075; a hand estimate |
-| PASS | Shoulder roll axle (back of the fork) | SF 12.11 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 6.14, 3,400 N foot: 82 MPa on 22.0 x 22.0 mm al7075; a hand estimate |
+| PASS | Shoulder roll post (front of the fork) | SF 15.50 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 7.65, 3,400 N foot: 66 MPa on 24.0 x 24.0 mm al7075; a hand estimate |
+| PASS | Shoulder roll axle (back of the fork) | SF 12.11 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 6.12, 3,400 N foot: 82 MPa on 22.0 x 22.0 mm al7075; a hand estimate |
 | PASS | Fork plates, upper, solid | SF 99.92 on what's required, motor peak (needs 1.5); worst of all cases 99.92, motor peak: 5 MPa on 2 x 64.0 x 6.0 mm al7075; a hand estimate |
 | PASS | Fork plates at the roll axis (front net of its bore) | SF 38.28 on what's required, motor peak (needs 1.5); worst of all cases 38.28, motor peak: 13 MPa on 64.0 x 6.0 + 6.0 x 3.5 + 33.5 x 6.0 mm al7075; a hand estimate |
 | PASS | Fork front plate alone, net of its bore | SF 8.66 on what's required, motor peak (needs 1.5); worst of all cases 8.66, motor peak: 58 MPa on 6.0 x 3.5 + 33.5 x 6.0 mm al7075; a hand estimate |
 | PASS | Fork plates, lower | SF 67.51 on what's required, motor peak (needs 1.5); worst of all cases 67.51, motor peak: 7 MPa on 2 x 50.0 x 6.0 mm al7075; a hand estimate |
-| PASS | Fork bridge | SF 10.77 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 5.68, 3,400 N foot: 89 MPa on 50.0 x 10.0 mm al7075; a hand estimate |
-| PASS | Upper arm frame | SF 60.28 on what's required, motor peak (needs 1.5); worst of all cases 42.15, 3,400 N foot: 12 MPa on 30.0 x 30.0 mm al7075; a hand estimate |
-| PASS | Elbow bridge beside the frame | SF 5.67 on what's required, motor peak (needs 1.5); worst of all cases 4.25, 3,400 N foot: 118 MPa on 24.0 x 10.0 mm al7075; a hand estimate |
-| PASS | Elbow cheeks over the discs, both | SF 39.62 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 24.84, 3,400 N foot: 20 MPa on 2 x 46.0 x 3.0 mm al7075; a hand estimate |
-| FAIL | Elbow inner cheek alone (the only one that takes motor torque) | SF 1.31 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 0.83, 3,400 N foot: 609 MPa on 46.0 x 3.0 mm al7075; a hand estimate |
+| PASS | Fork bridge | SF 10.77 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 5.67, 3,400 N foot: 89 MPa on 50.0 x 10.0 mm al7075; a hand estimate |
+| PASS | Upper arm frame | SF 60.28 on what's required, motor peak (needs 1.5); worst of all cases 42.03, 3,400 N foot: 12 MPa on 30.0 x 30.0 mm al7075; a hand estimate |
+| PASS | Elbow bridge beside the frame | SF 5.67 on what's required, motor peak (needs 1.5); worst of all cases 4.24, 3,400 N foot: 119 MPa on 24.0 x 10.0 mm al7075; a hand estimate |
+| PASS | Elbow cheeks over the discs, both | SF 39.62 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 24.77, 3,400 N foot: 20 MPa on 2 x 46.0 x 3.0 mm al7075; a hand estimate |
+| FAIL | Elbow inner cheek alone (the only one that takes motor torque) | SF 1.31 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 0.82, 3,400 N foot: 610 MPa on 46.0 x 3.0 mm al7075; a hand estimate |
 | PASS | Elbow cheek discs at the bores (net of them) | SF 83.18 on what's required, motor peak (needs 1.5); worst of all cases 83.18, motor peak: 6 MPa on 2 x 20.5 x 3.0 + 2 x 28.5 x 3.0 mm al7075; a hand estimate |
 | PASS | Elbow axle | SF 52.04 on what's required, motor peak (needs 1.5); worst of all cases 52.04, motor peak: 10 MPa on 34.0 x 34.0 mm al7075; a hand estimate |
 | PASS | Elbow post | SF 49.76 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 49.76, 5 kg in the hand: 10 MPa on 34.0 x 34.0 mm al7075; a hand estimate |
-| PASS | Forearm frame | SF 4.70 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 3.62, 3,400 N foot: 139 MPa on 40.0 x 5.0 mm al7075; a hand estimate |
-| PASS | Elbow idler arm | SF 16.11 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 10.35, 3,400 N foot: 49 MPa on 12.0 x 4.0 mm al7075; a hand estimate |
-| PASS | Under the elbow motor | SF 85.51 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 54.96, 3,400 N foot: 9 MPa on 30.0 x 8.0 mm al7075; a hand estimate |
+| PASS | Forearm frame | SF 4.70 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 3.61, 3,400 N foot: 139 MPa on 40.0 x 5.0 mm al7075; a hand estimate |
+| PASS | Elbow idler arm | SF 16.11 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 10.32, 3,400 N foot: 49 MPa on 12.0 x 4.0 mm al7075; a hand estimate |
+| PASS | Under the elbow motor | SF 85.51 on what's required, 5 kg in the hand (needs 1.5); worst of all cases 54.82, 3,400 N foot: 9 MPa on 30.0 x 8.0 mm al7075; a hand estimate |
 | PASS | Forearm lower frame | SF 71.86 on what's required, motor peak (needs 1.5); worst of all cases 71.86, motor peak: 7 MPa on 30.0 x 24.0 mm al7075; a hand estimate |
 | PASS | Wrist cheek | SF 8.34 on what's required, motor peak (needs 1.5); worst of all cases 8.34, motor peak: 60 MPa on 40.0 x 6.0 mm al7075; a hand estimate |
 | PASS | Hand bracket | SF 13.22 on what's required, motor peak (needs 1.5); worst of all cases 13.22, motor peak: 38 MPa on 20.0 x 6.0 mm al7075; a hand estimate |
-| PASS | Neck pitch post | SF 41.43 on what's required, motor peak (needs 1.5); worst of all cases 41.43, motor peak: 12 MPa on 23.0 x 23.0 mm al7075; a hand estimate |
-| PASS | Head frame | SF 26.95 on what's required, motor peak (needs 1.5); worst of all cases 8.23, 3,400 N foot: 61 MPa on 34.4 x 4.0 mm al7075; a hand estimate |
+| PASS | Neck housing column | SF 17.04 on what's required, motor peak (needs 1.5); worst of all cases 17.04, motor peak: 30 MPa on 17.2 x 17.0 mm al7075; a hand estimate |
+| PASS | Head frame | SF 31.82 on what's required, motor peak (needs 1.5); worst of all cases 7.98, 3,400 N foot: 63 MPa on 37.0 x 4.0 mm al7075; a hand estimate |
 | PASS | Pitch rod | SF 2.84 on what's required, motor peak (needs 1.5); worst of all cases 2.84, motor peak: 34 MPa on 10.0 x 10.0 mm al7075; a hand estimate |
 | PASS | Roll rod | SF 2.55 on what's required, motor peak (needs 1.5); worst of all cases 2.55, motor peak: 18 MPa on 10.0 x 10.0 mm al7075; a hand estimate |
-| PASS | Pitch crank at the motor | SF 3.57 on what's required, motor peak (needs 1.5); worst of all cases 3.57, motor peak: 141 MPa on 16.0 x 16.0 mm al7075; a hand estimate |
-| PASS | Roll crank at the motor | SF 5.86 on what's required, motor peak (needs 1.5); worst of all cases 5.86, motor peak: 86 MPa on 16.0 x 16.0 mm al7075; a hand estimate |
-| PASS | Ankle pitch arm | SF 1.72 on what's required, motor peak (needs 1.5); worst of all cases 1.72, motor peak: 293 MPa on 10.0 x 10.0 mm al7075; a hand estimate |
-| WARN | Ankle pitch arm, at the mass model's fill | SF 1.21 if as hollow as its mass assumes (fill 0.50); solid 1.72 |
-| PASS | Roll pin block | SF 13.88 on what's required, motor peak (needs 1.5); worst of all cases 13.88, motor peak: 36 MPa on 14.0 x 8.0 mm al7075; a hand estimate |
+| PASS | Pitch crank at the motor | SF 4.96 on what's required, motor peak (needs 1.5); worst of all cases 4.96, motor peak: 102 MPa on 6.4 x 4.4 + 6.4 x 4.9 + 12.4 x 6.4 mm al7075; a hand estimate |
+| PASS | Roll crank at the motor | SF 6.21 on what's required, motor peak (needs 1.5); worst of all cases 6.21, motor peak: 81 MPa on 2 x 6.2 x 4.3 + 2 x 6.2 x 4.1 mm al7075; a hand estimate |
+| PASS | Ankle pitch arm | SF 1.96 on what's required, motor peak (needs 1.5); worst of all cases 1.96, motor peak: 257 MPa on 19.6 x 15.8 mm al7075; a hand estimate |
+| PASS | Roll rod post | SF 2.76 on what's required, motor peak (needs 1.5); worst of all cases 2.76, motor peak: 182 MPa on 19.4 x 3.5 mm al7075; a hand estimate |
 | PASS | coverage: every rigid part on a path or excused |  |
 | PASS | coverage: every named part exists |  |
 | WARN | role: L elbow hub in | 7075 with role shell: not counted as load-bearing. If it carries load, make it struct |
@@ -249,14 +247,13 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | L foot plate / L ankle clevis front | 222 mm2 (overlap, 5.00 deep), needs 100 to pass 405 N |
-| PASS | L foot plate / L ankle clevis back | 222 mm2 (overlap, 5.00 deep), needs 100 to pass 405 N |
-| PASS | L ankle fork cheek in / L shank plate in | 451 mm2 (overlap, 4.00 deep), needs 100 to pass 405 N |
-| PASS | L ankle fork cheek out / L shank plate out | 451 mm2 (overlap, 4.00 deep), needs 100 to pass 405 N |
-| PASS | L shank plate in / L shank body | 398 mm2 (overlap, 4.00 deep), needs 100 to pass 405 N |
-| PASS | L shank plate out / L shank body | 415 mm2 (overlap, 4.00 deep), needs 100 to pass 405 N |
-| PASS | L shank body / L shank back panel | 1266 mm2 (overlap, 0.20 deep), needs 100 to pass 81 N |
-| PASS | L shank body / L knee rear cap | 535 mm2 (overlap, 0.69 deep), needs 100 to pass 613 N |
+| PASS | L foot frame / L ankle roll bushing front | 110 mm2 (overlap, 0.23 deep), needs 100 to pass 405 N |
+| PASS | L foot frame / L ankle roll bushing back | 100 mm2 (overlap, 0.25 deep), needs 100 to pass 405 N |
+| PASS | L ankle roll shaft / L ankle cross | 367 mm2 (flush, 0.00 deep), needs 100 to pass 810 N |
+| PASS | L ankle pitch bushing in / L shank body | 101 mm2 (overlap, 0.25 deep), needs 100 to pass 405 N |
+| PASS | L ankle pitch bushing out / L shank body | 109 mm2 (overlap, 0.23 deep), needs 100 to pass 405 N |
+| PASS | L shank body / L shank back panel | 1281 mm2 (overlap, 0.20 deep), needs 100 to pass 81 N |
+| PASS | L shank body / L knee rear cap | 534 mm2 (overlap, 0.69 deep), needs 100 to pass 613 N |
 | PASS | L shank body / L_knee actuator (buy) RS04 | 8212 mm2 (flush, 0.00 deep), needs 100 to pass 543 N |
 | PASS | L thigh fork / L_knee flange | 1461 mm2 (overlap, 0.38 deep), needs 100 to pass 613 N |
 | PASS | L thigh fork / L knee outer cheek | 543 mm2 (overlap, 1.67 deep), needs 100 to pass 613 N |
@@ -268,9 +265,9 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L hip carrier / L_hip_pitch flange | 1355 mm2 (overlap, 0.34 deep), needs 100 to pass 810 N |
 | PASS | pelvis frame / L_hip_pitch actuator (buy) RS04 | 3516 mm2 (overlap, 0.27 deep), needs 100 to pass 543 N |
 | PASS | pelvis frame / L hip ring | 269 mm2 (overlap, 0.80 deep), needs 100 to pass 810 N |
-| PASS | pelvis frame / waist_yaw actuator (buy) RS04 | 3580 mm2 (overlap, 0.37 deep), needs 100 to pass 432 N |
-| PASS | pelvis frame / waist ring | 268 mm2 (overlap, 0.80 deep), needs 100 to pass 432 N |
-| PASS | chest frame / waist_yaw flange | 1150 mm2 (overlap, 0.34 deep), needs 100 to pass 432 N |
+| PASS | pelvis frame / waist_yaw actuator (buy) RS04 | 3580 mm2 (overlap, 0.37 deep), needs 100 to pass 435 N |
+| PASS | pelvis frame / waist ring | 268 mm2 (overlap, 0.80 deep), needs 100 to pass 435 N |
+| PASS | chest frame / waist_yaw flange | 1150 mm2 (overlap, 0.34 deep), needs 100 to pass 435 N |
 | PASS | chest frame / L_shoulder_pitch actuator (buy) RS04 | 3516 mm2 (overlap, 0.27 deep), needs 100 to pass 106 N |
 | PASS | L shoulder bracket / L_shoulder_pitch flange | 1187 mm2 (overlap, 4.85 deep), needs 100 to pass 106 N |
 | PASS | L shoulder bracket / L_shoulder_roll actuator (buy) RS06 | 545 mm2 (overlap, 2.08 deep), needs 100 to pass 106 N |
@@ -301,13 +298,11 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L wrist cheek / L_wrist_pitch flange | 452 mm2 (overlap, 5.00 deep), needs 100 to pass 106 N |
 | PASS | L wrist cheek / L_wrist_roll actuator (buy) RS00 | 149 mm2 (overlap, 2.56 deep), needs 100 to pass 106 N |
 | PASS | L hand bracket / L_wrist_roll flange | 230 mm2 (overlap, 3.50 deep), needs 100 to pass 106 N |
-| PASS | chest frame / neck_yaw actuator (buy) RS00 | 871 mm2 (overlap, 0.25 deep), needs 100 to pass 17 N |
-| PASS | neck pitch post / neck_yaw flange | 415 mm2 (overlap, 1.00 deep), needs 100 to pass 17 N |
-| PASS | neck pitch post / neck_pitch actuator (buy) RS00 | 220 mm2 (overlap, 1.00 deep), needs 100 to pass 17 N |
-| PASS | head frame / neck_pitch flange | 791 mm2 (overlap, 0.30 deep), needs 100 to pass 17 N |
-| FAIL | L ankle cross / L ankle cross tail | 154 mm2 (flush, 0.00 deep), needs 300 to pass 2649 N |
-| FAIL | L ankle cross tail / L ankle pitch arm | 70 mm2 (overlap, 4.98 deep), needs 300 to pass 2649 N |
-| FAIL | L foot plate / L ankle roll pin | 38 mm2 (overlap, 3.00 deep), needs 200 to pass 1385 N |
+| PASS | chest frame / neck_yaw actuator (buy) RS00 | 871 mm2 (overlap, 0.25 deep), needs 100 to pass 19 N |
+| PASS | neck housing / neck_yaw flange | 479 mm2 (overlap, 0.70 deep), needs 100 to pass 19 N |
+| PASS | neck housing / neck_pitch actuator (buy) RS00 | 758 mm2 (overlap, 0.17 deep), needs 100 to pass 19 N |
+| PASS | head frame / neck_pitch flange | 987 mm2 (overlap, 0.30 deep), needs 100 to pass 19 N |
+| PASS | L foot frame / L ankle roll post | 281 mm2 (overlap, 0.26 deep), needs 200 to pass 1385 N |
 | PASS | pelvis: frame in one piece |  |
 | PASS | torso: frame in one piece |  |
 | PASS | battery: seated on the frame | 113 mm2 on carrying parts (needs 100) |
@@ -315,7 +310,11 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | compute: seated on the frame | 253 mm2 on carrying parts (needs 100) |
 | PASS | neck_yaw_link: frame in one piece |  |
 | PASS | head: frame in one piece |  |
-| PASS | head electronics: seated on the frame | 620 mm2 on carrying parts (needs 100) |
+| PASS | head camera 0: seated on the frame | 103 mm2 on carrying parts (needs 100) |
+| PASS | head camera 1: seated on the frame | 103 mm2 on carrying parts (needs 100) |
+| PASS | head camera 2: seated on the frame | 103 mm2 on carrying parts (needs 100) |
+| PASS | head display: seated on the frame | 295 mm2 on carrying parts (needs 100) |
+| PASS | head board: seated on the frame | 214 mm2 on carrying parts (needs 100) |
 | FAIL | L_shoulder_pitch_link: frame in one piece | 2 pieces: L shoulder bracket + L_shoulder_pitch flange; L shoulder roll post. Nothing joins them |
 | PASS | L_shoulder_roll_link: frame in one piece |  |
 | PASS | L_shoulder_yaw_link: frame in one piece |  |
@@ -326,16 +325,16 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L_hip_pitch_link: frame in one piece |  |
 | PASS | L_hip_roll_link: frame in one piece |  |
 | PASS | L_hip_yaw_link: frame in one piece |  |
-| FAIL | L_knee_link: frame in one piece | 5 pieces: L shank body + L shank back panel + L knee rear cap + L shank plate in + L shank plate out + L ankle fork cheek in + L ankle fork cheek out + L ankle fork bridge; L ankle pitch crank; L ankle pitch rod; L ankle roll crank; L ankle roll rod. Only by: L shank body / L ankle roll crank 16 mm2 overlap; L shank body / L ankle roll rod 3 mm2 overlap; L ankle pitch crank / L ankle pitch rod 86 mm2 overlap; L ankle roll crank / L ankle roll rod 84 mm2 overlap |
-| FAIL | L_ankle_pitch_link: frame in one piece | 2 pieces: L ankle cross + L ankle cross tail; L ankle pitch arm. Only by: L ankle cross tail / L ankle pitch arm 70 mm2 overlap |
-| FAIL | L_foot: frame in one piece | 2 pieces: L foot plate + L ankle clevis front + L ankle clevis back; L ankle roll pin. Only by: L foot plate / L ankle roll pin 38 mm2 overlap |
+| PASS | L_knee_link: frame in one piece |  |
+| PASS | L_ankle_pitch_link: frame in one piece |  |
+| PASS | L_foot: frame in one piece |  |
 
 ## pivot
 
 | status | item | detail |
 |---|---|---|
-| FAIL | L_ankle_pitch: passive joint | no pin or bearing on the axis; 1.00 mm of air between the links |
-| FAIL | L_ankle_roll: passive joint | no bearing modelled: L ankle cross tail is on the axis, with 2.77 mm of air to the other link |
+| PASS | L_ankle_pitch: passive joint | pin d12, 3400 N in double shear: SF 24.6 to yield (a hand estimate) |
+| PASS | L_ankle_roll: passive joint | pin d12, 3400 N in double shear: SF 24.6 to yield (a hand estimate) |
 | FAIL | L shoulder roll bearing bore: bearing seat | no bearing modelled: L shoulder roll post is on the axis, with 1.50 mm of air to the other link |
 | FAIL | L elbow cheek bearing bore: bearing seat | no bearing modelled: L elbow post is on the axis, with 2.50 mm of air to the other link |
 | FAIL | L elbow cheek idler bore: bearing seat | no bearing modelled: L elbow axle is on the axis, with 0.30 mm of air to the other link |
@@ -347,18 +346,17 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | status | item | detail |
 |---|---|---|
 | PASS | L_ankle_pitch: has a motor, crank and rod |  |
-| FAIL | L_ankle_pitch: crank reaches the motor | 3.50 mm of air and no shaft between the crank and the motor |
+| PASS | L_ankle_pitch: crank reaches the motor |  |
 | PASS | L_ankle_pitch: rod reaches the crank |  |
 | PASS | L_ankle_pitch: rod reaches the output | at L ankle pitch arm |
-| FAIL | L_ankle_pitch: rod crank end has a pivot | capsules overlapping, no pin or bearing part |
-| FAIL | L_ankle_pitch: rod output end has a pivot | capsules overlapping, no pin or bearing part |
+| PASS | L_ankle_pitch: rod crank end has a pivot | L ankle pitch rod end top |
+| PASS | L_ankle_pitch: rod output end has a pivot | L ankle pitch rod end bottom |
 | PASS | L_ankle_roll: has a motor, crank and rod |  |
-| FAIL | L_ankle_roll: crank reaches the motor | 3.55 mm of air and no shaft between the crank and the motor |
+| PASS | L_ankle_roll: crank reaches the motor |  |
 | PASS | L_ankle_roll: rod reaches the crank |  |
-| PASS | L_ankle_roll: rod reaches the output | at L ankle roll pin |
-| FAIL | L_ankle_roll: rod crank end has a pivot | capsules overlapping, no pin or bearing part |
-| FAIL | L_ankle_roll: rod output end has a pivot | capsules overlapping, no pin or bearing part |
-| FAIL | L ankle roll crank clear of L shank body | moving part inside a fixed one, 0.11 cm3 |
+| PASS | L_ankle_roll: rod reaches the output | at L ankle roll post |
+| PASS | L_ankle_roll: rod crank end has a pivot | L ankle roll rod end top |
+| PASS | L_ankle_roll: rod output end has a pivot | L ankle roll rod end bottom |
 
 ## stator
 
@@ -370,7 +368,7 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | neck_yaw actuator (buy) RS00 | held by chest frame, 1175 mm2 on its end face |
 | PASS | L_shoulder_pitch actuator (buy) RS04 | held by chest frame (on its screwed face), 3849 mm2 on its end face |
 | PASS | R_shoulder_pitch actuator (buy) RS04 | held by chest frame (on its screwed face), 3849 mm2 on its end face |
-| FAIL | neck_pitch actuator (buy) RS00 | no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall |
+| PASS | neck_pitch actuator (buy) RS00 | held by neck housing, 1299 mm2 on its end face |
 | FAIL | L_shoulder_roll actuator (buy) RS06 | no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall |
 | FAIL | L_shoulder_yaw actuator (buy) RS02 | no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall |
 | PASS | L_elbow actuator (buy) RS06 | held by L forearm frame, 2077 mm2 on its end face |
@@ -379,8 +377,8 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | FAIL | L_wrist_roll actuator (buy) RS00 | no mounting face: 0 mm2 on its ends (needs 100); what touches it overlaps its side wall |
 | PASS | L_hip_roll actuator (buy) RS04 | held by L hip carrier (on its screwed face), 3850 mm2 on its end face |
 | PASS | L_hip_yaw actuator (buy) RS03 | held by L hip yoke, 8811 mm2 on its end face |
-| PASS | L ankle pitch actuator (buy) RS03 | held by L shank body, 408 mm2 on its end face |
-| FAIL | L ankle roll actuator (buy) RS06 | no mounting face: 3 mm2 on its ends (needs 100); what touches it overlaps its side wall |
+| PASS | L_ankle_pitch actuator (buy) RS03 | held by L shank body, 3052 mm2 on its end face |
+| PASS | L_ankle_roll actuator (buy) RS06 | held by L shank body, 1500 mm2 on its end face |
 | PASS | L_knee actuator (buy) RS04 | held by L shank body (on its screwed face), 7068 mm2 on its end face |
 
 ## skin
@@ -395,10 +393,15 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | neck_yaw actuator (buy) RS00 | 0.00 % outside the skin |
 | PASS | L_shoulder_pitch actuator (buy) RS04 | 0.00 % outside the skin |
 | PASS | R_shoulder_pitch actuator (buy) RS04 | 0.00 % outside the skin |
-| PASS | neck pitch post | 0.00 % outside the skin |
+| PASS | neck housing | 0.00 % outside the skin |
 | PASS | neck_yaw flange | 0.00 % outside the skin |
 | PASS | neck_pitch actuator (buy) RS00 | 0.00 % outside the skin |
-| PASS | head electronics | 0.00 % outside the skin |
+| PASS | head sensor block | 0.00 % outside the skin |
+| PASS | head camera 0 | 0.00 % outside the skin |
+| PASS | head camera 1 | 0.00 % outside the skin |
+| PASS | head camera 2 | 0.00 % outside the skin |
+| PASS | head display | 0.22 % outside the skin |
+| PASS | head board | 0.00 % outside the skin |
 | PASS | head frame | 0.00 % outside the skin |
 | PASS | neck_pitch flange | 0.00 % outside the skin |
 | PASS | L shoulder bracket | 0.00 % outside the skin |
@@ -412,7 +415,7 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L shoulder roll axle | 0.00 % outside the skin |
 | PASS | L shoulder roll plate back | 0.00 % outside the skin |
 | PASS | L shoulder roll plate front | 0.00 % outside the skin |
-| PASS | L shoulder roll plate back low | 0.05 % outside the skin |
+| PASS | L shoulder roll plate back low | 0.02 % outside the skin |
 | PASS | L shoulder roll plate front low | 0.05 % outside the skin |
 | PASS | L shoulder roll bridge | 0.00 % outside the skin |
 | PASS | L_shoulder_roll flange | 0.00 % outside the skin |
@@ -420,8 +423,8 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | R shoulder roll axle | 0.00 % outside the skin |
 | PASS | R shoulder roll plate back | 0.00 % outside the skin |
 | PASS | R shoulder roll plate front | 0.00 % outside the skin |
-| PASS | R shoulder roll plate back low | 0.05 % outside the skin |
-| PASS | R shoulder roll plate front low | 0.00 % outside the skin |
+| PASS | R shoulder roll plate back low | 0.02 % outside the skin |
+| PASS | R shoulder roll plate front low | 0.08 % outside the skin |
 | PASS | R shoulder roll bridge | 0.00 % outside the skin |
 | PASS | R_shoulder_roll flange | 0.00 % outside the skin |
 | PASS | R_shoulder_yaw actuator (buy) RS02 | 0.00 % outside the skin |
@@ -431,20 +434,26 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L_wrist_yaw actuator (buy) RS02 | 0.00 % outside the skin |
 | PASS | R_elbow actuator (buy) RS06 | 0.00 % outside the skin |
 | PASS | R_wrist_yaw actuator (buy) RS02 | 0.00 % outside the skin |
-| PASS | L shank body | 0.08 % outside the skin |
+| PASS | L shank body | 0.10 % outside the skin |
 | PASS | L shank back panel | 0.00 % outside the skin |
-| PASS | L ankle pitch actuator (buy) RS03 | 0.00 % outside the skin |
-| PASS | L ankle roll actuator (buy) RS06 | 0.00 % outside the skin |
+| PASS | L_ankle_pitch actuator (buy) RS03 | 0.00 % outside the skin |
+| PASS | L_ankle_roll actuator (buy) RS06 | 0.00 % outside the skin |
+| PASS | L ankle pitch bushing in | 0.00 % outside the skin |
+| PASS | L ankle pitch bushing out | 0.00 % outside the skin |
 | PASS | L_knee actuator (buy) RS04 | 0.00 % outside the skin |
-| PASS | R shank body | 0.22 % outside the skin |
+| PASS | R shank body | 0.10 % outside the skin |
 | PASS | R shank back panel | 0.00 % outside the skin |
-| PASS | R ankle pitch actuator (buy) RS03 | 0.00 % outside the skin |
-| PASS | R ankle roll actuator (buy) RS06 | 0.00 % outside the skin |
+| PASS | R_ankle_pitch actuator (buy) RS03 | 0.00 % outside the skin |
+| PASS | R_ankle_roll actuator (buy) RS06 | 0.00 % outside the skin |
+| PASS | R ankle pitch bushing in | 0.00 % outside the skin |
+| PASS | R ankle pitch bushing out | 0.00 % outside the skin |
 | PASS | R_knee actuator (buy) RS04 | 0.00 % outside the skin |
-| PASS | L foot plate | 0.00 % outside the skin |
-| PASS | L ankle roll pin | 0.00 % outside the skin |
-| PASS | R foot plate | 0.00 % outside the skin |
-| PASS | R ankle roll pin | 0.00 % outside the skin |
+| PASS | L ankle roll shaft | 0.00 % outside the skin |
+| PASS | R ankle roll shaft | 0.00 % outside the skin |
+| PASS | L ankle roll bushing front | 0.00 % outside the skin |
+| PASS | L ankle roll bushing back | 0.00 % outside the skin |
+| PASS | R ankle roll bushing front | 0.00 % outside the skin |
+| PASS | R ankle roll bushing back | 0.00 % outside the skin |
 
 ## sweep
 
@@ -477,7 +486,7 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | walk crouch: balance | CoM 12.0 cm inside the feet |
 | PASS | walk crouch: within limits | yes |
 | PASS | walk crouch: collisions | none |
-| PASS | carry 3 kg at the chest: balance | CoM 11.9 cm inside the feet |
+| PASS | carry 3 kg at the chest: balance | CoM 11.8 cm inside the feet |
 | PASS | carry 3 kg at the chest: within limits | yes |
 | PASS | carry 3 kg at the chest: collisions | none |
 | PASS | carry 10 kg at the chest: balance | CoM 11.9 cm inside the feet |
@@ -489,7 +498,7 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | arms straight out, 5 kg: balance | CoM 11.9 cm inside the feet |
 | PASS | arms straight out, 5 kg: within limits | yes |
 | PASS | arms straight out, 5 kg: collisions | none |
-| PASS | arms out to the sides: balance | CoM 12.0 cm inside the feet |
+| PASS | arms out to the sides: balance | CoM 11.9 cm inside the feet |
 | PASS | arms out to the sides: within limits | yes |
 | PASS | arms out to the sides: collisions | none |
 | PASS | lift 10 kg from a low table: balance | CoM 11.9 cm inside the feet |
@@ -506,35 +515,35 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 
 | status | item | detail |
 |---|---|---|
-| FAIL | L_knee | 145.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 181 % used |
-| FAIL | L_hip_yaw | 41.4 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 103 % used |
+| FAIL | L_knee | 144.6 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 181 % used |
+| FAIL | L_hip_yaw | 41.1 N m x 1.5 in 'step up a stair' vs peak 60 N m (1 x RS03): 103 % used |
 | PASS | R_elbow | 10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used |
 | PASS | L_elbow | 10.5 N m in 'carry 3 kg at the chest' vs rated 11 N m (1 x RS06): 95 % used |
-| PASS | R_knee | 71.8 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 90 % used |
-| PASS | L_hip_roll | 63.9 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 80 % used |
+| PASS | R_knee | 71.9 N m x 1.5 in 'deep squat' vs peak 120 N m (1 x RS04): 90 % used |
+| PASS | L_hip_roll | 63.6 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 79 % used |
 | PASS | L_shoulder_roll | 15.8 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used |
 | PASS | R_shoulder_roll | 15.8 N m x 1.5 in 'arms out to the sides' vs peak 36 N m (1 x RS06): 66 % used |
 | PASS | R_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
 | PASS | L_wrist_roll | 4.1 N m x 1.5 in 'carry 10 kg at the chest' vs peak 14 N m (1 x RS00): 44 % used |
+| PASS | R_ankle_pitch | 12.5 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 42 % used |
+| PASS | L_ankle_pitch | 12.5 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 42 % used |
 | PASS | R_shoulder_pitch | 16.6 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used |
 | PASS | L_shoulder_pitch | 16.6 N m in 'carry 3 kg at the chest' vs rated 40 N m (1 x RS04): 41 % used |
-| PASS | R_ankle_pitch | 12.1 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used |
-| PASS | L_ankle_pitch | 12.1 N m in 'stand' vs rated 30 N m (1 x RS03 x 1.5): 40 % used |
 | PASS | L_hip_pitch | 29.3 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used |
 | PASS | R_hip_pitch | 29.3 N m x 1.5 in 'lift 10 kg from a low table' vs peak 120 N m (1 x RS04): 37 % used |
 | PASS | R_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
 | PASS | L_wrist_pitch | 1.5 N m x 1.5 in 'arms out to the sides' vs peak 14 N m (1 x RS00): 16 % used |
-| PASS | neck_pitch | 0.3 N m in 'stand' vs rated 5 N m (1 x RS00): 7 % used |
-| PASS | R_hip_roll | 2.9 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 4 % used |
+| PASS | neck_pitch | 0.7 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 7 % used |
+| PASS | R_hip_roll | 2.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 120 N m (1 x RS04): 3 % used |
 | PASS | R_wrist_yaw | 0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used |
 | PASS | L_wrist_yaw | 0.3 N m x 1.5 in 'carry 10 kg at the chest' vs peak 17 N m (1 x RS02): 3 % used |
 | PASS | R_hip_yaw | 0.8 N m x 1.5 in 'single-leg stance (walking)' vs peak 60 N m (1 x RS03): 2 % used |
 | PASS | R_shoulder_yaw | 0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used |
 | PASS | L_shoulder_yaw | 0.2 N m x 1.5 in 'arms straight out, 5 kg' vs peak 17 N m (1 x RS02): 2 % used |
-| PASS | L_ankle_roll | 0.2 N m in 'stand' vs rated 15 N m (1 x RS06 x 1.3): 2 % used |
+| PASS | L_ankle_roll | 0.2 N m in 'stand' vs rated 15 N m (1 x RS06 x 1.3): 1 % used |
 | PASS | R_ankle_roll | 0.2 N m in 'walk crouch' vs rated 15 N m (1 x RS06 x 1.3): 1 % used |
-| PASS | waist_yaw | 0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used |
 | PASS | neck_yaw | 0.0 N m x 1.5 in 'deep squat' vs peak 14 N m (1 x RS00): 0 % used |
+| PASS | waist_yaw | 0.1 N m x 1.5 in 'step up a stair' vs peak 120 N m (1 x RS04): 0 % used |
 
 ## motorfit
 
@@ -553,8 +562,8 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | FAIL | L_wrist_roll actuator (buy) RS00 | inside: L wrist cheek 0.4 cm3 |
 | PASS | L_hip_roll actuator (buy) RS04 | clear |
 | PASS | L_hip_yaw actuator (buy) RS03 | clear |
-| PASS | L ankle pitch actuator (buy) RS03 | clear |
-| FAIL | L ankle roll actuator (buy) RS06 | inside: L shank body 0.4 cm3 |
+| PASS | L_ankle_pitch actuator (buy) RS03 | clear |
+| PASS | L_ankle_roll actuator (buy) RS06 | clear |
 | PASS | L_knee actuator (buy) RS04 | clear |
 
 ## fastener
@@ -601,6 +610,18 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | R shoulder stator: tip inside its hole | 0.7 mm short of the 6.0 mm hole |
 | PASS | R shoulder stator: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
 | PASS | R shoulder stator: clear through the joints beside it | 4 joints swept, 13 steps |
+| FAIL | neck pitch stator: engagement | M3 x 8, 4.0 mm in the motor's drawn thread (1.33 d, the rule is 2.0 d). Strip force 8.8 kN at this length, so preload 3.7 kN, by 0.75 x proof |
+| PASS | neck pitch stator: tip inside its hole | 1.0 mm short of the 5.0 mm hole |
+| PASS | neck pitch stator: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | neck pitch stator: clear through the joints beside it | 2 joints swept, 13 steps |
+| FAIL | neck yaw hub: engagement | M3 x 12, 4.2 mm in the motor's drawn thread (1.40 d, the rule is 2.0 d). Strip force 9.2 kN at this length, so preload 3.7 kN, by 0.75 x proof |
+| PASS | neck yaw hub: tip inside its hole | 0.8 mm short of the 5.0 mm hole |
+| PASS | neck yaw hub: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | neck yaw hub: clear through the joints beside it | 2 joints swept, 13 steps |
+| FAIL | neck pitch hub: engagement | M3 x 12, 4.3 mm in the motor's drawn thread (1.43 d, the rule is 2.0 d). Strip force 9.4 kN at this length, so preload 3.7 kN, by 0.75 x proof |
+| PASS | neck pitch hub: tip inside its hole | 0.7 mm short of the 5.0 mm hole |
+| PASS | neck pitch hub: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | neck pitch hub: clear through the joints beside it | 1 joints swept, 13 steps |
 | FAIL | L hip roll stator: engagement | M4 x 10, 5.3 mm in the motor's drawn thread (1.32 d, the rule is 2.0 d). Strip force 15.5 kN at this length, so preload 6.4 kN, by 0.75 x proof |
 | PASS | L hip roll stator: tip inside its hole | 0.7 mm short of the 6.0 mm hole |
 | PASS | L hip roll stator: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
@@ -665,6 +686,26 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L shank panel: tip inside its hole | 0.8 mm short of the 7.8 mm hole |
 | PASS | L shank panel: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
 | PASS | L shank panel: clear through the joints beside it | 2 joints swept, 13 steps |
+| FAIL | L ankle pitch stator: engagement | M4 x 12, 7.8 mm in the motor's drawn thread (1.95 d, the rule is 2.0 d). Strip force 22.8 kN at this length, so preload 6.4 kN, by 0.75 x proof |
+| PASS | L ankle pitch stator: tip inside its hole | 0.2 mm short of the 8.0 mm hole |
+| PASS | L ankle pitch stator: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | L ankle pitch stator: clear through the joints beside it | 2 joints swept, 13 steps |
+| PASS | L ankle roll stator: engagement | M3 x 12, 8.0 mm in the motor's drawn thread (2.67 d, the rule is 2.0 d). Strip force 17.6 kN at this length, so preload 3.7 kN, by 0.75 x proof |
+| PASS | L ankle roll stator: tip inside its hole | 0.5 mm short of the 8.5 mm hole |
+| PASS | L ankle roll stator: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | L ankle roll stator: clear through the joints beside it | 2 joints swept, 13 steps |
+| FAIL | L ankle pitch hub: engagement | M4 x 12, 5.8 mm in the motor's drawn thread (1.45 d, the rule is 2.0 d). Strip force 17.0 kN at this length, so preload 6.4 kN, by 0.75 x proof |
+| PASS | L ankle pitch hub: tip inside its hole | 0.2 mm short of the 6.0 mm hole |
+| PASS | L ankle pitch hub: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | L ankle pitch hub: clear through the joints beside it | 2 joints swept, 13 steps |
+| FAIL | L ankle roll hub: engagement | M4 x 12, 6.0 mm in the motor's drawn thread (1.50 d, the rule is 2.0 d). Strip force 17.6 kN at this length, so preload 6.4 kN, by 0.75 x proof |
+| PASS | L ankle roll hub: tip inside its hole | 0.0 mm short of the 6.0 mm hole |
+| PASS | L ankle roll hub: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | L ankle roll hub: clear through the joints beside it | 2 joints swept, 13 steps |
+| PASS | L ankle roll post: engagement | M4 x 25, 11.0 mm in L ankle roll post (2.75 d, the rule is 2.0 d). Strip force 51.5 kN at this length, so preload 6.4 kN, by 0.75 x proof |
+| PASS | L ankle roll post: tip inside its hole | 1.0 mm short of the 12.1 mm hole |
+| PASS | L ankle roll post: clear of what it does not belong in | head and shank clear; clearance holes and counterbores cut |
+| PASS | L ankle roll post: clear through the joints beside it | 1 joints swept, 13 steps |
 | PASS | L hip pitch stator: under the skin | shows on purpose: a real screw in sight, as the design means it |
 | PASS | waist stator: under the skin | all inside |
 | PASS | L hip pitch rim: under the skin | all inside |
@@ -675,6 +716,9 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L shoulder stator: under the skin | all inside |
 | PASS | neck stator: under the skin | all inside |
 | PASS | R shoulder stator: under the skin | all inside |
+| PASS | neck pitch stator: under the skin | shows on purpose: a real screw in sight, as the design means it |
+| PASS | neck yaw hub: under the skin | all inside |
+| PASS | neck pitch hub: under the skin | shows on purpose: a real screw in sight, as the design means it |
 | PASS | L hip roll stator: under the skin | shows on purpose: a real screw in sight, as the design means it |
 | PASS | L hip pitch hub: under the skin | shows on purpose: a real screw in sight, as the design means it |
 | PASS | L hip roll hub: under the skin | shows on purpose: a real screw in sight, as the design means it |
@@ -691,6 +735,11 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L knee hub in foot: under the skin | all inside |
 | PASS | L knee hub out foot: under the skin | all inside |
 | PASS | L shank panel: under the skin | all inside |
+| PASS | L ankle pitch stator: under the skin | shows on purpose: a real screw in sight, as the design means it |
+| PASS | L ankle roll stator: under the skin | shows on purpose: a real screw in sight, as the design means it |
+| PASS | L ankle pitch hub: under the skin | shows on purpose: a real screw in sight, as the design means it |
+| PASS | L ankle roll hub: under the skin | shows on purpose: a real screw in sight, as the design means it |
+| PASS | L ankle roll post: under the skin | all inside |
 
 ## holes
 
@@ -784,6 +833,14 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | neck stator, clearance d3.4: ligament | 21.6 mm to the next hole in chest frame (needs 1.7) |
 | PASS | R shoulder stator, clearance d4.5: edge distance | 5.5 mm to the edge of chest frame (needs 5.4) |
 | PASS | R shoulder stator, clearance d4.5: ligament | 28.3 mm to the next hole in chest frame (needs 2.2) |
+| PASS | neck pitch stator, clearance d3.4: edge distance | 5.5 mm to the edge of neck housing (needs 4.1) |
+| PASS | neck pitch stator, clearance d3.4: ligament | 21.6 mm to the next hole in neck housing (needs 1.7) |
+| PASS | neck yaw hub, clearance d3.4: edge distance | 5.0 mm to the edge of neck_yaw flange + neck housing (needs 4.1) |
+| PASS | neck yaw hub, clearance d3.4: ligament | 10.1 mm to the next hole in neck_yaw flange + neck housing (needs 1.7) |
+| PASS | neck pitch hub, clearance d3.4: edge distance | 5.0 mm to the edge of neck_pitch flange + head frame (needs 4.1) |
+| PASS | neck pitch hub, clearance d3.4: ligament | 10.1 mm to the next hole in neck_pitch flange + head frame (needs 1.7) |
+| PASS | neck pitch hub, counterbore d6.3: edge distance | 5.0 mm to the edge of neck_pitch flange + head frame (needs 4.7) |
+| PASS | neck pitch hub, counterbore d6.3: ligament | 7.2 mm to the next hole in neck_pitch flange + head frame (needs 1.5) |
 | PASS | L hip roll stator, clearance d4.5: edge distance | 5.5 mm to the edge of L hip carrier (needs 5.4) |
 | PASS | L hip roll stator, clearance d4.5: ligament | 28.3 mm to the next hole in L hip carrier (needs 2.2) |
 | PASS | L hip pitch hub, clearance d5.5: edge distance | 7.0 mm to the edge of L_hip_pitch flange (needs 6.6) |
@@ -928,28 +985,44 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L knee hub out foot screw 2, tapped d3.3: ligament | 10.2 mm to the next hole in L shank body (needs 1.6) |
 | PASS | L shank panel screw 1, clearance d3.4: edge distance | 6.1 mm to the edge of L shank back panel (needs 4.1) |
 | PASS | L shank panel screw 1, clearance d3.4: ligament | 36.2 mm to the next hole in L shank back panel (needs 1.7) |
-| PASS | L shank panel screw 1, tapped d2.5: edge distance | 7.0 mm to the edge of L shank body (needs 3.0) |
-| PASS | L shank panel screw 1, tapped d2.5: ligament | 31.7 mm to the next hole in L shank body (needs 1.5) |
+| PASS | L shank panel screw 1, tapped d2.5: edge distance | 5.1 mm to the edge of L shank body (needs 3.0) |
+| PASS | L shank panel screw 1, tapped d2.5: ligament | 31.8 mm to the next hole in L shank body (needs 1.5) |
 | PASS | L shank panel screw 2, clearance d3.4: edge distance | 7.0 mm to the edge of L shank back panel (needs 4.1) |
 | PASS | L shank panel screw 2, clearance d3.4: ligament | 26.2 mm to the next hole in L shank back panel (needs 1.7) |
 | PASS | L shank panel screw 2, tapped d2.5: edge distance | 9.9 mm to the edge of L shank body (needs 3.0) |
-| PASS | L shank panel screw 2, tapped d2.5: ligament | 5.8 mm to the next hole in L shank body (needs 1.5) |
+| PASS | L shank panel screw 2, tapped d2.5: ligament | 5.7 mm to the next hole in L shank body (needs 1.5) |
 | PASS | L shank panel screw 3, clearance d3.4: edge distance | 7.0 mm to the edge of L shank back panel (needs 4.1) |
 | PASS | L shank panel screw 3, clearance d3.4: ligament | 26.2 mm to the next hole in L shank back panel (needs 1.7) |
 | PASS | L shank panel screw 3, tapped d2.5: edge distance | 7.0 mm to the edge of L shank body (needs 3.0) |
-| PASS | L shank panel screw 3, tapped d2.5: ligament | 21.7 mm to the next hole in L shank body (needs 1.5) |
+| PASS | L shank panel screw 3, tapped d2.5: ligament | 21.8 mm to the next hole in L shank body (needs 1.5) |
 | PASS | L shank panel screw 4, clearance d3.4: edge distance | 6.1 mm to the edge of L shank back panel (needs 4.1) |
 | PASS | L shank panel screw 4, clearance d3.4: ligament | 36.2 mm to the next hole in L shank back panel (needs 1.7) |
 | PASS | L shank panel screw 4, tapped d2.5: edge distance | 7.0 mm to the edge of L shank body (needs 3.0) |
 | PASS | L shank panel screw 4, tapped d2.5: ligament | 8.1 mm to the next hole in L shank body (needs 1.5) |
 | PASS | L shank panel screw 5, clearance d3.4: edge distance | 7.0 mm to the edge of L shank back panel (needs 4.1) |
 | PASS | L shank panel screw 5, clearance d3.4: ligament | 26.2 mm to the next hole in L shank back panel (needs 1.7) |
-| PASS | L shank panel screw 5, tapped d2.5: edge distance | 9.9 mm to the edge of L shank body (needs 3.0) |
-| PASS | L shank panel screw 5, tapped d2.5: ligament | 5.8 mm to the next hole in L shank body (needs 1.5) |
+| PASS | L shank panel screw 5, tapped d2.5: edge distance | 7.0 mm to the edge of L shank body (needs 3.0) |
+| PASS | L shank panel screw 5, tapped d2.5: ligament | 27.5 mm to the next hole in L shank body (needs 1.5) |
 | PASS | L shank panel screw 6, clearance d3.4: edge distance | 7.0 mm to the edge of L shank back panel (needs 4.1) |
 | PASS | L shank panel screw 6, clearance d3.4: ligament | 26.2 mm to the next hole in L shank back panel (needs 1.7) |
 | PASS | L shank panel screw 6, tapped d2.5: edge distance | 7.0 mm to the edge of L shank body (needs 3.0) |
-| PASS | L shank panel screw 6, tapped d2.5: ligament | 21.7 mm to the next hole in L shank body (needs 1.5) |
+| PASS | L shank panel screw 6, tapped d2.5: ligament | 27.5 mm to the next hole in L shank body (needs 1.5) |
+| FAIL | L ankle pitch stator, clearance d4.5: edge distance | 5.0 mm to the edge of L shank body (needs 5.4) |
+| PASS | L ankle pitch stator, clearance d4.5: ligament | 33.0 mm to the next hole in L shank body (needs 2.2) |
+| PASS | L ankle roll stator, clearance d3.4: edge distance | 4.2 mm to the edge of L shank body (needs 4.1) |
+| PASS | L ankle roll stator, clearance d3.4: ligament | 28.0 mm to the next hole in L shank body (needs 1.7) |
+| PASS | L ankle pitch hub, clearance d4.5: edge distance | 5.6 mm to the edge of L ankle pitch crank (needs 5.4) |
+| PASS | L ankle pitch hub, clearance d4.5: ligament | 3.9 mm to the next hole in L ankle pitch crank (needs 2.2) |
+| PASS | L ankle roll hub, clearance d4.5: edge distance | 5.5 mm to the edge of L ankle roll crank (needs 5.4) |
+| PASS | L ankle roll hub, clearance d4.5: ligament | 2.6 mm to the next hole in L ankle roll crank (needs 2.2) |
+| PASS | L ankle roll post screw 1, clearance d4.5: edge distance | 5.5 mm to the edge of L foot frame (needs 5.4) |
+| PASS | L ankle roll post screw 1, clearance d4.5: ligament | 35.0 mm to the next hole in L foot frame (needs 2.2) |
+| PASS | L ankle roll post screw 1, tapped d3.3: edge distance | 5.0 mm to the edge of L ankle roll post (needs 4.0) |
+| PASS | L ankle roll post screw 1, tapped d3.3: ligament | 36.2 mm to the next hole in L ankle roll post (needs 1.6) |
+| PASS | L ankle roll post screw 2, clearance d4.5: edge distance | 5.5 mm to the edge of L foot frame (needs 5.4) |
+| PASS | L ankle roll post screw 2, clearance d4.5: ligament | 35.0 mm to the next hole in L foot frame (needs 2.2) |
+| PASS | L ankle roll post screw 2, tapped d3.3: edge distance | 6.0 mm to the edge of L ankle roll post (needs 4.0) |
+| PASS | L ankle roll post screw 2, tapped d3.3: ligament | 36.2 mm to the next hole in L ankle roll post (needs 1.6) |
 
 ## bolted
 
@@ -961,6 +1034,14 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L knee stator, what if the motor carried it all | 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 3400 N, Fa 1614 N, Mt 142 N m: slip 1.7, separation 9.2, shear 11.3, tension 1.3 (needs 1.1), strip 2.1; a hand estimate |
 | FAIL | L hip yaw hub, the design, the supports take the force | 6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 1.5, separation inf, shear 9.8, tension 1.3 (needs 1.1), strip 2.5; a hand estimate |
 | WARN | L hip yaw hub, what if the motor carried it all | Not the design's load: a bracket on what the motor's bearing could be asked. 6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 0 N, Fa 1614 N, Mt 102 N m: slip 1.5, separation 2.6, shear 9.8, tension 1.2 (needs 1.1), strip 2.3; a hand estimate |
+| PASS | L ankle pitch stator, the design, the supports take the force | 5 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 3.9, separation inf, shear 26.2, tension 1.3 (needs 1.1), strip 3.6; a hand estimate |
+| WARN | L ankle pitch stator, what if the motor carried it all | Not the design's load: a bracket on what the motor's bearing could be asked. 5 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 3400 N, Fa 1614 N, Mt 0 N m: slip 1.0, separation 19.8, shear 6.9, tension 1.3 (needs 1.1), strip 3.5; a hand estimate |
+| PASS | L ankle roll stator, the design, the supports take the force | 6 M3, Fp 3.7 kN by 0.75 x proof, T 36 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 3.8, separation inf, shear 25.2, tension 1.3 (needs 1.1), strip 4.8; a hand estimate |
+| WARN | L ankle roll stator, what if the motor carried it all | Not the design's load: a bracket on what the motor's bearing could be asked. 6 M3, Fp 3.7 kN by 0.75 x proof, T 36 N m, V 3400 N, Fa 1614 N, Mt 0 N m: slip 0.8, separation 13.6, shear 5.2, tension 1.3 (needs 1.1), strip 4.7; a hand estimate |
+| FAIL | L ankle pitch hub, the design, the supports take the force | 6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 1.5, separation inf, shear 9.8, tension 1.3 (needs 1.1), strip 2.7; a hand estimate |
+| WARN | L ankle pitch hub, what if the motor carried it all | Not the design's load: a bracket on what the motor's bearing could be asked. 6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 3400 N, Fa 1614 N, Mt 0 N m: slip 0.8, separation 23.8, shear 5.2, tension 1.3 (needs 1.1), strip 2.6; a hand estimate |
+| PASS | L ankle roll hub, the design, the supports take the force | 6 M4, Fp 6.4 kN by 0.75 x proof, T 36 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 1.9, separation inf, shear 12.9, tension 1.3 (needs 1.1), strip 2.7; a hand estimate |
+| WARN | L ankle roll hub, what if the motor carried it all | Not the design's load: a bracket on what the motor's bearing could be asked. 6 M4, Fp 6.4 kN by 0.75 x proof, T 36 N m, V 3400 N, Fa 1614 N, Mt 0 N m: slip 0.9, separation 23.8, shear 6.0, tension 1.3 (needs 1.1), strip 2.7; a hand estimate |
 | PASS | L hip pitch stator, the design, the supports take the force | 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 4.2, separation inf, shear 28.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
 | PASS | L hip pitch stator, what if the motor carried it all | 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 3400 N, Fa 1614 N, Mt 115 N m: slip 1.7, separation 10.7, shear 11.3, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
 | PASS | waist stator, the design, the supports take the force | 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 4.2, separation inf, shear 28.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
@@ -978,7 +1059,13 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L shoulder stator, the design, the supports take the force | 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 4.2, separation inf, shear 28.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
 | PASS | L shoulder stator, what if the motor carried it all | 10 M4, Fp 6.4 kN by 0.75 x proof, T 120 N m, V 0 N, Fa 1614 N, Mt 36 N m: slip 4.2, separation 21.5, shear 28.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
 | PASS | neck stator, the design, the supports take the force | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 5.9, separation inf, shear 39.4, tension 1.3 (needs 1.1), strip 2.7; a hand estimate |
-| PASS | neck stator, what if the motor carried it all | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 73 N, Fa 1614 N, Mt 9 N m: slip 5.2, separation 9.3, shear 34.9, tension 1.3 (needs 1.1), strip 2.6; a hand estimate |
+| PASS | neck stator, what if the motor carried it all | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 80 N, Fa 1614 N, Mt 11 N m: slip 5.1, separation 8.9, shear 34.5, tension 1.3 (needs 1.1), strip 2.6; a hand estimate |
+| PASS | neck pitch stator, the design, the supports take the force | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 5.9, separation inf, shear 39.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
+| PASS | neck pitch stator, what if the motor carried it all | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 0 N, Fa 1614 N, Mt 7 N m: slip 5.9, separation 10.1, shear 39.4, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
+| PASS | neck pitch hub, the design, the supports take the force | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 3.2, separation inf, shear 21.3, tension 1.3 (needs 1.1), strip 2.6; a hand estimate |
+| PASS | neck pitch hub, what if the motor carried it all | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 0 N, Fa 1614 N, Mt 7 N m: slip 3.2, separation 8.2, shear 21.3, tension 1.3 (needs 1.1), strip 2.5; a hand estimate |
+| PASS | neck yaw hub, the design, the supports take the force | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 0 N, Fa 0 N, Mt 0 N m: slip 3.2, separation inf, shear 21.3, tension 1.3 (needs 1.1), strip 2.5; a hand estimate |
+| PASS | neck yaw hub, what if the motor carried it all | 6 M3, Fp 3.7 kN by 0.75 x proof, T 14 N m, V 80 N, Fa 1614 N, Mt 11 N m: slip 2.9, separation 6.8, shear 19.8, tension 1.3 (needs 1.1), strip 2.4; a hand estimate |
 | PASS | L knee rim, the side force and the post's tilt; the cap takes no torque | 6 M3, Fp 3.7 kN by 0.75 x proof, T 0 N m, V 0 N, Fa 1614 N, Mt 0 N m: slip 3294000000.0, separation 13.6, shear 3681960000.0, tension 1.3 (needs 1.1), strip 6.7; a hand estimate |
 | PASS | L knee cheek top, half of the outer support, 2,574 N, and half of the moment: the side force 1,614 N at 90 mm over the row, and the bearing 5.75 mm off the seam: an upper bound | 2 M5, Fp 10.3 kN by 0.75 x proof, T 0 N m, V 1287 N, Fa 0 N, Mt 80 N m: slip 2.4, separation 3.2, shear 16.2, tension 1.3 (needs 1.1), strip 6.1; a hand estimate |
 | PASS | L knee cheek, the other half, as the top pair | 2 M5, Fp 10.3 kN by 0.75 x proof, T 0 N m, V 1287 N, Fa 0 N, Mt 80 N m: slip 2.4, separation 3.2, shear 16.2, tension 1.3 (needs 1.1), strip 5.3; a hand estimate |
@@ -987,6 +1074,7 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L knee hub out foot, a cover: its own weight at 10 g | 2 M4, Fp 6.4 kN by 0.75 x proof, T 0 N m, V 30 N, Fa 30 N, Mt 0 N m: slip 63.9, separation 426.0, shear 428.5, tension 1.3 (needs 1.1), strip 6.7; a hand estimate |
 | PASS | L shank panel, shear flow in the closed section, a hand figure from the motor's torque on the section | 6 M3, Fp 3.7 kN by 0.75 x proof, T 0 N m, V 200 N, Fa 0 N, Mt 0 N m: slip 16.5, separation inf, shear 110.5, tension 1.3 (needs 1.1), strip 6.7; a hand estimate |
 | PASS | L thigh collar, the whole leg, and the yaw motor's and knee motor's peak | 6 M4, Fp 6.4 kN by 0.75 x proof, T 60 N m, V 810 N, Fa 3400 N, Mt 120 N m: slip 2.4, separation 4.0, shear 16.4, tension 1.3 (needs 1.1), strip 5.6; a hand estimate |
+| PASS | L ankle roll post, the roll rod at the peak of the RS06, 1,385 N along the post; its 6.6 deg lean, 160 N across, 61 mm up | 2 M4, Fp 6.4 kN by 0.75 x proof, T 0 N m, V 160 N, Fa 1385 N, Mt 10 N m: slip 12.0, separation 5.3, shear 80.3, tension 1.3 (needs 1.1), strip 7.8; a hand estimate |
 | PASS | L hip pitch rim, what the ring passes on: the bearing goes in it, not the screws, which only hold it | 6 M3, Fp 3.7 kN by 0.75 x proof, T 0 N m, V 0 N, Fa 1614 N, Mt 0 N m: slip 3294000000.0, separation 13.6, shear 3681960000.0, tension 1.3 (needs 1.1), strip 7.4; a hand estimate |
 | PASS | waist rim, what the ring passes on: the bearing goes in it, not the screws, which only hold it | 6 M3, Fp 3.7 kN by 0.75 x proof, T 0 N m, V 0 N, Fa 1000 N, Mt 0 N m: slip 3294000000.0, separation 22.0, shear 3681960000.0, tension 1.3 (needs 1.1), strip 7.4; a hand estimate |
 | PASS | L hip yaw rim, the leg, at 810 N, from the motor's face into the housing, and the yaw motor's peak | 6 M3, Fp 3.7 kN by 0.75 x proof, T 60 N m, V 810 N, Fa 810 N, Mt 60 N m: slip 1.7, separation 7.4, shear 11.7, tension 1.3 (needs 1.1), strip 6.3; a hand estimate |
@@ -1061,14 +1149,17 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L_hip_pitch actuator (buy) RS04: hub screws clear of connector, cable and bumps | 9 checked |
 | PASS | L_hip_pitch actuator (buy) RS04: stator_rear screws clear of connector, cable and bumps | 10 checked |
 | PASS | RS04: the same part fits the right side | its patterns read the same reflected across 75.0 deg |
-| FAIL | neck_yaw actuator (buy) RS00: hub | 0 of 6 M3 placed: no screws in the spec yet |
+| PASS | neck_yaw actuator (buy) RS00: hub | 6 of 6 M3 placed |
 | PASS | neck_yaw actuator (buy) RS00: stator | 6 of 6 M3 placed |
+| PASS | neck_yaw actuator (buy) RS00: hub screws clear of connector, cable and bumps | 6 checked |
 | PASS | neck_yaw actuator (buy) RS00: stator_front screws clear of connector, cable and bumps | 6 checked |
 | FAIL | L_shoulder_pitch actuator (buy) RS04: hub | 0 of 9 M5 placed: no screws in the spec yet |
 | PASS | L_shoulder_pitch actuator (buy) RS04: stator | 10 of 10 M4 placed |
 | PASS | L_shoulder_pitch actuator (buy) RS04: stator_rear screws clear of connector, cable and bumps | 10 checked |
-| FAIL | neck_pitch actuator (buy) RS00: hub | 0 of 6 M3 placed: no screws in the spec yet |
-| FAIL | neck_pitch actuator (buy) RS00: stator | 0 of 6 M3 placed: no screws in the spec yet |
+| PASS | neck_pitch actuator (buy) RS00: hub | 6 of 6 M3 placed |
+| PASS | neck_pitch actuator (buy) RS00: stator | 6 of 6 M3 placed |
+| PASS | neck_pitch actuator (buy) RS00: hub screws clear of connector, cable and bumps | 6 checked |
+| PASS | neck_pitch actuator (buy) RS00: stator_front screws clear of connector, cable and bumps | 6 checked |
 | FAIL | L_shoulder_roll actuator (buy) RS06: hub | 0 of 6 M4 placed: no screws in the spec yet |
 | FAIL | L_shoulder_roll actuator (buy) RS06: stator | 0 of 8 M3 placed: no screws in the spec yet |
 | PASS | RS06: the same part fits the right side | its patterns read the same reflected across 0.0 deg |
@@ -1093,10 +1184,14 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 | PASS | L_hip_yaw actuator (buy) RS03: hub screws clear of connector, cable and bumps | 6 checked |
 | PASS | L_hip_yaw actuator (buy) RS03: stator_front screws clear of connector, cable and bumps | 8 checked |
 | PASS | RS03: the same part fits the right side | its patterns read the same reflected across 90.0 deg |
-| FAIL | L ankle pitch actuator (buy) RS03: hub | 0 of 6 M4 placed: no screws in the spec yet |
-| FAIL | L ankle pitch actuator (buy) RS03: stator | 0 of 8 M4 placed: no screws in the spec yet |
-| FAIL | L ankle roll actuator (buy) RS06: hub | 0 of 6 M4 placed: no screws in the spec yet |
-| FAIL | L ankle roll actuator (buy) RS06: stator | 0 of 8 M3 placed: no screws in the spec yet |
+| PASS | L_ankle_pitch actuator (buy) RS03: hub | 6 of 6 M4 placed |
+| FAIL | L_ankle_pitch actuator (buy) RS03: stator | 5 of 8 M4 placed |
+| PASS | L_ankle_pitch actuator (buy) RS03: hub screws clear of connector, cable and bumps | 6 checked |
+| PASS | L_ankle_pitch actuator (buy) RS03: stator_front screws clear of connector, cable and bumps | 5 checked |
+| PASS | L_ankle_roll actuator (buy) RS06: hub | 6 of 6 M4 placed |
+| FAIL | L_ankle_roll actuator (buy) RS06: stator | 6 of 8 M3 placed |
+| PASS | L_ankle_roll actuator (buy) RS06: hub screws clear of connector, cable and bumps | 6 checked |
+| PASS | L_ankle_roll actuator (buy) RS06: stator_front screws clear of connector, cable and bumps | 6 checked |
 | PASS | L_knee actuator (buy) RS04: hub | 9 of 9 M5 placed |
 | PASS | L_knee actuator (buy) RS04: stator | 10 of 10 M4 placed |
 | PASS | L_knee actuator (buy) RS04: hub screws clear of connector, cable and bumps | 9 checked |
@@ -1118,32 +1213,40 @@ spec: `spec/robot.json`, 2026-11-05 12:09, 556 s
 
 | status | item | detail |
 |---|---|---|
-| PASS | L hip pitch stator | 10 of 10 reachable at step 8 of the build order, 60 mm of key |
-| PASS | waist stator | 10 of 10 reachable at step 9 of the build order, 60 mm of key |
-| PASS | L hip pitch rim | 6 of 6 reachable at step 10 of the build order, 60 mm of key |
-| PASS | waist rim | 6 of 6 reachable at step 11 of the build order, 60 mm of key |
-| PASS | R hip pitch stator | 10 of 10 reachable at step 8 of the build order, 60 mm of key |
-| PASS | R hip pitch rim | 6 of 6 reachable at step 10 of the build order, 60 mm of key |
-| PASS | waist hub | 9 of 9 reachable at step 12 of the build order, 60 mm of key |
-| PASS | L shoulder stator | 10 of 10 reachable at step 13 of the build order, 60 mm of key |
-| PASS | neck stator | 6 of 6 reachable at step 14 of the build order, 60 mm of key |
-| PASS | R shoulder stator | 10 of 10 reachable at step 13 of the build order, 60 mm of key |
-| PASS | L hip roll stator | 10 of 10 reachable at step 16 of the build order, 60 mm of key |
-| PASS | L hip pitch hub | 9 of 9 reachable at step 20 of the build order, 60 mm of key |
-| PASS | L hip roll hub | 9 of 9 reachable at step 17 of the build order, 60 mm of key |
-| PASS | L hip yaw stator | 8 of 8 reachable at step 19 of the build order, 60 mm of key |
-| PASS | L hip yaw rim | 6 of 6 reachable at step 19 of the build order, 60 mm of key |
+| PASS | L hip pitch stator | 10 of 10 reachable at step 29 of the build order, 60 mm of key |
+| PASS | waist stator | 10 of 10 reachable at step 30 of the build order, 60 mm of key |
+| PASS | L hip pitch rim | 6 of 6 reachable at step 31 of the build order, 60 mm of key |
+| PASS | waist rim | 6 of 6 reachable at step 32 of the build order, 60 mm of key |
+| PASS | R hip pitch stator | 10 of 10 reachable at step 29 of the build order, 60 mm of key |
+| PASS | R hip pitch rim | 6 of 6 reachable at step 31 of the build order, 60 mm of key |
+| PASS | waist hub | 9 of 9 reachable at step 33 of the build order, 60 mm of key |
+| PASS | L shoulder stator | 10 of 10 reachable at step 34 of the build order, 60 mm of key |
+| PASS | neck stator | 6 of 6 reachable at step 35 of the build order, 60 mm of key |
+| PASS | R shoulder stator | 10 of 10 reachable at step 34 of the build order, 60 mm of key |
+| PASS | neck pitch stator | 6 of 6 reachable at step 38 of the build order, 60 mm of key |
+| PASS | neck yaw hub | 6 of 6 reachable at step 37 of the build order, 60 mm of key |
+| PASS | neck pitch hub | 6 of 6 reachable at step 39 of the build order, 60 mm of key |
+| PASS | L hip roll stator | 10 of 10 reachable at step 40 of the build order, 60 mm of key |
+| PASS | L hip pitch hub | 9 of 9 reachable at step 44 of the build order, 60 mm of key |
+| PASS | L hip roll hub | 9 of 9 reachable at step 41 of the build order, 60 mm of key |
+| PASS | L hip yaw stator | 8 of 8 reachable at step 43 of the build order, 60 mm of key |
+| PASS | L hip yaw rim | 6 of 6 reachable at step 43 of the build order, 60 mm of key |
 | PASS | L knee hub | 9 of 9 reachable at step 3 of the build order, 60 mm of key |
 | PASS | L knee cheek top | 2 of 2 reachable at step 4 of the build order, 60 mm of key |
 | PASS | L knee cheek | 2 of 2 reachable at step 4 of the build order, 60 mm of key |
-| PASS | L hip yaw hub | 6 of 6 reachable at step 21 of the build order, 60 mm of key |
-| PASS | L thigh collar | 6 of 6 reachable at step 22 of the build order, 60 mm of key |
+| PASS | L hip yaw hub | 6 of 6 reachable at step 45 of the build order, 60 mm of key |
+| PASS | L thigh collar | 6 of 6 reachable at step 46 of the build order, 60 mm of key |
 | PASS | L knee stator | 10 of 10 reachable at step 1 of the build order, 60 mm of key |
 | PASS | L knee rim | 6 of 6 reachable at step 2 of the build order, 60 mm of key |
 | PASS | L knee post | 4 of 4 reachable at step 4 of the build order, 60 mm of key |
 | PASS | L knee hub in foot | 2 of 2 reachable at step 5 of the build order, 60 mm of key |
 | PASS | L knee hub out foot | 2 of 2 reachable at step 6 of the build order, 60 mm of key |
-| PASS | L shank panel | 6 of 6 reachable at step 7 of the build order, 60 mm of key |
+| PASS | L shank panel | 6 of 6 reachable at step 11 of the build order, 60 mm of key |
+| PASS | L ankle pitch stator | 5 of 5 reachable at step 7 of the build order, 60 mm of key |
+| PASS | L ankle roll stator | 6 of 6 reachable at step 8 of the build order, 60 mm of key |
+| PASS | L ankle pitch hub | 6 of 6 reachable at step 9 of the build order, 60 mm of key |
+| PASS | L ankle roll hub | 6 of 6 reachable at step 10 of the build order, 60 mm of key |
+| PASS | L ankle roll post | 2 of 2 reachable at step 22 of the build order, 60 mm of key |
 
 ## What the hardware checks assume
 
@@ -1176,3 +1279,6 @@ From `spec/assumptions.json`: change one there and run the checks. All status `a
 | bearing_retainers | threaded rings M68 x 1, nut M50 x 1  | standard practice | Thin rings, made not bought. Thread forms aren't drawn: the rings and nut are plain bands in the spec. Tightened with a pin spanner, locked with thread adhesive | Race axial load on a fine thread in 7075: not calculated; a circlip needs 2.65 mm of groove and 4 mm more width each side, estimate |
 | thermal_interface | paste in the bore, gap pad on the skirt  | standard practice | reports/strength.md counts these as contact area. No resistance is modelled, and the bore's 0.05 mm gap is a nominal | Rated torque isn't transferred from the maker's plate |
 | steel_density | 7850.0 kg/m3 | standard practice | Steel, for screw masses: geometry times density, as no maker's mass table was read | None that matters |
+| shoe_walls | upper and heel 1.5 mm TPU (wall_fill 0.5); midsole 0.45 of its solid; the outsole's top not counted wall_fill | estimate, from memory | Iteration 43: the shell rule gave the shoe a 3 mm wall, the midsole was a solid filling the whole shoe below its rail, frame included, and the outsole counted a top wall the midsole sits on. A molded shoe upper is about 1.5 mm; a midsole is foam under and round the frame, not through it | About 0.25 kg a foot if the shoe is built as the old rule counted it |
+| ankle_bushings | CuSn8 flanged bushings d10 D12, 5 and 6 long; pins d10 h6 hardened; shoulder screws ISO 7379 d6 12.9  | standard practice | Iteration 43: plain bushings where a catalogue bearing would not fit the 5 to 6 mm plates. Allowable static pressure of bronze about 60 MPa, from memory: at 810 N on two, 6.8 MPa; at 3,400 N with the line off centre, 44 MPa | Wear and play over time, not strength; a polymer bushing of the same size if lubrication is a problem |
+| rod_ends | female spherical rod ends, bore 6, eye 15, width 5 to 6, misalignment 15 deg or more  | estimate, from memory | Iteration 43: drawn to the size a catalogue M6 rod end has; static rating about 10 kN, from memory, against 2,649 N at the RS03's peak through the crank | The roll rod's lower end tilts 17 deg across its pin at full roll: a high-misalignment rod end |

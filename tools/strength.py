@@ -79,7 +79,8 @@ FLUSH = 2e-6
 # Yield or, for PA12, the tensile strength it fails at (MPa), and modulus (MPa). 7075-T6 typical plate; PA12 MJF, the maker's
 # data sheet as remembered, about the same across layers. A material not listed cannot carry load. Here rather than in
 # spec/robot.py so this round leaves robot.json untouched: move it to MATERIALS when the spec is next opened.
-STRENGTH = {'al7075': (503.0, 71700.0), 'pa12': (48.0, 1700.0), 'pc': (60.0, 2300.0)}
+STRENGTH = {'al7075': (503.0, 71700.0), 'pa12': (48.0, 1700.0), 'pc': (60.0, 2300.0),
+            'steel': (640.0, 210000.0), 'bronze': (300.0, 110000.0)}    # steel: pins, 42CrMo4 quenched and tempered, from memory; bronze: CuSn8 bushings, from memory (iteration 43)
 CARRYING_ROLES = ('struct', 'linkage')
 
 F_PEAK, F_WALK, F_SIDE = 3400.0, 810.0, 1614.0
@@ -130,21 +131,21 @@ HAT = ['L_shoulder_pitch_link', 'R_shoulder_pitch_link', 'neck_yaw_link']
 
 SECTIONS = [
     # ------------------------------------------------------------ foot to pelvis
-    sec('Foot plate at the ankle (all load at toe or heel)', LEG, 'L_foot', ['L foot plate'], 'x', ('L ankle clevis front', 'c', 0.0),
-        load='leg', toe=True, cases=('peak', 'walk'), note='ankle on its stop, so the motors do not limit the lever'),
-    sec('Clevis plates above the foot plate', LEG, 'L_foot', ['L ankle clevis front', 'L ankle clevis back'], 'z', ('L foot plate', 'hi', 0.004),
+    # iteration 43: the foot's frame, the cross on its pins and shaft, the shank's tube and fork
+    sec('Foot frame in front of the ankle (all load at the toe)', LEG, 'L_foot', ['L foot frame'], 'x', 0.026,
+        load='leg', toe=True, cases=('peak', 'walk'), note='ankle on its stop, so the motors do not limit the lever; floor, rim and middle rib'),
+    sec('Foot frame behind the ankle (all load at the heel)', LEG, 'L_foot', ['L foot frame'], 'x', -0.025,
+        load='leg', toe=True, cases=('peak', 'walk'), note='as the toe row, the heel end'),
+    sec('Clevis plates above the frame', LEG, 'L_foot', ['L foot frame'], 'z', 0.034,
         load='leg', cases=BELOW_KNEE, motors=[('L_ankle_roll', 1)]),
-    sec('Clevis at the pivot height (rear plate net of its hole)', LEG, 'L_foot', ['L ankle clevis front', 'L ankle clevis back'], 'z', ('joint:L_ankle_roll', 'c', 0.0),
+    sec('Clevis plates at the pivot (net of the bushings)', LEG, 'L_foot', ['L foot frame'], 'z', ('joint:L_ankle_roll', 'c', 0.0),
         load='leg', cases=BELOW_KNEE, motors=[('L_ankle_roll', 1)]),
-    sec('Ankle cross at its middle', LEG, 'L_ankle_pitch_link', ['L ankle cross'], 'y', ('L ankle cross', 'c', 0.0),
-        load='leg', cases=('peak', 'walk'), local=[(0.5, ('L ankle fork cheek out', 'c', (0, 0, -0.025)))],
-        note='half the load from each fork cheek, if a pin existed'),
-    sec('Cross tail', LEG, 'L_ankle_pitch_link', ['L ankle cross tail'], 'x', ('L ankle cross tail', 'c', 0.0),
-        load='leg', cases=('motor',), motors=[], rods=['pitch']),
-    sec('Fork cheeks', LEG, 'L_knee_link', ['L ankle fork cheek in', 'L ankle fork cheek out'], 'z', ('L ankle fork cheek in', 'c', 0.0),
+    sec('Ankle cross at its middle (net of the shaft\'s bore)', LEG, 'L_ankle_pitch_link', ['L ankle cross'], 'y', ('L ankle cross', 'c', 0.0),
+        load='leg', cases=('peak', 'walk'), local=[(0.5, ('L ankle pitch bushing out', 'c', (0, 0, 0)))], note='half the load from each cheek\'s bushing; the pins and shaft are read in group pivot'),
+    sec('Fork cheeks at the bushings\' top', LEG, 'L_knee_link', ['L shank body'], 'z', ('joint:L_ankle_pitch', 'c', 0.012),
         load='leg', cases=BELOW_KNEE, motors=[], rods=['pitch', 'roll']),
-    sec('Shank lower plates', LEG, 'L_knee_link', ['L shank plate in', 'L shank plate out'], 'z', ('L ankle fork bridge', 'hi', 0.05),
-        load='leg', cases=BELOW_KNEE, motors=[], rods=['pitch', 'roll'], buckle=(0.7, 'L shank plate in'), note='buckling: K 0.7 over the plate length'),
+    sec('Shank tube, closed, past the rods', LEG, 'L_knee_link', ['L shank body'], 'z', 0.185,
+        load='leg', cases=BELOW_KNEE, motors=[], rods=['pitch', 'roll'], note='2 mm wall; Bredt for torsion'),
     sec('Shank closed section at the ankle pitch motor, panel on', LEG, 'L_knee_link', ['L shank body', 'L shank back panel'], 'z', 0.30,
         load='leg', cases=BELOW_KNEE, motors=[('L_knee', 1)], rods=['pitch', 'roll'], note='counts the back panel: its 7 M3 hold it (Bolted joints). With the panel off it is an open section, SF about 0.4: the screws are not optional'),
     sec('Shank closed section at the ankle roll motor, panel on', LEG, 'L_knee_link', ['L shank body', 'L shank back panel'], 'z', 0.3945,
@@ -257,32 +258,31 @@ SECTIONS = [
         load='limb', distal=[], own=-1, cases=LIFTS, motors=[('L_wrist_roll', 1)]),
 
     # ------------------------------------------------------------ neck to head
-    sec('Neck pitch post', NECK, 'neck_yaw_link', ['neck pitch post'], 'z', ('neck pitch post', 'c', 0.0),
+    sec('Neck housing column', NECK, 'neck_yaw_link', ['neck housing'], 'z', ('joint:neck_yaw', 'c', 0.039),
         load='limb', distal=['head'], cases=FALLS, motors=[('neck_yaw', 1), ('neck_pitch', 1)]),
     sec('Head frame', NECK, 'head', ['head frame'], 'z', ('neck_pitch flange', 'hi', -0.0),
         load='limb', distal=[], own=1, cases=FALLS, motors=[('neck_pitch', 1)]),
 
     # ------------------------------------------------------------ ankle rods and cranks: motor peak, through each
     sec('Pitch rod', ROD, 'L_knee_link', ['L ankle pitch rod'], ('along', 'L ankle pitch rod'), ('L ankle pitch rod', 'mid', 0.0),
-        load='leg', cases=('motor',), motors=[], rods=['pitch'], buckle=(1.0, 'L ankle pitch rod'), note='Euler, pinned both ends, solid'),
+        load='leg', cases=('motor',), motors=[], rods=['pitch'], buckle=(1.0, 0.2135), note='Euler, pinned both ends, solid, over the 213.5 mm between its rod ends\' centres'),
     sec('Roll rod', ROD, 'L_knee_link', ['L ankle roll rod'], ('along', 'L ankle roll rod'), ('L ankle roll rod', 'mid', 0.0),
-        load='leg', cases=('motor',), motors=[], rods=['roll'], buckle=(1.0, 'L ankle roll rod'), note='Euler, pinned both ends, solid'),
+        load='leg', cases=('motor',), motors=[], rods=['roll'], buckle=(1.0, 0.3116), note='Euler, pinned both ends, solid, over the 311.6 mm between its rod ends\' centres'),
     sec('Pitch crank at the motor', ROD, 'L_knee_link', ['L ankle pitch crank'], ('along', 'L ankle pitch crank'), ('L ankle pitch crank', 'p0', 0.002),
         load='leg', cases=('motor',), motors=[], rods=['pitch']),
     sec('Roll crank at the motor', ROD, 'L_knee_link', ['L ankle roll crank'], ('along', 'L ankle roll crank'), ('L ankle roll crank', 'p0', 0.002),
         load='leg', cases=('motor',), motors=[], rods=['roll']),
-    sec('Ankle pitch arm', ROD, 'L_ankle_pitch_link', ['L ankle pitch arm'], ('along', 'L ankle pitch arm'), ('L ankle pitch arm', 'p0', 0.002),
+    sec('Ankle pitch arm', ROD, 'L_ankle_pitch_link', ['L ankle pitch arm'], ('along', 'L ankle pitch arm'), ('L ankle pitch arm', 'p0', 0.004),
         load='leg', cases=('motor',), motors=[], rods=['pitch']),
-    sec('Roll pin block', ROD, 'L_foot', ['L ankle roll pin'], 'z', ('L ankle roll pin', 'c', 0.0),
+    sec('Roll rod post', ROD, 'L_foot', ['L ankle roll post'], 'z', ('joint:L_ankle_roll', 'c', -0.03),
         load='leg', cases=('motor',), motors=[], rods=['roll']),
 ]
 
 # The contacts each path crosses: (path, part a, part b, the force through it). A number scales F_PEAK; 'arm', 'head', 'rod pitch',
 # 'rod roll' or 'body' take it from the masses or the motors.
 INTERFACES = [
-    (LEG, 'L foot plate', 'L ankle clevis front', 0.5), (LEG, 'L foot plate', 'L ankle clevis back', 0.5),
-    (LEG, 'L ankle fork cheek in', 'L shank plate in', 0.5), (LEG, 'L ankle fork cheek out', 'L shank plate out', 0.5),
-    (LEG, 'L shank plate in', 'L shank body', 0.5), (LEG, 'L shank plate out', 'L shank body', 0.5),
+    (LEG, 'L foot frame', 'L ankle roll bushing front', 0.5), (LEG, 'L foot frame', 'L ankle roll bushing back', 0.5), (LEG, 'L ankle roll shaft', 'L ankle cross', 1.0),
+    (LEG, 'L ankle pitch bushing in', 'L shank body', 0.5), (LEG, 'L ankle pitch bushing out', 'L shank body', 0.5),
     (LEG, 'L shank body', 'L shank back panel', 0.1), (LEG, 'L shank body', 'L knee rear cap', KNEE_SPLIT), (LEG, 'L shank body', 'L_knee actuator (buy) RS04', 0.67),
     (LEG, 'L thigh fork', 'L_knee flange', KNEE_SPLIT), (LEG, 'L thigh fork', 'L knee outer cheek', KNEE_SPLIT), (LEG, 'L thigh fork', 'L_hip_yaw flange', 1.0),
     (LEG, 'L hip yoke', 'L hip yaw ring', 1.0), (LEG, 'L hip yaw ring', 'L_hip_yaw actuator (buy) RS03', 1.0), (LEG, 'L hip yoke', 'L_hip_roll flange', 1.0),
@@ -305,17 +305,19 @@ INTERFACES = [
     (ARM, 'L forearm lower frame', 'L_wrist_pitch actuator (buy) RS00', 'arm'), (ARM, 'L wrist cheek', 'L_wrist_pitch flange', 'arm'),
     (ARM, 'L wrist cheek', 'L_wrist_roll actuator (buy) RS00', 'arm'), (ARM, 'L hand bracket', 'L_wrist_roll flange', 'arm'),
     (NECK, 'chest frame', 'neck_yaw actuator (buy) RS00', 'head'),
-    (NECK, 'neck pitch post', 'neck_yaw flange', 'head'), (NECK, 'neck pitch post', 'neck_pitch actuator (buy) RS00', 'head'), (NECK, 'head frame', 'neck_pitch flange', 'head'),
-    (ROD, 'L ankle cross', 'L ankle cross tail', 'rod pitch'), (ROD, 'L ankle cross tail', 'L ankle pitch arm', 'rod pitch'),
-    (ROD, 'L foot plate', 'L ankle roll pin', 'rod roll'),
+    (NECK, 'neck housing', 'neck_yaw flange', 'head'), (NECK, 'neck housing', 'neck_pitch actuator (buy) RS00', 'head'), (NECK, 'head frame', 'neck_pitch flange', 'head'),
+    (ROD, 'L foot frame', 'L ankle roll post', 'rod roll'),
 ]
 
 # Rigid parts on no path above, each with its reason. A new part must go in a table: see check_coverage.
 NOT_ON_PATH = {
     'R hip ring': 'the right hip\'s ring: its left twin is in INTERFACES', 'R hip pitch retaining ring': 'hardware', 
-    'L ankle fork bridge': 'ties the fork cheeks; the plates land in line with the cheeks, so the path passes beside it',
+    **{f'L ankle {n} rod end {e}{x}': 'a bought rod end on its pin (assumptions.json rod_ends): rated by its catalogue, not a section' for n in ('pitch', 'roll') for e in ('top', 'bottom') for x in ('', ' ball', ' nut', ' shank')},
+    **{f'L ankle {n} crank pin': 'a d6 12.9 shoulder screw in single shear: 2,649 N on 28 mm2, 94 MPa at the RS03\'s peak (a hand figure)' for n in ('pitch', 'roll')},
+    # pins in bushings: group pivot reads each pin on its bushing (assumptions.json ankle_bushings); the flange seats on its face, an interface above
     'battery': 'a passenger: role struct, but cells are not frame', 'battery lower': 'a passenger: role struct, but cells are not frame',
-    'compute': 'a passenger', 'head electronics': 'a passenger',
+    'compute': 'a passenger', 'head sensor block': 'a passenger', 'head display': 'a passenger', 'head board': 'a passenger',
+    **{f'head camera {k}': 'a passenger' for k in range(3)},
 }
 
 
@@ -371,7 +373,7 @@ class Model:
             return None
         c = crank[2]
         arm = np.linalg.norm(np.array(c['p1'], float) - np.array(c['p0'], float))
-        p0, p1 = np.array(rod[2]['p0'], float), np.array(rod[2]['p1'], float)
+        p0, p1 = (np.array(x, float) for x in rod[2].get('pivots', (rod[2]['p0'], rod[2]['p1'])))     # iteration 43: a rod's pivots are its rod ends' centres
         peak = self.spec['actuators'][j['capacity']['model']]['peak_nm']
         return peak / arm, (p1 - p0) / np.linalg.norm(p1 - p0), p1
 
@@ -776,6 +778,8 @@ def bolted_rows(M):
         n = len(hw)
         r = p['r_bc'] / 1000
         T = M.cap(p['joint'])
+        if M.joint[p['joint']].get('remote'):              # iteration 43: a crank's motor carries its own peak, not the joint's after the linkage's ratio
+            T = M.spec['actuators'][p['model']]['peak_nm']
         # The design: the two supports take the force, so the screws take the motor's torque (assumptions.json support_shared_by_levers). The what-if: nothing else takes it, the wrench of 'Output bearings' below.
         wrench_row = next((b for b in bearing_table(M) if b['joint'] == p['joint'] and b['case'] == 'peak'), None)
         for label, V, Mt, Fa in (('the design, the supports take the force', 0.0, 0.0, 0.0), ('what if the motor carried it all', wrench_row['Fr'] if wrench_row else F_PEAK, wrench_row['Mt'] if wrench_row else 0.0, F_SIDE)):

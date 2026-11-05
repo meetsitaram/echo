@@ -51,6 +51,11 @@ class Scene:
             if m is None:
                 continue
             g = self.spec['links'][ln]['geoms'][i]
+            if m.num_tri() > 190000:                      # MuJoCo's STL reader stops at 200000 faces (iteration 43: the shank body, 203000)
+                tol = 0.00005
+                while m.num_tri() > 190000 and tol < 0.002:
+                    m = m.simplify(tol)
+                    tol *= 2
             mesh = m.to_mesh()
             self.parts.append((ln, np.asarray(mesh.vert_properties[:, :3], float),
                                np.asarray(mesh.tri_verts, int), g['color'], g['role']))

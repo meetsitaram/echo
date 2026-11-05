@@ -142,7 +142,16 @@ class Renderer:
         self._cache[key] = t
         return t
 
-    def shot(self, parts, cam, target, up=(0, 0, 1), fov=22.0, poses=None, key=(-0.55, 0.65, -0.55), key_i=95000, ibl=32000, section=None, cut_colour=(0.78, 0.27, 0.16)):
+    def shot(self, *a, **k):
+        """A frame; iteration 43: the first frame after a big upload can stay black however long one waits, and a second build draws it."""
+        for attempt in range(3):
+            try:
+                return self._shot(*a, **k)
+            except RuntimeError:
+                if attempt == 2:
+                    raise
+
+    def _shot(self, parts, cam, target, up=(0, 0, 1), fov=22.0, poses=None, key=(-0.55, 0.65, -0.55), key_i=95000, ibl=32000, section=None, cut_colour=(0.78, 0.27, 0.16)):
         """parts: from collect(). cam, target: world points. poses: {link: 4x4}. section: (point, normal): keep what's in front of the plane, cut faces coloured."""
         import open3d.visualization.rendering as R
         rr = self.r
@@ -201,13 +210,16 @@ class Renderer:
                     rr.scene.set_geometry_transform(f'c{k}', M)
         rr.setup_camera(fov, list(map(float, target)), list(map(float, cam)), list(map(float, up)))
         img = np.asarray(rr.render_to_image())
-        for _ in range(40):               # a big upload can hand back an empty or part-drawn frame
-            if img[0, 0].sum() > 30 and img[0, -1].sum() > 30:
+        # a big upload can hand back an empty or part-drawn frame, black from the top. Iteration 43: a close view can fill a corner with a dark part, so a frame is
+        # good when its top and bottom rows and left column are mostly not black; the wait is 60 s, not 10
+        good = lambda im: (im[0].astype(int).sum(1) <= 30).mean() < 0.5 and (im[-1].astype(int).sum(1) <= 30).mean() < 0.5 and (im[:, 0].astype(int).sum(1) <= 30).mean() < 0.5
+        for _ in range(240):
+            if good(img):
                 break
             import time
             time.sleep(0.25)
             img = np.asarray(rr.render_to_image())
-        if img[0, 0].sum() <= 30:
+        if not good(img):
             raise RuntimeError('a black frame')
         if self.ss > 1:
             from PIL import Image
@@ -247,7 +259,7 @@ def sheet(imgs, labels, cols, out, font_size=26, title=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--spec')
-    ap.add_argument('--set', default='knee', choices=('knee', 'leg', 'section', 'body'))
+    ap.add_argument('--set', default='knee', choices=('knee', 'leg', 'section', 'body', 'ankle', 'head'))
     ap.add_argument('--out', required=True)
     ap.add_argument('--bends', default='0,0.6,2.15')
     ap.add_argument('--tag', default='')
@@ -281,6 +293,30 @@ def main():
                 imgs.append(rn.shot(parts, ang_cam(tgt, az, el, 2.05), tgt, poses=P, fov=26.0))
                 labs.append(f'{lab}, knee {q:.1f}')
         print(sheet(imgs, labs, 4, f'{a.out}.png', title=f'Thigh and shank, cover off. {a.tag}'))
+    if a.set == 'ankle':
+        # iteration 43: the calf from the ankle motors down, cover off, standing and in a stride's push-off (pitch, roll)
+        links = ['L_knee_link', 'L_ankle_pitch_link', 'L_foot']
+        parts = collect(spec, links)
+        aorg = np.array(next(j for j in spec['joints'] if j['name'] == 'L_ankle_pitch')['origin'], float)
+        imgs, labs = [], []
+        for q, lab0 in (({}, 'standing'), ({'L_ankle_pitch': 0.45, 'L_ankle_roll': 0.2}, 'toe down 0.45, rolled 0.2'), ({'L_ankle_pitch': -0.6}, 'toe up 0.6')):
+            M = Rb.fk(q)
+            P = {l: np.linalg.inv(M['L_knee_link']) @ M[l] for l in links}
+            for lab, az, el, dz, dist in (('outside', 90, 6, 0.10, 0.95), ('3/4 front outside', 38, 14, 0.10, 0.95), ('rear', 180, 8, 0.10, 0.95), ('3/4 rear inside', -128, 14, 0.10, 0.95), ('ankle close', 62, 18, 0.0, 0.42)):
+                tgt = aorg + np.array([0.02 if 'close' in lab else 0.0, 0.0, dz])
+                imgs.append(rn.shot(parts, ang_cam(tgt, az, el, dist), tgt, poses=P))
+                labs.append(f'{lab}, {lab0}')
+        print(sheet(imgs, labs, 5, f'{a.out}.png', title=f'Calf, ankle and foot, cover off. {a.tag}'))
+    if a.set == 'head':
+        links = ['torso', 'neck_yaw_link', 'head']
+        parts = collect(spec, links, skip={'battery', 'battery lower', 'compute'})
+        hz = np.array(next(j for j in spec['joints'] if j['name'] == 'neck_pitch')['origin'], float)
+        imgs, labs = [], []
+        for lab, az, el in (('front', 0, 4), ('3/4', 40, 12), ('side', 90, 4), ('back 3/4', 215, 14)):
+            tgt = hz + np.array([0.0, 0.0, 0.04])
+            imgs.append(rn.shot(parts, ang_cam(tgt, az, el, 0.75), tgt, poses=None))
+            labs.append(lab)
+        print(sheet(imgs, labs, 4, f'{a.out}.png', title=f'Neck and head, cover off. {a.tag}'))
     if a.set == 'body':
         links = ['pelvis', 'torso', 'neck_yaw_link', 'L_hip_pitch_link', 'L_hip_roll_link', 'R_hip_pitch_link', 'R_hip_roll_link']
         parts = collect(spec, links, skip={'battery', 'battery lower', 'compute'} if 'nopack' in a.tag else set())

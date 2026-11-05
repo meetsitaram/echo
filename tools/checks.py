@@ -371,7 +371,8 @@ def frame_components(spec, S, ln):
     """A link's frame: its carrying parts joined only by contacts a bolt could use. Motors are not frame: a part held only by a
     motor's case is not joined, as nothing says the case is rated for it. Returns (components as sets of indices, every contact found)."""
     import strength as ST
-    parts = carrying_parts(spec, ln)
+    # iteration 43: a linkage's cranks, rods and pins are drawn in the motor's link but move on their own: not that link's frame (check 'linkage' reads them)
+    parts = [(i, g) for i, g in carrying_parts(spec, ln) if g['role'] != 'linkage']
     par = {i: i for i, _ in parts}
 
     def find(x):
@@ -393,6 +394,14 @@ def frame_components(spec, S, ln):
             seen.append((i, k, c))
             if c['kind'] in ('overlap', 'flush') and c['area'] >= ST.CONTACT_MIN_MM2:
                 par[find(i)] = find(k)
+    # iteration 43: a pin (hardware, hw type 'pin') pressed through two of a link's parts joins them, as a bolt's contact does
+    geoms = spec['links'][ln]['geoms']
+    for pi, pg in enumerate(geoms):
+        if pg.get('hw', {}).get('type') != 'pin' or (ln, pi) not in S.geom:
+            continue
+        on = [i for i, _ in parts if S.geom[(ln, i)].min_gap(S.geom[(ln, pi)], 0.01) <= 1e-4]
+        for a, b in zip(on, on[1:]):
+            par[find(a)] = find(b)
     comps = {}
     for i, _ in parts:
         comps.setdefault(find(i), set()).add(i)
@@ -479,7 +488,8 @@ def pivot_row(spec, S, rep, M, j, c, label):
         ln = j[side]
         ms = []
         bored = {t for g in spec['links'][ln]['geoms'] if g['role'] == 'cut' for t in g['targets']}
-        for i, g in carrying_parts(spec, ln):
+        hw_pins = [(i, g) for i, g in enumerate(spec['links'][ln]['geoms']) if g.get('hw', {}).get('type') == 'pin' and g['role'] == 'hardware' and (ln, i) in S.geom]
+        for i, g in carrying_parts(spec, ln) + hw_pins:
             # not the motor's own output (the question here is the other support), nor the rods, which pass by on their own business
             if g['name'].endswith(' flange') or g['role'] == 'linkage':
                 continue
@@ -545,10 +555,11 @@ def check_linkage(spec, S, rep):
             continue
         prefix = j['name'].replace('_', ' ')
         # the drive sits wherever its motor is: the ankle roll's parent is the cross, its motor is up in the calf
-        ln = next((l for l in spec['links'] for g in spec['links'][l]['geoms'] if g['role'] == 'actuator' and g['name'].startswith(prefix)), j['parent'])
+        mine = lambda g: g['role'] == 'actuator' and (g['name'].startswith(prefix + ' actuator') or g['name'].startswith(j['name'] + ' actuator'))      # iteration 43: named for the joint
+        ln = next((l for l in spec['links'] for g in spec['links'][l]['geoms'] if mine(g)), j['parent'])
         geoms = spec['links'][ln]['geoms']
         idx = {g['name']: i for i, g in enumerate(geoms)}
-        motor = next((g for g in geoms if g['role'] == 'actuator' and g['name'].startswith(prefix)), None)
+        motor = next((g for g in geoms if mine(g)), None)
         crank = next((g for g in geoms if g['role'] == 'linkage' and g['name'] == f'{prefix} crank'), None)
         rod = next((g for g in geoms if g['role'] == 'linkage' and g['name'] == f'{prefix} rod'), None)
         name = j['name']
@@ -556,6 +567,10 @@ def check_linkage(spec, S, rep):
         if not (motor and crank and rod):
             continue
         mm, mc, mr = (S.geom[(ln, idx[g['name']])] for g in (motor, crank, rod))
+        ends = [S.geom[(ln, i)] for i, g in enumerate(geoms) if g['name'].startswith(rod['name'] + ' end') and (ln, i) in S.geom]
+        if ends:                                               # iteration 43: rod ends on the rod: the assembly is what reaches crank and output
+            mr = union([mr] + ends)
+        piv = rod.get('pivots', (rod['p0'], rod['p1']))
         gap = mm.min_gap(mc, 0.05)
         rep.add('linkage', f'{name}: crank reaches the motor', gap <= ST.CONTACT_MIN_DEPTH, f'{gap * 1000:.2f} mm of air and no shaft between the crank and the motor' if gap > ST.CONTACT_MIN_DEPTH else '', value=-gap)
         gap = mc.min_gap(mr, 0.05)
@@ -564,7 +579,7 @@ def check_linkage(spec, S, rep):
         best = min(gaps) if gaps else (1.0, 'nothing')
         rep.add('linkage', f'{name}: rod reaches the output', best[0] <= ST.CONTACT_MIN_DEPTH, f'{best[0] * 1000:.2f} mm to {best[1]}' if best[0] > ST.CONTACT_MIN_DEPTH else f'at {best[1]}', value=-best[0])
         # a rod's two ends are passive joints: a modelled pin or bearing (a cylinder, by name) at each, as for any other pivot
-        for end, p in (('crank end', rod['p0']), ('output end', rod['p1'])):
+        for end, p in (('crank end', piv[0]), ('output end', piv[1])):
             pts = [g for l in spec['links'].values() for g in l['geoms'] if g['role'] != 'cut' and g['kind'] == 'cyl' and any(w in g['name'] for w in (' pin', ' bearing', ' rod end'))
                    and np.linalg.norm(np.array(g['c'], float) - np.array(p, float)) < 0.01]
             rep.add('linkage', f'{name}: rod {end} has a pivot', bool(pts), 'capsules overlapping, no pin or bearing part' if not pts else pts[0]['name'], value=float(bool(pts)))
