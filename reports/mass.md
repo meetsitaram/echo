@@ -2,14 +2,14 @@
 
 Bottom-up: every part from its material and shape (`tools/mass_model.py`, materials in `spec/robot.py`), a 6 % wiring / fastener / bearing allowance per link on its frames.
 
-**Total 57.21 kg** (Figure 03: 61.0 kg).
+**Total 57.19 kg** (Figure 03: 61.0 kg).
 
 | material | kg | share |
 |---|---|---|
 | actuator | 22.93 | 40 % |
 | cells | 13.10 | 23 % |
-| al7075 | 8.89 | 16 % |
-| knit_pa12 | 4.40 | 8 % |
+| al7075 | 8.88 | 16 % |
+| knit_pa12 | 4.38 | 8 % |
 | electronics | 2.85 | 5 % |
 | hand | 1.70 | 3 % |
 | pc | 1.39 | 2 % |
@@ -20,7 +20,7 @@ Bottom-up: every part from its material and shape (`tools/mass_model.py`, materi
 | link | mass kg | budget kg (hand estimate) | CoM (m, world, zero pose) | principal inertia (kg m2) |
 |---|---|---|---|---|
 | pelvis | 5.64 | 6.50 | +0.000 +0.000 +0.953 | 0.0121 0.0336 0.0359 |
-| torso | 20.84 | 19.96 | -0.017 +0.000 +1.279 | 0.1297 0.1966 0.2386 |
+| torso | 20.83 | 19.96 | -0.017 +0.000 +1.279 | 0.1292 0.1959 0.2377 |
 | neck_yaw_link | 0.35 | 0.45 | -0.012 +0.000 +1.491 | 0.0001 0.0002 0.0002 |
 | head | 1.00 | 1.95 | +0.015 +0.004 +1.606 | 0.0033 0.0046 0.0052 |
 | L_shoulder_pitch_link | 0.88 | 0.99 | +0.000 +0.195 +1.390 | 0.0008 0.0011 0.0013 |

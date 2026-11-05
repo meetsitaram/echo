@@ -265,10 +265,12 @@ TORSO = [(HEM, 0.000, 0, 0.100, 0.124, 3.0),
          # neck, and the head sits lower between the shoulders); ours dropped steeply near the neck. The top stays
          # at 1.498 m and leans back (iteration 18: the neck now tilts at its base; nodding fully down, 0.45 rad, the
          # chin stays 2 cm in front of the chest)
-         (SZ + 0.052, -0.012, 0, 0.094, 0.150, 3.2),
-         (SZ + 0.075, -0.016, 0, 0.082, 0.140, 3.0),
-         (SZ + 0.093, -0.018, 0, 0.068, 0.106, 2.6),
-         (SZ + 0.103, -0.020, 0, 0.057, 0.074, 2.3),
+         # iteration 28 (row scan of the 3/4 frame at 1.46 m: Figure 0.149 m, ours 0.259; side: 0.13, ours 0.168): the top
+         # holds its width only to the shoulder motors' tops (1.45 m), then one slope to the collar: no corner above the cap
+         (SZ + 0.052, -0.012, 0, 0.090, 0.149, 3.0),
+         (SZ + 0.075, -0.016, 0, 0.070, 0.118, 2.6),
+         (SZ + 0.093, -0.018, 0, 0.061, 0.088, 2.3),
+         (SZ + 0.103, -0.020, 0, 0.056, 0.067, 2.2),
          (SZ + 0.108, -0.021, 0, 0.051, 0.056, 2.1)]
 BATT_TOP = SZ - 0.065           # level with the shoulder pitch actuators' bottoms (they sit outboard of it)
 link('torso', 19.96, [
